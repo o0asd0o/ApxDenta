@@ -1,0 +1,24 @@
+{
+  "extends": "@repo/tsconfig/react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@repo/ui/*": ["../../packages/ui/src/*"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "../../packages/ui/src/**/*.ts",
+  ],
+  "exclude": ["src/routeTree.gen.ts", "node_modules"],
+  "references": [
+    {
+      "path": "../api/tsconfig.json"
+    },
+    {
+      "path": "../../packages/ui/tsconfig.json"
+    }
+  ]
+}
