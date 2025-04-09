@@ -1,0 +1,127 @@
+@import "tailwindcss";
+@import "@repo/ui/globals.css";
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Extralight.otf") format("opentype");
+  font-display: swap;
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-ExtralightItalic.otf") format("opentype");
+  font-display: swap;
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Light.otf") format("opentype");
+  font-display: swap;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-LightItalic.otf") format("opentype");
+  font-display: swap;
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Regular.otf") format("opentype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Italic.otf") format("opentype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Medium.otf") format("opentype");
+  font-display: swap;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-MediumItalic.otf") format("opentype");
+  font-display: swap;
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Semibold.otf") format("opentype");
+  font-display: swap;
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-SemiboldItalic.otf") format("opentype");
+  font-display: swap;
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Bold.otf") format("opentype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-BoldItalic.otf") format("opentype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: fontManrope Fallback;
+  src: local(Arial);
+  ascent-override: 99.89%;
+  descent-override: 23.74%;
+  line-gap-override: 9.89%;
+  size-adjust: 101.11%;
+}
+
+:root {
+  --font-manrope: "fontManrope", "fontManrope Fallback";
+}
+
+html {
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+  height: 100%;
+}
+
+body {
+  height: inherit;
+}
+
+#app {
+  height: 100%;
+}

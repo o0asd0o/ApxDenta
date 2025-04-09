@@ -1,0 +1,36 @@
+{
+  "name": "@repo/api",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts --port 3999",
+    "dev:migrate": "dotenv -e .env.local -- bunx  @better-auth/cli migrate",
+    "build": "tsc -b",
+    "prisma:generate": "dotenv -e .env.local -- prisma generate",
+    "prisma:migrate": "dotenv -e .env.local -- prisma migrate dev",
+    "prisma:introspect": "dotenv -e .env.local -- prisma introspect",
+    "ts-compile": "tsx --build --verbose"
+  },
+  "dependencies": {
+    "@hono/trpc-server": "^0.3.4",
+    "@hono/zod-openapi": "^0.18.3",
+    "@trpc/server": "^11.0.4",
+    "better-auth": "^1.1.14",
+    "hono": "^4.6.19",
+    "kysely": "^0.27.5",
+    "pg": "^8.13.1",
+    "prisma-kysely": "^1.8.0",
+    "resend": "^4.1.1",
+    "superjson": "^2.2.2",
+    "trpc-playground": "^1.0.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.3.0",
+    "@types/bun": "latest",
+    "@types/pg": "^8.11.11",
+    "@better-auth/cli": "^1.1.15",
+    "prisma": "^6.3.0",
+    "@repo/tsconfig": "workspace:*",
+    "tsx": "^4.19.1",
+    "typescript": "^5.8.3"
+  }
+}
