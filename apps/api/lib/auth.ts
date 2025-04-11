@@ -14,6 +14,12 @@ export const auth: ReturnType<typeof betterAuth> = betterAuth({
       trustedProviders: ['google'],
     },
   },
+
+  session: {
+    expiresIn: 60 * 60 * 24 * 1,
+    updateAge: 60 * 60 * 4,
+  },
+
   trustedOrigins: ['http://localhost:3001'],
   emailAndPassword: {
     enabled: true,

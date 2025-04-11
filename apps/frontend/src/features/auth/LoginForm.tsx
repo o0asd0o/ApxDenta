@@ -12,6 +12,7 @@ import {
   Input,
   Label,
 } from '@repo/ui/components';
+import { Link } from '@tanstack/react-router';
 import type React from 'react';
 import { useState } from 'react';
 
@@ -20,6 +21,20 @@ export const LoginForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const loginUser = async () => {
+    await signIn.email(
+      { email, password },
+      {
+        onRequest: (ctx) => {
+          setLoading(true);
+        },
+        onResponse: (ctx) => {
+          setLoading(false);
+        },
+      },
+    );
+  };
 
   return (
     <div className="flex items-center justify-center h-dvh">
@@ -58,6 +73,14 @@ export const LoginForm: React.FC = () => {
                 autoComplete="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    loginUser();
+                  }
+                }}
               />
             </div>
 
@@ -69,31 +92,19 @@ export const LoginForm: React.FC = () => {
                 }}
               />
               <Label htmlFor="remember">Remember me</Label>
-              <a
-                href="sample#"
+              <Link
+                to="/forgot-pasword"
                 className="ml-auto inline-block text-sm underline"
               >
                 Forgot your password?
-              </a>
+              </Link>
             </div>
 
             <Button
               type="submit"
               className="w-full"
               isLoading={loading}
-              onClick={async () => {
-                await signIn.email(
-                  { email, password },
-                  {
-                    onRequest: (ctx) => {
-                      setLoading(true);
-                    },
-                    onResponse: (ctx) => {
-                      setLoading(false);
-                    },
-                  },
-                );
-              }}
+              onClick={async () => loginUser()}
             >
               Login
             </Button>

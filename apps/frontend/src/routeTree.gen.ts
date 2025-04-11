@@ -12,23 +12,27 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
-import { Route as LoginImport } from './routes/login'
 import { Route as ProtectedImport } from './routes/_protected'
 import { Route as IndexImport } from './routes/index'
-import { Route as ProtectedReservationsImport } from './routes/_protected/reservations'
 import { Route as ProtectedDashboardImport } from './routes/_protected/dashboard'
+import { Route as authLoginImport } from './routes/(auth)/login'
+import { Route as authForgotPaswordImport } from './routes/(auth)/forgot-pasword'
+import { Route as ProtectedphysicalAssetStocksImport } from './routes/_protected/(physical-asset)/stocks'
+import { Route as ProtectedphysicalAssetPeripheralsImport } from './routes/_protected/(physical-asset)/peripherals'
+import { Route as ProtectedfinanceSalesImport } from './routes/_protected/(finance)/sales'
+import { Route as ProtectedfinancePurchasesImport } from './routes/_protected/(finance)/purchases'
+import { Route as ProtectedfinancePaymentMethodsImport } from './routes/_protected/(finance)/payment-methods'
+import { Route as ProtectedfinanceAccountsImport } from './routes/_protected/(finance)/accounts'
+import { Route as ProtectedclinicTreatmentsImport } from './routes/_protected/(clinic)/treatments'
+import { Route as ProtectedclinicStaffListImport } from './routes/_protected/(clinic)/staff-list'
+import { Route as ProtectedclinicReservationsImport } from './routes/_protected/(clinic)/reservations'
+import { Route as ProtectedclinicPatientsImport } from './routes/_protected/(clinic)/patients'
 
 // Create/Update Routes
 
 const RegisterRoute = RegisterImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -43,15 +47,85 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProtectedReservationsRoute = ProtectedReservationsImport.update({
-  id: '/reservations',
-  path: '/reservations',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-
 const ProtectedDashboardRoute = ProtectedDashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+
+const authLoginRoute = authLoginImport.update({
+  id: '/(auth)/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const authForgotPaswordRoute = authForgotPaswordImport.update({
+  id: '/(auth)/forgot-pasword',
+  path: '/forgot-pasword',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedphysicalAssetStocksRoute =
+  ProtectedphysicalAssetStocksImport.update({
+    id: '/(physical-asset)/stocks',
+    path: '/stocks',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+
+const ProtectedphysicalAssetPeripheralsRoute =
+  ProtectedphysicalAssetPeripheralsImport.update({
+    id: '/(physical-asset)/peripherals',
+    path: '/peripherals',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+
+const ProtectedfinanceSalesRoute = ProtectedfinanceSalesImport.update({
+  id: '/(finance)/sales',
+  path: '/sales',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+
+const ProtectedfinancePurchasesRoute = ProtectedfinancePurchasesImport.update({
+  id: '/(finance)/purchases',
+  path: '/purchases',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+
+const ProtectedfinancePaymentMethodsRoute =
+  ProtectedfinancePaymentMethodsImport.update({
+    id: '/(finance)/payment-methods',
+    path: '/payment-methods',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+
+const ProtectedfinanceAccountsRoute = ProtectedfinanceAccountsImport.update({
+  id: '/(finance)/accounts',
+  path: '/accounts',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+
+const ProtectedclinicTreatmentsRoute = ProtectedclinicTreatmentsImport.update({
+  id: '/(clinic)/treatments',
+  path: '/treatments',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+
+const ProtectedclinicStaffListRoute = ProtectedclinicStaffListImport.update({
+  id: '/(clinic)/staff-list',
+  path: '/staff-list',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+
+const ProtectedclinicReservationsRoute =
+  ProtectedclinicReservationsImport.update({
+    id: '/(clinic)/reservations',
+    path: '/reservations',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+
+const ProtectedclinicPatientsRoute = ProtectedclinicPatientsImport.update({
+  id: '/(clinic)/patients',
+  path: '/patients',
   getParentRoute: () => ProtectedRoute,
 } as any)
 
@@ -73,18 +147,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
     '/register': {
       id: '/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/forgot-pasword': {
+      id: '/(auth)/forgot-pasword'
+      path: '/forgot-pasword'
+      fullPath: '/forgot-pasword'
+      preLoaderRoute: typeof authForgotPaswordImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/login': {
+      id: '/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authLoginImport
       parentRoute: typeof rootRoute
     }
     '/_protected/dashboard': {
@@ -94,11 +175,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardImport
       parentRoute: typeof ProtectedImport
     }
-    '/_protected/reservations': {
-      id: '/_protected/reservations'
+    '/_protected/(clinic)/patients': {
+      id: '/_protected/(clinic)/patients'
+      path: '/patients'
+      fullPath: '/patients'
+      preLoaderRoute: typeof ProtectedclinicPatientsImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(clinic)/reservations': {
+      id: '/_protected/(clinic)/reservations'
       path: '/reservations'
       fullPath: '/reservations'
-      preLoaderRoute: typeof ProtectedReservationsImport
+      preLoaderRoute: typeof ProtectedclinicReservationsImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(clinic)/staff-list': {
+      id: '/_protected/(clinic)/staff-list'
+      path: '/staff-list'
+      fullPath: '/staff-list'
+      preLoaderRoute: typeof ProtectedclinicStaffListImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(clinic)/treatments': {
+      id: '/_protected/(clinic)/treatments'
+      path: '/treatments'
+      fullPath: '/treatments'
+      preLoaderRoute: typeof ProtectedclinicTreatmentsImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(finance)/accounts': {
+      id: '/_protected/(finance)/accounts'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof ProtectedfinanceAccountsImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(finance)/payment-methods': {
+      id: '/_protected/(finance)/payment-methods'
+      path: '/payment-methods'
+      fullPath: '/payment-methods'
+      preLoaderRoute: typeof ProtectedfinancePaymentMethodsImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(finance)/purchases': {
+      id: '/_protected/(finance)/purchases'
+      path: '/purchases'
+      fullPath: '/purchases'
+      preLoaderRoute: typeof ProtectedfinancePurchasesImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(finance)/sales': {
+      id: '/_protected/(finance)/sales'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof ProtectedfinanceSalesImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(physical-asset)/peripherals': {
+      id: '/_protected/(physical-asset)/peripherals'
+      path: '/peripherals'
+      fullPath: '/peripherals'
+      preLoaderRoute: typeof ProtectedphysicalAssetPeripheralsImport
+      parentRoute: typeof ProtectedImport
+    }
+    '/_protected/(physical-asset)/stocks': {
+      id: '/_protected/(physical-asset)/stocks'
+      path: '/stocks'
+      fullPath: '/stocks'
+      preLoaderRoute: typeof ProtectedphysicalAssetStocksImport
       parentRoute: typeof ProtectedImport
     }
   }
@@ -108,12 +252,31 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteChildren {
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
-  ProtectedReservationsRoute: typeof ProtectedReservationsRoute
+  ProtectedclinicPatientsRoute: typeof ProtectedclinicPatientsRoute
+  ProtectedclinicReservationsRoute: typeof ProtectedclinicReservationsRoute
+  ProtectedclinicStaffListRoute: typeof ProtectedclinicStaffListRoute
+  ProtectedclinicTreatmentsRoute: typeof ProtectedclinicTreatmentsRoute
+  ProtectedfinanceAccountsRoute: typeof ProtectedfinanceAccountsRoute
+  ProtectedfinancePaymentMethodsRoute: typeof ProtectedfinancePaymentMethodsRoute
+  ProtectedfinancePurchasesRoute: typeof ProtectedfinancePurchasesRoute
+  ProtectedfinanceSalesRoute: typeof ProtectedfinanceSalesRoute
+  ProtectedphysicalAssetPeripheralsRoute: typeof ProtectedphysicalAssetPeripheralsRoute
+  ProtectedphysicalAssetStocksRoute: typeof ProtectedphysicalAssetStocksRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedDashboardRoute: ProtectedDashboardRoute,
-  ProtectedReservationsRoute: ProtectedReservationsRoute,
+  ProtectedclinicPatientsRoute: ProtectedclinicPatientsRoute,
+  ProtectedclinicReservationsRoute: ProtectedclinicReservationsRoute,
+  ProtectedclinicStaffListRoute: ProtectedclinicStaffListRoute,
+  ProtectedclinicTreatmentsRoute: ProtectedclinicTreatmentsRoute,
+  ProtectedfinanceAccountsRoute: ProtectedfinanceAccountsRoute,
+  ProtectedfinancePaymentMethodsRoute: ProtectedfinancePaymentMethodsRoute,
+  ProtectedfinancePurchasesRoute: ProtectedfinancePurchasesRoute,
+  ProtectedfinanceSalesRoute: ProtectedfinanceSalesRoute,
+  ProtectedphysicalAssetPeripheralsRoute:
+    ProtectedphysicalAssetPeripheralsRoute,
+  ProtectedphysicalAssetStocksRoute: ProtectedphysicalAssetStocksRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
@@ -123,59 +286,133 @@ const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof ProtectedRouteWithChildren
-  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/forgot-pasword': typeof authForgotPaswordRoute
+  '/login': typeof authLoginRoute
   '/dashboard': typeof ProtectedDashboardRoute
-  '/reservations': typeof ProtectedReservationsRoute
+  '/patients': typeof ProtectedclinicPatientsRoute
+  '/reservations': typeof ProtectedclinicReservationsRoute
+  '/staff-list': typeof ProtectedclinicStaffListRoute
+  '/treatments': typeof ProtectedclinicTreatmentsRoute
+  '/accounts': typeof ProtectedfinanceAccountsRoute
+  '/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
+  '/purchases': typeof ProtectedfinancePurchasesRoute
+  '/sales': typeof ProtectedfinanceSalesRoute
+  '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
+  '/stocks': typeof ProtectedphysicalAssetStocksRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof ProtectedRouteWithChildren
-  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/forgot-pasword': typeof authForgotPaswordRoute
+  '/login': typeof authLoginRoute
   '/dashboard': typeof ProtectedDashboardRoute
-  '/reservations': typeof ProtectedReservationsRoute
+  '/patients': typeof ProtectedclinicPatientsRoute
+  '/reservations': typeof ProtectedclinicReservationsRoute
+  '/staff-list': typeof ProtectedclinicStaffListRoute
+  '/treatments': typeof ProtectedclinicTreatmentsRoute
+  '/accounts': typeof ProtectedfinanceAccountsRoute
+  '/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
+  '/purchases': typeof ProtectedfinancePurchasesRoute
+  '/sales': typeof ProtectedfinanceSalesRoute
+  '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
+  '/stocks': typeof ProtectedphysicalAssetStocksRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_protected': typeof ProtectedRouteWithChildren
-  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/(auth)/forgot-pasword': typeof authForgotPaswordRoute
+  '/(auth)/login': typeof authLoginRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
-  '/_protected/reservations': typeof ProtectedReservationsRoute
+  '/_protected/(clinic)/patients': typeof ProtectedclinicPatientsRoute
+  '/_protected/(clinic)/reservations': typeof ProtectedclinicReservationsRoute
+  '/_protected/(clinic)/staff-list': typeof ProtectedclinicStaffListRoute
+  '/_protected/(clinic)/treatments': typeof ProtectedclinicTreatmentsRoute
+  '/_protected/(finance)/accounts': typeof ProtectedfinanceAccountsRoute
+  '/_protected/(finance)/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
+  '/_protected/(finance)/purchases': typeof ProtectedfinancePurchasesRoute
+  '/_protected/(finance)/sales': typeof ProtectedfinanceSalesRoute
+  '/_protected/(physical-asset)/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
+  '/_protected/(physical-asset)/stocks': typeof ProtectedphysicalAssetStocksRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/register' | '/dashboard' | '/reservations'
+  fullPaths:
+    | '/'
+    | ''
+    | '/register'
+    | '/forgot-pasword'
+    | '/login'
+    | '/dashboard'
+    | '/patients'
+    | '/reservations'
+    | '/staff-list'
+    | '/treatments'
+    | '/accounts'
+    | '/payment-methods'
+    | '/purchases'
+    | '/sales'
+    | '/peripherals'
+    | '/stocks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/register' | '/dashboard' | '/reservations'
+  to:
+    | '/'
+    | ''
+    | '/register'
+    | '/forgot-pasword'
+    | '/login'
+    | '/dashboard'
+    | '/patients'
+    | '/reservations'
+    | '/staff-list'
+    | '/treatments'
+    | '/accounts'
+    | '/payment-methods'
+    | '/purchases'
+    | '/sales'
+    | '/peripherals'
+    | '/stocks'
   id:
     | '__root__'
     | '/'
     | '/_protected'
-    | '/login'
     | '/register'
+    | '/(auth)/forgot-pasword'
+    | '/(auth)/login'
     | '/_protected/dashboard'
-    | '/_protected/reservations'
+    | '/_protected/(clinic)/patients'
+    | '/_protected/(clinic)/reservations'
+    | '/_protected/(clinic)/staff-list'
+    | '/_protected/(clinic)/treatments'
+    | '/_protected/(finance)/accounts'
+    | '/_protected/(finance)/payment-methods'
+    | '/_protected/(finance)/purchases'
+    | '/_protected/(finance)/sales'
+    | '/_protected/(physical-asset)/peripherals'
+    | '/_protected/(physical-asset)/stocks'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ProtectedRoute: typeof ProtectedRouteWithChildren
-  LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  authForgotPaswordRoute: typeof authForgotPaswordRoute
+  authLoginRoute: typeof authLoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ProtectedRoute: ProtectedRouteWithChildren,
-  LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  authForgotPaswordRoute: authForgotPaswordRoute,
+  authLoginRoute: authLoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -190,8 +427,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_protected",
-        "/login",
-        "/register"
+        "/register",
+        "/(auth)/forgot-pasword",
+        "/(auth)/login"
       ]
     },
     "/": {
@@ -201,21 +439,69 @@ export const routeTree = rootRoute
       "filePath": "_protected.tsx",
       "children": [
         "/_protected/dashboard",
-        "/_protected/reservations"
+        "/_protected/(clinic)/patients",
+        "/_protected/(clinic)/reservations",
+        "/_protected/(clinic)/staff-list",
+        "/_protected/(clinic)/treatments",
+        "/_protected/(finance)/accounts",
+        "/_protected/(finance)/payment-methods",
+        "/_protected/(finance)/purchases",
+        "/_protected/(finance)/sales",
+        "/_protected/(physical-asset)/peripherals",
+        "/_protected/(physical-asset)/stocks"
       ]
-    },
-    "/login": {
-      "filePath": "login.tsx"
     },
     "/register": {
       "filePath": "register.tsx"
+    },
+    "/(auth)/forgot-pasword": {
+      "filePath": "(auth)/forgot-pasword.tsx"
+    },
+    "/(auth)/login": {
+      "filePath": "(auth)/login.tsx"
     },
     "/_protected/dashboard": {
       "filePath": "_protected/dashboard.tsx",
       "parent": "/_protected"
     },
-    "/_protected/reservations": {
-      "filePath": "_protected/reservations.tsx",
+    "/_protected/(clinic)/patients": {
+      "filePath": "_protected/(clinic)/patients.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(clinic)/reservations": {
+      "filePath": "_protected/(clinic)/reservations.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(clinic)/staff-list": {
+      "filePath": "_protected/(clinic)/staff-list.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(clinic)/treatments": {
+      "filePath": "_protected/(clinic)/treatments.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(finance)/accounts": {
+      "filePath": "_protected/(finance)/accounts.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(finance)/payment-methods": {
+      "filePath": "_protected/(finance)/payment-methods.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(finance)/purchases": {
+      "filePath": "_protected/(finance)/purchases.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(finance)/sales": {
+      "filePath": "_protected/(finance)/sales.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(physical-asset)/peripherals": {
+      "filePath": "_protected/(physical-asset)/peripherals.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(physical-asset)/stocks": {
+      "filePath": "_protected/(physical-asset)/stocks.tsx",
       "parent": "/_protected"
     }
   }

@@ -1,30 +1,87 @@
-import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { CheckIcon } from 'lucide-react';
-import type * as React from 'react';
+// Tremor Checkbox [v0.0.3]
 
-import { cn } from '@repo/ui/lib/utils';
+import * as CheckboxPrimitives from '@radix-ui/react-checkbox';
+import React from 'react';
 
-function Checkbox({
-  className,
-  ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
+import { cn, focusRing } from '@repo/ui/lib/utils';
+
+const Checkbox = React.forwardRef<
+  React.ElementRef<typeof CheckboxPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitives.Root>
+>(({ className, checked, ...props }, forwardedRef) => {
   return (
-    <CheckboxPrimitive.Root
-      data-slot="checkbox"
+    <CheckboxPrimitives.Root
+      ref={forwardedRef}
+      {...props}
+      checked={checked}
       className={cn(
-        'peer border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
+        // base
+        'relative inline-flex size-4 shrink-0 appearance-none items-center justify-center rounded shadow-sm outline-none ring-1 ring-inset transition duration-100 enabled:cursor-pointer',
+        // text color
+        'text-white dark:text-gray-50',
+        // background color
+        'bg-white dark:bg-gray-950',
+        // ring color
+        'ring-gray-300 dark:ring-gray-800',
+        // disabled
+        'data-[disabled]:bg-gray-100 data-[disabled]:text-gray-400 data-[disabled]:ring-gray-300',
+        'data-[disabled]:dark:bg-gray-800 data-[disabled]:dark:text-gray-500 data-[disabled]:dark:ring-gray-700',
+        // checked and enabled
+        'enabled:data-[state=checked]:bg-blue-500 enabled:data-[state=checked]:ring-0 enabled:data-[state=checked]:ring-transparent',
+        // indeterminate
+        'enabled:data-[state=indeterminate]:bg-blue-500 enabled:data-[state=indeterminate]:ring-0 enabled:data-[state=indeterminate]:ring-transparent',
+        // focus
+        focusRing,
         className,
       )}
-      {...props}
+      tremor-id="tremor-raw"
     >
-      <CheckboxPrimitive.Indicator
-        data-slot="checkbox-indicator"
-        className="flex items-center justify-center text-current transition-none"
+      <CheckboxPrimitives.Indicator
+        asChild
+        className="flex size-full items-center justify-center"
       >
-        <CheckIcon className="size-3.5" />
-      </CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
+        {checked === 'indeterminate' ? (
+          <svg
+            aria-hidden="true"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="2"
+              x1="4"
+              x2="12"
+              y1="8"
+              y2="8"
+            />
+          </svg>
+        ) : (
+          <svg
+            aria-hidden="true"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.2 5.59998L6.79999 9.99998L4.79999 7.99998"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            />
+          </svg>
+        )}
+      </CheckboxPrimitives.Indicator>
+    </CheckboxPrimitives.Root>
   );
-}
+});
+
+Checkbox.displayName = 'Checkbox';
 
 export { Checkbox };
