@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 const FALLBACK = '/dashboard';
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute('/(auth)/login')({
   validateSearch: z.object({
     redirect: z.string().optional().catch(''),
   }),

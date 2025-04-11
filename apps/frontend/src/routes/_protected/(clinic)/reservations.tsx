@@ -2,7 +2,7 @@ import { signOut } from '@/lib/auth-client';
 import { Button } from '@repo/ui/components';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_protected/reservations')({
+export const Route = createFileRoute('/_protected/(clinic)/reservations')({
   component: RouteComponent,
 });
 

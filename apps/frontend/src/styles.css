@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: fontManrope;
-  src: url("/fonts/Manrope-Extralight.otf") format("opentype");
+  src: url("/fonts/Manrope-Extralight.ttf") format("truetype");
   font-display: swap;
   font-weight: 200;
   font-style: normal;
@@ -11,15 +11,7 @@
 
 @font-face {
   font-family: fontManrope;
-  src: url("/fonts/Manrope-ExtralightItalic.otf") format("opentype");
-  font-display: swap;
-  font-weight: 200;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: fontManrope;
-  src: url("/fonts/Manrope-Light.otf") format("opentype");
+  src: url("/fonts/Manrope-Light.ttf") format("truetype");
   font-display: swap;
   font-weight: 300;
   font-style: normal;
@@ -27,15 +19,7 @@
 
 @font-face {
   font-family: fontManrope;
-  src: url("/fonts/Manrope-LightItalic.otf") format("opentype");
-  font-display: swap;
-  font-weight: 300;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: fontManrope;
-  src: url("/fonts/Manrope-Regular.otf") format("opentype");
+  src: url("/fonts/Manrope-Regular.ttf") format("truetype");
   font-display: swap;
   font-weight: 400;
   font-style: normal;
@@ -43,15 +27,7 @@
 
 @font-face {
   font-family: fontManrope;
-  src: url("/fonts/Manrope-Italic.otf") format("opentype");
-  font-display: swap;
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: fontManrope;
-  src: url("/fonts/Manrope-Medium.otf") format("opentype");
+  src: url("/fonts/Manrope-Medium.ttf") format("truetype");
   font-display: swap;
   font-weight: 500;
   font-style: normal;
@@ -59,15 +35,7 @@
 
 @font-face {
   font-family: fontManrope;
-  src: url("/fonts/Manrope-MediumItalic.otf") format("opentype");
-  font-display: swap;
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: fontManrope;
-  src: url("/fonts/Manrope-Semibold.otf") format("opentype");
+  src: url("/fonts/Manrope-Semibold.ttf") format("truetype");
   font-display: swap;
   font-weight: 600;
   font-style: normal;
@@ -75,26 +43,10 @@
 
 @font-face {
   font-family: fontManrope;
-  src: url("/fonts/Manrope-SemiboldItalic.otf") format("opentype");
-  font-display: swap;
-  font-weight: 600;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: fontManrope;
-  src: url("/fonts/Manrope-Bold.otf") format("opentype");
+  src: url("/fonts/Manrope-Bold.ttf") format("truetype");
   font-display: swap;
   font-weight: 700;
   font-style: normal;
-}
-
-@font-face {
-  font-family: fontManrope;
-  src: url("/fonts/Manrope-BoldItalic.otf") format("opentype");
-  font-display: swap;
-  font-weight: 700;
-  font-style: italic;
 }
 
 @font-face {

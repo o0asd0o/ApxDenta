@@ -3,6 +3,7 @@
 @source "../../../../packages/ui/src/**/*.{js,ts,jsx,tsx}";
 
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/forms";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -12,11 +13,11 @@
 }
 
 :root {
-  --background: hsl(0 0% 100%);
+  --background: hsl(0, 0%, 100%);
   --foreground: hsl(0 0% 3.9%);
-  --card: hsl(0 0% 100%);
+  --card: hsl(220, 33%, 98%);
   --card-foreground: hsl(0 0% 3.9%);
-  --popover: hsl(0 0% 100%);
+  --popover: hsl(220, 33%, 98%);
   --popover-foreground: hsl(0 0% 3.9%);
   --primary: hsl(232, 81%, 59%);
   --primary-foreground: hsl(0 0% 98%);
@@ -37,6 +38,15 @@
   --chart-4: hsl(43 74% 66%);
   --chart-5: hsl(27 87% 67%);
   --radius: 0.6rem;
+  --sidebar: hsl(210, 20%, 98.04%);
+  --sidebar-foreground: hsl(0, 0%, 0%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(216, 50%, 96%);
+  --sidebar-accent-foreground: var(--primary);
+  --sidebar-border: hsl(220, 11%, 95%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar-selected: hsl(218, 70%, 95%);
 }
 
 .dark {
@@ -52,6 +62,7 @@
   --secondary-foreground: hsl(0 0% 98%);
   --muted: hsl(0 0% 14.9%);
   --muted-foreground: hsl(0 0% 63.9%);
+  --gray-foreground: hsl(225, 13.79%, 77.25%);
   --accent: hsl(0 0% 14.9%);
   --accent-foreground: hsl(0 0% 98%);
   --destructive: hsl(0 62.8% 30.6%);
@@ -64,6 +75,15 @@
   --chart-3: hsl(30 80% 55%);
   --chart-4: hsl(280 65% 60%);
   --chart-5: hsl(340 75% 55%);
+  --sidebar: hsl(240, 6%, 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(220, 33%, 98%);
+  --sidebar-accent: hsl(216, 50%, 96%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar-selected: hsl(218, 70%, 95%);
 }
 
 @theme inline {
@@ -95,6 +115,16 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-selected: var(--sidebar-selected);
+  --color-gray-foreground: var(--gray-foreground);
 }
 
 @layer base {
@@ -102,7 +132,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-foreground;
   }
 
   /* https://tailwindcss.com/docs/upgrade-guide#buttons-use-the-default-cursor */
