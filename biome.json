@@ -5,10 +5,12 @@
     "indentWidth": 2,
     "formatWithErrors": true
   },
+
   "javascript": {
     "formatter": {
       "quoteStyle": "single"
-    }
+    },
+    "jsxRuntime": "reactClassic"
   },
   "organizeImports": {
     "enabled": true

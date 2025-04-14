@@ -1,14 +1,12 @@
 {
   "extends": "@repo/tsconfig/react-library.json",
   "compilerOptions": {
-    //"outDir": "dist"
-    "incremental": true,
-    "composite": true,
+    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@repo/ui/*": ["./src/*"]
     }
   },
-  "include": ["."],
+  "include": ["./src/**/*"],
   "exclude": ["node_modules", "dist", "postcss.config.mjs"]
 }
