@@ -1,0 +1,18 @@
+import Header from '@/components/header/Header';
+import { AppSideBar } from '@/components/side-bar/AppSideBar';
+import { SidebarInset, SidebarProvider } from '@repo/ui/components';
+import { Outlet } from '@tanstack/react-router';
+
+export const Protected = () => {
+  return (
+    <SidebarProvider>
+      <AppSideBar />
+      <SidebarInset className="flex flex-col">
+        <Header />
+        <main className="flex flex-col w-full px-5 py-4">
+          <Outlet />
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+};

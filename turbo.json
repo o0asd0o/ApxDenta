@@ -7,33 +7,11 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"]
     },
-    "ts-compile": {
-      "cache": true,
-      "persistent": true
-    },
-    "test:e2e": {
-      "outputs": ["tests/coverage/e2e/**"]
-    },
-    "test:e2e:with-build": {
-      "outputs": ["tests/coverage/e2e/**"],
+    "start": {
       "dependsOn": ["^build"]
-    },
-    "test": {
-      "persistent": true
     },
     "test:ui": {
       "persistent": true
-    },
-    "test:cov": {
-      "persistent": true,
-      "outputs": ["tests/coverage/unit/**"]
-    },
-    "test:cov:ui": {
-      "outputs": ["tests/coverage/unit/**"],
-      "persistent": true
-    },
-    "test:with-build": {
-      "dependsOn": ["^build"]
     },
     "lint": {
       "cache": false
@@ -41,13 +19,11 @@
     "lint:fix": {
       "cache": false
     },
-    "ui:add": {
-      "persistent": true
-    },
     "dev": {
       "cache": false,
       "persistent": true
     },
+    "lib_dev": { "outputs": ["dist/**"] },
     "clean": {
       "cache": false
     }

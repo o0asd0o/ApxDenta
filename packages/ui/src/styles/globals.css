@@ -1,16 +1,7 @@
 @import "tailwindcss";
-
-@source "../../../../packages/ui/src/**/*.{js,ts,jsx,tsx}";
-
-@plugin "tailwindcss-animate";
-@plugin "@tailwindcss/forms";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
-@theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
 :root {
   --background: hsl(0, 0%, 100%);

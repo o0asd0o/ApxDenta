@@ -25,7 +25,7 @@ const OrganizationInvite = ({
   return (
     <Html>
       <Head />
-      <Preview>Zendenta Organization Invite</Preview>
+      <Preview>ApxDenta Organization Invite</Preview>
       <Tailwind>
         <Body className="bg-gray-100 text-gray-700 my-auto mx-auto font-sans px-4">
           <Container>
