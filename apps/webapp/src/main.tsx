@@ -1,4 +1,3 @@
-import './styles.css';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import type React from 'react';
 import { StrictMode } from 'react';
