@@ -11,25 +11,21 @@ import type { AppType } from './types';
 
 const SERVER_PATHS = {
   ALL: '*',
-  BETTER_AUTH: '/api/auth/*',
+  BETTER_AUTH: '/api/auth/**',
   TRPC: '/trpc/*',
 } as const;
 
 const app = new Hono<AppType>({ strict: false })
-  .get('/', (c) => {
-    return c.text('Welcome to ApxDenta API! (c)');
-  })
-  .get('/healthcheck', (c) => {
-    return c.text('OK');
-  })
-  .use('*', requestId())
-  .use('*', logger())
-  .use('*', prettyJSON())
+  .get('/', (c) => c.text('Welcome to ApxDenta API! (c)'))
+  .get('/healthcheck', (c) => c.text('OK'))
+  .use(SERVER_PATHS.ALL, requestId())
+  .use(SERVER_PATHS.ALL, logger())
+  .use(SERVER_PATHS.ALL, prettyJSON())
   .use(SERVER_PATHS.BETTER_AUTH, authCors)
   .use(SERVER_PATHS.TRPC, trpcCors)
-  .on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw))
+  .on(['POST', 'GET'], SERVER_PATHS.BETTER_AUTH, (c) => auth.handler(c.req.raw))
   .use(
-    '/api/trpc/*',
+    SERVER_PATHS.TRPC,
     trpcServer({
       router: api.trpcRouter,
       createContext: (c) => api.createTRPCContext({ headers: c.req.headers }),

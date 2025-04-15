@@ -1,10 +1,8 @@
 import { TRPCProvider } from '@/lib/trpc';
-import type { AppRouter } from '@repo/domain/server';
+import { createTrpcClient } from '@repo/domain/client';
 import type { QueryClient } from '@tanstack/react-query';
-import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import type React from 'react';
 import { useState } from 'react';
-import SuperJSON from 'superjson';
 
 type Props = {
   children: React.JSX.Element;
@@ -12,14 +10,7 @@ type Props = {
 };
 export const TrpcProvider: React.FC<Props> = ({ queryClient, children }) => {
   const [trpcClient] = useState(() =>
-    createTRPCClient<AppRouter>({
-      links: [
-        httpBatchLink({
-          transformer: SuperJSON,
-          url: 'http://localhost:3000',
-        }),
-      ],
-    }),
+    createTrpcClient({ serverUrl: import.meta.env.VITE_PUBLIC_SERVER_URL }),
   );
 
   return (
