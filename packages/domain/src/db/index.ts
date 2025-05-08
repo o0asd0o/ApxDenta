@@ -1,3 +1,4 @@
 export * from './client';
-export * from './prisma/out/enums';
-export * from './prisma/out/types';
+export type * from './prisma/out/enums';
+export type * from './prisma/out/types';
+export type { ColumnType } from 'kysely';

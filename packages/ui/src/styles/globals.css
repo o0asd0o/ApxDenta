@@ -38,6 +38,7 @@
   --sidebar-border: hsl(220, 11%, 95%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
   --sidebar-selected: hsl(218, 70%, 95%);
+  --grayish-blue: hsl(224 13.39% 56.08%);
 }
 
 .dark {
@@ -75,6 +76,7 @@
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
   --sidebar-selected: hsl(218, 70%, 95%);
+  --grayish-blue: hsl(224 13.39% 56.08%);
 }
 
 @theme inline {
@@ -102,6 +104,12 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-grayish-blue: var(--grayish-blue);
+  --color-grayish-blue-50: #f0f2fd;
+  --color-grayish-blue-100: #f3f4f6;
+  --color-grayish-blue-200: #e9eaec;
+  --color-grayish-blue-300: #dbdce6;
+  --color-grayish-blue-400: #aeb3c1;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
