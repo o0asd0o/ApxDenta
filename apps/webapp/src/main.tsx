@@ -7,9 +7,15 @@ import ReactDOM from 'react-dom/client';
 import { routeTree } from './routeTree.gen.ts';
 
 import { Loader2 } from 'lucide-react';
+import { scan } from 'react-scan';
 import { useSession } from './lib/auth-client';
 import { RootProvider, getContext } from './providers/Root';
 import reportWebVitals from './reportWebVitals.ts';
+
+scan({
+  _debug: 'verbose',
+  enabled: true,
+});
 
 // Create a new router instance
 const router = createRouter({

@@ -9,7 +9,7 @@ export const Protected = () => {
       <AppSideBar />
       <SidebarInset className="flex flex-col">
         <Header />
-        <main className="flex flex-col w-full px-5 py-4">
+        <main className="flex flex-col w-full">
           <Outlet />
         </main>
       </SidebarInset>

@@ -9,9 +9,9 @@ type Params = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: Params) => {
   const result = await ctx.db
-    .selectFrom('Staff')
+    .selectFrom('Reservation')
     .selectAll()
-    .where('Staff.id', '=', input.id)
+    .where('Reservation.id', '=', input.id)
     .executeTakeFirstOrThrow();
 
   return { status: 'SUCCESS' as const, data: result };

@@ -10,3 +10,7 @@ export * from './sidebar';
 export * from './tooltip';
 export * from './skeleton';
 export * from './avatar';
+export * from './tabs';
+export * from './table';
+export * from './stepper';
+export * from './badge';
