@@ -18,18 +18,31 @@ const buttonVariants = tv({
   ],
   variants: {
     variant: {
+      success: [
+        // border
+        'border-transparent',
+        // text color
+        'text-white dark:text-white',
+        // background color
+        'bg-green-600 dark:bg-green-600',
+        // hover color
+        'hover:bg-green-700 dark:hover:bg-green-700',
+        // disabled
+        'disabled:bg-green-400 disabled:text-white',
+        'disabled:dark:bg-green-800 disabled:dark:text-green-500',
+      ],
       primary: [
         // border
         'border-transparent',
         // text color
         'text-white dark:text-white',
         // background color
-        'bg-blue-500 dark:bg-blue-500',
+        'bg-primary-500 dark:bg-primary-500',
         // hover color
-        'hover:bg-blue-600 dark:hover:bg-blue-600',
+        'hover:bg-primary-600 dark:hover:bg-primary-600',
         // disabled
-        'disabled:bg-blue-300 disabled:text-white',
-        'disabled:dark:bg-blue-800 disabled:dark:text-blue-400',
+        'disabled:bg-primary-300 disabled:text-white',
+        'disabled:dark:bg-primary-800 disabled:dark:text-primary-400',
       ],
       secondary: [
         // border

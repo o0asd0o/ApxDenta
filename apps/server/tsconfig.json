@@ -13,5 +13,10 @@
       "~/prisma/*": ["./prisma/*"],
     }
   },
-  "include": ["src/**/*", "lib", "prisma"]
+  "include": ["src/**/*", "lib", "prisma"],
+  "references": [
+      {
+         "path": "../../packages/domain"
+      }
+   ]
 }

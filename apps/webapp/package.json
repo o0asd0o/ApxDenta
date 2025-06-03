@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 8085 --mode locale",
-    "build": "vite build && tsc",
+    "build": "vite build --mode locale",
     "serve": "vite preview",
     "test": "vitest run"
   },
@@ -34,6 +34,7 @@
     "lucide-react": "^0.487.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.4",
     "react-scan": "^0.3.3",
     "sonner": "^2.0.3",
     "superjson": "^2.2.2",
@@ -48,7 +49,7 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
+    "@types/react-dom": "^19.0.8",
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^26.0.0",
     "tailwindcss": "^4.1.4",

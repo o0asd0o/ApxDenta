@@ -3,6 +3,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
+    "incremental": true,
+    "composite": true,
     "verbatimModuleSyntax": false,
     "outDir": "dist",
     "paths": {

@@ -39,8 +39,6 @@ function TabsTrigger({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   const ref = React.createRef<HTMLButtonElement>();
-
-  console.log({ ref, width: ref.current });
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
