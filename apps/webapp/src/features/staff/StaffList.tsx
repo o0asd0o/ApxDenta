@@ -10,9 +10,9 @@ import type React from 'react';
 import CreateStaff from './CreateStaff';
 import { columns } from './__columns';
 import { generateDummyStaffData } from './__helpers';
+import { CreateStaffProvider } from './add/context/CreateStaffProvider';
 
 const staffData = generateDummyStaffData(20);
-
 export const StaffList: React.FC = () => {
   return (
     <div>
@@ -31,10 +31,11 @@ export const StaffList: React.FC = () => {
               <span className="text-lg font-bold">120</span>
               <span className="text-xs text-gray-400">Doctor</span>
             </div>
-
-            <CreateStaff />
+            <CreateStaffProvider>
+              <CreateStaff />
+            </CreateStaffProvider>
           </div>
-          <div className="container mx-auto">
+          <div className="">
             <DataTable columns={columns} data={staffData} />
           </div>
         </TabContent>

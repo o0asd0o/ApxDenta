@@ -37,11 +37,14 @@ export const UserMenu = () => {
       fetchOptions: {
         onResponse: () => {
           setTimeout(() => {
+            console.log('LOGOUT', { loc: location.pathname });
             navigate({
               to: '/',
-              search: { redirect: location.href },
+              search: {
+                redirect: location.pathname,
+              },
             });
-          }, 100);
+          }, 200);
         },
       },
     });

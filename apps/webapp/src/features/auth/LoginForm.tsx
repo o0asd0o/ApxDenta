@@ -1,6 +1,7 @@
 import { GoogleSVG } from '@/assets/google';
 import { signIn } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
+import { Route } from '@/routes/(auth)/login';
 import {
   Button,
   Card,
@@ -22,16 +23,14 @@ export const LoginForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
+  const { redirect } = Route.useSearch();
+
   const loginUser = async () => {
     await signIn.email(
       { email, password },
       {
-        onRequest: (_) => {
-          setLoading(true);
-        },
-        onResponse: (_) => {
-          setLoading(false);
-        },
+        onRequest: (_) => setLoading(true),
+        onResponse: (_) => setLoading(false),
       },
     );
   };
@@ -122,18 +121,23 @@ export const LoginForm: React.FC = () => {
                 className={cn('w-full gap-2')}
                 disabled={loading}
                 onClick={async () => {
+                  let callbackUrl: undefined | string;
+                  if (redirect) {
+                    // const r = new URLSearchParams(redirect);
+                    // const [[_, redirectPath]] = r.entries();
+                    callbackUrl = `${import.meta.env.VITE_PUBLIC_WEB_URL}${redirect}`;
+                  }
+
                   await signIn.social(
                     {
                       provider: 'google',
-                      callbackURL: '/dashboard',
+                      callbackURL:
+                        callbackUrl ||
+                        `${import.meta.env.VITE_PUBLIC_WEB_URL}/dashboard`,
                     },
                     {
-                      onRequest: (_) => {
-                        setLoading(true);
-                      },
-                      onResponse: (_) => {
-                        setLoading(false);
-                      },
+                      onRequest: (_) => setLoading(true),
+                      onResponse: (_) => setLoading(false),
                     },
                   );
                 }}

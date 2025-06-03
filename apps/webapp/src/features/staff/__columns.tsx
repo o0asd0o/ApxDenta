@@ -29,7 +29,7 @@ export const columns: ColumnDef<StaffType>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && 'indeterminate')
         }
-        className="shadow-none w-4"
+        className="shadow-none size-5 rounded-sm"
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
@@ -38,7 +38,7 @@ export const columns: ColumnDef<StaffType>[] = [
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        className="shadow-none"
+        className="shadow-none size-5 rounded-sm"
         aria-label="Select row"
       />
     ),

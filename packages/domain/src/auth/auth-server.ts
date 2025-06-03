@@ -67,7 +67,9 @@ export const createAuth = ({
 }: AuthOptions): AuthInstance => {
   return betterAuth({
     secret: authSecret,
-    trustedOrigins: [webUrl].map((url) => new URL(url).origin),
+    trustedOrigins: [webUrl, 'http://localhost:8080'].map(
+      (url) => new URL(url).origin,
+    ),
     database: {
       db,
       type: 'postgres',
@@ -92,7 +94,9 @@ export const createAuth = ({
       },
     },
     socialProviders: {
-      google: googleCredentials,
+      google: {
+        ...googleCredentials,
+      },
     },
     plugins: [
       organization({

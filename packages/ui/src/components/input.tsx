@@ -9,7 +9,7 @@ import { cn, focusInput, focusRing, hasErrorInput } from '@repo/ui/lib/utils';
 const inputStyles = tv({
   base: [
     // base
-    'relative block w-full appearance-none rounded-md border px-2.5 py-2 shadow-sm outline-none transition sm:text-sm',
+    'relative block w-full appearance-none rounded-sm border px-2.5 py-2 shadow-xs outline-none transition sm:text-sm',
     // border color
     'border-gray-200 dark:border-gray-800',
     // text color
@@ -51,6 +51,7 @@ interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputStyles> {
   inputClassName?: string;
+  icon?: React.JSX.Element;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -61,6 +62,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       hasError,
       enableStepper = true,
       type,
+      icon,
       ...props
     }: InputProps,
     forwardedRef,
@@ -72,6 +74,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={cn('relative w-full', className)} tremor-id="tremor-raw">
+        {icon && (
+          <div
+            className={cn(
+              // base
+              'pointer-events-none absolute bottom-0 left-3 flex h-full items-center justify-center',
+              // text color
+              'text-gray-600 dark:text-gray-600',
+              'z-1',
+            )}
+          >
+            {icon}
+          </div>
+        )}
         <input
           ref={forwardedRef}
           type={isPassword ? typeState : type}
@@ -81,6 +96,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               'pl-9': isSearch,
               'pr-10': isPassword,
             },
+            !!icon && 'pl-9',
             inputClassName,
           )}
           {...props}

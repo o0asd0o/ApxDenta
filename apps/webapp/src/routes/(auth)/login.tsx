@@ -10,6 +10,7 @@ export const Route = createFileRoute('/(auth)/login')({
   }),
   beforeLoad: ({ context, search }) => {
     if (context.auth) {
+      console.log('SEARCH REDIRECT', search.redirect);
       throw redirect({ to: search.redirect || FALLBACK });
     }
   },
