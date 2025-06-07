@@ -21,6 +21,7 @@ export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingSocial, setLoadingSocial] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   const { redirect } = Route.useSearch();
@@ -59,7 +60,6 @@ export const LoginForm: React.FC = () => {
                 value={email}
               />
             </div>
-
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
@@ -84,7 +84,6 @@ export const LoginForm: React.FC = () => {
                 }}
               />
             </div>
-
             <div className="flex items-center gap-2">
               <Checkbox
                 id="remember"
@@ -100,16 +99,15 @@ export const LoginForm: React.FC = () => {
                 Forgot your password?
               </Link>
             </div>
-
             <Button
               type="submit"
               className="w-full"
               isLoading={loading}
+              disabled={loadingSocial}
               onClick={async () => loginUser()}
             >
               Login
             </Button>
-
             <div
               className={cn(
                 'w-full gap-2 flex items-center',
@@ -120,11 +118,10 @@ export const LoginForm: React.FC = () => {
                 variant="outline"
                 className={cn('w-full gap-2')}
                 disabled={loading}
+                isLoading={loadingSocial}
                 onClick={async () => {
                   let callbackUrl: undefined | string;
                   if (redirect) {
-                    // const r = new URLSearchParams(redirect);
-                    // const [[_, redirectPath]] = r.entries();
                     callbackUrl = `${import.meta.env.VITE_PUBLIC_WEB_URL}${redirect}`;
                   }
 
@@ -136,8 +133,8 @@ export const LoginForm: React.FC = () => {
                         `${import.meta.env.VITE_PUBLIC_WEB_URL}/dashboard`,
                     },
                     {
-                      onRequest: (_) => setLoading(true),
-                      onResponse: (_) => setLoading(false),
+                      onRequest: (_) => setLoadingSocial(true),
+                      onResponse: (_) => setLoadingSocial(false),
                     },
                   );
                 }}
@@ -145,6 +142,15 @@ export const LoginForm: React.FC = () => {
                 <GoogleSVG />
                 Sign in with Google
               </Button>
+              <span className="text-xs text-gray-500 mt-2">
+                Don't have an account yet?{' '}
+                <Link
+                  to="/register"
+                  className="text-primary/70 underline hover:text-primary"
+                >
+                  Register here
+                </Link>
+              </span>
             </div>
           </div>
         </CardContent>

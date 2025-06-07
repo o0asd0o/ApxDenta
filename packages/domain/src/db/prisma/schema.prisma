@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URI")
+  url      = env("SERVER_POSTGRES_URL")
 }
 
 enum PeripheralCategory {
@@ -322,7 +322,7 @@ model Staff {
 
   assignedTreatments Treatment[]
   workingSchedules   WorkSchedule[]
-  daysOff            DayOff[]       @relation("staffDayOff")
+  daysOff            DayOff[]       @relation("StaffDayOff")
 
   specialist          SpecialistsRecord? @relation(fields: [specialistsRecordId], references: [id])
   specialistsRecordId String?
@@ -355,7 +355,9 @@ model DayOff {
   to     DateTime?
   repeat Boolean?
 
-  staffs Staff[] @relation("staffDayOff")
+  isDefault Boolean?
+
+  staffs Staff[] @relation("StaffDayOff")
 }
 
 model WorkSchedule {

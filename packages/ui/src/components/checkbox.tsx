@@ -27,9 +27,9 @@ const Checkbox = React.forwardRef<
         'data-[disabled]:bg-gray-100 data-[disabled]:text-gray-400 data-[disabled]:ring-gray-300',
         'data-[disabled]:dark:bg-gray-800 data-[disabled]:dark:text-gray-500 data-[disabled]:dark:ring-gray-700',
         // checked and enabled
-        'enabled:data-[state=checked]:bg-blue-500 enabled:data-[state=checked]:ring-0 enabled:data-[state=checked]:ring-transparent',
+        'enabled:data-[state=checked]:bg-primary-500 enabled:data-[state=checked]:ring-0 enabled:data-[state=checked]:ring-transparent',
         // indeterminate
-        'enabled:data-[state=indeterminate]:bg-blue-500 enabled:data-[state=indeterminate]:ring-0 enabled:data-[state=indeterminate]:ring-transparent',
+        'enabled:data-[state=indeterminate]:bg-primary-500 enabled:data-[state=indeterminate]:ring-0 enabled:data-[state=indeterminate]:ring-transparent',
         // focus
         focusRing,
         className,

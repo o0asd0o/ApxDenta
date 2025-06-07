@@ -9,7 +9,7 @@ import {
   Input,
   Label,
 } from '@repo/ui/components';
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { Loader2, X } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
@@ -117,13 +117,22 @@ export default function RegistrationForm() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="image">Profile Image (optional)</Label>
-              <div className="flex items-end gap-4">
+              <div className="flex items-center gap-4 justify-center">
                 {imagePreview && (
-                  <div className="relative w-16 h-16 rounded-sm overflow-hidden">
-                    <img src={imagePreview} alt="Profile preview" />
-                  </div>
+                  <div
+                    className="size-12 rounded-lg bg-cover! border border-gray-300"
+                    style={{ background: `url('${imagePreview}')` }}
+                  />
+
+                  // <div className="relative size-12 rounded-sm overflow-hidden">
+                  //   <img
+                  //     className="inset-0"
+                  //     src={imagePreview}
+                  //     alt="Profile preview"
+                  //   />
+                  // </div>
                 )}
-                <div className="flex items-center gap-2 w-full">
+                <div className="flex items-center gap-2 w-full flex-1">
                   <Input
                     id="image"
                     type="file"
@@ -133,7 +142,7 @@ export default function RegistrationForm() {
                   />
                   {imagePreview && (
                     <X
-                      className="cursor-pointer"
+                      className="cursor-pointer text-gray-500"
                       onClick={() => {
                         setImage(null);
                         setImagePreview(null);
@@ -177,6 +186,17 @@ export default function RegistrationForm() {
                 'Create an account'
               )}
             </Button>
+            <div className="w-full flex justify-center-safe">
+              <span className="text-xs text-gray-500 leading-3">
+                Already have an account?{' '}
+                <Link
+                  to="/login"
+                  className="text-primary/70 underline hover:text-primary"
+                >
+                  Login here
+                </Link>
+              </span>
+            </div>
           </div>
         </CardContent>
       </Card>

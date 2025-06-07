@@ -2,6 +2,7 @@
 // import type { DatabaseInstance } from '@repo/db/client';
 import type { AuthInstance } from '@/auth/auth-server';
 import type { DatabaseInstance } from '@/db/client';
+import dayOff from './routes/_aux/day-off';
 import assets from './routes/assets';
 import staffs from './routes/staff';
 import { createTRPCContext as createTRPCContextInternal, router } from './trpc';
@@ -14,6 +15,9 @@ type ApiType = {
 const routes = {
   assets,
   staffs,
+
+  // auxilalries
+  dayOff,
 };
 
 export type ApiInstance = ReturnType<typeof createApi>;

@@ -39,7 +39,6 @@ const DAYS_OF_THE_WEEK = [
   'sunday',
 ] as const;
 export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
-  console.log({ errors: form.formState.errors });
   return (
     <div className="flex flex-col">
       {DAYS_OF_THE_WEEK.map((item) => {
@@ -49,7 +48,6 @@ export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
             control={form.control}
             name={item}
             render={({ field }) => {
-              console.log({ field });
               return (
                 <FormItem className="space-y-1 flex flex-col">
                   <FormControl>
