@@ -32,19 +32,12 @@ export const UserMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const handleSignOut = async () => {
-    console.log('LOGOUT');
     await signOut({
       fetchOptions: {
-        onResponse: () => {
+        onSuccess: () => {
           setTimeout(() => {
-            console.log('LOGOUT', { loc: location.pathname });
-            navigate({
-              to: '/',
-              search: {
-                redirect: location.pathname,
-              },
-            });
-          }, 200);
+            navigate({ to: '/', search: { redirect: location.href } });
+          }, 150);
         },
       },
     });

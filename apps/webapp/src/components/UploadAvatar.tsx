@@ -16,7 +16,7 @@ export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
       <>
         {avatar && (
           <div
-            className=" size-14 rounded-full bg-cover! border border-gray-300"
+            className="size-14 rounded-full bg-cover! border border-gray-300"
             style={{ background: `url('${avatar}')` }}
           />
         )}
