@@ -17,7 +17,7 @@ import {
 import { focusInput } from '@repo/ui/lib/utils';
 
 type Props<T extends string> = {
-  items: { value: T; label: React.JSX.Element | string }[];
+  items: { value: T; label: React.JSX.Element | string; labelRaw?: string }[];
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
@@ -30,7 +30,7 @@ export function Combobox<T extends string>(props: Props<T>) {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} modal={true} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"

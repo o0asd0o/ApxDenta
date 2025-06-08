@@ -1,4 +1,4 @@
-import { Combobox } from '@/components/Combobox';
+import SpecialistInput from '@/components/SpecialistInput';
 import { UploadAvatar } from '@/components/UploadAvatar';
 import {
   FormControl,
@@ -17,7 +17,7 @@ import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
-export const staffInfoSchea = z.object({
+export const staffInfoSchema = z.object({
   avatar: z.instanceof(File, { message: 'Please attach a valid image' }),
   type: z.enum(['FULL_TIME', 'PART_TIME'], {
     required_error: 'Employment type is required',
@@ -29,31 +29,8 @@ export const staffInfoSchea = z.object({
   address: z.string().optional(),
 });
 
-export const frameworks = [
-  {
-    value: 'next.js',
-    label: 'Next.js',
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit',
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
-  },
-  {
-    value: 'remix',
-    label: 'Remix',
-  },
-  {
-    value: 'astro',
-    label: 'Astro',
-  },
-];
-
 type Props = {
-  form: UseFormReturn<z.infer<typeof staffInfoSchea>>;
+  form: UseFormReturn<z.infer<typeof staffInfoSchema>>;
 };
 
 export const StaffInfoForm: React.FC<Props> = ({ form }) => {
@@ -127,10 +104,9 @@ export const StaffInfoForm: React.FC<Props> = ({ form }) => {
           <FormItem className="space-y-1 flex flex-col">
             <FormLabel>Specialist</FormLabel>
             <FormControl>
-              <Combobox
+              <SpecialistInput
                 key={field.name}
                 onChange={field.onChange}
-                items={frameworks}
                 value={field.value}
                 placeholder="Select specialty..."
               />

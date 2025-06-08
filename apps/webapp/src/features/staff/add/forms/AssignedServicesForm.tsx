@@ -1,14 +1,13 @@
-import {
-  CollapsibeSelection,
-  TEMP_ITEMS,
-} from '@/components/CollapsibeSelection';
+import { CollapsibeSelection } from '@/components/CollapsibeSelection';
+import { useTRPC } from '@/lib/trpc';
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
 } from '@repo/ui/components';
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -28,6 +27,19 @@ type Props = {
 };
 
 export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
+  const trpc = useTRPC();
+  const { data: allTreatments } = useQuery(
+    trpc.treatments.getAllTreatments.queryOptions(),
+  );
+
+  const { medical, cosmetics } = useMemo(() => {
+    const list = allTreatments?.data || [];
+    return {
+      medical: list.filter((item) => item.category === 'MEDICAL_SERVICE'),
+      cosmetics: list.filter((item) => item.category === 'COSMETIC_SERVICE'),
+    };
+  }, [allTreatments]);
+
   return (
     <div className="flex flex-col gap-4">
       <FormField
@@ -39,7 +51,10 @@ export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
               <CollapsibeSelection
                 name={field.name}
                 label="Costmetic Service"
-                items={TEMP_ITEMS}
+                items={cosmetics.map((item) => ({
+                  name: item.id,
+                  description: item.name,
+                }))}
                 onSelect={(name, selected) => {
                   const currentSelections = (field.value || []).slice(0);
                   const newSelections = selected
@@ -64,7 +79,10 @@ export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
               <CollapsibeSelection
                 name={field.name}
                 label="Treatment Service"
-                items={TEMP_ITEMS}
+                items={medical.map((item) => ({
+                  name: item.id,
+                  description: item.name,
+                }))}
                 onSelect={(name, selected) => {
                   const currentSelections = (field.value || []).slice(0);
                   const newSelections = selected

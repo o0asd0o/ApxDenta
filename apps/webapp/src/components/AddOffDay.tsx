@@ -1,7 +1,14 @@
 import { useTRPC } from '@/lib/trpc';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
   DatePicker,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Input,
   Label,
   Popover,
@@ -10,112 +17,190 @@ import {
   Switch,
 } from '@repo/ui/components';
 import { useMutation } from '@tanstack/react-query';
-import { X } from 'lucide-react';
+import dayjs from 'dayjs';
+import { Plus, X } from 'lucide-react';
+import React from 'react';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
-export function PopoverDemo() {
-  const [date1, setDate1] = useState<Date>();
-  const [date2, setDate2] = useState<Date>();
-  const [repeated, setRepeated] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>();
+const dayOffSchema = z.object({
+  name: z.string({ required_error: 'Day off name is required' }),
+  to: z.date({ required_error: '"to" date is required' }),
+  from: z.date({ required_error: '"from" date is required' }),
+  repeat: z.boolean().optional().default(false),
+});
 
+export type DayOffType = z.infer<typeof dayOffSchema> & { id: string };
+
+type Props = {
+  onAdd: (added: DayOffType) => void;
+};
+
+const AddOffDay: React.FC<Props> = ({ onAdd }) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const trpc = useTRPC();
 
   const { mutate, isPending } = useMutation(
     trpc.dayOff.createDayOff.mutationOptions({
-      onSuccess: () => {
+      onSuccess: ({ id }, params) => {
+        onAdd({ ...params, id });
         toast.success('Successfully added');
-        setOpen(false);
       },
+      onSettled: () => setOpen(false),
     }),
   );
+
+  const form = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(dayOffSchema),
+  });
+
+  const fromDate = form.watch('from');
 
   return (
     <Popover open={open}>
       <PopoverTrigger asChild>
-        <Button variant="outline" onClick={() => setOpen(true)}>
-          Add Day Off
+        <Button
+          variant="secondary"
+          className="w-[130px] flex gap-1"
+          onClick={() => setOpen(true)}
+        >
+          <Plus className="size-4" /> Add day off
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-90 p-0">
-        <div className="grid">
-          <div className="border-b border-gray-200 p-4 relative">
-            <h4 className="leading-none font-medium text-sm">Add day off</h4>
-            <Button
-              variant="ghost"
-              className="size-5.5  rounded-sm  p-0 absolute top-3 right-3 "
-              onClick={() => setOpen(false)}
-            >
-              <X className="text-gray-500" />
-            </Button>
-          </div>
-          <div className="flex flex-col px-4 pt-3 gap-4 border-b border-border">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="description" className="text-xs">
-                Day Off Description
-              </Label>
-              <Input
-                placeholder="e.g. New year's eve"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                id="description"
-                className="col-span-2 h-9"
-              />
+        <Form {...form}>
+          <form
+            className="grid"
+            onSubmit={(event) => {
+              event.stopPropagation();
+              return form.handleSubmit((values) => mutate(values))(event);
+            }}
+          >
+            <div className="border-b border-gray-200 p-4 relative">
+              <h4 className="leading-none font-bold text-sm">Add day off</h4>
+              <Button
+                type="button"
+                variant="ghost"
+                className="size-5.5  rounded-sm  p-0 absolute top-3 right-3 "
+                onClick={() => setOpen(false)}
+              >
+                <X className="text-gray-500" />
+              </Button>
             </div>
-            <div className="flex flex-col gap-2 pb-4 border-b border-border">
-              <Label htmlFor="date" className="text-xs">
-                Date
-              </Label>
-              <div className="flex justify-between items-center">
-                <DatePicker
-                  value={date1}
-                  onChange={setDate1}
-                  className="w-36"
-                />
-                <span className="text-xs text-gray-500">to</span>
-                <DatePicker
-                  value={date2}
-                  onChange={setDate2}
-                  className="w-36"
+            <div className="flex flex-col px-4 pt-3 gap-4 border-b border-border">
+              <div className="flex flex-col gap-2">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="space-y-1 flex flex-col">
+                      <FormLabel>Day off name</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="e.g. New year's eve"
+                          className="col-span-2 h-9"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
+              <div className="flex flex-col gap-2 pb-4 border-b border-border">
+                <Label htmlFor="date" className="text-xs">
+                  Date
+                </Label>
+                <div className="flex justify-between items-center">
+                  <FormField
+                    control={form.control}
+                    name="from"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <DatePicker
+                            enableYearNavigation
+                            {...field}
+                            className="w-36"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <span className="text-xs text-gray-500">to</span>
+                  <FormField
+                    control={form.control}
+                    name="to"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <DatePicker
+                            enableYearNavigation
+                            {...field}
+                            disabledDays={(d) =>
+                              fromDate ? dayjs(d).isBefore(fromDate) : false
+                            }
+                            disabled={!fromDate}
+                            className="w-36"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-3 pb-4">
+                <FormField
+                  control={form.control}
+                  name="repeat"
+                  render={({ field }) => (
+                    <FormItem className="space-y-0 flex">
+                      <FormControl>
+                        <Switch
+                          ref={field.ref}
+                          name={field.name}
+                          checked={field.value}
+                          onCheckedChange={(checked) => field.onChange(checked)}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <span className="text-xs whitespace-nowrap font-medium">
+                  Repeat this day off yearly
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-3 pb-4">
-              <Switch checked={repeated} onCheckedChange={setRepeated} />
-              <span className="text-xs whitespace-nowrap font-medium">
-                Repeat this day off yearly
-              </span>
+            <div className="py-3 px-4 flex gap-2 justify-end">
+              <Button
+                type="button"
+                variant="secondary"
+                className="h-8 w-[100px]"
+                disabled={isPending}
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="h-8 w-[100px]"
+                isLoading={isPending}
+              >
+                Save
+              </Button>
             </div>
-          </div>
-          <div className="py-3 px-4 flex gap-2 justify-end">
-            <Button
-              variant="secondary"
-              className="h-8 w-[100px]"
-              disabled={isPending}
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              className="h-8 w-[100px]"
-              isLoading={isPending}
-              onClick={() =>
-                mutate({
-                  from: date1 as Date,
-                  name: description as string,
-                  to: date2 as Date,
-                  repeat: repeated,
-                })
-              }
-            >
-              Save
-            </Button>
-          </div>
-        </div>
+          </form>
+        </Form>
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default AddOffDay;

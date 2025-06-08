@@ -320,7 +320,7 @@ model Staff {
   lat     Float?
   long    Float?
 
-  assignedTreatments Treatment[]
+  assignedTreatments Treatment[]    @relation("StaffAssignedTreatment")
   workingSchedules   WorkSchedule[]
   daysOff            DayOff[]       @relation("StaffDayOff")
 
@@ -391,6 +391,7 @@ model SpecialistsRecord {
   updatedAt DateTime @default(now())
 
   title       String
+  code        String
   description String?
 
   staffs Staff[]
@@ -417,9 +418,8 @@ model Treatment {
 
   components TreatmentComponent[]
 
-  staff        Staff?        @relation(fields: [staffId], references: [id])
-  staffId      String?
-  reservations Reservation[]
+  staffsAssigned Staff[]       @relation("StaffAssignedTreatment")
+  reservations   Reservation[]
 
   medicalServices  MedicalService[]
   cosmeticServices CosmeticService[]
