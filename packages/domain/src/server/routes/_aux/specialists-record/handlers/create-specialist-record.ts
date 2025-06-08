@@ -2,20 +2,16 @@ import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
 
 const inputSchema = z.object({
-  name: z.string(),
-  from: z.date(),
-  to: z.date(),
-
-  repeat: z.boolean(),
-
-  isDefault: z.boolean().optional(),
+  title: z.string(),
+  code: z.string(),
+  descrpition: z.string().optional(),
 });
 
 type Params = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: Params) => {
   const created = await ctx.db
-    .insertInto('DayOff')
+    .insertInto('SpecialistsRecord')
     .values(input)
     .returning('id')
     .executeTakeFirstOrThrow();

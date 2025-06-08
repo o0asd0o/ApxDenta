@@ -24,12 +24,12 @@ export const workingHoursSchema = z.object({
 });
 
 export type WorkingHoursType = z.infer<typeof workingHoursSchema>;
-
+export type WorkingHoursDays = keyof WorkingHoursType;
 type Props = {
   form: UseFormReturn<z.infer<typeof workingHoursSchema>>;
 };
 
-const DAYS_OF_THE_WEEK = [
+const DAYS_OF_THE_WEEK: WorkingHoursDays[] = [
   'monday',
   'tuesday',
   'wednesday',
@@ -37,7 +37,7 @@ const DAYS_OF_THE_WEEK = [
   'friday',
   'saturday',
   'sunday',
-] as const;
+];
 export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
   return (
     <div className="flex flex-col">
@@ -52,8 +52,9 @@ export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
                 <FormItem className="space-y-1 flex flex-col">
                   <FormControl>
                     <DaySchedule
+                      form={form}
                       label={<span className="capitalize">{item}</span>}
-                      name="monday"
+                      name={field.name}
                       schedule={{
                         from: field.value?.startTime,
                         to: field.value?.endTime,

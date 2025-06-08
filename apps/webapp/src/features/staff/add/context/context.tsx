@@ -4,20 +4,14 @@ import type React from 'react';
 import { createContext, useContextSelector } from 'use-context-selector';
 import { assignedServicesSchema } from '../forms/AssignedServicesForm';
 import { daysOffSchema } from '../forms/DaysOffForm';
-import { staffInfoSchea } from '../forms/StaffInfoForm';
+import { staffInfoSchema } from '../forms/StaffInfoForm';
 import { workingHoursSchema } from '../forms/WorkingHoursForm';
 
 const { useStepper, steps, utils } = defineStepper(
   {
-    id: 'daysOff',
-    label: 'Days Off',
-    schema: daysOffSchema,
-    icon: <ClockAlert />,
-  },
-  {
     id: 'staffInfo',
     label: 'Staff Info',
-    schema: staffInfoSchea,
+    schema: staffInfoSchema,
     icon: <UserPen />,
   },
   {
@@ -31,6 +25,12 @@ const { useStepper, steps, utils } = defineStepper(
     label: 'Working Hours',
     schema: workingHoursSchema,
     icon: <RefreshCcwDot />,
+  },
+  {
+    id: 'daysOff',
+    label: 'Days Off',
+    schema: daysOffSchema,
+    icon: <ClockAlert />,
   },
 );
 

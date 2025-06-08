@@ -3,8 +3,10 @@
 import type { AuthInstance } from '@/auth/auth-server';
 import type { DatabaseInstance } from '@/db/client';
 import dayOff from './routes/_aux/day-off';
+import specialistRecord from './routes/_aux/specialists-record';
 import assets from './routes/assets';
 import staffs from './routes/staff';
+import treatments from './routes/treatments';
 import { createTRPCContext as createTRPCContextInternal, router } from './trpc';
 
 type ApiType = {
@@ -15,9 +17,11 @@ type ApiType = {
 const routes = {
   assets,
   staffs,
+  treatments,
 
   // auxilalries
   dayOff,
+  specialistRecord,
 };
 
 export type ApiInstance = ReturnType<typeof createApi>;
