@@ -35,14 +35,18 @@ export type GetAllStaffsProps = HandlerType<z.infer<typeof inputSchema>>;
 // 4. Sorting by name, type, status, etc.
 
 const handler = async ({ input, ctx }: GetAllStaffsProps) => {
-  const result = await staffDbActions.getAllStaff(ctx.db, input);
+  const [result, count] = await Promise.all([
+    staffDbActions.getAllStaff(ctx.db, input),
+    staffDbActions.getAllStaffCount(ctx.db),
+  ] as const);
+
   return {
     status: 'SUCCESS' as const,
     data: result.items,
     endCursor: result.endCursor,
     hasPrevPage: result.hasPrevPage,
     hasNextPage: result.hasNextPage,
-    count: result.count,
+    count,
   };
 };
 
