@@ -1,5 +1,6 @@
 import SpecialistInput from '@/components/SpecialistInput';
 import { UploadAvatar } from '@/components/UploadAvatar';
+import type { StaffInfoFormType } from '@repo/schemas';
 import {
   FormControl,
   FormField,
@@ -15,22 +16,9 @@ import {
 import { Mail, Phone } from 'lucide-react';
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
-
-export const staffInfoSchema = z.object({
-  avatar: z.instanceof(File, { message: 'Please attach a valid image' }),
-  type: z.enum(['FULL_TIME', 'PART_TIME'], {
-    required_error: 'Employment type is required',
-  }),
-  name: z.string({ required_error: 'Name is required' }),
-  specialistId: z.string({ required_error: 'Specialist field is required' }),
-  phoneNumber: z.string({ required_error: 'Phone Number is required' }),
-  email: z.string({ required_error: 'Email is required' }),
-  address: z.string().optional(),
-});
 
 type Props = {
-  form: UseFormReturn<z.infer<typeof staffInfoSchema>>;
+  form: UseFormReturn<StaffInfoFormType>;
 };
 
 export const StaffInfoForm: React.FC<Props> = ({ form }) => {
@@ -38,12 +26,12 @@ export const StaffInfoForm: React.FC<Props> = ({ form }) => {
     <div className="flex flex-col gap-3">
       <FormField
         control={form.control}
-        name="avatar"
+        name="file"
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <UploadAvatar
-                name="avatar"
+                name="file"
                 value={field.value}
                 onChange={field.onChange}
               />
@@ -58,7 +46,7 @@ export const StaffInfoForm: React.FC<Props> = ({ form }) => {
         name="type"
         render={({ field }) => (
           <FormItem className="space-y-1 flex flex-col">
-            <FormLabel>Type</FormLabel>
+            <FormLabel>Employment type</FormLabel>
             <FormControl>
               <RadioCardGroup
                 className="grid-cols-2 text-sm"
@@ -83,20 +71,34 @@ export const StaffInfoForm: React.FC<Props> = ({ form }) => {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="name"
-        render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
-            <FormLabel>Name</FormLabel>
-            <FormControl>
-              <Input placeholder="Enter your name" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      {/** YOU STOPPED HERE. You're about to implement staff creation form */}
+      <div className="flex gap-2">
+        <FormField
+          control={form.control}
+          name="firstName"
+          render={({ field }) => (
+            <FormItem className="space-y-1 flex flex-col w-full">
+              <FormLabel>First name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter first name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="lastName"
+          render={({ field }) => (
+            <FormItem className="space-y-1 flex flex-col w-full">
+              <FormLabel>Last name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter last name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
       <FormField
         control={form.control}
         name="specialistId"

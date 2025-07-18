@@ -4,6 +4,7 @@ export * from './input';
 export * from './label';
 export * from './checkbox';
 export * from './dropdown-menu';
+export * as V2 from './dropdown-menu-v2';
 export * from './separator';
 export * from './sheet';
 export * from './sidebar';
@@ -27,3 +28,7 @@ export * from './select';
 export * from './calendar';
 export * from './date-picker';
 export * from './divider';
+export * from './loader';
+export * from './sonner';
+export * from './pagination';
+export * from "./scroll-area"

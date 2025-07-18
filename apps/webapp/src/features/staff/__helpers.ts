@@ -1,34 +1,25 @@
-import type { StaffType } from './__types';
+import type { StaffStatus, WorkingDay } from '@repo/domain/db';
+import type { StaffInfoFormType } from '@repo/schemas';
 
-export const generateDummyStaffData = (count: number): StaffType[] => {
-  const data: StaffType[] = [];
-
-  for (let i = 0; i < count; i++) {
-    data.push({
-      id: `${i}`,
-      account: {
-        user: {
-          name: `Staff ${i}`,
-          email: `staff${i}@example.com`, // staff$i@example.com',
-        },
-      },
-      type: i % 2 === 0 ? 'DOCTOR' : 'STAFF',
-      position: 'DOCTOR',
-      employmentType: i % 2 === 0 ? 'FULL_TIME' : 'PART_TIME',
-      lastName: 'Doe',
-      firstName: 'John',
-      contactNumber: '123-456-7890',
-      address: '123 Main St',
-      specialistsRecordId: null,
-      accountId: '2',
-      lat: null,
-      long: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      workingDays: i % 2 === 0 ? ['M', 'T', 'TH', 'ST'] : ['S', 'W', 'F', 'ST'],
-      assignedTreatment:
-        i % 2 === 0 ? ['Detal Service'] : ['Detal Service', 'Oral Hygiene'],
-    });
-  }
-  return data;
+export const extractSpecialistIdFromValue = (staffInfo?: StaffInfoFormType) => {
+  return staffInfo?.specialistId.split('--')[0] as string;
 };
+
+export const EMPLOYEE_STATUS: { value: StaffStatus; label: string }[] = [
+  { value: 'ACTIVE', label: 'Active' },
+  { value: 'INACTIVE', label: 'Inactive' },
+  { value: 'EXPIRED', label: 'Expired' },
+  { value: 'TERMINATED', label: 'Terminated' },
+  { value: 'RESIGNED', label: 'Resigned' },
+  { value: 'SUSPENDED', label: 'Suspended' },
+];
+
+export const EMPLOYEE_WORKDAYS: { label: string; value: WorkingDay }[] = [
+  { label: 'Monday', value: 'MONDAY' },
+  { label: 'Tuesday', value: 'TUESDAY' },
+  { label: 'Wednesday', value: 'WEDNESDAY' },
+  { label: 'Thursday', value: 'THURSDAY' },
+  { label: 'Friday', value: 'FRIDAY' },
+  { label: 'Saturday', value: 'SATURDAY' },
+  { label: 'Sunday', value: 'SUNDAY' },
+];

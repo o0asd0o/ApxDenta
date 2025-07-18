@@ -1,11 +1,15 @@
+import type { DayOffType } from '@/components/AddOffDay';
+import {
+  assignedServicesSchema,
+  dayOffsSchema,
+  staffInfoSchema,
+  workingHoursSchema,
+} from '@repo/schemas';
 import { defineStepper } from '@repo/ui/components';
 import { ClockAlert, RefreshCcwDot, Stethoscope, UserPen } from 'lucide-react';
 import type React from 'react';
 import { createContext, useContextSelector } from 'use-context-selector';
-import { assignedServicesSchema } from '../forms/AssignedServicesForm';
-import { daysOffSchema } from '../forms/DaysOffForm';
-import { staffInfoSchema } from '../forms/StaffInfoForm';
-import { workingHoursSchema } from '../forms/WorkingHoursForm';
+import type { AdditionalDayOffType, AllFormsType } from '../../__types';
 
 const { useStepper, steps, utils } = defineStepper(
   {
@@ -27,9 +31,9 @@ const { useStepper, steps, utils } = defineStepper(
     icon: <RefreshCcwDot />,
   },
   {
-    id: 'daysOff',
+    id: 'dayOffs',
     label: 'Days Off',
-    schema: daysOffSchema,
+    schema: dayOffsSchema,
     icon: <ClockAlert />,
   },
 );
@@ -42,14 +46,11 @@ export const CreateStaffContext = createContext<{
   stepper: ReturnType<typeof useStepper>;
   steps: typeof steps;
   utils: typeof utils;
+  additionDayOff: AdditionalDayOffType;
+  setAdditionDayOff: React.Dispatch<React.SetStateAction<AdditionalDayOffType>>;
+  formValues?: AllFormsType;
+  setFormValues: React.Dispatch<React.SetStateAction<AllFormsType>>;
 } | null>(null);
-
-/**
- * 
- * @returns const selected = useContextSelector(NavigationTabsContext, (state) => {
-     return state?.tabs.find((item) => item.value === state?.selectedTab);
-   });
- */
 
 export const useCurrentTab = () => {
   return useContextSelector(
@@ -75,4 +76,24 @@ export const useStepperUtls = () => {
 
 export const useStepperSteps = () => {
   return useContextSelector(CreateStaffContext, (state) => state?.steps);
+};
+
+export const useAdditionalDayOff = () => {
+  return useContextSelector(
+    CreateStaffContext,
+    (state) =>
+      [
+        state?.additionDayOff as DayOffType[],
+        state?.setAdditionDayOff as React.Dispatch<
+          React.SetStateAction<DayOffType[]>
+        >,
+      ] as const,
+  );
+};
+
+export const useFormValues = () => {
+  return useContextSelector(
+    CreateStaffContext,
+    (state) => [state?.formValues, state?.setFormValues] as const,
+  );
 };

@@ -14,6 +14,15 @@ export const focusInput = [
   'focus:border-primary-500 focus:dark:border-primary-700',
 ];
 
+export const focusWithinInput = [
+  // base
+  'focus-within:ring-2',
+  // ring color
+  'focus-within:ring-primary-200 focus-within:dark:ring-primary-700/30',
+  // border color
+  'focus-within:border-primary-500 focus-within:dark:border-primary-700',
+];
+
 // Tremor Raw focusRing [v0.0.1]
 
 export const focusRing = [

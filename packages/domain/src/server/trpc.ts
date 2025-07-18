@@ -1,5 +1,6 @@
 import { TRPCError, initTRPC } from '@trpc/server';
 import SuperJSON from 'superjson';
+import { ZodError, z } from 'zod/v4';
 import type { TRPCContext, TrpcContextSession } from './types';
 
 export const createTRPCContext = async ({
@@ -14,6 +15,19 @@ export const createTRPCContext = async ({
 
 export const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: SuperJSON,
+  errorFormatter(opts) {
+    return {
+      ...opts.shape,
+      data: {
+        zodError:
+          opts.error.code === 'BAD_REQUEST' &&
+          opts.error.cause instanceof ZodError
+            ? z.treeifyError(opts.error.cause)
+            : null,
+        ...opts.shape.data,
+      },
+    };
+  },
 });
 
 export const router = t.router;

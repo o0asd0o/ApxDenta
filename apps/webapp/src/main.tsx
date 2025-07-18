@@ -7,15 +7,14 @@ import ReactDOM from 'react-dom/client';
 import { routeTree } from './routeTree.gen.ts';
 
 import { Loader2 } from 'lucide-react';
-import { scan } from 'react-scan';
 import { useSession } from './lib/auth-client';
 import { RootProvider, getContext } from './providers/Root';
 import reportWebVitals from './reportWebVitals.ts';
 
-scan({
-  _debug: 'verbose',
-  enabled: true,
-});
+// scan({
+//   _debug: 'verbose',
+//   enabled: false,
+// });
 
 // Create a new router instance
 const router = createRouter({
@@ -24,6 +23,7 @@ const router = createRouter({
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
+  defaultPendingMinMs: 0,
   defaultPreloadStaleTime: 0,
 });
 
@@ -37,6 +37,7 @@ declare module '@tanstack/react-router' {
 const App: React.FC = () => {
   const { data: authData, isPending } = useSession();
 
+  console.log({ isPending });
   if (isPending) {
     return (
       <div className="flex items-center justify-center h-dvh">

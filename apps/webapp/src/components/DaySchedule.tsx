@@ -1,8 +1,6 @@
-import type {
-  WorkingHoursDays,
-  workingHoursSchema,
-} from '@/features/staff/add/forms/WorkingHoursForm';
+import type { WorkingHoursDays } from '@/features/staff/add/forms/WorkingHoursForm';
 import { getTimeIntervalItems } from '@/lib/dates';
+import type { workingHoursSchema } from '@repo/schemas';
 import {
   Label,
   Select,

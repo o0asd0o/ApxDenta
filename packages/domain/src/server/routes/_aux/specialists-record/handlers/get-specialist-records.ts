@@ -8,7 +8,7 @@ type Params = HandlerType<z.infer<typeof inputSchema>>;
 const handler = async ({ input, ctx }: Params) => {
   const result = await ctx.db
     .selectFrom('SpecialistsRecord')
-    .select(['title', 'code'])
+    .select(['id', 'title', 'code'])
     .execute();
 
   return { status: 'SUCCESS' as const, data: result };

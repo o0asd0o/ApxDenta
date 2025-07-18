@@ -1,4 +1,5 @@
 import { DaySchedule } from '@/components/DaySchedule';
+import type { WorkingHoursFormType } from '@repo/schemas';
 import {
   FormControl,
   FormField,
@@ -7,26 +8,11 @@ import {
 } from '@repo/ui/components';
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
 
-const interval = z
-  .object({ startTime: z.number(), endTime: z.number() })
-  .optional();
+export type WorkingHoursDays = keyof WorkingHoursFormType;
 
-export const workingHoursSchema = z.object({
-  monday: interval,
-  tuesday: interval,
-  wednesday: interval,
-  thursday: interval,
-  friday: interval,
-  saturday: interval,
-  sunday: interval,
-});
-
-export type WorkingHoursType = z.infer<typeof workingHoursSchema>;
-export type WorkingHoursDays = keyof WorkingHoursType;
 type Props = {
-  form: UseFormReturn<z.infer<typeof workingHoursSchema>>;
+  form: UseFormReturn<WorkingHoursFormType>;
 };
 
 const DAYS_OF_THE_WEEK: WorkingHoursDays[] = [
@@ -38,6 +24,7 @@ const DAYS_OF_THE_WEEK: WorkingHoursDays[] = [
   'saturday',
   'sunday',
 ];
+
 export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
   return (
     <div className="flex flex-col">

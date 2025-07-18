@@ -1,5 +1,7 @@
+import dayjs from 'dayjs';
 import { createDb } from './client';
 import { dentalTreatments } from './seeder-fixtures/dental-treatments';
+import { PH_HOLIDAYS } from './seeder-fixtures/ph-holidays';
 import { specialistRecords } from './seeder-fixtures/specialist-records';
 
 const db = createDb({ databaseUrl: process.env.SERVER_POSTGRES_URL as string });
@@ -47,11 +49,24 @@ const createTreatments = async () => {
     )
     .execute();
 };
+
+const createDefaultHolidays = async () => {
+  return Promise.all(PH_HOLIDAYS.map((i) => {
+    return db.insertInto('DayOff').values({
+      from: dayjs(i.from).toDate(),
+      name: i.name,
+      to: dayjs(i.to).toDate(),
+      isDefault: true,
+      repeat: true,
+    }).execute()
+  }))
+};
 const main = async () => {
   // create specialist record
   // await createSpecialistRecords();
   // create treatments
-  await createTreatments();
+  // await createTreatments();
+  await createDefaultHolidays();
 };
 
 main().then(async () => {

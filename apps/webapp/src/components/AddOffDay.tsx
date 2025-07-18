@@ -1,4 +1,3 @@
-import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
@@ -16,23 +15,21 @@ import {
   PopoverTrigger,
   Switch,
 } from '@repo/ui/components';
-import { useMutation } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Plus, X } from 'lucide-react';
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 const dayOffSchema = z.object({
   name: z.string({ required_error: 'Day off name is required' }),
   to: z.date({ required_error: '"to" date is required' }),
   from: z.date({ required_error: '"from" date is required' }),
-  repeat: z.boolean().optional().default(false),
+  repeat: z.boolean().optional(),
 });
 
-export type DayOffType = z.infer<typeof dayOffSchema> & { id: string };
+export type DayOffType = z.infer<typeof dayOffSchema>;
 
 type Props = {
   onAdd: (added: DayOffType) => void;
@@ -40,18 +37,6 @@ type Props = {
 
 const AddOffDay: React.FC<Props> = ({ onAdd }) => {
   const [open, setOpen] = useState<boolean>(false);
-
-  const trpc = useTRPC();
-
-  const { mutate, isPending } = useMutation(
-    trpc.dayOff.createDayOff.mutationOptions({
-      onSuccess: ({ id }, params) => {
-        onAdd({ ...params, id });
-        toast.success('Successfully added');
-      },
-      onSettled: () => setOpen(false),
-    }),
-  );
 
   const form = useForm({
     mode: 'onChange',
@@ -65,7 +50,7 @@ const AddOffDay: React.FC<Props> = ({ onAdd }) => {
       <PopoverTrigger asChild>
         <Button
           variant="secondary"
-          className="w-[130px] flex gap-1"
+          className="w-[130px] flex gap-1 mt-4"
           onClick={() => setOpen(true)}
         >
           <Plus className="size-4" /> Add day off
@@ -77,7 +62,10 @@ const AddOffDay: React.FC<Props> = ({ onAdd }) => {
             className="grid"
             onSubmit={(event) => {
               event.stopPropagation();
-              return form.handleSubmit((values) => mutate(values))(event);
+              return form.handleSubmit((values) => {
+                onAdd(values);
+                setOpen(false);
+              })(event);
             }}
           >
             <div className="border-b border-gray-200 p-4 relative">
@@ -102,8 +90,8 @@ const AddOffDay: React.FC<Props> = ({ onAdd }) => {
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="e.g. New year's eve"
-                          className="col-span-2 h-9"
+                          placeholder="Enter day off name"
+                          className="w-full"
                         />
                       </FormControl>
                       <FormMessage />
@@ -183,7 +171,7 @@ const AddOffDay: React.FC<Props> = ({ onAdd }) => {
                 type="button"
                 variant="secondary"
                 className="h-8 w-[100px]"
-                disabled={isPending}
+                // disabled={isPending}
                 onClick={() => setOpen(false)}
               >
                 Cancel
@@ -191,7 +179,7 @@ const AddOffDay: React.FC<Props> = ({ onAdd }) => {
               <Button
                 type="submit"
                 className="h-8 w-[100px]"
-                isLoading={isPending}
+                // isLoading={isPending}
               >
                 Save
               </Button>

@@ -4,13 +4,9 @@ import { Check } from 'lucide-react';
 import React, { type Key } from 'react';
 
 type Props<T> = {
-  form: {
-    trigger: () => Promise<boolean>;
-  };
+  form: { trigger: () => Promise<boolean> };
   stepper: {
-    current: {
-      id: T;
-    };
+    current: { id: T };
     goTo: (stepId: T) => void;
     all: {
       id: T;

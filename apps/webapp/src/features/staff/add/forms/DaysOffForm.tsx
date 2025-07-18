@@ -1,35 +1,135 @@
 import AddDayOff from '@/components/AddOffDay';
-import CheckCard from '@/components/CheckCard';
-import React, { useState } from 'react';
+import DayOffCheckCard from '@/components/DayOffCheckCard';
+import { useTRPC } from '@/lib/trpc';
+import { slugify } from '@/lib/utils';
+import type { DayOffsFormType } from '@repo/schemas';
+import {
+  Checkbox,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Label,
+  Loader,
+} from '@repo/ui/components';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
-
-export const daysOffSchema = z.object({
-  dayOffs: z
-    .object({
-      id: z.string(),
-      name: z.string(),
-      to: z.date(),
-      from: z.date(),
-      repeat: z.boolean().optional(),
-      isDefault: z.boolean().optional(),
-    })
-    .array()
-    .default([]),
-});
+import { useAdditionalDayOff } from '../context/context';
 
 type Props = {
-  form: UseFormReturn<z.infer<typeof daysOffSchema>>;
+  form: UseFormReturn<DayOffsFormType>;
 };
 export const DaysOffForm: React.FC<Props> = ({ form }) => {
-  const [checked, setChecked] = useState<boolean>(false);
+  const trpc = useTRPC();
 
-  // TODO: add feature to include default holidays (PH Holidays)
-  // handle form
+  const { data: defaultDayOffList, isLoading } = useQuery(
+    trpc.dayOff.getAllDayOffs.queryOptions({
+      defaultOnly: true,
+    }),
+  );
+
+  const [additionDayOff, setAdditinalDayOff] = useAdditionalDayOff();
+
+  const combiledList = React.useMemo(() => {
+    const mainList = defaultDayOffList?.data || [];
+    const additional = (additionDayOff || []).map((item) => ({
+      ...item,
+      id: slugify(item.name),
+    }));
+    return [...mainList, ...additional];
+  }, [defaultDayOffList, additionDayOff]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-2 h-30 items-center justify-center">
+        <Loader className="[&>svg]:size-[50px]" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-2">
-      <CheckCard checked={checked} onCheckedChange={setChecked} />
-      <AddDayOff onAdd={(added) => console.log({ added })} />
+      <FormField
+        control={form.control}
+        name="dayOffs"
+        render={({ field }) => {
+          const list = combiledList;
+
+          return (
+            <>
+              <FormItem className="px-3 py-2">
+                <FormControl>
+                  <Label
+                    htmlFor="select-all"
+                    className="cursor-pointer flex items-center gap-2 w-fit"
+                  >
+                    <Checkbox
+                      checked={
+                        list.length === (field?.value || []).length
+                          ? true
+                          : (field?.value?.length || 0) > 0
+                            ? 'indeterminate'
+                            : false
+                      }
+                      id="select-all"
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked ? list.map((i) => i.id) : []);
+                      }}
+                    />
+                    <span> Select all</span>
+                  </Label>
+                </FormControl>
+              </FormItem>
+              <FormItem className="space-y-1 flex flex-col">
+                <FormControl>
+                  <div className="flex flex-col gap-2">
+                    {list.map((item) => {
+                      const current = (field.value || []).find(
+                        (i) => i === item.id,
+                      );
+                      return (
+                        <DayOffCheckCard
+                          key={item.id}
+                          item={item}
+                          checked={!!current}
+                          onCheckedChange={(name, checked) => {
+                            const currentSelections = (field.value || []).slice(
+                              0,
+                            );
+
+                            const selectionsAdded = [
+                              ...currentSelections,
+                              name,
+                            ];
+                            const selectionsFiltered = currentSelections.filter(
+                              (i) => i !== name,
+                            );
+
+                            const newSelections = checked
+                              ? selectionsAdded
+                              : selectionsFiltered;
+
+                            field.onChange(newSelections);
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          );
+        }}
+      />
+      <AddDayOff
+        onAdd={(added) => {
+          setAdditinalDayOff((prev) => [...prev, added]);
+          const currentSelected = form.getValues('dayOffs') || [];
+          form.setValue('dayOffs', [...currentSelected, slugify(added.name)]);
+        }}
+      />
     </div>
   );
 };

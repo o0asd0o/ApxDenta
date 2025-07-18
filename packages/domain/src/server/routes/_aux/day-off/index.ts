@@ -1,5 +1,6 @@
 import { protectedProcedure, router } from '@/server/trpc';
 import * as createDayOff from './handlers/create-day-off';
+import * as getAllDayoffs from './handlers/get-all-dayoffs';
 import * as getDayOff from './handlers/get-day-off';
 import * as getStaffDayOffs from './handlers/get-staff-day-offs';
 
@@ -10,6 +11,9 @@ const dayOff = router({
   getStaffDayOffs: protectedProcedure
     .input(getStaffDayOffs.inputSchema)
     .query(getStaffDayOffs.handler),
+  getAllDayOffs: protectedProcedure
+    .input(getAllDayoffs.inputSchema)
+    .query(getAllDayoffs.handler),
   getDayOff: protectedProcedure
     .input(getDayOff.inputSchema)
     .query(getDayOff.handler),

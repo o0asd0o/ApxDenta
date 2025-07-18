@@ -3,6 +3,7 @@
 import type { AuthInstance } from '@/auth/auth-server';
 import type { DatabaseInstance } from '@/db/client';
 import dayOff from './routes/_aux/day-off';
+import files from './routes/_aux/files';
 import specialistRecord from './routes/_aux/specialists-record';
 import assets from './routes/assets';
 import staffs from './routes/staff';
@@ -20,6 +21,7 @@ const routes = {
   treatments,
 
   // auxilalries
+  files,
   dayOff,
   specialistRecord,
 };
