@@ -15,10 +15,14 @@ type Props = {
   title: string;
   actionText?: string;
   footer?: React.JSX.Element;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
   onSubmit?: FormEventHandler<HTMLFormElement>;
 };
 
 export const DialogDrawer: React.FC<Props> = ({
+  open,
+  setOpen,
   className,
   actionText,
   title,
@@ -27,7 +31,7 @@ export const DialogDrawer: React.FC<Props> = ({
   onSubmit,
 }) => {
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="primary" className={className}>
           {actionText || 'Open'}

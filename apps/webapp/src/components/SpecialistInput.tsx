@@ -24,9 +24,9 @@ const SpecialistInput: React.FC<Props> = (props) => {
             <span className="text-gray-400 text-xs">{item.code}</span>
           </div>
         ),
-        value: `${item.code}--${item.title}`,
+        value: `${item.id}--${item.title}`,
       }))}
-      placeholder="Select specialty..."
+      placeholder={props.placeholder || 'Select item'}
     />
   );
 };

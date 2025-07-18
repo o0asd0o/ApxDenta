@@ -1,5 +1,6 @@
 import { CollapsibeSelection } from '@/components/CollapsibeSelection';
 import { useTRPC } from '@/lib/trpc';
+import type { AssignedServicesFormType } from '@repo/schemas';
 import {
   FormControl,
   FormField,
@@ -9,21 +10,9 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
-
-export const assignedServicesSchema = z.object({
-  cosmeticServices: z
-    .array(z.string())
-    .min(1, 'Should be selecting at least 1 cosmetic service')
-    .default([]),
-  treatmentService: z
-    .array(z.string())
-    .min(1, 'Should be selecting at least 1 treatment service')
-    .default([]),
-});
 
 type Props = {
-  form: UseFormReturn<z.infer<typeof assignedServicesSchema>>;
+  form: UseFormReturn<AssignedServicesFormType>;
 };
 
 export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
@@ -57,9 +46,15 @@ export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
                 }))}
                 onSelect={(name, selected) => {
                   const currentSelections = (field.value || []).slice(0);
+
+                  const selectionsAdded = [...currentSelections, name];
+                  const selectionsFiltered = currentSelections.filter(
+                    (item) => item !== name,
+                  );
+
                   const newSelections = selected
-                    ? [...currentSelections, name]
-                    : currentSelections.filter((item) => item !== name);
+                    ? selectionsAdded
+                    : selectionsFiltered;
 
                   field.onChange(newSelections);
                 }}

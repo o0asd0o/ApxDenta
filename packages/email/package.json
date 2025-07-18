@@ -3,13 +3,13 @@
   "version": "0.0.18",
   "private": true,
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./dist/src/index.d.ts",
+      "default": "./src/index.ts"
     }
   },
   "scripts": {
+    "build": "tsc -b",
     "build:lib_local": "npx tsup",
     "build:lib_dev": "npx tsup",
     "build:lib_prod": "npx tsup",
@@ -18,18 +18,10 @@
     "lib_prod": "tsup --watch"
   },
   "dependencies": {
-    "@react-email/components": "0.0.14",
-    "@react-email/render": "^0.0.7",
-    "@types/react": "^18.2.21",
-    "fs-extra": "^11.1.1",
-    "module-alias": "^2.2.3",
-    "react": "^18.2.0",
-    "react-email": "1.10.1",
-    "tsup": "^8.4.0"
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.1",
-    "@types/module-alias": "^2.0.1",
     "@repo/tsconfig": "workspace:*"
   }
 }

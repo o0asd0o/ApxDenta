@@ -2,28 +2,6 @@ import { defineConfig } from 'tsup';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-/**
- * "./auth": {
-      "types": "./dist/src/auth/index.d.ts",
-      "default": "./src/auth/index.ts"
-    },
-    "./db": {
-      "types": "./dist/src/db/index.d.ts",
-      "default": "./src/db/index.ts"
-    },
-    "./lib": {
-      "types": "./dist/src/lib/index.d.ts",
-      "default": "./src/lib/index.ts"
-    },
-    "./server": {
-      "types": "./dist/src/server/index.d.ts",
-      "default": "./src/server/index.ts"
-    },
-    "./client": {
-      "types": "./dist/src/api-client.d.ts",
-      "default": "./src/api-client.ts"
-    }
- */
 export default defineConfig({
   clean: true,
   dts: true,

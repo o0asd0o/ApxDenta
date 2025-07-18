@@ -30,7 +30,7 @@ export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
               htmlFor={name}
               className="text-primary text-sm cursor-pointer"
             >
-              Upload Photo
+              {avatar ? 'Replace' : 'Upload photo'}
             </label>
             <input
               id={name}
@@ -45,14 +45,21 @@ export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
               type="file"
             />
           </div>
-          <div className="flex w-[1px] h-4 bg-gray-200 mt-1" />
-          <button
-            className="text-red-500 text-sm"
-            type="button"
-            onClick={() => setAvatar(undefined)}
-          >
-            Remove
-          </button>
+          {avatar && (
+            <>
+              <div className="flex w-[1px] h-4 bg-gray-200 mt-1" />
+              <button
+                className="text-red-500 text-sm"
+                type="button"
+                onClick={() => {
+                  setAvatar(undefined);
+                  onChange?.(null);
+                }}
+              >
+                Remove
+              </button>
+            </>
+          )}
         </div>
         <span className="text-xs text-gray-400 w-[260px] leading-[14px]">
           An image of the person, it's best if it has the same length and height

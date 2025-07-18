@@ -37,6 +37,7 @@ export function Combobox<T extends string>(props: Props<T>) {
           aria-expanded={open}
           className={cn(
             'w-full justify-between shadow-xs text-gray-900',
+            !value && 'text-gray-400',
             focusInput,
           )}
           ref={buttonRef}

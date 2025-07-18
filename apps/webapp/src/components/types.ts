@@ -13,3 +13,8 @@ export type MenuItem = Partial<MenuBase> & {
   title: string;
   subMenu?: (MenuItem & MenuBase)[];
 };
+
+export type PaginationState = {
+  current: number;
+  pageSize: number;
+};

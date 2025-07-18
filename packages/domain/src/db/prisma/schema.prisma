@@ -72,6 +72,15 @@ enum StockStatus {
   OUT_OF_STOCK
 }
 
+enum StaffStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  TERMINATED
+  RESIGNED
+  SUSPENDED
+}
+
 enum StaffType {
   DOCTOR
   STAFF
@@ -113,7 +122,7 @@ enum MedicalServiceStatus {
 enum WorkingDay {
   MONDAY
   TUESDAY
-  WEDNEDAY
+  WEDNESDAY
   THURSDAY
   FRIDAY
   SATURDAY
@@ -216,12 +225,12 @@ model account {
   accessToken           String?
   refreshToken          String?
   idToken               String?
-  accessTokenExpiresAt  DateTime? @db.Timestamp(6)
-  refreshTokenExpiresAt DateTime? @db.Timestamp(6)
+  accessTokenExpiresAt  DateTime? @db.Timestamp(0)
+  refreshTokenExpiresAt DateTime? @db.Timestamp(0)
   scope                 String?
   password              String?
-  createdAt             DateTime  @db.Timestamp(6)
-  updatedAt             DateTime  @db.Timestamp(6)
+  createdAt             DateTime  @db.Timestamp(0)
+  updatedAt             DateTime  @db.Timestamp(0)
 
   user   user   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userId String
@@ -233,10 +242,10 @@ model account {
 
 model session {
   id                   String   @id
-  expiresAt            DateTime @db.Timestamp(6)
+  expiresAt            DateTime @db.Timestamp(0)
   token                String   @unique
-  createdAt            DateTime @db.Timestamp(6)
-  updatedAt            DateTime @db.Timestamp(6)
+  createdAt            DateTime @db.Timestamp(0)
+  updatedAt            DateTime @db.Timestamp(0)
   ipAddress            String?
   userAgent            String?
   activeOrganizationId String?
@@ -250,8 +259,8 @@ model user {
   email         String   @unique
   emailVerified Boolean
   image         String?
-  createdAt     DateTime @db.Timestamp(6)
-  updatedAt     DateTime @db.Timestamp(6)
+  createdAt     DateTime @db.Timestamp(0)
+  updatedAt     DateTime @db.Timestamp(0)
 
   invitation invitation[]
   member     member[]
@@ -263,9 +272,9 @@ model verification {
   id         String    @id
   identifier String
   value      String
-  expiresAt  DateTime  @db.Timestamp(6)
-  createdAt  DateTime? @db.Timestamp(6)
-  updatedAt  DateTime? @db.Timestamp(6)
+  expiresAt  DateTime  @db.Timestamp(0)
+  createdAt  DateTime? @db.Timestamp(0)
+  updatedAt  DateTime? @db.Timestamp(0)
 }
 
 model invitation {
@@ -274,7 +283,7 @@ model invitation {
   email          String
   role           String?
   status         String
-  expiresAt      DateTime     @db.Timestamp(6)
+  expiresAt      DateTime     @db.Timestamp(0)
   inviterId      String
   user           user         @relation(fields: [inviterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   organization   organization @relation(fields: [organizationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -283,7 +292,7 @@ model invitation {
 model member {
   id        String   @id
   role      String
-  createdAt DateTime @db.Timestamp(6)
+  createdAt DateTime @db.Timestamp(0)
 
   organization   organization @relation(fields: [organizationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   organizationId String
@@ -297,7 +306,7 @@ model organization {
   name      String
   slug      String   @unique
   logo      String?
-  createdAt DateTime @db.Timestamp(6)
+  createdAt DateTime @db.Timestamp(0)
 
   metadata   String?
   invitation invitation[]
@@ -320,6 +329,8 @@ model Staff {
   lat     Float?
   long    Float?
 
+  status StaffStatus? @default(ACTIVE)
+
   assignedTreatments Treatment[]    @relation("StaffAssignedTreatment")
   workingSchedules   WorkSchedule[]
   daysOff            DayOff[]       @relation("StaffDayOff")
@@ -330,21 +341,12 @@ model Staff {
   account      account?      @relation(fields: [accountId], references: [id])
   accountId    String?
   reservations Reservation[]
-  billHistory  BillHistory[]
+
+  processedBillHistory BillHistory[]
 
   createdAssets        Asset[]
   createdAssetTransfer AssetTransfer[]
   createdPeripherals   Peripheral[]
-}
-
-model DefaultDayOff {
-  id        String   @id @default(dbgenerated("gen_random_uuid()"))
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  name   String
-  date   DateTime
-  repeat Boolean?
 }
 
 model DayOff {
@@ -368,8 +370,8 @@ model WorkSchedule {
   day            WorkingDay
   scheduleSlices WorkScheduleSlice[]
 
-  from DateTime @db.Time(6)
-  to   DateTime @db.Time(6)
+  from DateTime @db.Time(0)
+  to   DateTime @db.Time(0)
 
   staff   Staff?  @relation(fields: [staffId], references: [id])
   staffId String?
@@ -378,8 +380,8 @@ model WorkSchedule {
 model WorkScheduleSlice {
   id String @id @default(dbgenerated("gen_random_uuid()"))
 
-  from DateTime @db.Time(6)
-  to   DateTime @db.Time(6)
+  from DateTime @db.Time(0)
+  to   DateTime @db.Time(0)
 
   workSchedule   WorkSchedule? @relation(fields: [workScheduleId], references: [id])
   workScheduleId String?

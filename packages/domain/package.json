@@ -37,20 +37,26 @@
     }
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.842.0",
+    "@aws-sdk/s3-request-presigner": "^3.842.0",
     "@hono/trpc-server": "^0.3.4",
     "@hono/zod-openapi": "^0.18.3",
+    "@react-email/components": "0.0.14",
+    "@repo/email": "workspace:*",
+    "@repo/schemas": "workspace:*",
     "@trpc/server": "^11.0.4",
-    "better-auth": "^1.1.14",
+    "better-auth": "^1.2.12",
+    "dayjs": "^1.11.13",
     "hono": "^4.6.19",
-    "kysely": "^0.27.5",
+    "kysely": "^0.28.2",
     "pg": "^8.13.1",
     "prisma-kysely": "^1.8.0",
-    "resend": "^4.1.1",
+    "resend": "^4.6.0",
     "superjson": "^2.2.2",
     "trpc-playground": "^1.0.4",
     "ts-node": "^10.9.2",
     "url-join": "^5.0.0",
-    "zod": "^3.24.2"
+    "zod": "^3.25.51"
   },
   "devDependencies": {
     "tsup": "^8.4.0",

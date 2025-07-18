@@ -13,6 +13,7 @@ const SERVER_PATHS = {
   ALL: '*',
   BETTER_AUTH: '/api/auth/**',
   TRPC: '/trpc/*',
+  UPLOAD: '/upload',
 } as const;
 
 const app = new Hono<AppType>({ strict: false })

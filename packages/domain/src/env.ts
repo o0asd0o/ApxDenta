@@ -12,6 +12,11 @@ export const envSchema = v.object({
   SERVER_RESEND_EMAIL: v.pipe(v.string(), v.email()),
   SERVER_RESEND_API_KEY: v.pipe(v.string(), v.startsWith('re_')),
 
+  AWS_BUCKET_REGION: v.string(),
+  AWS_BUCKET_NAME: v.string(),
+  AWS_ACCESS_KEY: v.string(),
+  AWS_ACCESS_KEY_SECRET: v.string(),
+
   PUBLIC_WEB_URL: v.string(),
 });
 
