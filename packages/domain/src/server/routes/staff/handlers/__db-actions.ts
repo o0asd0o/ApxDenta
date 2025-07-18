@@ -105,6 +105,10 @@ export const getAllStaff = async (
   db: DatabaseInstance,
   input: GetAllStaffsProps['input'],
 ) => {
+  let queryCount = db
+    .selectFrom('Staff')
+    .select((eb) => eb.fn.countAll().as('count'));
+
   let query = db
     .selectFrom('Staff')
     .selectAll()
@@ -142,6 +146,14 @@ export const getAllStaff = async (
         eb(db.fn('lower', ['lastName']), 'like', `%${search}%`),
       ]);
     });
+
+    queryCount = queryCount.where((eb) => {
+      const search = input.search?.toLowerCase();
+      return eb.or([
+        eb(db.fn('lower', ['firstName']), 'like', `%${search}%`),
+        eb(db.fn('lower', ['lastName']), 'like', `%${search}%`),
+      ]);
+    });
   }
 
   if (input.orderBy) {
@@ -151,10 +163,23 @@ export const getAllStaff = async (
 
   if (input.specialistIn?.length) {
     query = query.where('specialistsRecordId', 'in', input.specialistIn);
+    queryCount = queryCount.where(
+      'specialistsRecordId',
+      'in',
+      input.specialistIn,
+    );
   }
 
   if (input.assignedServicesIn?.length) {
     query = query.where(({ selectFrom, exists }) => {
+      return exists(
+        selectFrom('_StaffAssignedTreatment')
+          .select('id')
+          .whereRef('_StaffAssignedTreatment.A', '=', 'Staff.id')
+          .where('B', 'in', input.assignedServicesIn || []),
+      );
+    });
+    queryCount = queryCount.where(({ selectFrom, exists }) => {
       return exists(
         selectFrom('_StaffAssignedTreatment')
           .select('id')
@@ -173,8 +198,19 @@ export const getAllStaff = async (
           .where('day', 'in', input.schedulesIn || []),
       );
     });
+    queryCount = queryCount.where(({ selectFrom, exists }) => {
+      return exists(
+        selectFrom('WorkSchedule')
+          .select('id')
+          .whereRef('WorkSchedule.staffId', '=', 'Staff.id')
+          .where('day', 'in', input.schedulesIn || []),
+      );
+    });
   }
 
+  const count = await queryCount.executeTakeFirstOrThrow().then((r) => r.count);
+
+  console.log('COUNT', { count });
   if (input.limit) {
     return executeWithCursorPagination(query, {
       limit: input.limit,

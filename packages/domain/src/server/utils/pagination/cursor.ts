@@ -113,7 +113,6 @@ export type CursorPaginationResult<
   hasNextPage?: boolean;
   hasPrevPage?: boolean;
   items: CursorPaginationResultRow<TRow, TCursorKey>[];
-  count: number;
 };
 
 export async function executeWithCursorPagination<
@@ -248,7 +247,6 @@ export async function executeWithCursorPagination<
     endCursor,
     hasNextPage,
     hasPrevPage,
-    count: rows.length, // TODO: handle
     items: rows.map((row) => {
       if (opts.cursorPerRow) {
         const cursorKey =

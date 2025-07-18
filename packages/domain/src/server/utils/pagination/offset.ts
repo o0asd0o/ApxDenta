@@ -4,7 +4,6 @@ export type OffsetPaginationResult<O> = {
   hasNextPage?: boolean;
   hasPrevPage?: boolean;
   endCursor: null;
-  count: number;
   items: O[];
 };
 
@@ -30,10 +29,7 @@ export async function executeWithOffsetPagination<O, DB, TB extends keyof DB>(
 ): Promise<OffsetPaginationResult<O>> {
   const qb = queryWithOffsetPagination(_qb, opts);
 
-  const [count, items] = await Promise.all([
-    _qb.select((eb) => eb.fn.countAll().as('count')).executeTakeFirst(),
-    qb.execute(),
-  ]);
+  const items = await qb.execute();
 
   const hasNextPage =
     items.length > 0 ? items.length > opts.perPage : undefined;
@@ -45,13 +41,11 @@ export async function executeWithOffsetPagination<O, DB, TB extends keyof DB>(
     items.pop();
   }
 
-  console.log({ items, count });
-
   return {
     endCursor: null,
     hasNextPage,
     hasPrevPage,
     items,
-    count: Number.parseInt(count as string),
+    // count: Number.parseInt(count as string),
   };
 }
