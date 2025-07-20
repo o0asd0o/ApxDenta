@@ -1,6 +1,5 @@
-import type { DB, DatabaseInstance, WorkingDay } from '@/db';
+import type { DB, DatabaseInstance, StaffType, WorkingDay } from '@/db';
 import { GET_DETAULT_DATES } from '@/server/utils/helpers';
-import { executeWithCursorPagination } from '@/server/utils/pagination/cursor';
 import { executeWithOffsetPagination } from '@/server/utils/pagination/offset';
 import type { Transaction } from 'kysely';
 import { jsonArrayFrom } from 'kysely/helpers/postgres';
@@ -91,6 +90,7 @@ const saveStaff = async (
       lastName: input.staffInfo.lastName,
       contactNumber: input.staffInfo.phoneNumber,
       position: 'N/A', // leave for now
+      email: input.staffInfo.email,
       type: input.type,
       address: input.staffInfo.address,
       employmentType: input.staffInfo.type,
@@ -105,10 +105,6 @@ export const getAllStaff = async (
   db: DatabaseInstance,
   input: GetAllStaffsProps['input'],
 ) => {
-  let queryCount = db
-    .selectFrom('Staff')
-    .select((eb) => eb.fn.countAll().as('count'));
-
   let query = db
     .selectFrom('Staff')
     .selectAll()
@@ -146,14 +142,6 @@ export const getAllStaff = async (
         eb(db.fn('lower', ['lastName']), 'like', `%${search}%`),
       ]);
     });
-
-    queryCount = queryCount.where((eb) => {
-      const search = input.search?.toLowerCase();
-      return eb.or([
-        eb(db.fn('lower', ['firstName']), 'like', `%${search}%`),
-        eb(db.fn('lower', ['lastName']), 'like', `%${search}%`),
-      ]);
-    });
   }
 
   if (input.orderBy) {
@@ -163,23 +151,10 @@ export const getAllStaff = async (
 
   if (input.specialistIn?.length) {
     query = query.where('specialistsRecordId', 'in', input.specialistIn);
-    queryCount = queryCount.where(
-      'specialistsRecordId',
-      'in',
-      input.specialistIn,
-    );
   }
 
   if (input.assignedServicesIn?.length) {
     query = query.where(({ selectFrom, exists }) => {
-      return exists(
-        selectFrom('_StaffAssignedTreatment')
-          .select('id')
-          .whereRef('_StaffAssignedTreatment.A', '=', 'Staff.id')
-          .where('B', 'in', input.assignedServicesIn || []),
-      );
-    });
-    queryCount = queryCount.where(({ selectFrom, exists }) => {
       return exists(
         selectFrom('_StaffAssignedTreatment')
           .select('id')
@@ -197,25 +172,6 @@ export const getAllStaff = async (
           .whereRef('WorkSchedule.staffId', '=', 'Staff.id')
           .where('day', 'in', input.schedulesIn || []),
       );
-    });
-    queryCount = queryCount.where(({ selectFrom, exists }) => {
-      return exists(
-        selectFrom('WorkSchedule')
-          .select('id')
-          .whereRef('WorkSchedule.staffId', '=', 'Staff.id')
-          .where('day', 'in', input.schedulesIn || []),
-      );
-    });
-  }
-
-  const count = await queryCount.executeTakeFirstOrThrow().then((r) => r.count);
-
-  console.log('COUNT', { count });
-  if (input.limit) {
-    return executeWithCursorPagination(query, {
-      limit: input.limit,
-      fields: [{ expression: 'id', direction: 'asc' }],
-      parseCursor: (cursor) => ({ id: cursor.id }),
     });
   }
 
@@ -237,10 +193,19 @@ export const getAllStaff = async (
   };
 };
 
-export const getAllStaffCount = async (db: DatabaseInstance) => {
-  return db
+export const getAllStaffCount = async (
+  db: DatabaseInstance,
+  staffType?: StaffType,
+) => {
+  let query = db
     .selectFrom('Staff')
-    .select((eb) => eb.fn.countAll().as('count'))
+    .select((eb) => eb.fn.countAll().as('count'));
+
+  if (staffType) {
+    query = query.where('type', '=', staffType);
+  }
+
+  return query
     .executeTakeFirstOrThrow()
     .then((result) => result.count as number);
 };

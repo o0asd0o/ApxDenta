@@ -4,8 +4,8 @@ export const BASE_SCHEDULES: { [key in WorkingDay]: string } = {
   MONDAY: 'M',
   TUESDAY: 'T',
   WEDNESDAY: 'W',
-  THURSDAY: 'TH',
+  THURSDAY: 'Th',
   FRIDAY: 'F',
   SATURDAY: 'S',
-  SUNDAY: 'S',
+  SUNDAY: 'Su',
 };

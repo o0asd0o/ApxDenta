@@ -322,6 +322,7 @@ model Staff {
   lastName       String
   type           StaffType
   employmentType EmploymentType
+  email          String?
   position       String
   contactNumber  String
 

@@ -1,3 +1,4 @@
+import type { PaginationState } from '@/components/types';
 import type { Staff, StaffStatus, WorkingDay } from '@repo/domain/db';
 import type {
   AssignedServicesFormType,
@@ -5,6 +6,8 @@ import type {
   StaffInfoFormType,
   WorkingHoursFormType,
 } from '@repo/schemas';
+import type { SortingState } from '@tanstack/react-table';
+import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 export type StaffColumnType = Omit<
@@ -44,4 +47,12 @@ export type StaffFilterType = {
   assignedServices?: string[];
   specialists?: string[];
   schedules?: WorkingDay[];
+};
+
+export type LayoutProps = {
+  pagination: PaginationState;
+  setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+  sorting: SortingState;
+  filters: StaffFilterType;
 };
