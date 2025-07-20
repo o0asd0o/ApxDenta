@@ -80,7 +80,7 @@ const StaffList: React.FC = () => {
               <Separator
                 orientation="vertical"
                 className="mx-1"
-                style={{ height: '30px' }}
+                style={{ height: '30px', width: '0.5px' }}
               />
               <PillTabs
                 selectedTab={layoutTab}

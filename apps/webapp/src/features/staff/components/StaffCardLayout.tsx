@@ -21,7 +21,6 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
   } = useInfiniteQuery({
     queryKey: ['staffList', { filters, pagination, sorting }],
     queryFn: ({ pageParam = 1 }) => {
-      console.log({ pageParam });
       return trpc.staffs.getAllStaffs.query({
         search: filters.search,
         assignedServicesIn: filters.assignedServices,
@@ -39,7 +38,6 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
       });
     },
     getNextPageParam: (lastPage, _, lastPageParam) => {
-      console.log('eto', { lastPage, lastPageParam });
       return lastPage.hasNextPage ? lastPageParam + 1 : undefined;
     },
 
@@ -53,7 +51,11 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
       dataLength={12} //This is important field to render the next data
       next={fetchNextPage}
       hasMore={hasNextPage}
-      loader={<h4>Loading...</h4>}
+      loader={
+        <div className="h-[100px]">
+          <Loader className="[&>svg]:size-[36px] [&>svg]:text-gray-300 h-full" />
+        </div>
+      }
       endMessage={
         !isLoading && (
           <div className="relative mt-10 mb-6 flex items-center justify-center overflow-hidden">
@@ -65,15 +67,14 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
           </div>
         )
       }
-      // below props only if you need pull down functionality
       refreshFunction={refetch}
       pullDownToRefresh
       pullDownToRefreshThreshold={50}
       pullDownToRefreshContent={
-        <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+        <h3 className="text-center">&#8595; Pull down to refresh</h3>
       }
       releaseToRefreshContent={
-        <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+        <h3 className="text-center">&#8593; Release to refresh</h3>
       }
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
