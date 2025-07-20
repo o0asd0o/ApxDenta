@@ -1,5 +1,5 @@
-import Paginate from '@/components/Paginate';
-import { DataTable } from '@/components/data-table/DataTable';
+import FilterButton from '@/components/FilterButton';
+import PillTabs from '@/components/PillTabs';
 import {
   List,
   ListItem,
@@ -7,21 +7,21 @@ import {
   TabContent,
 } from '@/components/tabs/NavigationTabs';
 import type { PaginationState } from '@/components/types';
-import { useTRPC } from '@/lib/trpc';
-import { Button, Input } from '@repo/ui/components';
-import { useQuery } from '@tanstack/react-query';
+import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
-import { ListFilterIcon, Stethoscope } from 'lucide-react';
+import { LayoutGrid, ListIcon, Stethoscope } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useState } from 'react';
-import { columns } from './__columns';
 import type { StaffFilterType } from './__types';
 import CreateStaff from './add/CreateStaff';
 import { CreateStaffProvider } from './add/context/CreateStaffProvider';
 import FilterStaffDialog from './components/FilterStaffDialog';
+import StaffCardLayout from './components/StaffCardLayout';
+import StaffListLayout from './components/StaffListLayout';
+import TotalStaff from './components/TotalStaff';
 
-export const StaffList: React.FC = () => {
+const StaffList: React.FC = () => {
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
   const [pagination, setPagination] = useState<PaginationState>({
     current: 1,
@@ -29,29 +29,11 @@ export const StaffList: React.FC = () => {
   });
 
   const [filters, setFilters] = useState<StaffFilterType>({});
+  const [layoutTab, setLayoutTab] = useState<'card' | 'list'>('list');
 
   const [searchInput, setSearchInput] = useState<string>('');
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const trpc = useTRPC();
-  const { data: staffList, isLoading } = useQuery(
-    trpc.staffs.getAllStaffs.queryOptions({
-      search: filters.search,
-      assignedServicesIn: filters.assignedServices,
-      schedulesIn: filters.schedules,
-      specialistIn: filters.specialists,
-      statusIn: filters.status,
-
-      perPage: pagination.pageSize,
-      page: pagination.current,
-      ...(sorting.length > 0 && {
-        orderBy: {
-          field: 'firstName',
-          direction: sorting[0]?.desc ? 'desc' : 'asc',
-        },
-      }),
-    }),
-  );
 
   const handleSearchChange = useCallback(
     debounce((value: string) => {
@@ -73,14 +55,13 @@ export const StaffList: React.FC = () => {
               <span className="p-1.5 rounded-sm bg-accent">
                 <Stethoscope className="size-4" />
               </span>
-
-              <span className="text-lg font-bold">{staffList?.count}</span>
-              <span className="text-xs text-gray-400">Doctor</span>
+              <TotalStaff staffType="DOCTOR" />
+              <span className="text-xs text-gray-400">Doctor(s)</span>
             </div>
             <div className="ml-auto flex gap-2 items-center">
               <Input
                 value={searchInput}
-                placeholder="Search name, email, and phone"
+                placeholder="Search name, email, or phone"
                 className="w-[400px]!"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setSearchInput(e.target.value);
@@ -88,15 +69,34 @@ export const StaffList: React.FC = () => {
                 }}
                 type="search"
               />
-
-              <Button variant="outline" onClick={() => setFilterOpen(true)}>
-                <div className="relative inline-flex mr-1">
-                  <ListFilterIcon className="size-3" />
-                  <span className="right-[-1px] top-[-1px] absolute rounded-full size-2 bg-[#61B0FF] border-2 border-white" />
-                </div>
-                Filter
-              </Button>
-
+              <FilterButton
+                onClick={() => setFilterOpen(true)}
+                hasFilters={Object.entries(filters).some(([key, value]) => {
+                  return (
+                    key !== 'search' && value !== undefined && value !== ''
+                  );
+                })}
+              />
+              <Separator
+                orientation="vertical"
+                className="mx-1"
+                style={{ height: '30px' }}
+              />
+              <PillTabs
+                selectedTab={layoutTab}
+                onChangeTab={(value) => {
+                  setPagination({
+                    current: 1,
+                    pageSize: value === 'card' ? 12 : 10,
+                  });
+                  setLayoutTab(value);
+                }}
+                defaultSelectedTab="list"
+                tabs={[
+                  { label: <ListIcon className="size-4" />, value: 'list' },
+                  { label: <LayoutGrid className="size-4" />, value: 'card' },
+                ]}
+              />
               <CreateStaffProvider>
                 <CreateStaff />
               </CreateStaffProvider>
@@ -108,23 +108,39 @@ export const StaffList: React.FC = () => {
               setOpen={setFilterOpen}
             />
           </div>
-          <div className="">
-            <DataTable
-              data={staffList?.data || []}
-              sort={{ sorting, setSorting }}
-              loading={isLoading}
-              columns={columns}
-            />
+          <div>
+            {layoutTab === 'card' && (
+              <StaffCardLayout
+                filters={filters}
+                pagination={pagination}
+                sorting={sorting}
+                setSorting={setSorting}
+                setPagination={setPagination}
+              />
+            )}
+            {layoutTab === 'list' && (
+              <StaffListLayout
+                filters={filters}
+                pagination={pagination}
+                sorting={sorting}
+                setSorting={setSorting}
+                setPagination={setPagination}
+              />
+            )}
           </div>
-          {staffList && (staffList.data || []).length > 0 && (
-            <Paginate
-              listCount={staffList.count}
-              pagination={{ setState: setPagination, state: pagination }}
-            />
-          )}
+          {/* {staffList &&
+            (staffList.data || []).length > 0 &&
+            layoutTab === 'list' && (
+              <Paginate
+                listCount={staffList.count}
+                pagination={{ setState: setPagination, state: pagination }}
+              />
+            )} */}
         </TabContent>
         <TabContent value="general">General Staff content</TabContent>
       </Root>
     </div>
   );
 };
+
+export default StaffList;

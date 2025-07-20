@@ -28,17 +28,8 @@ const inputSchema = z
 
 export type GetAllStaffsProps = HandlerType<z.infer<typeof inputSchema>>;
 
-// TODO:
-// 1. Pagination for this route
-// 2. context menu for every row of staff (view, edit, delete, resend confirmation email [for pending accounts])
-// 3. Apply filters (e.g. by type, by status, search by name, etc.)
-// 4. Sorting by name, type, status, etc.
-
 const handler = async ({ input, ctx }: GetAllStaffsProps) => {
-  const [result, count] = await Promise.all([
-    staffDbActions.getAllStaff(ctx.db, input),
-    staffDbActions.getAllStaffCount(ctx.db),
-  ] as const);
+  const result = await staffDbActions.getAllStaff(ctx.db, input);
 
   return {
     status: 'SUCCESS' as const,
@@ -46,7 +37,7 @@ const handler = async ({ input, ctx }: GetAllStaffsProps) => {
     endCursor: result.endCursor,
     hasPrevPage: result.hasPrevPage,
     hasNextPage: result.hasNextPage,
-    count,
+    count: result.count,
   };
 };
 

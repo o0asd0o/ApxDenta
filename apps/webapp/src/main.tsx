@@ -23,6 +23,7 @@ const router = createRouter({
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
+  defaultPendingMs: 0,
   defaultPendingMinMs: 0,
   defaultPreloadStaleTime: 0,
 });
@@ -37,7 +38,6 @@ declare module '@tanstack/react-router' {
 const App: React.FC = () => {
   const { data: authData, isPending } = useSession();
 
-  console.log({ isPending });
   if (isPending) {
     return (
       <div className="flex items-center justify-center h-dvh">

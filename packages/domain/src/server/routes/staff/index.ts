@@ -1,18 +1,22 @@
 import { protectedProcedure, router } from '../../trpc';
-import * as createAsset from './handlers/create-staff';
-import * as getAllAssets from './handlers/get-all-staffs';
-import * as getAsset from './handlers/get-staff';
+import * as createStaff from './handlers/create-staff';
+import * as getAllStaffs from './handlers/get-all-staffs';
+import * as getStaff from './handlers/get-staff';
+import * as getTotalStaffs from './handlers/get-total-staffs';
 
 const staffs = router({
   createStaff: protectedProcedure
-    .input(createAsset.inputSchema)
-    .mutation(createAsset.handler),
+    .input(createStaff.inputSchema)
+    .mutation(createStaff.handler),
   getAllStaffs: protectedProcedure
-    .input(getAllAssets.inputSchema)
-    .query(getAllAssets.handler),
+    .input(getAllStaffs.inputSchema)
+    .query(getAllStaffs.handler),
+  getTotalStaffs: protectedProcedure
+    .input(getTotalStaffs.inputSchema)
+    .query(getTotalStaffs.handler),
   getStaff: protectedProcedure
-    .input(getAsset.inputSchema)
-    .query(getAsset.handler),
+    .input(getStaff.inputSchema)
+    .query(getStaff.handler),
 });
 
 export default staffs;

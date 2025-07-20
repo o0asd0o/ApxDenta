@@ -5,7 +5,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@repo/ui/*": ["../../packages/ui/src/*"]
-    }
+    },
+    "types": ["node"]
   },
   "include": [
     "**/*.ts",

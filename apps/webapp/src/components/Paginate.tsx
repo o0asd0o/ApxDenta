@@ -43,6 +43,7 @@ const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
           onValueChange={(rowsPerPage) =>
             pagination.setState(
               produce((draft) => {
+                draft.current = 1; // Reset to first page on page size change
                 draft.pageSize = Number.parseInt(rowsPerPage, 10);
               }),
             )
