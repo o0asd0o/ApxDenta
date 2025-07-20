@@ -15,6 +15,8 @@ type Props = {
   form: UseFormReturn<AssignedServicesFormType>;
 };
 
+// TODO: handle responsiveness
+
 export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
   const trpc = useTRPC();
   const { data: allTreatments } = useQuery(

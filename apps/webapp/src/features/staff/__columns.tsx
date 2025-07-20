@@ -60,6 +60,7 @@ export const columns: ColumnDef<StaffColumnType>[] = [
       const staff = row.original;
       return (
         <PersonalInfo
+          id={staff.id}
           name={
             staff.account?.user.name || `${staff.firstName} ${staff.lastName}`
           }

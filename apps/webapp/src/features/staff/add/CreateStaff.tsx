@@ -61,9 +61,12 @@ const CreateStaff: React.FC = () => {
         setDrawerOpen(false);
         toast.success('Staff created successfully!');
 
-        await queryClient.invalidateQueries({
-          queryKey: trpc.staffs.getAllStaffs.queryKey(),
-        });
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: trpc.staffs.getAllStaffs.queryKey(),
+          }),
+          queryClient.invalidateQueries({ queryKey: ['staffList'] }),
+        ]);
       },
       onError: (error) => {
         console.error('Error creating staff:', error);
