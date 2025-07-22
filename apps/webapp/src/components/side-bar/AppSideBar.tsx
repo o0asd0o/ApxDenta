@@ -1,3 +1,4 @@
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Sidebar,
   SidebarContent,
@@ -8,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarSeparator,
+  useSidebar,
 } from '@repo/ui/components/sidebar';
 import { useLocation } from '@tanstack/react-router';
 import {
@@ -120,7 +122,10 @@ const EXTRA_MENUS: MenuItem[] = [
 
 export const AppSideBar = () => {
   const location = useLocation();
+  const { toggleSidebar } = useSidebar();
+  const isMobile = useIsMobile();
 
+  console.log({ isMobile });
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -141,6 +146,8 @@ export const AppSideBar = () => {
                         key={`${item.path}-${item.title}`}
                         pathname={location.pathname}
                         item={item}
+                        
+                        {...(isMobile && { onClick: () => toggleSidebar() })}
                       />
                     ))}
                   </SidebarMenu>
@@ -156,6 +163,7 @@ export const AppSideBar = () => {
                   key={`${menu.path}-${menu.title}`}
                   pathname={location.pathname}
                   item={menu}
+                  {...(isMobile && { onClick: () => toggleSidebar() })}
                 />
               </SidebarMenuItem>
             </SidebarMenu>
@@ -169,6 +177,7 @@ export const AppSideBar = () => {
                 key={`${menu.path}-${menu.title}`}
                 pathname={location.pathname}
                 item={menu}
+                {...(isMobile && { onClick: () => toggleSidebar() })}
               />
             </SidebarMenuItem>
           </SidebarMenu>

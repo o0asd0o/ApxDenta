@@ -34,7 +34,7 @@ const StaffListLayout: React.FC<LayoutProps> = ({
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 flex-1 overflow-auto">
       <DataTable
         data={staffList?.data || []}
         sort={{ sorting, setSorting }}

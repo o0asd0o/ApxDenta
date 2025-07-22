@@ -23,13 +23,17 @@ export const queryWithOffsetPagination = <O, DB, TB extends keyof DB>(
 
 export async function executeWithOffsetPagination<O, DB, TB extends keyof DB>(
   _qb: SelectQueryBuilder<DB, TB, O>,
-  opts: { perPage: number; page: number },
+  opts: { perPage: number; page: number; excludeTotalCount?: boolean },
 ): Promise<OffsetPaginationResult<O>> {
   const qb = queryWithOffsetPagination(_qb, opts);
 
+  const allItemsPromise = opts.excludeTotalCount
+    ? Promise.resolve([])
+    : _qb.clearSelect().execute();
+
   const [items, withoutSelect] = await Promise.all([
     qb.execute(),
-    _qb.clearSelect().execute(),
+    allItemsPromise,
   ]);
 
   const hasNextPage =

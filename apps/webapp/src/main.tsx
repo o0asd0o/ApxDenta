@@ -7,7 +7,9 @@ import ReactDOM from 'react-dom/client';
 import { routeTree } from './routeTree.gen.ts';
 
 import { Loader2 } from 'lucide-react';
+import { NuqsAdapter } from 'nuqs/adapters/react';
 import { useSession } from './lib/auth-client';
+import { useTRPC } from './lib/trpc';
 import { RootProvider, getContext } from './providers/Root';
 import reportWebVitals from './reportWebVitals.ts';
 
@@ -19,7 +21,7 @@ import reportWebVitals from './reportWebVitals.ts';
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { ...getContext(), auth: null },
+  context: { ...getContext(), auth: null, trpc: null },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
@@ -37,6 +39,7 @@ declare module '@tanstack/react-router' {
 
 const App: React.FC = () => {
   const { data: authData, isPending } = useSession();
+  const trpc = useTRPC();
 
   if (isPending) {
     return (
@@ -49,7 +52,7 @@ const App: React.FC = () => {
   return (
     <RouterProvider
       router={router}
-      context={{ ...getContext(), auth: authData }}
+      context={{ ...getContext(), auth: authData, trpc }}
     />
   );
 };
@@ -61,7 +64,9 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <RootProvider>
-        <App />
+        <NuqsAdapter>
+          <App />
+        </NuqsAdapter>
       </RootProvider>
     </StrictMode>,
   );

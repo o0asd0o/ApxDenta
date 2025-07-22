@@ -1,7 +1,6 @@
 import type { FileRoutesByTo } from '@/routeTree.gen';
-import { Button } from '@repo/ui/components';
 import { useLocation } from '@tanstack/react-router';
-import { Activity, CircleHelp, Settings } from 'lucide-react';
+import { HeaderSidebarTrigger } from './HeaderSidebarTrigger';
 import { SearchBox } from './SearchBox';
 import { UserMenu } from './UserMenu';
 
@@ -31,25 +30,15 @@ const ROUTE_LABEL_MAPPING: Record<AllRoutes, string> = {
 export default function Header() {
   const location = useLocation();
   return (
-    <header className="grid grid-cols-3 h-18 shrink-0 justify-center items-center gap-2 border-b px-6 py-2">
+    <header className="grid grid-cols-2 md:grid-cols-3 h-15 md:h-18 shrink-0 justify-center items-center gap-2 border-b px-6 py-2">
       <h1 className="text-2xl font-bold">
         {ROUTE_LABEL_MAPPING[location.pathname as AllRoutes]}
       </h1>
       <SearchBox />
-      <div className="flex ml-auto items-center justify-end gap-2 divide-accent-foreground">
-        <div className="flex gap-1">
-          <Button variant="ghost" className="size-7 p-1">
-            <CircleHelp />
-          </Button>
-          <Button variant="ghost" className="size-7 p-1">
-            <Activity />
-          </Button>
-          <Button variant="ghost" className="size-7 p-1">
-            <Settings />
-          </Button>
-        </div>
+      <div className="hidden md:flex ml-auto items-center justify-end gap-2 divide-accent-foreground">
         <UserMenu />
       </div>
+      <HeaderSidebarTrigger />
     </header>
   );
 }

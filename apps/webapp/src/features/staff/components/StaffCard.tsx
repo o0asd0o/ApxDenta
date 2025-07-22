@@ -12,23 +12,24 @@ import { renderStaffActions, renderWorkingDays } from '../__renderers';
 import type { StaffColumnType } from '../__types';
 
 const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
+  console.log({ staff });
   return (
     <div
       key={staff.id}
       className="bg-white rounded-lg shadow p-4 flex flex-col gap-3 border relative"
     >
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-xl font-bold text-white">
+        <div className="min-w-12 w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-xl font-bold text-white">
           {staff.firstName?.[0]}
           {staff.lastName?.[0]}
         </div>
-        <div>
-          <div className="font-bold text-lg flex items-center gap-3">
-            <span>
+        <div className="flex min-w-0 flex-col gap-0 ">
+          <div className="font-bold text-lg flex items-center gap-3 pr-9">
+            <span className="truncate">
               {staff.firstName} {staff.lastName}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <a href={`mailto:${staff.email}`}>
+              <a href={`mailto:${staff.account?.user.email || staff.email}`}>
                 <Mail className="inline size-4 text-primary/90" />
               </a>
               <a href={`tel:${staff.contactNumber}`}>
@@ -36,7 +37,9 @@ const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
               </a>
             </span>
           </div>
-          <div className="text-xs text-gray-500">{staff.position || 'N/A'}</div>
+          <div className="text-xs text-gray-500">
+            {staff?.specialistRecord?.title || 'N/A'}
+          </div>
         </div>
       </div>
       <div className="flex gap-2 items-center">

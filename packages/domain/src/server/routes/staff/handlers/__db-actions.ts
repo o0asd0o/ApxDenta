@@ -2,7 +2,7 @@ import type { DB, DatabaseInstance, StaffType, WorkingDay } from '@/db';
 import { GET_DETAULT_DATES } from '@/server/utils/helpers';
 import { executeWithOffsetPagination } from '@/server/utils/pagination/offset';
 import type { Transaction } from 'kysely';
-import { jsonArrayFrom } from 'kysely/helpers/postgres';
+import { jsonArrayFrom, jsonObjectFrom } from 'kysely/helpers/postgres';
 import {
   getFormattedWorkScheduleByDay,
   getWorkScheduleByDayFromWorkingHours,
@@ -109,6 +109,14 @@ export const getAllStaff = async (
     .selectFrom('Staff')
     .selectAll()
     .select((eb) => {
+      return jsonObjectFrom(
+        eb
+          .selectFrom('SpecialistsRecord')
+          .select(['SpecialistsRecord.title', 'SpecialistsRecord.code'])
+          .whereRef('SpecialistsRecord.id', '=', 'Staff.specialistsRecordId'),
+      ).as('specialistRecord');
+    })
+    .select((eb) => {
       return jsonArrayFrom(
         eb
           .selectFrom('WorkSchedule')
@@ -140,6 +148,8 @@ export const getAllStaff = async (
       return eb.or([
         eb(db.fn('lower', ['firstName']), 'like', `%${search}%`),
         eb(db.fn('lower', ['lastName']), 'like', `%${search}%`),
+        eb(db.fn('lower', ['email']), 'like', `%${search}%`),
+        eb(db.fn('lower', ['contactNumber']), 'like', `%${search}%`),
       ]);
     });
   }
@@ -179,6 +189,7 @@ export const getAllStaff = async (
     return executeWithOffsetPagination(query, {
       page: input.page || 1,
       perPage: input.perPage,
+      excludeTotalCount: input.excludeTotalCount,
     });
   }
 

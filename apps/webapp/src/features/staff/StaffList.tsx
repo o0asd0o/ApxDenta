@@ -1,5 +1,4 @@
 import FilterButton from '@/components/FilterButton';
-import PillTabs from '@/components/PillTabs';
 import {
   List,
   ListItem,
@@ -10,13 +9,13 @@ import type { PaginationState } from '@/components/types';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
-import { LayoutGrid, ListIcon, Stethoscope } from 'lucide-react';
+import { Stethoscope } from 'lucide-react';
+import { parseAsStringEnum, useQueryState } from 'nuqs';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import type { StaffFilterType } from './__types';
-import CreateStaff from './add/CreateStaff';
-import { CreateStaffProvider } from './add/context/CreateStaffProvider';
 import FilterStaffDialog from './components/FilterStaffDialog';
+import StaffActions from './components/StaffActions';
 import StaffCardLayout from './components/StaffCardLayout';
 import StaffListLayout from './components/StaffListLayout';
 import TotalStaff from './components/TotalStaff';
@@ -29,7 +28,11 @@ const StaffList: React.FC = () => {
   });
 
   const [filters, setFilters] = useState<StaffFilterType>({});
-  const [layoutTab, setLayoutTab] = useState<'card' | 'list'>('list');
+
+  const [layoutTab, setLayoutTab] = useQueryState(
+    'layoutTab',
+    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
+  );
 
   const [searchInput, setSearchInput] = useState<string>('');
 
@@ -50,19 +53,28 @@ const StaffList: React.FC = () => {
           <ListItem value="general">General Staff</ListItem>
         </List>
         <TabContent value="doctor" className="py-5 gap-5 flex flex-col">
-          <div className="flex">
-            <div className="flex items-center gap-1.5">
-              <span className="p-1.5 rounded-sm bg-accent">
-                <Stethoscope className="size-4" />
-              </span>
-              <TotalStaff staffType="DOCTOR" />
-              <span className="text-xs text-gray-400">Doctor(s)</span>
+          <div className="flex flex-col lg:flex-row gap-5">
+            <div className="flex">
+              <div className="flex items-center gap-1.5">
+                <span className="p-1.5 rounded-sm bg-accent">
+                  <Stethoscope className="size-4" />
+                </span>
+                <TotalStaff staffType="DOCTOR" />
+                <span className="text-xs text-gray-400">Doctor(s)</span>
+              </div>
+              <StaffActions
+                className="lg:hidden flex ml-auto"
+                layoutTab={layoutTab}
+                setLayoutTab={setLayoutTab}
+                setPagination={setPagination}
+              />
             </div>
-            <div className="ml-auto flex gap-2 items-center">
+
+            <div className="lg:ml-auto flex gap-2 items-center">
               <Input
                 value={searchInput}
                 placeholder="Search name, email, or phone"
-                className="w-[400px]!"
+                className="flex-1 w-full lg:w-[400px]!"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setSearchInput(e.target.value);
                   handleSearchChange(e.target.value);
@@ -79,27 +91,15 @@ const StaffList: React.FC = () => {
               />
               <Separator
                 orientation="vertical"
-                className="mx-1"
-                style={{ height: '30px', width: '0.5px' }}
+                className="mx-1 hidden lg:block"
+                style={{ height: '30px', width: '1px' }}
               />
-              <PillTabs
-                selectedTab={layoutTab}
-                onChangeTab={(value) => {
-                  setPagination({
-                    current: 1,
-                    pageSize: value === 'card' ? 12 : 10,
-                  });
-                  setLayoutTab(value);
-                }}
-                defaultSelectedTab="list"
-                tabs={[
-                  { label: <ListIcon className="size-4" />, value: 'list' },
-                  { label: <LayoutGrid className="size-4" />, value: 'card' },
-                ]}
+              <StaffActions
+                className="hidden lg:flex"
+                layoutTab={layoutTab}
+                setLayoutTab={setLayoutTab}
+                setPagination={setPagination}
               />
-              <CreateStaffProvider>
-                <CreateStaff />
-              </CreateStaffProvider>
             </div>
             <FilterStaffDialog
               applyFilters={setFilters}
@@ -128,14 +128,6 @@ const StaffList: React.FC = () => {
               />
             )}
           </div>
-          {/* {staffList &&
-            (staffList.data || []).length > 0 &&
-            layoutTab === 'list' && (
-              <Paginate
-                listCount={staffList.count}
-                pagination={{ setState: setPagination, state: pagination }}
-              />
-            )} */}
         </TabContent>
         <TabContent value="general">General Staff content</TabContent>
       </Root>

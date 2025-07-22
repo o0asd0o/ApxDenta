@@ -35,9 +35,18 @@ const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
   const totalPages = Math.ceil(listCount / state.pageSize);
 
   return (
-    <div className="flex items-center justify-between mt-4">
+    <div
+      className={cn(
+        'flex items-center justify-between mt-4',
+        totalPages === 0 && 'hidden',
+        className,
+      )}
+    >
       <div className="flex items-center gap-2">
-        <Label className="whitespace-nowrap">Rows per page:</Label>
+        <Label className="whitespace-nowrap sm:flex hidden">
+          Rows per page:
+        </Label>
+        <Label className="whitespace-nowrap sm:hidden">Rows</Label>
         <Select
           value={state.pageSize.toString()}
           onValueChange={(rowsPerPage) =>
@@ -49,7 +58,7 @@ const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
             )
           }
         >
-          <SelectTrigger className="w-[75px]">
+          <SelectTrigger className="w-[75px] px-2 py-1 sm:px-3 sm:py-2">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

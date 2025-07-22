@@ -20,6 +20,10 @@ export type StaffColumnType = Omit<
   status?: StaffStatus | null;
   workSchedules: { day: WorkingDay }[];
   assignedServices: { name: string; id: string }[];
+  specialistRecord: {
+    title: string;
+    code: string;
+  } | null;
   account?: {
     user: {
       email: string;
