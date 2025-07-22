@@ -98,7 +98,7 @@ const TimeSelector: React.FC<TimeProps> = ({
     >
       <SelectTrigger
         icon={<Clock8 className="opacity-50 size-4 text-xs" />}
-        className="w-[140px] flex h-[32px] [&>span]:text-[13px]"
+        className="w-[130px] flex h-[32px] [&>span]:text-[13px]"
       >
         <SelectValue placeholder="Pick time" />
       </SelectTrigger>

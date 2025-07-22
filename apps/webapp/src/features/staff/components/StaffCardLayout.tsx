@@ -22,6 +22,7 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
     queryKey: ['staffList', { filters, pagination, sorting }],
     queryFn: ({ pageParam = 1 }) => {
       return trpc.staffs.getAllStaffs.query({
+        excludeTotalCount: true,
         search: filters.search,
         assignedServicesIn: filters.assignedServices,
         schedulesIn: filters.schedules,
@@ -57,7 +58,8 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
         </div>
       }
       endMessage={
-        !isLoading && (
+        !isLoading &&
+        flatten.length !== 0 && (
           <div className="relative mt-10 mb-6 flex items-center justify-center overflow-hidden">
             <Separator />
             <div className="text-gray-500 px-4 text-center bg-background text-sm whitespace-nowrap">
@@ -77,7 +79,7 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
         <h3 className="text-center">&#8593; Release to refresh</h3>
       }
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {(flatten || []).map((staff) => (
           <StaffCard key={staff.id} staff={staff} />
         ))}

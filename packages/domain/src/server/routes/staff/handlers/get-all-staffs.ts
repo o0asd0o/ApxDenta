@@ -15,6 +15,7 @@ const inputSchema = z
     assignedServicesIn: z.string().array().optional(),
     schedulesIn: workDayEnum.array().optional(),
     statusIn: staffStatusEnum.array().optional(),
+    excludeTotalCount: z.boolean().default(false),
     // sort
     orderBy: z
       .object({

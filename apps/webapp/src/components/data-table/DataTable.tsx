@@ -23,7 +23,7 @@ import {
 import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
 import { getColumnTitle } from './helpers';
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
@@ -33,7 +33,7 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
   loading,
@@ -47,6 +47,7 @@ export function DataTable<TData, TValue>({
     enableSorting: false,
     getSortedRowModel: getSortedRowModel(),
     state: { sorting: sort?.sorting },
+    getRowId: (row) => row.id as string,
   });
 
   return (

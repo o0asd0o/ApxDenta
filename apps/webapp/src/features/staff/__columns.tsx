@@ -77,7 +77,7 @@ export const columns: ColumnDef<StaffColumnType>[] = [
 
       return (
         <Contact
-          email={staff.account?.user.email}
+          email={staff.account?.user.email || (staff.email as string)}
           phone={staff.contactNumber}
         />
       );

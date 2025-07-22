@@ -6,8 +6,9 @@ import type { MenuBase, MenuItem } from '../types';
 type Props = {
   item: (MenuItem & MenuBase) | MenuItem;
   pathname: string;
+  onClick?: () => void;
 };
-export const SideBarButton: React.FC<Props> = ({ item, pathname }) => {
+export const SideBarButton: React.FC<Props> = ({ item, pathname, onClick }) => {
   const { state } = useSidebar();
   const _item = item as MenuItem & MenuBase;
   return (
@@ -16,6 +17,7 @@ export const SideBarButton: React.FC<Props> = ({ item, pathname }) => {
       className="text-[14px]"
       isActive={item.path === pathname}
       tooltip={state === 'collapsed' ? item.title : undefined}
+      onClick={onClick}
     >
       <Link to={_item.path}>
         <_item.icon className="size-10" />

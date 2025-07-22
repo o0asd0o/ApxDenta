@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 
 export const SearchBox = () => {
   return (
-    <div className="max-w-[340px] flex gap-2">
+    <div className="max-w-[340px] gap-2 hidden md:flex">
       <Input
         placeholder="Search for anything here..."
         type="search"

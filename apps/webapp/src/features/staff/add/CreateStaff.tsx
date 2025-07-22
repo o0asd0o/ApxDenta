@@ -12,6 +12,7 @@ import type {
 import { Button, Form, SheetClose } from '@repo/ui/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type WritableDraft, produce } from 'immer';
+import { PlusIcon } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
 import React, { useCallback } from 'react';
@@ -126,6 +127,7 @@ const CreateStaff: React.FC = () => {
         className="ml-auto"
         title="Add new Doctor Staff"
         actionText="Add Doctor"
+        mobileIcon={<PlusIcon className="size-5" />}
         onSubmit={form.handleSubmit((values) =>
           onSubmit({ id: stepper.current.id, values }),
         )}

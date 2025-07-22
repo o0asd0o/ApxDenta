@@ -43,7 +43,7 @@ export const DaysOffForm: React.FC<Props> = ({ form }) => {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2 h-30 items-center justify-center">
-        <Loader className="[&>svg]:size-[50px]" />
+        <Loader className="[&>svg]:size-[50px] [&>svg]:text-gray-300" />
       </div>
     );
   }
