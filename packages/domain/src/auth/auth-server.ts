@@ -23,7 +23,7 @@ export const createAuth = ({
   console.log({ webUrl });
   return betterAuth({
     secret: authSecret,
-    trustedOrigins: [webUrl].map((url) => new URL(url).origin),
+    trustedOrigins: ['*'], //[webUrl].map((url) => new URL(url).origin),
     database: { db, type: 'postgres' },
     session: {
       expiresIn: 60 * 60 * 24 * 1,
