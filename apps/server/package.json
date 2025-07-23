@@ -5,6 +5,7 @@
     "start": "bun run dist/src/index.js --ignore-warnings",
     "dev:migrate": "dotenv -e .env.local -- bunx  @better-auth/cli migrate",
     "build": "tsc -b",
+    "build:dev": "tsc -b",
     "prisma:generate": "dotenv -e .env.local -- prisma generate",
     "prisma:migrate": "dotenv -e .env.local -- prisma migrate dev",
     "prisma:introspect": "dotenv -e .env.local -- prisma introspect",

@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "tsc -b",
+    "build:dev": "tsc -b",
     "build:lib_local": "npx tsup",
     "build:lib_dev": "npx tsup",
     "build:lib_prod": "npx tsup",
