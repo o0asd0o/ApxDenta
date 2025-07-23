@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite --port 8085 --mode locale",
     "build": "vite build --mode locale",
+    "build:dev": "vite build --mode development",
     "serve": "vite preview",
     "test": "vitest run"
   },

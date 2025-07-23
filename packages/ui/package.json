@@ -8,6 +8,7 @@
     "lint": "biome check .",
     "lib_dev": "tsup --watch",
     "build": "tsup",
+    "build:dev": "tsup",
     "lint:fix": "biome check . --apply",
     "clean": "rm -rf .turbo && rm -rf node_modules"
   },

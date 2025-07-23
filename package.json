@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "build": "turbo build",
+    "build:dev": "turbo build:dev",
     "dev": "turbo dev",
     "ts-compile": "turbo ts-compile",
     "lint": "turbo lint",
