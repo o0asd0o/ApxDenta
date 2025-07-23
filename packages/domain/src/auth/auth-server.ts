@@ -20,15 +20,11 @@ export const createAuth = ({
   authSecret,
   googleCredentials,
 }: AuthOptions): AuthInstance => {
+  console.log({ webUrl });
   return betterAuth({
     secret: authSecret,
-    trustedOrigins: [webUrl].map(
-      (url) => new URL(url).origin,
-    ),
-    database: {
-      db,
-      type: 'postgres',
-    },
+    trustedOrigins: [webUrl].map((url) => new URL(url).origin),
+    database: { db, type: 'postgres' },
     session: {
       expiresIn: 60 * 60 * 24 * 1,
       updateAge: 60 * 60 * 4,
