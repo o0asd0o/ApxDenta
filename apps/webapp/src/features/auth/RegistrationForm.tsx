@@ -40,7 +40,14 @@ export default function RegistrationForm() {
   };
 
   return (
-    <div className="flex items-center justify-center h-dvh">
+    <div className="flex flex-col items-center justify-center h-dvh">
+      <div className="flex flex-col items-center mb-6">
+        <img
+          className="w-[160px]"
+          src="/images/apx-denta-banner-vertical.png"
+          alt="ApxDenta Logo"
+        />
+      </div>
       <Card className="z-50 rounded-md rounded-t-none max-w-md w-[500px]">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
