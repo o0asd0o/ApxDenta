@@ -22,7 +22,7 @@ export const createAuth = ({
 }: AuthOptions): AuthInstance => {
   return betterAuth({
     secret: authSecret,
-    trustedOrigins: [webUrl, 'http://localhost:8080'].map(
+    trustedOrigins: [webUrl].map(
       (url) => new URL(url).origin,
     ),
     database: {
