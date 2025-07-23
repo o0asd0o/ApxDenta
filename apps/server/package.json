@@ -35,7 +35,7 @@
     "@better-auth/cli": "^1.1.15",
     "prisma": "^6.3.0",
     "@repo/tsconfig": "workspace:*",
-    "@types/react": "^18.2.21",
+    "@types/react": "^18.3.23",
     "tsx": "^4.19.1",
     "typescript": "^5.8.3"
   }
