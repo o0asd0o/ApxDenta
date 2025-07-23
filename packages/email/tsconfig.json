@@ -1,0 +1,14 @@
+{
+  "extends": ["@repo/tsconfig/react-library.json"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "incremental": true,
+    "composite": true,
+    "verbatimModuleSyntax": false,
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"],
+    }
+  },
+  "include": ["src/**/*"]
+}

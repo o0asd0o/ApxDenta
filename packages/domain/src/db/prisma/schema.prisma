@@ -1,0 +1,825 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-kysely"
+
+  output   = "./out"
+  fileName = "types.ts"
+
+  enumFileName = "enums.ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("SERVER_POSTGRES_URL")
+}
+
+enum PeripheralCategory {
+  MAIN_EQUIPMENT
+  SUPPORT_EQUIPMENT
+  DIAGNOSTIC_EQUIPMENT
+}
+
+enum StockCategory {
+  ANALGESIC
+  ANTIACID
+  ANTIANXIETY_DRUG
+  ANTIARRHYTHMICS
+  ANTISEPTIC
+  ANTIBACTERIAL
+  ANTIBIOTIC
+  ANTICOGAGULANT
+  THROMBOLYTICS
+  ANTICONVULSANTS
+  ANTIDEPRESANTS
+  ANTIDIARRHEAL
+  ANTIEMETICS
+  ANTIFUNGAL
+  ANTIHISTAMINE
+  ANTIHYPERTENSIVE
+  ANTI_INFLAMMATORY
+  ANTINEOPLASTIC
+  ANTIPSYCHOTIC
+  ANTIPYRETIC
+  ANTIVIRAL
+  BARBITURE
+  BETA_BLOCKER
+  BRONCHODILATOR
+  COLD_CURE
+  CORTISOSTEROID
+  STEROID
+  COUGH_SUPRESSANT
+  CYTOTOXIC
+  DECONGESTANT
+  EXPECTORANT
+  DIURETIC
+  HORMONES
+  HYPOGLYCEMIC
+  IMMUNOSUPPRESSIVE
+  LAXATIVE
+  MUSCLE_RELAXANT
+  SEDATIVE
+  SEX_HORMONE_FEMALE
+  SEX_HORMONE_MALE
+  SLEEPING_DRUG
+  TRANQUILIZER
+  VITAMIN
+}
+
+enum StockStatus {
+  LOW_STOCK
+  IN_STOCK
+  OUT_OF_STOCK
+}
+
+enum StaffStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  TERMINATED
+  RESIGNED
+  SUSPENDED
+}
+
+enum StaffType {
+  DOCTOR
+  STAFF
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum EmploymentType {
+  PART_TIME
+  FULL_TIME
+}
+
+enum TreatmentCategory {
+  MEDICAL_SERVICE
+  COSMETIC_SERVICE
+}
+
+enum ReservationStatus {
+  DONE
+  CANCELLED
+  PENDING
+  ENCOUNTER
+  NO_SHOW
+}
+
+enum TreatmentVisitType {
+  MULTIPLE_VISIT
+  SINGLE_VISIT
+}
+
+enum MedicalServiceStatus {
+  DONE
+  PENDING
+}
+
+enum WorkingDay {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum BillType {
+  RESERVATION_FEE
+  TREATMENT_FEE
+}
+
+enum BillStatus {
+  UNPAID
+  PAID
+}
+
+enum PaymentType {
+  CASH
+  E_WALLET
+  BANK_TRANSFER
+}
+
+enum VisitStatus {
+  DEFAULT
+  CANCELLED
+}
+
+enum TreatmentStatus {
+  SAMPLE
+  FINALIZED
+}
+
+enum OralHygienDuration {
+  AROUND_1_MINUTE
+  ABOUNT_2_MINUTES
+  MORE_THAN_2_MINUTES
+  I_DONT_KNOW
+}
+
+enum ChangeToothBrushFrequency {
+  EVERY_3_MONTHS
+  EVERY_6_MONTHS
+  EVERY_YEAR
+  AS_OCCUR
+}
+
+enum OralSide {
+  NO
+  LEFT
+  RIGHT
+  BOTH
+}
+
+enum TorusPalatinus {
+  NO
+  SMALL
+  MEDIUM
+  LARGE
+  MULTIPLE
+}
+
+enum Occlusi {
+  NORMAL
+  CROSS
+  STEEP
+}
+
+enum WashTeethFrequency {
+  NEVER
+  ONCE
+  TWICE
+  THRICE
+  MORE_THAN_THRICE
+}
+
+enum DentalCareStart {
+  TEENAGER
+  ABOUT_20
+  ABOUT_30
+  AFTER_30
+}
+
+enum LastDetalVisit {
+  LESS_THAN_3_MONTHS
+  LESS_THAN_6_MONTHS
+  A_YEAR_AGO
+  DONT_REMEMBER
+}
+
+enum MedicalCheckupStatus {
+  ARCHIVED
+  LATEST
+}
+
+model account {
+  id         String @id
+  accountId  String
+  providerId String
+
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamp(0)
+  refreshTokenExpiresAt DateTime? @db.Timestamp(0)
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @db.Timestamp(0)
+  updatedAt             DateTime  @db.Timestamp(0)
+
+  user   user   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId String
+
+  staffs   Staff[]
+  patients Patient[]
+  notes    Note[]
+}
+
+model session {
+  id                   String   @id
+  expiresAt            DateTime @db.Timestamp(0)
+  token                String   @unique
+  createdAt            DateTime @db.Timestamp(0)
+  updatedAt            DateTime @db.Timestamp(0)
+  ipAddress            String?
+  userAgent            String?
+  activeOrganizationId String?
+  userId               String
+  user                 user     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime @db.Timestamp(0)
+  updatedAt     DateTime @db.Timestamp(0)
+
+  invitation invitation[]
+  member     member[]
+  account    account[]
+  session    session[]
+}
+
+model verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime  @db.Timestamp(0)
+  createdAt  DateTime? @db.Timestamp(0)
+  updatedAt  DateTime? @db.Timestamp(0)
+}
+
+model invitation {
+  id             String       @id
+  organizationId String
+  email          String
+  role           String?
+  status         String
+  expiresAt      DateTime     @db.Timestamp(0)
+  inviterId      String
+  user           user         @relation(fields: [inviterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  organization   organization @relation(fields: [organizationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model member {
+  id        String   @id
+  role      String
+  createdAt DateTime @db.Timestamp(0)
+
+  organization   organization @relation(fields: [organizationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  organizationId String
+
+  user   user   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId String
+}
+
+model organization {
+  id        String   @id
+  name      String
+  slug      String   @unique
+  logo      String?
+  createdAt DateTime @db.Timestamp(0)
+
+  metadata   String?
+  invitation invitation[]
+  member     member[]
+}
+
+model Staff {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  firstName      String
+  lastName       String
+  type           StaffType
+  employmentType EmploymentType
+  email          String?
+  position       String
+  contactNumber  String
+
+  address String?
+  lat     Float?
+  long    Float?
+
+  status StaffStatus? @default(ACTIVE)
+
+  assignedTreatments Treatment[]    @relation("StaffAssignedTreatment")
+  workingSchedules   WorkSchedule[]
+  daysOff            DayOff[]       @relation("StaffDayOff")
+
+  specialist          SpecialistsRecord? @relation(fields: [specialistsRecordId], references: [id])
+  specialistsRecordId String?
+
+  account      account?      @relation(fields: [accountId], references: [id])
+  accountId    String?
+  reservations Reservation[]
+
+  processedBillHistory BillHistory[]
+
+  createdAssets        Asset[]
+  createdAssetTransfer AssetTransfer[]
+  createdPeripherals   Peripheral[]
+
+  @@index([firstName, lastName, createdAt(sort: Desc)], name: "idx_staff_name")
+}
+
+model DayOff {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  name   String
+  from   DateTime
+  to     DateTime?
+  repeat Boolean?
+
+  isDefault Boolean?
+
+  staffs Staff[] @relation("StaffDayOff")
+}
+
+model WorkSchedule {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  day            WorkingDay
+  scheduleSlices WorkScheduleSlice[]
+
+  from DateTime @db.Time(0)
+  to   DateTime @db.Time(0)
+
+  staff   Staff?  @relation(fields: [staffId], references: [id])
+  staffId String?
+
+  @@index([day, staffId], name: "idx_work_schedule_day_staff")
+}
+
+model WorkScheduleSlice {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  from DateTime @db.Time(0)
+  to   DateTime @db.Time(0)
+
+  workSchedule   WorkSchedule? @relation(fields: [workScheduleId], references: [id])
+  workScheduleId String?
+}
+
+model SpecialistsRecord {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  title       String
+  code        String
+  description String?
+
+  staffs Staff[]
+}
+
+model Treatment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  name             String
+  category         TreatmentCategory
+  descrpition      String
+  pricePerDuration Float
+  duration         Float
+  unit             String? // can be enum
+  status           TreatmentStatus   @default(FINALIZED)
+
+  ratings Rating[]
+  reviews Review[]
+
+  visitType TreatmentVisitType
+  visits    TreatmentVisit[]
+
+  components TreatmentComponent[]
+
+  staffsAssigned Staff[]       @relation("StaffAssignedTreatment")
+  reservations   Reservation[]
+
+  medicalServices  MedicalService[]
+  cosmeticServices CosmeticService[]
+
+  @@index([name, createdAt(sort: Desc)], name: "idx_treatment_name")
+}
+
+model TreatmentComponent {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  component          MedicalComponent @relation(fields: [medicalComponentId], references: [id])
+  medicalComponentId String
+
+  freeUpTo Int?
+  free     Boolean?
+
+  quantity Int
+
+  treatment   Treatment? @relation(fields: [treatmentId], references: [id])
+  treatmentId String?
+}
+
+model MedicalComponent {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  name  String
+  price Float
+
+  treatmentComponents TreatmentComponent[]
+}
+
+model TreatmentVisit {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  days Int
+
+  treatment   Treatment? @relation(fields: [treatmentId], references: [id])
+  treatmentId String?
+}
+
+model Review {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  description String
+
+  images File[]
+
+  treatment   Treatment? @relation(fields: [treatmentId], references: [id])
+  treatmentId String?
+}
+
+model Note {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  description String
+
+  createdBy account @relation(fields: [accountId], references: [id])
+  accountId String
+
+  image   File?   @relation(fields: [imageId], references: [id])
+  imageId String?
+}
+
+model File {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  url      String
+  name     String
+  thumb    String?
+  fallback String?
+  type     String
+  size     Float
+
+  notes Note[]
+
+  reservation   Reservation? @relation(fields: [reservationId], references: [id])
+  reservationId String?
+
+  review      Review?      @relation(fields: [reviewId], references: [id])
+  reviewId    String?
+  stocks      Stock[]
+  peripherals Peripheral[]
+}
+
+model Rating {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+
+  rate   Float
+  remark String?
+
+  treatment   Treatment? @relation(fields: [treatmentId], references: [id])
+  treatmentId String?
+}
+
+model Patient {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  firstName   String
+  lastName    String
+  phoneNumber String
+  age         Int
+  email       String @unique
+  gender      Gender
+  address     String
+  lat         Float?
+  long        Float?
+
+  // hygiene habits
+  lastDentalVisit           LastDetalVisit
+  dentalCareStart           DentalCareStart
+  washTeethFrequency        WashTeethFrequency
+  usingDentalFloss          Boolean
+  changeToothBrushFrequency ChangeToothBrushFrequency
+  oralHygieneDuration       OralHygienDuration
+
+  account         account?         @relation(fields: [accountId], references: [id])
+  accountId       String?
+  reservations    Reservation[]
+  medicalCheckups MedicalCheckup[]
+  billHistory     BillHistory[]
+}
+
+model Reservation {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+
+  note   String?
+  status ReservationStatus
+
+  doctor  Staff  @relation(fields: [staffId], references: [id])
+  staffId String
+
+  initialTreatment   Treatment @relation(fields: [initialTreatmentId], references: [id])
+  initialTreatmentId String
+
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
+
+  attachments     File[]
+  medicalCheckups MedicalCheckup[]
+  bills           Bill[]
+  billsHistory    BillHistory[]
+}
+
+model MedicalCheckup {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  status MedicalCheckupStatus
+
+  // medical data
+  bloodPressureMm    Int
+  bloodPressureHg    Int
+  particularSickness String[]
+  allergies          String[]
+
+  // oral data
+  occlusi           Occlusi
+  torusPalatinus    TorusPalatinus
+  torusMandibularis OralSide
+  palatum           OralSide
+  diastema          String // explanation if Yes, No otherwise
+  anomalous         String // explanation if Yes, No otherwise
+  othersNotListed   String?
+
+  // treatment plans
+  medicalServices  MedicalService[]
+  cosmeticServuces CosmeticService[]
+
+  reservationRef Reservation? @relation(fields: [reservationId], references: [id])
+  reservationId  String?
+
+  patientRef   Patient? @relation(fields: [patientRefId], references: [id])
+  patientRefId String?
+}
+
+model CosmeticService {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  condition String?
+  maxilla   Boolean?
+  mandible  Boolean?
+
+  treatment   Treatment @relation(fields: [treatmentId], references: [id])
+  treatmentId String
+
+  approved         Boolean @default(false)
+  unapprovedReason String?
+
+  medicalCheckup   MedicalCheckup? @relation(fields: [medicalCheckupId], references: [id])
+  medicalCheckupId String?
+}
+
+model MedicalService {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  toothNumber Int?
+  condition   ToothCondition       @relation(fields: [toothConditionId], references: [id])
+  treatment   Treatment            @relation(fields: [treatmentId], references: [id])
+  note        String?
+  status      MedicalServiceStatus
+
+  approved         Boolean
+  unapprovedReason String?
+
+  medicalCheckup   MedicalCheckup? @relation(fields: [medicalCheckupId], references: [id])
+  medicalCheckupId String?
+  treatmentId      String
+  toothConditionId String
+}
+
+model ToothCondition {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  name String
+  code String @unique
+
+  medicalServices MedicalService[]
+}
+
+model Vendor {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  name      String
+  shortName String
+
+  contactPerson String
+  contactNumber String
+  email         String
+
+  address String
+  lat     Float?
+  long    Float?
+
+  stock      Stock[]      @relation(name: "VendorStock")
+  Peripheral Peripheral[]
+}
+
+model Stock {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  image  File?   @relation(fields: [fileId], references: [id])
+  fileId String?
+
+  sku      String        @unique
+  name     String
+  category StockCategory
+
+  unit      String?
+  unitPrice Float
+  quantity  Int
+
+  status  StockStatus
+  vendors Vendor[]    @relation(name: "VendorStock")
+}
+
+model Peripheral {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  image  File?   @relation(fields: [fileId], references: [id])
+  fileId String?
+
+  weight   Float // in kg
+  category PeripheralCategory
+  barcode  String
+
+  purchaseDate  DateTime
+  invoiceNumber String
+  price         Float
+  quantity      Int
+  vendor        Vendor   @relation(fields: [vendorId], references: [id])
+  vendorId      String
+
+  assignedRoom Room   @relation(fields: [roomId], references: [id])
+  roomId       String
+
+  createdBy Staff  @relation(fields: [staffId], references: [id])
+  staffId   String
+
+  sku  String @unique
+  name String
+}
+
+model Room {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  name        String
+  description String?
+
+  peripherals Peripheral[]
+}
+
+enum BillHistoryType {
+  COMMENT
+  PAYMENT
+}
+
+model BillHistory {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+
+  bill   Bill? @relation(fields: [billId], references: [id])
+  billId Int?
+
+  type BillHistoryType
+
+  description String?
+
+  processedByStaff Staff?  @relation(fields: [staffId], references: [id])
+  staffId          String?
+
+  processedByPatient Patient? @relation(fields: [patientId], references: [id])
+  patientId          String?
+
+  reservation   Reservation? @relation(fields: [reservationId], references: [id])
+  reservationId String?
+}
+
+model Bill {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  asset   Asset  @relation(fields: [assetId], references: [id])
+  assetId String
+
+  billType BillType
+  amount   Float
+  status   BillStatus
+
+  paymentType PaymentType?
+
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+  reservationId String
+
+  billHistory BillHistory[]
+}
+
+model AssetTransfer {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+
+  amount Float
+
+  from        Asset  @relation("FromAsset", fields: [fromAssetId], references: [id])
+  fromAssetId String
+
+  to        Asset  @relation("ToAsset", fields: [toAssetId], references: [id])
+  toAssetId String
+
+  note String?
+
+  createdBy Staff  @relation(fields: [staffId], references: [id])
+  staffId   String
+}
+
+model Asset {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  name        String
+  description String?
+  isDefault   Boolean @default(false)
+  isActive    Boolean @default(true)
+
+  color String
+  icon  String
+
+  currentAmount Float
+
+  createdBy Staff  @relation(fields: [staffId], references: [id])
+  staffId   String
+
+  bills Bill[]
+
+  fromAssetTransfers AssetTransfer[] @relation("FromAsset")
+  toAssetTransfers   AssetTransfer[] @relation("ToAsset")
+}

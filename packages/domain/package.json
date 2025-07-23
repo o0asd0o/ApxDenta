@@ -1,0 +1,72 @@
+{
+  "name": "@repo/domain",
+  "scripts": {
+    "build": "tsc -b",
+    "lib_dev": "tsup --watch",
+    "dev:auth:migrate": "dotenv -e .env.local -- bunx @better-auth/cli migrate --config ./src/auth/config-cli.ts",
+    "prisma:generate": "dotenv -e .env.local -- prisma generate",
+    "prisma:migrate": "dotenv -e .env.local -- prisma migrate dev",
+    "prisma:introspect": "dotenv -e .env.local -- prisma introspect",
+    "prisma:studio": "dotenv -e .env.local -- prisma studio",
+    "prisma:seed": "dotenv -e .env.local -- prisma db seed"
+  },
+  "prisma": {
+    "schema": "src/db/prisma/schema.prisma",
+    "seed": "bun run src/db/seed.ts"
+  },
+  "exports": {
+    "./auth": {
+      "types": "./dist/src/auth/index.d.ts",
+      "default": "./src/auth/index.ts"
+    },
+    "./db": {
+      "types": "./dist/src/db/index.d.ts",
+      "default": "./src/db/index.ts"
+    },
+    "./lib": {
+      "types": "./dist/src/lib/index.d.ts",
+      "default": "./src/lib/index.ts"
+    },
+    "./server": {
+      "types": "./dist/src/server/index.d.ts",
+      "default": "./src/server/index.ts"
+    },
+    "./client": {
+      "types": "./dist/src/api-client.d.ts",
+      "default": "./src/api-client.ts"
+    }
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.842.0",
+    "@aws-sdk/s3-request-presigner": "^3.842.0",
+    "@hono/trpc-server": "^0.3.4",
+    "@hono/zod-openapi": "^0.18.3",
+    "@react-email/components": "0.0.14",
+    "@repo/email": "workspace:*",
+    "@repo/schemas": "workspace:*",
+    "@trpc/server": "^11.0.4",
+    "better-auth": "^1.2.12",
+    "dayjs": "^1.11.13",
+    "hono": "^4.6.19",
+    "kysely": "^0.28.2",
+    "pg": "^8.13.1",
+    "prisma-kysely": "^1.8.0",
+    "resend": "^4.6.0",
+    "superjson": "^2.2.2",
+    "trpc-playground": "^1.0.4",
+    "ts-node": "^10.9.2",
+    "url-join": "^5.0.0",
+    "zod": "^3.25.51"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "dotenv-cli": "^7.3.0",
+    "@types/bun": "latest",
+    "@types/pg": "^8.11.11",
+    "@better-auth/cli": "^1.1.15",
+    "prisma": "^6.3.0",
+    "@repo/tsconfig": "workspace:*",
+    "tsx": "^4.19.1",
+    "typescript": "^5.8.3"
+  }
+}

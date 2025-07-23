@@ -1,0 +1,27 @@
+{
+  "name": "@repo/email",
+  "version": "0.0.18",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "build:lib_local": "npx tsup",
+    "build:lib_dev": "npx tsup",
+    "build:lib_prod": "npx tsup",
+    "lib_dev": "tsup --watch",
+    "libe_local": "tsup --watch",
+    "lib_prod": "tsup --watch"
+  },
+  "dependencies": {
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@repo/tsconfig": "workspace:*"
+  }
+}

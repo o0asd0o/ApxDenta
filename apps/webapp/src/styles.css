@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@import "@repo/ui/globals.css";
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Extralight.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Light.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Medium.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Semibold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope;
+  src: url("/fonts/Manrope-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: fontManrope Fallback;
+  src: local(Arial);
+  ascent-override: 99.89%;
+  descent-override: 23.74%;
+  line-gap-override: 9.89%;
+  size-adjust: 101.11%;
+}
+
+:root {
+  --font-manrope: "fontManrope", "fontManrope Fallback";
+}
+
+html {
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+  height: 100%;
+}
+
+body {
+  height: inherit;
+}
+
+#app {
+  height: 100%;
+}
+@source '../../../packages/ui';

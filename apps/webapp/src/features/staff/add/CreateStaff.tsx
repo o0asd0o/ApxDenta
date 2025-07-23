@@ -1,0 +1,204 @@
+import { DialogDrawer } from '@/components/DialogDrawer';
+import StepperComponent from '@/components/stepper/StepperComponent';
+import { useUploadFile } from '@/hooks/upload/useUploadFile';
+import { useTRPC } from '@/lib/trpc';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type {
+  AssignedServicesFormType,
+  DayOffsFormType,
+  StaffInfoFormType,
+  WorkingHoursFormType,
+} from '@repo/schemas';
+import { Button, Form, SheetClose } from '@repo/ui/components';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { type WritableDraft, produce } from 'immer';
+import { PlusIcon } from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
+import * as motion from 'motion/react-client';
+import React, { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import type { z } from 'zod';
+import { extractSpecialistIdFromValue } from '../__helpers';
+import type { AllFormsType, CreateStaffFormType } from '../__types';
+import {
+  useAdditionalDayOff,
+  useFormStepper,
+  useFormValues,
+  useStepperSteps,
+  useStepperUtls,
+} from './context/context';
+import { AssignedServicesForm } from './forms/AssignedServicesForm';
+import { DaysOffForm } from './forms/DaysOffForm';
+import { StaffInfoForm } from './forms/StaffInfoForm';
+import { WorkingHoursForm } from './forms/WorkingHoursForm';
+
+// TODO:
+// 1. form transition animation using framer-motion
+// 2. saving of all the details
+// 3. beautiful toast after success
+
+const CreateStaff: React.FC = () => {
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const stepper = useFormStepper();
+  const utils = useStepperUtls();
+  const steps = useStepperSteps();
+  const [formValues, setFormValues] = useFormValues();
+  const [additionDayOff] = useAdditionalDayOff();
+  const form = useForm({
+    mode: 'onTouched',
+    // @ts-ignore type mismatch
+    resolver: zodResolver(stepper.current.schema),
+  });
+
+  const trpc = useTRPC();
+
+  const queryClient = useQueryClient();
+
+  const { mutate: saveStaff, isPending } = useMutation(
+    trpc.staffs.createStaff.mutationOptions({
+      onSuccess: async () => {
+        form.reset();
+        setDrawerOpen(false);
+        toast.success('Staff created successfully!');
+
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: trpc.staffs.getAllStaffs.queryKey(),
+          }),
+          queryClient.invalidateQueries({ queryKey: ['staffList'] }),
+        ]);
+      },
+      onError: (error) => {
+        console.error('Error creating staff:', error);
+      },
+    }),
+  );
+
+  const [uploadFile] = useUploadFile();
+
+  const onSubmit = useCallback(
+    async (params: {
+      id: typeof stepper.current.id;
+      values: z.infer<typeof stepper.current.schema>;
+    }) => {
+      const { id, values: _values } = params;
+
+      const currentValues = _values as AllFormsType[keyof AllFormsType];
+      setFormValues?.(
+        produce((_draft) => {
+          const draft = _draft as WritableDraft<AllFormsType>;
+          // @ts-ignore type mismatch
+          draft[id] = currentValues;
+        }),
+      );
+
+      if (stepper.isLast) {
+        const avatar = formValues?.staffInfo?.file as File;
+        const savedFile = await uploadFile({ file: avatar });
+
+        saveStaff({
+          type: 'DOCTOR',
+          staffInfo: {
+            ...(formValues?.staffInfo as StaffInfoFormType),
+            file: { id: savedFile.id },
+            specialistId: extractSpecialistIdFromValue(formValues?.staffInfo),
+          },
+          assignedServices:
+            formValues?.assignedServices as AssignedServicesFormType,
+          dayOffs: currentValues as DayOffsFormType,
+          extraDayOffs: additionDayOff,
+          workingHours: formValues?.workingHours as WorkingHoursFormType,
+        });
+      } else {
+        stepper.next();
+      }
+    },
+    [setFormValues, saveStaff, uploadFile, formValues, additionDayOff, stepper],
+  );
+
+  const currentIndex = utils?.getIndex(stepper.current.id) || 0;
+
+  return (
+    <Form {...form}>
+      <DialogDrawer
+        open={drawerOpen}
+        setOpen={setDrawerOpen}
+        className="ml-auto"
+        title="Add new Doctor Staff"
+        actionText="Add Doctor"
+        mobileIcon={<PlusIcon className="size-5" />}
+        onSubmit={form.handleSubmit((values) =>
+          onSubmit({ id: stepper.current.id, values }),
+        )}
+        footer={
+          <>
+            {stepper.isFirst && (
+              <SheetClose>
+                <Button variant="ghost" className="w-[120px]" type="button">
+                  Cancel
+                </Button>
+              </SheetClose>
+            )}
+            {!stepper.isFirst && (
+              <Button
+                variant="ghost"
+                className="w-[120px]"
+                onClick={() => stepper?.prev()}
+                type="button"
+              >
+                Back
+              </Button>
+            )}
+            <Button
+              type="submit"
+              variant="primary"
+              className="w-[120px]"
+              disabled={isPending}
+              isLoading={isPending}
+              loadingText="Saving..."
+            >
+              {stepper.isLast ? 'Save' : 'Next'}
+            </Button>
+          </>
+        }
+      >
+        <div className="flex flex-col gap-6">
+          <StepperComponent
+            form={form}
+            currentIndex={currentIndex}
+            stepper={stepper}
+            stepsLength={steps?.length || 0}
+          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={stepper.current?.id || 'empty'}
+              initial={{ y: 5, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -5, opacity: 0 }}
+              transition={{ duration: 0.1 }}
+            >
+              {stepper?.switch({
+                assignedServices: () => (
+                  <AssignedServicesForm form={form as CreateStaffFormType} />
+                ),
+                dayOffs: () => (
+                  // ts
+                  <DaysOffForm form={form as CreateStaffFormType} />
+                ),
+                staffInfo: () => (
+                  <StaffInfoForm form={form as CreateStaffFormType} />
+                ),
+                workingHours: () => (
+                  <WorkingHoursForm form={form as CreateStaffFormType} />
+                ),
+              })}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </DialogDrawer>
+    </Form>
+  );
+};
+
+export default CreateStaff;
