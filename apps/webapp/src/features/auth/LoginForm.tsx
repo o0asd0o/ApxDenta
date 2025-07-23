@@ -45,7 +45,7 @@ export const LoginForm: React.FC = () => {
           alt="ApxDenta Logo"
         />
       </div>
-      <Card className="max-w-md w-[500px]">
+      <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
           <CardDescription className="text-xs md:text-sm">

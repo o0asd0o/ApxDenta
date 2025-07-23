@@ -48,7 +48,7 @@ export default function RegistrationForm() {
           alt="ApxDenta Logo"
         />
       </div>
-      <Card className="z-50 rounded-md rounded-t-none max-w-md w-[500px]">
+      <Card className="z-50 rounded-md rounded-t-none max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
           <CardDescription className="text-xs md:text-sm">
