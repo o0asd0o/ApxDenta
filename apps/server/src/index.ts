@@ -8,6 +8,7 @@ import { api, auth } from './domains';
 import { env } from './env';
 import { authCors, rateLimit, trpcCors } from './middlewares/cors';
 import type { AppType } from './types';
+import { cors } from 'hono/cors';
 
 const SERVER_PATHS = {
   ALL: '*',
@@ -19,6 +20,7 @@ const SERVER_PATHS = {
 const app = new Hono<AppType>({ strict: false })
   .get('/', (c) => c.text('Welcome to ApxDenta API! (c)'))
   .get('/healthcheck', (c) => c.text('OK'))
+  .options(SERVER_PATHS.ALL, cors())
   .use(SERVER_PATHS.ALL, requestId())
   .use(SERVER_PATHS.ALL, logger())
   .use(SERVER_PATHS.ALL, prettyJSON())
@@ -32,7 +34,8 @@ const app = new Hono<AppType>({ strict: false })
       router: api.trpcRouter,
       createContext: (c) => api.createTRPCContext({ headers: c.req.headers }),
     }),
-  );
+  )
+  
 
 if (process.env.NODE_ENV === 'development') {
   showRoutes(app, { verbose: true, colorize: true });
