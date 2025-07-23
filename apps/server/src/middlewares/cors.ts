@@ -1,13 +1,11 @@
-import { env } from '@/env';
 import { rateLimiter } from 'hono-rate-limiter';
 import { cors } from 'hono/cors';
 import { v4 as uuidV4 } from 'uuid';
 
-const trustedOrigins = [env.PUBLIC_WEB_URL].map((url) => new URL(url).origin);
+// const trustedOrigins = [env.PUBLIC_WEB_URL].map((url) => new URL(url).origin);
 
-console.log({ trustedOrigins });
 export const authCors = cors({
-  origin: trustedOrigins,
+  origin: '*', // trustedOrigins.at(0) || '*',
   credentials: true,
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['POST', 'GET', 'OPTIONS'],
@@ -16,7 +14,7 @@ export const authCors = cors({
 });
 
 export const trpcCors = cors({
-  origin: trustedOrigins,
+  origin: '*', //trustedOrigins.at(0) || '*',
   credentials: true,
 });
 
