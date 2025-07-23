@@ -21,6 +21,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
+import FloatingActionBar from '../FloatingActionBar';
 import { getColumnTitle } from './helpers';
 
 interface DataTableProps<TData extends { id: string }, TValue> {
@@ -50,8 +51,9 @@ export function DataTable<TData extends { id: string }, TValue>({
     getRowId: (row) => row.id as string,
   });
 
+  const state = table.getState().rowSelection;
   return (
-    <div className="rounded-md">
+    <div className="rounded-md relative">
       <Table className="">
         <TableHeader className="[&_tr]:border-none!">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -130,6 +132,12 @@ export function DataTable<TData extends { id: string }, TValue>({
           )}
         </TableBody>
       </Table>
+
+      <FloatingActionBar
+        selectedCount={Object.keys(state).filter((key) => state[key]).length}
+        onDelete={() => {}}
+        onClear={() => {}}
+      />
     </div>
   );
 }

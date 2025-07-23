@@ -348,6 +348,8 @@ model Staff {
   createdAssets        Asset[]
   createdAssetTransfer AssetTransfer[]
   createdPeripherals   Peripheral[]
+
+  @@index([firstName, lastName, createdAt(sort: Desc)], name: "idx_staff_name")
 }
 
 model DayOff {
@@ -376,6 +378,8 @@ model WorkSchedule {
 
   staff   Staff?  @relation(fields: [staffId], references: [id])
   staffId String?
+
+  @@index([day, staffId], name: "idx_work_schedule_day_staff")
 }
 
 model WorkScheduleSlice {
@@ -426,6 +430,8 @@ model Treatment {
 
   medicalServices  MedicalService[]
   cosmeticServices CosmeticService[]
+
+  @@index([name, createdAt(sort: Desc)], name: "idx_treatment_name")
 }
 
 model TreatmentComponent {

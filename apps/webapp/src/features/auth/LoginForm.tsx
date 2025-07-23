@@ -37,7 +37,14 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-dvh">
+    <div className="flex flex-col items-center justify-center h-dvh">
+      <div className="flex flex-col items-center mb-6">
+        <img
+          className="w-[160px]"
+          src="/images/apx-denta-banner-vertical.png"
+          alt="ApxDenta Logo"
+        />
+      </div>
       <Card className="max-w-md w-[500px]">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
