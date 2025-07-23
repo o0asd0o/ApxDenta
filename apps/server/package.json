@@ -2,7 +2,7 @@
   "name": "@repo/server",
   "scripts": {
     "dev": "dotenv -e .env.local -- bun run --hot src/index.ts --ignore-warnings",
-    "start": "bun run dist/src/index.js --ignore-warnings",
+    "start": "bun run src/index.ts --ignore-warnings",
     "dev:migrate": "dotenv -e .env.local -- bunx  @better-auth/cli migrate",
     "build": "tsc -b",
     "build:dev": "tsc -b",
