@@ -3,10 +3,9 @@ import { rateLimiter } from 'hono-rate-limiter';
 import { cors } from 'hono/cors';
 import { v4 as uuidV4 } from 'uuid';
 
-const trustedOrigins = [env.PUBLIC_WEB_URL, 'http://localhost:8080'].map(
-  (url) => new URL(url).origin,
-);
+const trustedOrigins = [env.PUBLIC_WEB_URL].map((url) => new URL(url).origin);
 
+console.log({ trustedOrigins });
 export const authCors = cors({
   origin: trustedOrigins,
   credentials: true,
