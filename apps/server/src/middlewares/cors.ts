@@ -19,6 +19,13 @@ export const trpcCors = cors({
   credentials: true,
 });
 
+export const optionsCors = cors({
+  origin: '*',
+  credentials: true,
+  allowHeaders: ['*'],
+  allowMethods: ['*'],
+});
+
 export const rateLimit = rateLimiter({
   windowMs: 5 * 60 * 1000,
   limit: 50,
