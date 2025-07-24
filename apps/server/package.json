@@ -2,7 +2,7 @@
   "name": "@repo/server",
   "scripts": {
     "dev": "dotenv -e .env.local -- bun run --hot src/index.ts --ignore-warnings",
-    "start": "bun run src/index.ts --ignore-warnings",
+    "start": "bun run dist/src/index.js --ignore-warnings",
     "dev:migrate": "dotenv -e .env.local -- bunx  @better-auth/cli migrate",
     "build": "tsc -b",
     "build:dev": "tsc -b",
@@ -18,7 +18,7 @@
     "@repo/domain": "workspace:*",
     "@trpc/server": "^11.0.4",
     "better-auth": "^1.2.12",
-    "hono": "^4.6.19",
+    "hono": "^4.8.5",
     "hono-rate-limiter": "^0.4.2",
     "kysely": "^0.28.2",
     "pg": "^8.13.1",
