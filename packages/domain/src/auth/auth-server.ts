@@ -20,7 +20,6 @@ export const createAuth = ({
   authSecret,
   googleCredentials,
 }: AuthOptions): AuthInstance => {
-  console.log({ webUrl });
   return betterAuth({
     secret: authSecret,
     trustedOrigins: [webUrl].map((url) => new URL(url).origin),

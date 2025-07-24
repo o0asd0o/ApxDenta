@@ -6,12 +6,12 @@ import { prettyJSON } from 'hono/pretty-json';
 import { requestId } from 'hono/request-id';
 import { api, auth } from './domains';
 import { env } from './env';
-import { rateLimit, trpcCors } from './middlewares/cors';
+import { authCors, rateLimit, trpcCors } from './middlewares/cors';
 import type { AppType } from './types';
 
 const SERVER_PATHS = {
   ALL: '*',
-  BETTER_AUTH: '/api/auth/**',
+  BETTER_AUTH: '/api/auth/*',
   TRPC: '/trpc/*',
   UPLOAD: '/upload',
 } as const;
@@ -23,9 +23,9 @@ const app = new Hono<AppType>({ strict: false })
   .use(SERVER_PATHS.ALL, logger())
   .use(SERVER_PATHS.ALL, prettyJSON())
   .use(SERVER_PATHS.ALL, rateLimit)
-  .use(SERVER_PATHS.BETTER_AUTH)
-  .use(SERVER_PATHS.TRPC, trpcCors)
+  .use(SERVER_PATHS.BETTER_AUTH, authCors)
   .on(['POST', 'GET'], SERVER_PATHS.BETTER_AUTH, (c) => auth.handler(c.req.raw))
+  .use(SERVER_PATHS.TRPC, trpcCors)
   .use(
     SERVER_PATHS.TRPC,
     trpcServer({
