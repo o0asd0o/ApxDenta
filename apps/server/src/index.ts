@@ -1,5 +1,6 @@
 import { trpcServer } from '@hono/trpc-server';
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { showRoutes } from 'hono/dev';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
@@ -8,7 +9,6 @@ import { api, auth } from './domains';
 import { env } from './env';
 import { authCors, rateLimit, trpcCors } from './middlewares/cors';
 import type { AppType } from './types';
-import { cors } from 'hono/cors';
 
 const SERVER_PATHS = {
   ALL: '*',
@@ -34,8 +34,7 @@ const app = new Hono<AppType>({ strict: false })
       router: api.trpcRouter,
       createContext: (c) => api.createTRPCContext({ headers: c.req.headers }),
     }),
-  )
-  
+  );
 
 if (process.env.NODE_ENV === 'development') {
   showRoutes(app, { verbose: true, colorize: true });
