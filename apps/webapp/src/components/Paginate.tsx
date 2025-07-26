@@ -38,7 +38,8 @@ const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
     <div
       className={cn(
         'flex items-center justify-between mt-4',
-        totalPages === 0 && 'hidden',
+        totalPages === 0 ||
+          (totalPages === 1 && state.pageSize === 10 && 'hidden'),
         className,
       )}
     >

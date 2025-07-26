@@ -9,7 +9,8 @@ type AllRoutes = keyof FileRoutesByTo;
 const ROUTE_LABEL_MAPPING: Record<AllRoutes, string> = {
   '': '',
   '/': '',
-  '/forgot-pasword': '',
+  '/forgot-password': '',
+  '/reset-password': '',
   '/login': '',
   '/register': '',
 
@@ -31,7 +32,7 @@ export default function Header() {
   const location = useLocation();
   return (
     <header className="grid grid-cols-2 md:grid-cols-3 h-15 md:h-18 shrink-0 justify-center items-center gap-2 border-b px-6 py-2">
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-2xl font-bold whitespace-nowrap">
         {ROUTE_LABEL_MAPPING[location.pathname as AllRoutes]}
       </h1>
       <SearchBox />

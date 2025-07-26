@@ -1,8 +1,8 @@
 {
   "name": "@repo/domain",
   "scripts": {
-    "build": "prisma generate -- tsc -b",
-    "build:dev": "prisma generate -- tsc -b",
+    "build": "prisma generate && tsc -b && echo 'Build complete'",
+    "build:dev": "prisma generate && tsc -b && echo 'Build complete'",
     "lib_dev": "tsup --watch",
     "dev:auth:migrate": "dotenv -e .env.local -- bunx @better-auth/cli migrate --config ./src/auth/config-cli.ts",
     "prisma:generate": "dotenv -e .env.local -- prisma generate",

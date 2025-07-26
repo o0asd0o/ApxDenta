@@ -70,14 +70,7 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
         )
       }
       refreshFunction={refetch}
-      pullDownToRefresh
-      pullDownToRefreshThreshold={50}
-      pullDownToRefreshContent={
-        <h3 className="text-center">&#8595; Pull down to refresh</h3>
-      }
-      releaseToRefreshContent={
-        <h3 className="text-center">&#8593; Release to refresh</h3>
-      }
+      pullDownToRefresh={false}
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {(flatten || []).map((staff) => (
