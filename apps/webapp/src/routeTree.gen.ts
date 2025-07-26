@@ -14,9 +14,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ProtectedLayoutImport } from './routes/_protected/layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProtectedDashboardImport } from './routes/_protected/dashboard'
+import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
 import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as authForgotPaswordImport } from './routes/(auth)/forgot-pasword'
+import { Route as authForgotPasswordImport } from './routes/(auth)/forgot-password'
 import { Route as ProtectedphysicalAssetStocksImport } from './routes/_protected/(physical-asset)/stocks'
 import { Route as ProtectedphysicalAssetPeripheralsImport } from './routes/_protected/(physical-asset)/peripherals'
 import { Route as ProtectedfinanceSalesImport } from './routes/_protected/(finance)/sales'
@@ -47,6 +48,12 @@ const ProtectedDashboardRoute = ProtectedDashboardImport.update({
   getParentRoute: () => ProtectedLayoutRoute,
 } as any)
 
+const authResetPasswordRoute = authResetPasswordImport.update({
+  id: '/(auth)/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const authRegisterRoute = authRegisterImport.update({
   id: '/(auth)/register',
   path: '/register',
@@ -59,9 +66,9 @@ const authLoginRoute = authLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const authForgotPaswordRoute = authForgotPaswordImport.update({
-  id: '/(auth)/forgot-pasword',
-  path: '/forgot-pasword',
+const authForgotPasswordRoute = authForgotPasswordImport.update({
+  id: '/(auth)/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -147,11 +154,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedLayoutImport
       parentRoute: typeof rootRoute
     }
-    '/(auth)/forgot-pasword': {
-      id: '/(auth)/forgot-pasword'
-      path: '/forgot-pasword'
-      fullPath: '/forgot-pasword'
-      preLoaderRoute: typeof authForgotPaswordImport
+    '/(auth)/forgot-password': {
+      id: '/(auth)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof authForgotPasswordImport
       parentRoute: typeof rootRoute
     }
     '/(auth)/login': {
@@ -166,6 +173,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof authRegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordImport
       parentRoute: typeof rootRoute
     }
     '/_protected/dashboard': {
@@ -286,9 +300,10 @@ const ProtectedLayoutRouteWithChildren = ProtectedLayoutRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof ProtectedLayoutRouteWithChildren
-  '/forgot-pasword': typeof authForgotPaswordRoute
+  '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
@@ -305,9 +320,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof ProtectedLayoutRouteWithChildren
-  '/forgot-pasword': typeof authForgotPaswordRoute
+  '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
@@ -325,9 +341,10 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_protected': typeof ProtectedLayoutRouteWithChildren
-  '/(auth)/forgot-pasword': typeof authForgotPaswordRoute
+  '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
+  '/(auth)/reset-password': typeof authResetPasswordRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/_protected/(clinic)/patients': typeof ProtectedclinicPatientsRoute
   '/_protected/(clinic)/reservations': typeof ProtectedclinicReservationsRoute
@@ -346,9 +363,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
-    | '/forgot-pasword'
+    | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
     | '/dashboard'
     | '/patients'
     | '/reservations'
@@ -364,9 +382,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
-    | '/forgot-pasword'
+    | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
     | '/dashboard'
     | '/patients'
     | '/reservations'
@@ -382,9 +401,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_protected'
-    | '/(auth)/forgot-pasword'
+    | '/(auth)/forgot-password'
     | '/(auth)/login'
     | '/(auth)/register'
+    | '/(auth)/reset-password'
     | '/_protected/dashboard'
     | '/_protected/(clinic)/patients'
     | '/_protected/(clinic)/reservations'
@@ -402,17 +422,19 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ProtectedLayoutRoute: typeof ProtectedLayoutRouteWithChildren
-  authForgotPaswordRoute: typeof authForgotPaswordRoute
+  authForgotPasswordRoute: typeof authForgotPasswordRoute
   authLoginRoute: typeof authLoginRoute
   authRegisterRoute: typeof authRegisterRoute
+  authResetPasswordRoute: typeof authResetPasswordRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ProtectedLayoutRoute: ProtectedLayoutRouteWithChildren,
-  authForgotPaswordRoute: authForgotPaswordRoute,
+  authForgotPasswordRoute: authForgotPasswordRoute,
   authLoginRoute: authLoginRoute,
   authRegisterRoute: authRegisterRoute,
+  authResetPasswordRoute: authResetPasswordRoute,
 }
 
 export const routeTree = rootRoute
@@ -427,9 +449,10 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_protected",
-        "/(auth)/forgot-pasword",
+        "/(auth)/forgot-password",
         "/(auth)/login",
-        "/(auth)/register"
+        "/(auth)/register",
+        "/(auth)/reset-password"
       ]
     },
     "/": {
@@ -451,14 +474,17 @@ export const routeTree = rootRoute
         "/_protected/(physical-asset)/stocks"
       ]
     },
-    "/(auth)/forgot-pasword": {
-      "filePath": "(auth)/forgot-pasword.tsx"
+    "/(auth)/forgot-password": {
+      "filePath": "(auth)/forgot-password.tsx"
     },
     "/(auth)/login": {
       "filePath": "(auth)/login.tsx"
     },
     "/(auth)/register": {
       "filePath": "(auth)/register.tsx"
+    },
+    "/(auth)/reset-password": {
+      "filePath": "(auth)/reset-password.tsx"
     },
     "/_protected/dashboard": {
       "filePath": "_protected/dashboard.tsx",

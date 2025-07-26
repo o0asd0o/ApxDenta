@@ -100,7 +100,7 @@ export const LoginForm: React.FC = () => {
               />
               <Label htmlFor="remember">Remember me</Label>
               <Link
-                to="/forgot-pasword"
+                to="/forgot-password"
                 className="ml-auto inline-block text-sm underline"
               >
                 Forgot your password?

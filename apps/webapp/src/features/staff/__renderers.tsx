@@ -7,7 +7,7 @@ import type { StaffColumnType } from './__types';
 
 export const renderWorkingDays = (value: { day: WorkingDay }[]) => {
   return (
-    <div className=" gap-1 inline-flex">
+    <div className="gap-1 flex flex-wrap">
       {Object.keys(BASE_SCHEDULES).map((sched) => {
         const hit = value.some((item) => item.day === (sched as WorkingDay));
 
