@@ -1,7 +1,7 @@
 import { SidebarMenuButton, useSidebar } from '@repo/ui/components';
 import { Link } from '@tanstack/react-router';
 import type React from 'react';
-import type { MenuBase, MenuItem } from '../types';
+import type { MenuBase, MenuItem } from '../__types';
 
 type Props = {
   item: (MenuItem & MenuBase) | MenuItem;

@@ -5,9 +5,12 @@ import { Button, V2 } from '@repo/ui/components';
 import { EditIcon, EyeIcon, MoreVertical, Trash2Icon } from 'lucide-react';
 import type { StaffColumnType } from './__types';
 
-export const renderWorkingDays = (value: { day: WorkingDay }[]) => {
+export const renderWorkingDays = (
+  value: { day: WorkingDay }[],
+  className?: string,
+) => {
   return (
-    <div className="gap-1 flex flex-wrap">
+    <div className={cn('gap-1 flex flex-wrap', className)}>
       {Object.keys(BASE_SCHEDULES).map((sched) => {
         const hit = value.some((item) => item.day === (sched as WorkingDay));
 

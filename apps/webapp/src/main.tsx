@@ -43,7 +43,7 @@ const App: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center h-dvh">
+      <div className="flex items-center justify-center h-dvh bg-card">
         <Loader2 className="size-10 animate-spin" />
       </div>
     );

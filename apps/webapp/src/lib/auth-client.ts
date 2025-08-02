@@ -12,6 +12,8 @@ export const {
   resetPassword,
   useSession,
   organization,
+  useListOrganizations,
+  useActiveOrganization,
 } = authClient;
 
 // YOU STOPPED AT CREATING ORGANIZATION
@@ -28,6 +30,7 @@ const createOrg = () => {
     name: 'New Organization',
     slug: 'new-organization',
     logo: 'https://example.com/logo.png',
+    slogan: 'Something magical',
     metadata: {
       description: 'This is a new organization created via the auth client.',
       address: {

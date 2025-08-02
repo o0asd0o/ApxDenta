@@ -38,14 +38,19 @@ export const LoginForm: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
-      <div className="flex flex-col items-center mb-6">
+      <div className="flex items-center justify-center mb-6 gap-2">
         <img
-          className="w-[160px]"
-          src="/images/apx-denta-banner-vertical.png"
+          className="w-[50px] mt-[-5px]"
+          src="/images/apxdenta-logo.png"
           alt="ApxDenta Logo"
         />
+        <img
+          className="w-[160px]"
+          src="/images/apx-denta-string-only.png"
+          alt="ApxDenta Logo Text"
+        />
       </div>
-      <Card className="max-w-md w-full">
+      <Card className="max-w-md w-full bg-white">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
           <CardDescription className="text-xs md:text-sm">
