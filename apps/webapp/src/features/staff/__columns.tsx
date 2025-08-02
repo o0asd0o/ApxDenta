@@ -88,7 +88,7 @@ export const columns: ColumnDef<StaffColumnType>[] = [
     header: 'Working Days',
     cell: ({ cell }) => {
       const value = cell.getValue<{ day: WorkingDay }[]>();
-      return renderWorkingDays(value);
+      return renderWorkingDays(value, 'flex-nowrap');
     },
   },
   {

@@ -1,4 +1,4 @@
-import type { PaginationState } from '@/components/types';
+import type { PaginationState } from '@/components/__types';
 import type { Staff, StaffStatus, WorkingDay } from '@repo/domain/db';
 import type {
   AssignedServicesFormType,

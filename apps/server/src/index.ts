@@ -7,7 +7,7 @@ import { requestId } from 'hono/request-id';
 import { api, auth } from './domains';
 import { env } from './env';
 import { authCors, rateLimit, trpcCors } from './middlewares/cors';
-import type { AppType } from './types';
+import type { AppType } from './__types';
 
 const SERVER_PATHS = {
   ALL: '*',

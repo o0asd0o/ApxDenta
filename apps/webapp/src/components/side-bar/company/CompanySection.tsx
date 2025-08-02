@@ -1,3 +1,8 @@
+import {
+  organization,
+  useActiveOrganization,
+  useListOrganizations,
+} from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@repo/ui/components';
 import type React from 'react';
@@ -9,8 +14,23 @@ type Props = {
 
 export const CompanySection: React.FC<Props> = () => {
   const { state, isMobile } = useSidebar();
+  const { data: activeOrg } = useActiveOrganization();
+  const { data: organizations } = useListOrganizations();
+
+  console.log({ activeOrg, organizations });
+
+  const create = () => {
+    // Uncomment to create a new organization
+    organization.create({
+      name: 'Avicena Clinic',
+      slug: 'avicena-clinic',
+      logo: '/images/avicena-logo.png',
+    });
+    console.log('Create organization');
+  };
+
   return (
-    <div className="pt-2">
+    <div className={cn(state === 'collapsed' && 'ml-1')}>
       <div
         className={cn(
           'gap-2 px-2 py-1.5 items-center border border-solid border-border rounded-md overflow-hidden relative grid grid-cols-[20px_auto]',

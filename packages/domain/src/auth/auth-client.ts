@@ -16,6 +16,16 @@ export const createAuthClient = ({ apiBaseUrl }: AuthClientOptions) => {
       organizationClient({
         ac: accessControl,
         roles: { genStaff, admin, doctor },
+        schema: {
+          organization: {
+            additionalFields: {
+              address: { type: 'string', required: false },
+              lat: { type: 'number', required: false },
+              long: { type: 'number', required: false },
+              slogan: { type: 'string', required: true },
+            },
+          },
+        },
       }),
     ],
   });

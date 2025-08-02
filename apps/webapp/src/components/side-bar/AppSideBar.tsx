@@ -12,6 +12,7 @@ import {
   useSidebar,
 } from '@repo/ui/components/sidebar';
 import { useLocation } from '@tanstack/react-router';
+import { debounce } from 'lodash';
 import {
   CalendarCheck,
   ChartColumnBig,
@@ -27,11 +28,13 @@ import {
   WalletCards,
   Wrench,
 } from 'lucide-react';
-import type { MenuItem } from '../types';
-import { CompanySection } from './CompanySection';
+import { useCallback } from 'react';
+import type { MenuItem } from '../__types';
+import { UserMenu } from '../header/UserMenu';
 import { SideBarButton } from './SideBarButton';
 import { SideBarLogo } from './SideBarLogo';
 import { SideTrigger } from './SideTrigger';
+import { CompanySection } from './company/CompanySection';
 
 const MENU_LIST: MenuItem[] = [
   {
@@ -125,15 +128,22 @@ export const AppSideBar = () => {
   const { toggleSidebar } = useSidebar();
   const isMobile = useIsMobile();
 
-  console.log({ isMobile });
+  const debouncedToggle = useCallback(debounce(toggleSidebar, 100), []);
+
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
+      <SidebarHeader className="h-15 md:h-18 justify-center border-b">
         <SideTrigger />
         <SideBarLogo />
-        <CompanySection name="Avicena Clinic" slogan="845 Euclid Avenue, CA" />
       </SidebarHeader>
-      <SidebarContent className="gap-3 mt-3">
+
+      <SidebarContent className="gap-3 pt-3 pb-2">
+        <div className="px-2">
+          <CompanySection
+            name="Avicena Clinic"
+            slogan="845 Euclid Avenue, CA"
+          />
+        </div>
         {MENU_LIST.map((menu) => {
           if (menu.subMenu && !menu.path) {
             return (
@@ -146,8 +156,7 @@ export const AppSideBar = () => {
                         key={`${item.path}-${item.title}`}
                         pathname={location.pathname}
                         item={item}
-                        
-                        {...(isMobile && { onClick: () => toggleSidebar() })}
+                        {...(isMobile && { onClick: () => debouncedToggle() })}
                       />
                     ))}
                   </SidebarMenu>
@@ -163,7 +172,7 @@ export const AppSideBar = () => {
                   key={`${menu.path}-${menu.title}`}
                   pathname={location.pathname}
                   item={menu}
-                  {...(isMobile && { onClick: () => toggleSidebar() })}
+                  {...(isMobile && { onClick: () => debouncedToggle() })}
                 />
               </SidebarMenuItem>
             </SidebarMenu>
@@ -177,13 +186,15 @@ export const AppSideBar = () => {
                 key={`${menu.path}-${menu.title}`}
                 pathname={location.pathname}
                 item={menu}
-                {...(isMobile && { onClick: () => toggleSidebar() })}
+                {...(isMobile && { onClick: () => debouncedToggle() })}
               />
             </SidebarMenuItem>
           </SidebarMenu>
         ))}
       </SidebarContent>
-      <SidebarSeparator />
+      <div className="flex md:hidden items-center p-2 [&>button]:w-full! justify-center gap-2 divide-accent-foreground border-t border-s-gray-200">
+        <UserMenu />
+      </div>
     </Sidebar>
   );
 };

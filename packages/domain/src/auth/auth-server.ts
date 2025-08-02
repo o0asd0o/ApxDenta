@@ -18,7 +18,7 @@ export interface AuthOptions {
 
 export type AuthInstance = ReturnType<typeof createAuth>;
 
-export const createAuth = ({
+export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
   webUrl,
   db,
   authSecret,
@@ -76,6 +76,16 @@ export const createAuth = ({
       organization({
         ac: accessControl,
         roles: { genStaff, admin, doctor },
+        schema: {
+          organization: {
+            additionalFields: {
+              address: { type: 'string', required: false },
+              lat: { type: 'number', required: false },
+              long: { type: 'number', required: false },
+              slogan: { type: 'string', required: true },
+            },
+          },
+        },
         async sendInvitationEmail(data) {
           // await resend.emails.send({
           //   from: process.env.RESEND_EMAIL as string,

@@ -1,11 +1,11 @@
 import FilterButton from '@/components/FilterButton';
+import type { PaginationState } from '@/components/__types';
 import {
   List,
   ListItem,
   Root,
   TabContent,
 } from '@/components/tabs/NavigationTabs';
-import type { PaginationState } from '@/components/types';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
