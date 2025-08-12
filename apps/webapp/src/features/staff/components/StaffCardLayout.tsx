@@ -83,7 +83,7 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
         )}
         {!isLoading && flatten.length === 0 && (
           <div className="col-span-full text-center text-gray-400 py-10">
-            No staff found.
+            No results found.
           </div>
         )}
       </div>

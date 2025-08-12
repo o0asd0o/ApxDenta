@@ -12,7 +12,6 @@ import {
   useSidebar,
 } from '@repo/ui/components/sidebar';
 import { useLocation } from '@tanstack/react-router';
-import { debounce } from 'lodash';
 import {
   CalendarCheck,
   ChartColumnBig,
@@ -28,7 +27,6 @@ import {
   WalletCards,
   Wrench,
 } from 'lucide-react';
-import { useCallback } from 'react';
 import type { MenuItem } from '../__types';
 import { UserMenu } from '../header/UserMenu';
 import { SideBarButton } from './SideBarButton';
@@ -128,7 +126,7 @@ export const AppSideBar = () => {
   const { toggleSidebar } = useSidebar();
   const isMobile = useIsMobile();
 
-  const debouncedToggle = useCallback(debounce(toggleSidebar, 100), []);
+  // const debouncedToggle = useCallback(debounce(toggleSidebar, 100), []);
 
   return (
     <Sidebar collapsible="icon">
@@ -156,7 +154,9 @@ export const AppSideBar = () => {
                         key={`${item.path}-${item.title}`}
                         pathname={location.pathname}
                         item={item}
-                        {...(isMobile && { onClick: () => debouncedToggle() })}
+                        {...(isMobile && {
+                          onClick: () => setTimeout(toggleSidebar, 100),
+                        })}
                       />
                     ))}
                   </SidebarMenu>
@@ -172,7 +172,9 @@ export const AppSideBar = () => {
                   key={`${menu.path}-${menu.title}`}
                   pathname={location.pathname}
                   item={menu}
-                  {...(isMobile && { onClick: () => debouncedToggle() })}
+                  {...(isMobile && {
+                    onClick: () => setTimeout(toggleSidebar, 100),
+                  })}
                 />
               </SidebarMenuItem>
             </SidebarMenu>
@@ -186,7 +188,9 @@ export const AppSideBar = () => {
                 key={`${menu.path}-${menu.title}`}
                 pathname={location.pathname}
                 item={menu}
-                {...(isMobile && { onClick: () => debouncedToggle() })}
+                {...(isMobile && {
+                  onClick: () => setTimeout(toggleSidebar, 100),
+                })}
               />
             </SidebarMenuItem>
           </SidebarMenu>

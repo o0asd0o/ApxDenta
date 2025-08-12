@@ -41,10 +41,12 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         loading={isLoading}
         columns={columns}
       />
-      <Paginate
-        listCount={staffList?.count || 0}
-        pagination={{ setState: setPagination, state: pagination }}
-      />
+      {staffList?.count !== 0 && (
+        <Paginate
+          listCount={staffList?.count || 0}
+          pagination={{ setState: setPagination, state: pagination }}
+        />
+      )}
     </div>
   );
 };
