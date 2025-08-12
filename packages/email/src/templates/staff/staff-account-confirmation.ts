@@ -25,48 +25,46 @@ export const staffAccountConfirmation = ({
 
   return templateShell(
     /*html*/ `
-      <div class="header">
+      <div style="padding:1.35rem;padding-bottom:0;">
         <img
           src="https://i.postimg.cc/kgBFbthG/apx-denta.png"
           alt="ApxDenta"
-          class="logo"
-          width="80"
+          style="width:80px;height:auto;display:block;"
         />
       </div>
 
       <!-- Main content -->
-      <div class="content">
-        <p class="text ">Hi ${firstName},</p>
+      <div style="padding:0.625rem 1.25rem;width:100%;box-sizing:border-box;">
+        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">Hi ${firstName},</p>
 
-        <p class="text">
-          Please confirm your staff account registration by clicking the link
-          below:
+        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
+          Please confirm your staff account registration by clicking the link below:
         </p>
 
         <a
           href="https://www.apxdenta.trackd.cc/register?staffId=${staffId}"
-          class="button"
+          style="display:inline-block;width:calc(100% - 22px);background-color:#4258eb;border-radius:0.375rem;color:#fff;font-size:1rem;text-decoration:none;text-align:center;padding:0.75rem;margin:0.25rem 0 1em 0;box-sizing:border-box;"
         >
           Confirm your account
         </a>
 
-        <p class="text">
+        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
           Remember to use a password that is both strong and unique to your
           ApxDenta account. To learn more about how to create a strong and
           unique password,
-          <a href="https://www.apxdenta.trackd.cc" class="link">
+          <a href="https://www.apxdenta.trackd.cc" style="color:#4258eb;text-decoration:underline;">
             click here.
           </a>
         </p>
 
-        <p class="text">
+        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
           Still have questions? Please contact
-          <a href="https://www.apxdenta.trackd.cc" class="link">
+          <a href="https://www.apxdenta.trackd.cc" style="color:#4258eb;text-decoration:underline;">
             ApxDenta Support
           </a>
         </p>
 
-        <p class="text pt-10">
+        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;padding-top:2.5rem;">
           Thanks,<br />
           ApxDenta Support Team
         </p>
