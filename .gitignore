@@ -18,6 +18,7 @@ storybook-static/
 .next/
 out/
 next-env.d.ts
+routeTree.gen.ts
 
 # production
 build

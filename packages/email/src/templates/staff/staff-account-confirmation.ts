@@ -29,7 +29,7 @@ export const staffAccountConfirmation = ({
         <img
           src="https://d1o0iervdpova7.cloudfront.net/apx-denta-string-only.png"
           alt="ApxDenta"
-          style="width:auto;height:80px;display:block;"
+          style="width:auto;height:30px;display:block;"
         />
       </div>
 

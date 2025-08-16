@@ -123,6 +123,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             )}
           >
             <button
+              tabIndex={-1}
               aria-label="Change password visibility"
               className={cn(
                 // base

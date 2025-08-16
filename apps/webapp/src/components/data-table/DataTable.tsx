@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import {
-  Loader,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -28,6 +28,7 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
+  onDeleteItems?: (itemIds: string[]) => Promise<void>;
   sort?: {
     sorting: SortingState;
     setSorting: OnChangeFn<SortingState>;
@@ -39,6 +40,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   data,
   loading,
   sort,
+  onDeleteItems,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -108,26 +110,27 @@ export function DataTable<TData extends { id: string }, TValue>({
             ))
           ) : (
             <>
-              {loading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-[567px] text-center"
+              {loading &&
+                [...Array(8)].map((_, rowIdx) => (
+                  <TableRow
+                    key={`rowId${
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                      rowIdx
+                    }`}
                   >
-                    <Loader className="[&>svg]:size-[50px] [&>svg]:text-gray-300" />
-                  </TableCell>
-                </TableRow>
-              )}
-              {!loading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
+                    {[...Array(columns.length)].map((_, colIdx) => (
+                      <TableCell
+                        key={`colId${
+                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                          colIdx
+                        }`}
+                        className="first:pl-3 last:pr-3"
+                      >
+                        <Skeleton className="h-6 w-full rounded" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
             </>
           )}
         </TableBody>
@@ -135,8 +138,13 @@ export function DataTable<TData extends { id: string }, TValue>({
 
       <FloatingActionBar
         selectedCount={Object.keys(state).filter((key) => state[key]).length}
-        onDelete={() => {}}
-        onClear={() => {}}
+        onDelete={async () => {
+          if (onDeleteItems) {
+            await onDeleteItems(Object.keys(table.getState().rowSelection));
+          }
+          table.setRowSelection({});
+        }}
+        onClear={() => table.setRowSelection({})}
       />
     </div>
   );
