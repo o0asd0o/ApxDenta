@@ -27,7 +27,7 @@ export const staffAccountConfirmation = ({
     /*html*/ `
       <div style="padding:1.35rem;padding-bottom:0;">
         <img
-          src="https://i.postimg.cc/kgBFbthG/apx-denta.png"
+          src="https://d1o0iervdpova7.cloudfront.net/apx-denta-string-only.png"
           alt="ApxDenta"
           style="width:80px;height:auto;display:block;"
         />
