@@ -50,11 +50,16 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
     session: {
       expiresIn: 60 * 60 * 24 * 1,
       updateAge: 60 * 60 * 4,
+      cookieCache: {
+        enabled: true,
+        maxAge: 1 * 60 * 60, // 1 hour
+      },
     },
+
     emailVerification: {
+      autoSignInAfterVerification: true,
       async sendVerificationEmail({ user, token }) {
         const email = user.email;
-
         await mailer.sendEmail({
           template: 'email-verification',
           to: email,
@@ -71,6 +76,10 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
     },
     emailAndPassword: {
       enabled: true,
+      autoSignIn: true,
+      minPasswordLength: 8,
+      revokeSessionsOnPasswordReset: true,
+      resetPasswordTokenExpiresIn: 3600, // 1 hour
       requireEmailVerification: true,
 
       async sendResetPassword({ user, token }) {

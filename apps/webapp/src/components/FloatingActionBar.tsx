@@ -2,10 +2,11 @@ import { cn } from '@/lib/utils';
 import { Button, useSidebar } from '@repo/ui/components';
 import { Trash2 } from 'lucide-react';
 import type React from 'react';
+import { useState } from 'react';
 
 type Props = {
   selectedCount: number;
-  onDelete: () => void;
+  onDelete: () => Promise<void>;
   onClear: () => void;
 };
 
@@ -15,6 +16,7 @@ const FloatingActionBar: React.FC<Props> = ({
   onClear,
 }) => {
   const { isMobile, open } = useSidebar();
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   if (selectedCount === 0) return null;
 
@@ -42,7 +44,13 @@ const FloatingActionBar: React.FC<Props> = ({
           <Button
             className="h-8 text-xs md:text-sm"
             variant="destructive"
-            onClick={onDelete}
+            isLoading={deleting}
+            loadingText="Deleting..."
+            onClick={async () => {
+              setDeleting(true);
+              await onDelete();
+              setDeleting(false);
+            }}
           >
             <Trash2 className="h-4 w-4 mr-1" />
             Delete

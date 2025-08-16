@@ -21,7 +21,7 @@ import reportWebVitals from './reportWebVitals.ts';
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { ...getContext(), auth: null, trpc: null },
+  context: { ...getContext(), auth: undefined, trpc: null },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,

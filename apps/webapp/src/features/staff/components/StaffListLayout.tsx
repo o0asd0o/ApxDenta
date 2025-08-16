@@ -40,6 +40,7 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         sort={{ sorting, setSorting }}
         loading={isLoading}
         columns={columns}
+        onDeleteItems={(items) => Promise.resolve(console.log({ items }))}
       />
       {staffList?.count !== 0 && (
         <Paginate
