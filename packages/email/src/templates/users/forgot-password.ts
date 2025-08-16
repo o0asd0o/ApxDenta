@@ -19,7 +19,7 @@ export const forgotPassword = ({
         <img
           src="https://d1o0iervdpova7.cloudfront.net/apx-denta-string-only.png"
           alt="ApxDenta"
-          style="width:80px;height:auto;display:block;"
+          style="width:auto;height:80px;display:block;"
         />
       </div>
 
