@@ -54,7 +54,7 @@ export const DaySchedule: React.FC<Props> = ({
             onSelect={(value) => onChange(value, 'from')}
             disabledGt={end}
           />
-          <span className="text-sm text-gray-500">to</span>
+          <span className="text-xs xs:text-sm text-gray-500 ">to</span>
           <TimeSelector
             value={schedule.to}
             onSelect={(value) => onChange(value, 'to')}
@@ -97,8 +97,10 @@ const TimeSelector: React.FC<TimeProps> = ({
       onValueChange={(v) => onSelect(Number.parseInt(v))}
     >
       <SelectTrigger
-        icon={<Clock8 className="opacity-50 size-4 text-xs" />}
-        className="w-[130px] flex h-[32px] [&>span]:text-[13px]"
+        icon={
+          <Clock8 className="xs:block hidden opacity-50 size-4 text-[11px] xs:text-xs" />
+        }
+        className="w-[94px] xs:w-[130px] px-1.5 xs:p-2 flex h-[32px] [&>span]:text-[12px] xs:[&>span]:text-[13px]"
       >
         <SelectValue placeholder="Pick time" />
       </SelectTrigger>

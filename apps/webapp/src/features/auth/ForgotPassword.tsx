@@ -40,15 +40,20 @@ export const ForgotPasswordForm: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="flex flex-col items-center justify-center h-dvh">
-        <div className="flex flex-col items-center mb-6">
+      <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
+        <div className="flex items-center justify-center mb-6 gap-2">
           <img
-            className="w-[160px]"
-            src="/images/apx-denta-banner-vertical.png"
+            className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
+            src="/images/apxdenta-logo.png"
             alt="ApxDenta Logo"
           />
+          <img
+            className="w-[140px] xs:w-[160px]"
+            src="/images/apx-denta-string-only.png"
+            alt="ApxDenta Logo Text"
+          />
         </div>
-        <Card className="max-w-md w-full">
+        <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg md:text-xl">
               Check Your Email
@@ -112,15 +117,20 @@ export const ForgotPasswordForm: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh">
-      <div className="flex flex-col items-center mb-6">
+    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
+      <div className="flex items-center justify-center mb-6 gap-2">
         <img
-          className="w-[160px]"
-          src="/images/apx-denta-banner-vertical.png"
+          className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
+          src="/images/apxdenta-logo.png"
           alt="ApxDenta Logo"
         />
+        <img
+          className="w-[140px] xs:w-[160px]"
+          src="/images/apx-denta-string-only.png"
+          alt="ApxDenta Logo Text"
+        />
       </div>
-      <Card className="max-w-md w-full">
+      <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Forgot Password</CardTitle>
           <CardDescription className="text-xs md:text-sm">

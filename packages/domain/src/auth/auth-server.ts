@@ -1,10 +1,12 @@
 import type { DatabaseInstance } from '@/db/client';
 import { betterAuth } from 'better-auth';
 import { organization } from 'better-auth/plugins';
+import { getOrganizationIdForUser } from './db-operations/organization';
 import { accessControl } from './permissions/__common';
 import { admin } from './permissions/admin';
 import { doctor } from './permissions/doctor';
 import { genStaff } from './permissions/genStaff';
+import { owner } from './permissions/owner';
 
 export interface AuthOptions {
   webUrl: string;
@@ -25,6 +27,20 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
   googleCredentials,
 }: AuthOptions) => {
   return betterAuth({
+    databaseHooks: {
+      session: {
+        create: {
+          async before(session) {
+            const activeOrganizationId = await getOrganizationIdForUser(
+              db,
+              session.userId,
+            );
+
+            return { data: { ...session, activeOrganizationId } };
+          },
+        },
+      },
+    },
     secret: authSecret,
     trustedOrigins: [webUrl].map((url) => new URL(url).origin),
     database: { db, type: 'postgres' },
@@ -55,6 +71,7 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
       enabled: true,
       autoSignIn: true,
       requireEmailVerification: true,
+
       async sendResetPassword(data, request) {
         console.log({ data, request });
         // Send an email to the user with a link to reset their password
@@ -74,8 +91,9 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
     },
     plugins: [
       organization({
+        organizationDeletion: { disabled: false },
         ac: accessControl,
-        roles: { genStaff, admin, doctor },
+        roles: { genStaff, admin, doctor, owner },
         schema: {
           organization: {
             additionalFields: {

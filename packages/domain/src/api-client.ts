@@ -16,14 +16,8 @@ export const createTrpcClient = ({ serverUrl }: APIClientOptions) => {
         fetch(url, options) {
           return fetch(url, {
             ...options,
-            /**
-             * https://trpc.io/docs/client/cors
-             *
-             * This is required if you are deploying your frontend (web)
-             * and backend (server) on two different domains.
-             */
             credentials: 'include',
-          });
+          } as RequestInit);
         },
       }),
     ],

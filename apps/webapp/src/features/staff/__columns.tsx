@@ -61,6 +61,7 @@ export const columns: ColumnDef<StaffColumnType>[] = [
       return (
         <PersonalInfo
           id={staff.id}
+          profile={staff.avatar?.url as string}
           name={
             staff.account?.user.name || `${staff.firstName} ${staff.lastName}`
           }

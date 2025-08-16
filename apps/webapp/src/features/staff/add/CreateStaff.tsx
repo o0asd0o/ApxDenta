@@ -64,6 +64,9 @@ const CreateStaff: React.FC = () => {
 
         await Promise.all([
           queryClient.invalidateQueries({
+            queryKey: trpc.staffs.getTotalStaffs.queryKey(),
+          }),
+          queryClient.invalidateQueries({
             queryKey: trpc.staffs.getAllStaffs.queryKey(),
           }),
           queryClient.invalidateQueries({ queryKey: ['staffList'] }),

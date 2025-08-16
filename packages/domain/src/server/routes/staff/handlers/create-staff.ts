@@ -31,7 +31,11 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
     const returnedStaff = await ctx.db
       .transaction()
       .execute(async (transaction) => {
-        const staff = await staffDbActions.saveStaff(transaction, input);
+        const staff = await staffDbActions.saveStaff(
+          transaction,
+          input,
+          ctx.organizationId,
+        );
 
         const staffDbAfterCreate = new staffDbActions.StaffDbAfterSaveActions(
           transaction,
@@ -58,8 +62,6 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
       });
 
     await sendStaffConfirmationEmail(returnedStaff, input.staffInfo.email);
-
-    return { status: 'SUCCESS' as const, data: returnedStaff };
   } catch (error) {
     console.error('Error creating staff:', error);
     throw errors.serverError();

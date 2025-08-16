@@ -82,6 +82,7 @@ class StaffDbAfterSaveActions {
 const saveStaff = async (
   transaction: Transaction<DB>,
   input: CreateStaffParams['input'],
+  orgId: string,
 ) => {
   return transaction
     .insertInto('Staff')
@@ -95,19 +96,24 @@ const saveStaff = async (
       address: input.staffInfo.address,
       employmentType: input.staffInfo.type,
       specialistsRecordId: input.staffInfo.specialistId,
+      avatarId: input.staffInfo.file?.id,
+      organizationId: orgId,
       ...GET_DETAULT_DATES(),
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 };
 
-export const getAllStaff = async (
-  db: DatabaseInstance,
-  input: GetAllStaffsProps['input'],
-) => {
+export const getAllStaff = async (context: GetAllStaffsProps) => {
+  const {
+    ctx: { db, organizationId },
+    input,
+  } = context;
+
   let query = db
     .selectFrom('Staff')
     .selectAll()
+    .where('Staff.organizationId', '=', organizationId)
     .select((eb) => {
       return jsonObjectFrom(
         eb
@@ -115,6 +121,14 @@ export const getAllStaff = async (
           .select(['SpecialistsRecord.title', 'SpecialistsRecord.code'])
           .whereRef('SpecialistsRecord.id', '=', 'Staff.specialistsRecordId'),
       ).as('specialistRecord');
+    })
+    .select((eb) => {
+      return jsonObjectFrom(
+        eb
+          .selectFrom('File')
+          .select(['File.url'])
+          .whereRef('File.id', '=', 'Staff.avatarId'),
+      ).as('avatar');
     })
     .select((eb) => {
       return jsonArrayFrom(
@@ -206,10 +220,12 @@ export const getAllStaff = async (
 
 export const getAllStaffCount = async (
   db: DatabaseInstance,
+  orgId: string,
   staffType?: StaffType,
 ) => {
   let query = db
     .selectFrom('Staff')
+    .where('Staff.organizationId', '=', orgId)
     .select((eb) => eb.fn.countAll().as('count'));
 
   if (staffType) {

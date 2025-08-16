@@ -29,8 +29,8 @@ const inputSchema = z
 
 export type GetAllStaffsProps = HandlerType<z.infer<typeof inputSchema>>;
 
-const handler = async ({ input, ctx }: GetAllStaffsProps) => {
-  const result = await staffDbActions.getAllStaff(ctx.db, input);
+const handler = async (context: GetAllStaffsProps) => {
+  const result = await staffDbActions.getAllStaff(context);
 
   return {
     status: 'SUCCESS' as const,

@@ -41,7 +41,9 @@ const DayOffCheckCard: React.FC<Props> = ({
           className="size-4"
         />
         <div className="flex flex-col gap-1">
-          <span className="text-sm truncate max-w-[250px]">{item.name}</span>
+          <span className="text-sm truncate max-w-[150px] xxs:max-w-[100px] xs:max-w-[250px]">
+            {item.name}
+          </span>
           <span className="text-xs text-gray-400">
             {fromDate === toDate ? `${fromDate}` : `${fromDate} to ${toDate}`}
           </span>

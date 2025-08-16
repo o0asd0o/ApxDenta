@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
   SidebarMenuButton,
 } from '@repo/ui/components';
-import { useLocation, useNavigate } from '@tanstack/react-router';
 import {
   BellIcon,
   ChevronDown,
@@ -21,23 +20,13 @@ import {
   UserCircleIcon,
 } from 'lucide-react';
 
-// const user = {
-//   name: 'Darrell Steward',
-//   role: 'Superadmin',
-//   avatar: '/avatars/shadcn.jpg',
-// };
-
 export const UserMenu = () => {
   const { data: session } = useSession();
-  const navigate = useNavigate();
-  const location = useLocation();
   const handleSignOut = async () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
-          setTimeout(() => {
-            navigate({ to: '/', search: { redirect: location.href } });
-          }, 150);
+          window.location.reload();
         },
       },
     });
