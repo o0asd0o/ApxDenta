@@ -1,5 +1,12 @@
 import { EMPLOYMENT_TYPE_BADGES } from '@/constants/badges';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@repo/ui/components';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@repo/ui/components';
 import {
   BriefcaseMedical,
   Calendar,
@@ -19,10 +26,20 @@ const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
       className="bg-white rounded-lg shadow p-4 flex flex-col gap-3 border relative"
     >
       <div className="flex items-center gap-3">
-        <div className="min-w-12 w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-xl font-bold text-white">
+        <Avatar className="size-12">
+          <AvatarImage
+            src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${staff.avatar?.url}`}
+            alt={[staff.firstName?.[0], staff.lastName?.[0]].join('')}
+          />
+          <AvatarFallback className="bg-amber-500 text-white font-bold">
+            {[staff.firstName?.[0], staff.lastName?.[0]].join('').toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+
+        {/* <div className="min-w-12 w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-xl font-bold text-white">
           {staff.firstName?.[0]}
           {staff.lastName?.[0]}
-        </div>
+        </div> */}
         <div className="flex min-w-0 flex-col gap-0 ">
           <div className="font-bold text-lg flex items-center gap-3 pr-9">
             <span className="truncate">

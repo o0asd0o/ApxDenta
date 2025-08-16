@@ -13,44 +13,69 @@ import {
   Input,
   Label,
 } from '@repo/ui/components';
+import { useMutation } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import type React from 'react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [loadingSocial, setLoadingSocial] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   const { redirect } = Route.useSearch();
 
-  const loginUser = async () => {
-    await signIn.email(
-      { email, password },
-      {
-        onRequest: (_) => setLoading(true),
-        onResponse: (_) => setLoading(false),
-      },
-    );
-  };
+  const { mutate: loginUser, isPending } = useMutation({
+    mutationFn: async () => {
+      const response = await signIn.email({ email, password });
+
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const { mutate: loginSocial, isPending: isPendingSocial } = useMutation({
+    mutationFn: async () => {
+      let callbackUrl: undefined | string;
+      if (redirect) {
+        callbackUrl = `${import.meta.env.VITE_PUBLIC_WEB_URL}${redirect}`;
+      }
+
+      const response = await signIn.social({
+        provider: 'google',
+        callbackURL:
+          callbackUrl || `${import.meta.env.VITE_PUBLIC_WEB_URL}/dashboard`,
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh">
+    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
       <div className="flex items-center justify-center mb-6 gap-2">
         <img
-          className="w-[50px] mt-[-5px]"
+          className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
           src="/images/apxdenta-logo.png"
           alt="ApxDenta Logo"
         />
         <img
-          className="w-[160px]"
+          className="w-[140px] xs:w-[160px]"
           src="/images/apx-denta-string-only.png"
           alt="ApxDenta Logo Text"
         />
       </div>
-      <Card className="max-w-md w-full bg-white">
+      <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
           <CardDescription className="text-xs md:text-sm">
@@ -114,8 +139,8 @@ export const LoginForm: React.FC = () => {
             <Button
               type="submit"
               className="w-full"
-              isLoading={loading}
-              disabled={loadingSocial}
+              isLoading={isPending}
+              disabled={isPendingSocial}
               onClick={async () => loginUser()}
             >
               Login
@@ -129,27 +154,9 @@ export const LoginForm: React.FC = () => {
               <Button
                 variant="outline"
                 className={cn('w-full gap-2')}
-                disabled={loading}
-                isLoading={loadingSocial}
-                onClick={async () => {
-                  let callbackUrl: undefined | string;
-                  if (redirect) {
-                    callbackUrl = `${import.meta.env.VITE_PUBLIC_WEB_URL}${redirect}`;
-                  }
-
-                  await signIn.social(
-                    {
-                      provider: 'google',
-                      callbackURL:
-                        callbackUrl ||
-                        `${import.meta.env.VITE_PUBLIC_WEB_URL}/dashboard`,
-                    },
-                    {
-                      onRequest: (_) => setLoadingSocial(true),
-                      onResponse: (_) => setLoadingSocial(false),
-                    },
-                  );
-                }}
+                disabled={isPending}
+                isLoading={isPendingSocial}
+                onClick={() => loginSocial()}
               >
                 <GoogleSVG />
                 Sign in with Google

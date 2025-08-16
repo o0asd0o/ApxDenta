@@ -2,13 +2,10 @@ import { env } from '@/env';
 import {
   DeleteObjectCommand,
   type DeleteObjectCommandInput,
-  GetObjectCommand,
-  type GetObjectCommandInput,
   PutObjectCommand,
   type PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { getSignedUrl as getObjectSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 // move to environment.ts
 const bucketName = env.AWS_BUCKET_NAME;
@@ -44,21 +41,6 @@ const s3Client = {
     };
 
     return client.send(new DeleteObjectCommand(deleteParams));
-  },
-
-  getSignedUrl: (key: string, fileName?: string) => {
-    const params: GetObjectCommandInput = {
-      Bucket: bucketName,
-      Key: key,
-      ...(fileName && {
-        ResponseContentDisposition: `attachment; filename="${fileName}"`,
-      }),
-    };
-
-    const command = new GetObjectCommand(params);
-    const seconds = 60 * 60;
-
-    return getObjectSignedUrl(client, command, { expiresIn: seconds });
   },
 };
 

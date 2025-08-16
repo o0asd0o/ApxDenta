@@ -9,7 +9,11 @@ const inputSchema = z.object({
 export type GetAllStaffsProps = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: GetAllStaffsProps) => {
-  const result = await staffDbActions.getAllStaffCount(ctx.db, input.staffType);
+  const result = await staffDbActions.getAllStaffCount(
+    ctx.db,
+    ctx.organizationId,
+    input.staffType,
+  );
 
   return {
     status: 'SUCCESS' as const,

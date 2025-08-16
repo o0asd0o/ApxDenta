@@ -121,6 +121,8 @@ model organization {
 
 model Staff {
   id                   String             @id @default(dbgenerated("gen_random_uuid()"))
+  avatar               File?              @relation(fields: [avatarId], references: [id])
+  avatarId             String?
   type                 StaffType
   accountId            String?
   address              String?
@@ -283,6 +285,7 @@ model File {
   notes         Note[]
   peripherals   Peripheral[]
   stocks        Stock[]
+  staffs        Staff[]
 }
 
 model Rating {

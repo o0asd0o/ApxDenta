@@ -18,11 +18,11 @@ const notFound = (
     },
   );
 };
-const serverError = (): CustomError => {
+const serverError = (customMessage?: string): CustomError => {
   return Object.assign(
     new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
-      message: 'Processing request failed',
+      message: customMessage || 'Processing request failed',
     }),
     {
       causeData: { code: 'requestFailed' },
