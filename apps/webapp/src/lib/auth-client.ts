@@ -1,4 +1,4 @@
-import { createAuthClient } from '@repo/domain/auth';
+import { createAuthClient } from '@repo/domain/auth-client';
 
 const authClient = createAuthClient({
   apiBaseUrl: `${import.meta.env.VITE_PUBLIC_SERVER_URL}`,
@@ -15,4 +15,5 @@ export const {
   useListOrganizations,
   useActiveOrganization,
   useActiveMember,
+  verifyEmail,
 } = authClient;

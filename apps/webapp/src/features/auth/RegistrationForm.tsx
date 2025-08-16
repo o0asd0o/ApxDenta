@@ -9,6 +9,7 @@ import {
   Input,
   Label,
 } from '@repo/ui/components';
+import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Loader2, X } from 'lucide-react';
 import type React from 'react';
@@ -23,7 +24,6 @@ export default function RegistrationForm() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -38,6 +38,27 @@ export default function RegistrationForm() {
       reader.readAsDataURL(file);
     }
   };
+
+  const { mutate: registerAccount, isPending } = useMutation({
+    mutationFn: async () => {
+      const response = await signUp.email({
+        email,
+        password,
+        name: `${firstName} ${lastName}`,
+        image: image ? await convertImageToBase64(image) : '',
+        callbackURL: '/verification-sent',
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+
+      navigate({ to: '/verification-sent', search: { email } });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
@@ -135,14 +156,6 @@ export default function RegistrationForm() {
                     className="size-12 rounded-lg bg-cover! border border-gray-300"
                     style={{ background: `url('${imagePreview}')` }}
                   />
-
-                  // <div className="relative size-12 rounded-sm overflow-hidden">
-                  //   <img
-                  //     className="inset-0"
-                  //     src={imagePreview}
-                  //     alt="Profile preview"
-                  //   />
-                  // </div>
                 )}
                 <div className="flex items-center gap-2 w-full flex-1">
                   <Input
@@ -167,32 +180,10 @@ export default function RegistrationForm() {
             <Button
               type="submit"
               className="w-full"
-              disabled={loading}
-              onClick={async () => {
-                await signUp.email({
-                  email,
-                  password,
-                  name: `${firstName} ${lastName}`,
-                  image: image ? await convertImageToBase64(image) : '',
-                  callbackURL: '/dashboard',
-                  fetchOptions: {
-                    onResponse: () => {
-                      setLoading(false);
-                    },
-                    onRequest: () => {
-                      setLoading(true);
-                    },
-                    onError: (ctx) => {
-                      toast.error(ctx.error.message);
-                    },
-                    onSuccess: async () => {
-                      navigate({ to: '/dashboard' });
-                    },
-                  },
-                });
-              }}
+              disabled={isPending}
+              onClick={() => registerAccount()}
             >
-              {loading ? (
+              {isPending ? (
                 <Loader2 size={16} className="animate-spin" />
               ) : (
                 'Create an account'

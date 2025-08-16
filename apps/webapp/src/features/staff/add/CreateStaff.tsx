@@ -33,11 +33,6 @@ import { DaysOffForm } from './forms/DaysOffForm';
 import { StaffInfoForm } from './forms/StaffInfoForm';
 import { WorkingHoursForm } from './forms/WorkingHoursForm';
 
-// TODO:
-// 1. form transition animation using framer-motion
-// 2. saving of all the details
-// 3. beautiful toast after success
-
 const CreateStaff: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const stepper = useFormStepper();

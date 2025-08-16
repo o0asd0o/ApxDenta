@@ -1,4 +1,5 @@
 import type { DatabaseInstance } from '@/db/client';
+import mailer from '@/server/common/lib/mailer';
 import { betterAuth } from 'better-auth';
 import { organization } from 'better-auth/plugins';
 import { getOrganizationIdForUser } from './db-operations/organization';
@@ -27,6 +28,7 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
   googleCredentials,
 }: AuthOptions) => {
   return betterAuth({
+    rateLimit: { window: 20, max: 80 },
     databaseHooks: {
       session: {
         create: {
@@ -45,36 +47,44 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
     trustedOrigins: [webUrl].map((url) => new URL(url).origin),
     database: { db, type: 'postgres' },
 
-    // sendResetPassword: async ({ user, url, token }, request) => {
-    //   // await sendEmail({
-    //   //   to: user.email,
-    //   //   subject: 'Reset your password',
-    //   //   text: `Click the link to reset your password: ${url}`,
-    //   // });
-    // },
-    // onPasswordReset: async ({ user }, request) => {
-    //   // your logic here
-    //   console.log(`Password for user ${user.email} has been reset.`);
-    // },
-
     session: {
       expiresIn: 60 * 60 * 24 * 1,
       updateAge: 60 * 60 * 4,
     },
     emailVerification: {
-      async onEmailVerification(user, request) {
-        console.log('Email verification sent to:', user.email);
-        // You can implement custom logic here, like sending a welcome email
+      async sendVerificationEmail({ user, token }) {
+        const email = user.email;
+
+        await mailer.sendEmail({
+          template: 'email-verification',
+          to: email,
+          data: {
+            email,
+            firstName: user.name.split(' ')[0] as string,
+            token,
+          },
+        });
       },
+
+      sendOnSignUp: true,
+      expiresIn: 3600, // 1 hour
     },
     emailAndPassword: {
       enabled: true,
-      autoSignIn: true,
       requireEmailVerification: true,
 
-      async sendResetPassword(data, request) {
-        console.log({ data, request });
-        // Send an email to the user with a link to reset their password
+      async sendResetPassword({ user, token }) {
+        const email = user.email;
+        await mailer.sendEmail({
+          template: 'forgot-password',
+          to: email,
+          data: {
+            email,
+            name: user.name,
+            firstName: user.name.split(' ')[0] as string,
+            token,
+          },
+        });
       },
     },
 
@@ -85,9 +95,7 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
       },
     },
     socialProviders: {
-      google: {
-        ...googleCredentials,
-      },
+      google: { ...googleCredentials },
     },
     plugins: [
       organization({

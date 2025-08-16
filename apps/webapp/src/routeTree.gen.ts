@@ -14,6 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ProtectedLayoutImport } from './routes/_protected/layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProtectedDashboardImport } from './routes/_protected/dashboard'
+import { Route as authVerifyEmailImport } from './routes/(auth)/verify-email'
+import { Route as authVerificationSentImport } from './routes/(auth)/verification-sent'
 import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
 import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
@@ -46,6 +48,18 @@ const ProtectedDashboardRoute = ProtectedDashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => ProtectedLayoutRoute,
+} as any)
+
+const authVerifyEmailRoute = authVerifyEmailImport.update({
+  id: '/(auth)/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const authVerificationSentRoute = authVerificationSentImport.update({
+  id: '/(auth)/verification-sent',
+  path: '/verification-sent',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const authResetPasswordRoute = authResetPasswordImport.update({
@@ -182,6 +196,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authResetPasswordImport
       parentRoute: typeof rootRoute
     }
+    '/(auth)/verification-sent': {
+      id: '/(auth)/verification-sent'
+      path: '/verification-sent'
+      fullPath: '/verification-sent'
+      preLoaderRoute: typeof authVerificationSentImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/verify-email': {
+      id: '/(auth)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof authVerifyEmailImport
+      parentRoute: typeof rootRoute
+    }
     '/_protected/dashboard': {
       id: '/_protected/dashboard'
       path: '/dashboard'
@@ -304,6 +332,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
+  '/verification-sent': typeof authVerificationSentRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
@@ -324,6 +354,8 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/reset-password': typeof authResetPasswordRoute
+  '/verification-sent': typeof authVerificationSentRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
@@ -345,6 +377,8 @@ export interface FileRoutesById {
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
+  '/(auth)/verification-sent': typeof authVerificationSentRoute
+  '/(auth)/verify-email': typeof authVerifyEmailRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/_protected/(clinic)/patients': typeof ProtectedclinicPatientsRoute
   '/_protected/(clinic)/reservations': typeof ProtectedclinicReservationsRoute
@@ -367,6 +401,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/verification-sent'
+    | '/verify-email'
     | '/dashboard'
     | '/patients'
     | '/reservations'
@@ -386,6 +422,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
+    | '/verification-sent'
+    | '/verify-email'
     | '/dashboard'
     | '/patients'
     | '/reservations'
@@ -405,6 +443,8 @@ export interface FileRouteTypes {
     | '/(auth)/login'
     | '/(auth)/register'
     | '/(auth)/reset-password'
+    | '/(auth)/verification-sent'
+    | '/(auth)/verify-email'
     | '/_protected/dashboard'
     | '/_protected/(clinic)/patients'
     | '/_protected/(clinic)/reservations'
@@ -426,6 +466,8 @@ export interface RootRouteChildren {
   authLoginRoute: typeof authLoginRoute
   authRegisterRoute: typeof authRegisterRoute
   authResetPasswordRoute: typeof authResetPasswordRoute
+  authVerificationSentRoute: typeof authVerificationSentRoute
+  authVerifyEmailRoute: typeof authVerifyEmailRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -435,6 +477,8 @@ const rootRouteChildren: RootRouteChildren = {
   authLoginRoute: authLoginRoute,
   authRegisterRoute: authRegisterRoute,
   authResetPasswordRoute: authResetPasswordRoute,
+  authVerificationSentRoute: authVerificationSentRoute,
+  authVerifyEmailRoute: authVerifyEmailRoute,
 }
 
 export const routeTree = rootRoute
@@ -452,7 +496,9 @@ export const routeTree = rootRoute
         "/(auth)/forgot-password",
         "/(auth)/login",
         "/(auth)/register",
-        "/(auth)/reset-password"
+        "/(auth)/reset-password",
+        "/(auth)/verification-sent",
+        "/(auth)/verify-email"
       ]
     },
     "/": {
@@ -485,6 +531,12 @@ export const routeTree = rootRoute
     },
     "/(auth)/reset-password": {
       "filePath": "(auth)/reset-password.tsx"
+    },
+    "/(auth)/verification-sent": {
+      "filePath": "(auth)/verification-sent.tsx"
+    },
+    "/(auth)/verify-email": {
+      "filePath": "(auth)/verify-email.tsx"
     },
     "/_protected/dashboard": {
       "filePath": "_protected/dashboard.tsx",

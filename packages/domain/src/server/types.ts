@@ -1,4 +1,4 @@
-import type { AuthInstance } from '@/auth';
+import type { AuthInstance } from '@/auth/auth-server';
 import type { DatabaseInstance } from '@/db';
 
 export type TrpcContextSession = {

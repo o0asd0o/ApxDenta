@@ -1,11 +1,13 @@
 import { staffAccountConfirmation } from '@/templates/staff/staff-account-confirmation';
 import { forgotPassword } from '@/templates/users/forgot-password';
+import { emailVerification } from './templates/users/email-verification';
 
 type TemplateType = (param: Record<string, string>) => string;
 
 const templateMap = {
   'staff-account-confirmation': staffAccountConfirmation,
   'forgot-password': forgotPassword,
+  'email-verification': emailVerification,
 } as const;
 
 const renderEmail = <T extends keyof typeof templateMap>(

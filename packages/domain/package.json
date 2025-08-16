@@ -16,9 +16,13 @@
     "seed": "bun run src/db/seed.ts"
   },
   "exports": {
-    "./auth": {
-      "types": "./dist/src/auth/index.d.ts",
-      "default": "./src/auth/index.ts"
+    "./auth-client": {
+      "types": "./dist/src/auth/auth-client.d.ts",
+      "default": "./src/auth/auth-client.ts"
+    },
+    "./auth-server": {
+      "types": "./dist/src/auth/auth-server.d.ts",
+      "default": "./src/auth/auth-server.ts"
     },
     "./db": {
       "types": "./dist/src/db/index.d.ts",

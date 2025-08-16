@@ -1,10 +1,12 @@
 import type { StaffAccountConfirmationProps } from '@/templates/staff/staff-account-confirmation';
 import type { ForgotPasswordProps } from '@/templates/users/forgot-password';
 import { renderEmail as renderEmailFn, templateMap } from './render-email';
+import type { EmailVerificationProps } from './templates/users/email-verification';
 
 type TemplateMap = {
   'staff-account-confirmation': StaffAccountConfirmationProps;
   'forgot-password': ForgotPasswordProps;
+  'email-verification': EmailVerificationProps;
 };
 
 type EmailTemplate = keyof TemplateMap;
@@ -21,6 +23,7 @@ const getSubject = (template: keyof TemplateMap): string => {
   const subjectMap = {
     'staff-account-confirmation': 'Account Confirmation | ApxDenta',
     'forgot-password': 'Password Reset | ApxDenta',
+    'email-verification': 'Email Verification | ApxDenta',
   } as const;
 
   return subjectMap[template];
