@@ -1,4 +1,4 @@
-import { type AuthInstance, createAuth } from '@repo/domain/auth';
+import { type AuthInstance, createAuth } from '@repo/domain/auth-server';
 import { createDb } from '@repo/domain/db';
 import { createResend } from '@repo/domain/lib';
 import { type ApiInstance, createApi } from '@repo/domain/server';

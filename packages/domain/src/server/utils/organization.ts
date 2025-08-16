@@ -1,4 +1,4 @@
-import type { AuthInstance } from '@/auth';
+import type { AuthInstance } from '@/auth/auth-server';
 
 export const extractOrganizationIdFromSession = (
   session: AuthInstance['$Infer']['Session'] | null,

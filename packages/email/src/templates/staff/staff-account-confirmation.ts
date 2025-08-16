@@ -42,7 +42,7 @@ export const staffAccountConfirmation = ({
         </p>
 
         <a
-          href="https://www.apxdenta.trackd.cc/register?staffId=${staffId}"
+          href="https://www.dev.apxdenta.trackd-ph.cc/register?staffId=${staffId}"
           style="display:inline-block;width:calc(100% - 22px);background-color:#4258eb;border-radius:0.375rem;color:#fff;font-size:1rem;text-decoration:none;text-align:center;padding:0.75rem;margin:0.25rem 0 1em 0;box-sizing:border-box;"
         >
           Confirm your account
@@ -52,14 +52,14 @@ export const staffAccountConfirmation = ({
           Remember to use a password that is both strong and unique to your
           ApxDenta account. To learn more about how to create a strong and
           unique password,
-          <a href="https://www.apxdenta.trackd.cc" style="color:#4258eb;text-decoration:underline;">
+          <a href="https://www.dev.apxdenta.trackd-ph.cc" style="color:#4258eb;text-decoration:underline;">
             click here.
           </a>
         </p>
 
         <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
           Still have questions? Please contact
-          <a href="https://www.apxdenta.trackd.cc" style="color:#4258eb;text-decoration:underline;">
+          <a href="https://www.dev.apxdenta.trackd-ph.cc" style="color:#4258eb;text-decoration:underline;">
             ApxDenta Support
           </a>
         </p>

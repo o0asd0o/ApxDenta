@@ -1,18 +1,16 @@
 import templateShell from '@/template-shell';
-// import type { StaffAccountConfirmationProps } from './staff-account-confirmation';
-export type ForgotPasswordProps = {
+
+export type EmailVerificationProps = {
   firstName: string;
-  name: string;
   email: string;
   token: string;
 };
 
-export const forgotPassword = ({
+export const emailVerification = ({
   firstName,
-  name,
   email,
   token,
-}: ForgotPasswordProps) => {
+}: EmailVerificationProps) => {
   return templateShell(
     /*html*/ `
       <div style="padding:1.35rem;padding-bottom:0;">
@@ -22,59 +20,32 @@ export const forgotPassword = ({
           style="width:80px;height:auto;display:block;"
         />
       </div>
-
-      <!-- Main content section -->
       <div style="padding:0.625rem 1.25rem;width:100%;box-sizing:border-box;">
         <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">Hi ${firstName},</p>
-
         <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
-          Someone has requested a password reset for the following account:
+          Please verify your email address to complete your registration:
         </p>
-
         <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
           <code style="display:block;background:#f3f4f6;padding:0.5em 1em;border-radius:4px;font-size:0.875rem;">
-            Name: <span style="font-weight:bold;">${name}</span><br />
             Email: <span style="font-weight:bold;">${email}</span>
           </code>
         </p>
-
-        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
-          To reset your password please click on the following link:
-        </p>
-
         <a
-          href="https://www.dev.apxdenta.trackd-ph.cc/reset-password?token=${token}"
+
+          href="https://www.dev.apxdenta.trackd-ph.cc/verify-email?token=${token}"
           style="display:inline-block;width:calc(100% - 22px);background-color:#4258eb;border-radius:0.375rem;color:#fff;font-size:1rem;text-decoration:none;text-align:center;padding:0.75rem;margin:0.25rem 0 1em 0;box-sizing:border-box;"
         >
-          Reset password
+          Verify Email
         </a>
-
         <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
-          If it was a mistake, please ignore this email and nothing will happen.
+          If you did not create an account, you can safely ignore this email.
         </p>
-
-        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
-          Remember to use a password that is both strong and unique to your
-          ApxDenta account. To learn more about how to create a strong and
-          unique password,
-          <a href="https://www.dev.apxdenta.trackd-ph.cc" style="color:#4258eb;text-decoration:underline;">
-            click here.
-          </a>
-        </p>
-
-        <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;">
-          Still have questions? Please contact
-          <a href="https://www.dev.apxdenta.trackd-ph.cc" style="color:#4258eb;text-decoration:underline;">
-            ApxDenta Support
-          </a>
-        </p>
-
         <p style="line-height:1.5;font-size:0.875rem;margin:0 0 1rem 0;padding-top:2.5rem;">
           Thanks,<br />
           ApxDenta Support Team
         </p>
       </div>
     `,
-    'Password reset | ApxDenta',
+    'Verify your email | ApxDenta',
   );
 };

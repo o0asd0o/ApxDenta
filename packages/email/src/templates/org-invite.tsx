@@ -9,7 +9,6 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import React from 'react';
 
 type OrganizationInviteProps = {
   name: string;
