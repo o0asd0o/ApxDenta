@@ -1,6 +1,6 @@
 import type { DatabaseInstance } from '@/db/client';
 import mailer from '@/server/common/lib/mailer';
-import { betterAuth } from 'better-auth';
+import { betterAuth, logger } from 'better-auth';
 import { organization } from 'better-auth/plugins';
 import { getOrganizationIdForUser } from './db-operations/organization';
 import { accessControl } from './permissions/__common';
@@ -29,6 +29,17 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
 }: AuthOptions) => {
   return betterAuth({
     rateLimit: { window: 20, max: 80 },
+    logger: {
+      disabled: false,
+      level: 'error',
+      log: (level, message, ...args) => {
+        logger[level](
+          message,
+          `timestamp: ${new Date().toISOString()}`,
+          ...args,
+        );
+      },
+    },
     databaseHooks: {
       session: {
         create: {

@@ -1,4 +1,5 @@
 // import Header from '@/components/Header';
+import NotFound from '@/features/not-found/NotFound';
 import type { useSession } from '@/lib/auth-client';
 import type { useTRPC } from '@/lib/trpc';
 import type { QueryClient } from '@tanstack/react-query';
@@ -12,4 +13,5 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => <Outlet />,
+  notFoundComponent: () => <NotFound />,
 });

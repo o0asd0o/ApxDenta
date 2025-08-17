@@ -1,5 +1,10 @@
 import { requestPasswordReset } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  type ForgotPasswordFormType,
+  forgotPasswordSchema,
+} from '@repo/schemas';
 import {
   Button,
   Card,
@@ -7,23 +12,33 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Input,
-  Label,
 } from '@repo/ui/components';
 import { useMutation } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-import type React from 'react';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-export const ForgotPasswordForm: React.FC = () => {
-  const [email, setEmail] = useState('');
+export const ForgotPasswordForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
+
+  const form = useForm<ForgotPasswordFormType>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: { email: '' },
+  });
 
   const { mutate: resetPassword, isPending } = useMutation<
     void,
     Error,
-    { email: string }
+    ForgotPasswordFormType
   >({
     mutationFn: async ({ email }) => {
       const redirectTo = `${import.meta.env.VITE_PUBLIC_WEB_URL}/reset-password`;
@@ -34,9 +49,15 @@ export const ForgotPasswordForm: React.FC = () => {
     },
     onSuccess: () => {
       setIsSubmitted(true);
-      setEmail('');
+      form.reset();
     },
   });
+
+  const onSubmit = (values: ForgotPasswordFormType) => {
+    const email = values.email.trim();
+    setSubmittedEmail(email);
+    resetPassword({ email });
+  };
 
   if (isSubmitted) {
     return (
@@ -83,8 +104,8 @@ export const ForgotPasswordForm: React.FC = () => {
                   </svg>
                 </div>
                 <p className="text-sm text-gray-600">
-                  If an account with email <strong>{email}</strong> exists, you
-                  will receive a password reset link shortly.
+                  If an account with email <strong>{submittedEmail}</strong>{' '}
+                  exists, you will receive a password reset link shortly.
                 </p>
                 <p className="text-xs text-gray-500">
                   Didn't receive the email? Check your spam folder or try again.
@@ -97,7 +118,8 @@ export const ForgotPasswordForm: React.FC = () => {
                   className="w-full"
                   onClick={() => {
                     setIsSubmitted(false);
-                    setEmail('');
+                    setSubmittedEmail('');
+                    form.reset();
                   }}
                 >
                   Try Again
@@ -139,49 +161,49 @@ export const ForgotPasswordForm: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setEmail(e.target.value);
-                }}
-                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    resetPassword({ email: email.trim() });
-                  }
-                }}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                        autoComplete="email"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            <Button
-              type="submit"
-              className="w-full"
-              isLoading={isPending}
-              disabled={!email.trim()}
-              onClick={() => resetPassword({ email: email.trim() })}
-            >
-              Send Reset Link
-            </Button>
+              <Button type="submit" className="w-full" isLoading={isPending}>
+                Send Reset Link
+              </Button>
+            </form>
+          </Form>
 
-            <div className={cn('w-full flex items-center justify-center')}>
-              <span className="text-xs text-gray-500">
-                Remember your password?{' '}
-                <Link
-                  to="/login"
-                  className="text-primary/70 underline hover:text-primary"
-                >
-                  Sign in here
-                </Link>
-              </span>
-            </div>
+          <div
+            className={cn(
+              'w-full gap-2 flex items-center',
+              'justify-between flex-col',
+            )}
+          >
+            <span className="text-sm text-gray-500 mt-2">
+              Remember your password?{' '}
+              <Link
+                to="/login"
+                className="text-primary/70 underline hover:text-primary"
+              >
+                Sign in here
+              </Link>
+            </span>
           </div>
         </CardContent>
       </Card>

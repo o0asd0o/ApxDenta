@@ -1,6 +1,8 @@
 import { resetPassword } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { Route } from '@/routes/(auth)/reset-password';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type ResetPasswordFormType, resetPasswordSchema } from '@repo/schemas';
 import {
   Button,
   Card,
@@ -8,30 +10,31 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Input,
-  Label,
 } from '@repo/ui/components';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useRouter } from '@tanstack/react-router';
-import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-export const ResetPasswordForm: React.FC = () => {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+export const ResetPasswordForm = () => {
   const [isCompleted, setIsCompleted] = useState(false);
-  const [tokenError, setTokenError] = useState(false);
 
   const router = useRouter();
   const { token } = Route.useSearch();
 
-  // Check if token exists
-  useEffect(() => {
-    if (!token) {
-      setTokenError(true);
-    }
-  }, [token]);
+  const form = useForm<ResetPasswordFormType>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: { password: '', confirmPassword: '' },
+    mode: 'onChange',
+  });
 
   const { mutate: handleResetPassword, isPending } = useMutation<
     void,
@@ -42,105 +45,23 @@ export const ResetPasswordForm: React.FC = () => {
       await resetPassword({ newPassword: password, token });
     },
     onError: (error) => {
-      toast.error(`Error resetting password: ${JSON.stringify(error)}`);
+      toast.error(error?.message ?? 'Error resetting password');
     },
     onSuccess: () => {
       setIsCompleted(true);
       toast.success('Password reset successfully!');
-      // Redirect to login after 3 seconds
-      setTimeout(() => {
-        router.navigate({ to: '/login' });
-      }, 3000);
+      setTimeout(() => router.navigate({ to: '/login' }), 3000);
     },
   });
 
-  const handleSubmit = () => {
+  const onSubmit = (values: ResetPasswordFormType) => {
     if (!token) {
       toast.error('Invalid or missing reset token');
       return;
     }
 
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
-
-    if (password.length < 8) {
-      toast.error('Password must be at least 8 characters long');
-      return;
-    }
-
-    handleResetPassword({ password: password.trim(), token });
+    handleResetPassword({ password: values.password.trim(), token });
   };
-
-  // Token error state
-  if (tokenError) {
-    return (
-      <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
-        <div className="flex items-center justify-center mb-6 gap-2">
-          <img
-            className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
-            src="/images/apxdenta-logo.png"
-            alt="ApxDenta Logo"
-          />
-          <img
-            className="w-[140px] xs:w-[160px]"
-            src="/images/apx-denta-string-only.png"
-            alt="ApxDenta Logo Text"
-          />
-        </div>
-        <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg md:text-xl text-red-600">
-              Invalid Reset Link
-            </CardTitle>
-            <CardDescription className="text-xs md:text-sm">
-              This password reset link is invalid or has expired
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-red-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-label="Error icon"
-                  >
-                    <title>Invalid token error</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-gray-600">
-                  The password reset link you used is either invalid or has
-                  expired. Please request a new password reset link.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Link to="/forgot-password">
-                  <Button className="w-full">Request New Reset Link</Button>
-                </Link>
-                <Link
-                  to="/login"
-                  className="text-center text-sm text-primary/70 underline hover:text-primary"
-                >
-                  Back to Login
-                </Link>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   // Success state
   if (isCompleted) {
@@ -230,73 +151,139 @@ export const ResetPasswordForm: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="password">New Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter new password"
-                required
-                value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setPassword(e.target.value);
-                }}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="password"
+                        type="password"
+                        placeholder="Enter new password"
+                        autoComplete="new-password"
+                      />
+                    </FormControl>
+                    <p className="text-xs text-gray-500">
+                      Password must be at least 8 characters long
+                    </p>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <p className="text-xs text-gray-500">
-                Password must be at least 8 characters long
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="Confirm new password"
+                        autoComplete="new-password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full"
+                isLoading={isPending}
+                disabled={!form.formState.isValid || isPending}
+              >
+                Reset Password
+              </Button>
+
+              <div className={cn('w-full flex items-center justify-center')}>
+                <span className="text-xs text-gray-500">
+                  Remember your password?{' '}
+                  <Link
+                    to="/login"
+                    className="text-primary/70 underline hover:text-primary"
+                  >
+                    Sign in here
+                  </Link>
+                </span>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export const ResetPasswordError = () => {
+  return (
+    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
+      <div className="flex items-center justify-center mb-6 gap-2">
+        <img
+          className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
+          src="/images/apxdenta-logo.png"
+          alt="ApxDenta Logo"
+        />
+        <img
+          className="w-[140px] xs:w-[160px]"
+          src="/images/apx-denta-string-only.png"
+          alt="ApxDenta Logo Text"
+        />
+      </div>
+      <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-lg md:text-xl text-red-600">
+            Invalid Reset Link
+          </CardTitle>
+          <CardDescription className="text-xs md:text-sm">
+            This password reset link is invalid or has expired
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-label="Error icon"
+                >
+                  <title>Invalid token error</title>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-600">
+                The password reset link you used is either invalid or has
+                expired. Please request a new password reset link.
               </p>
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="confirmPassword">Confirm New Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm new password"
-                required
-                value={confirmPassword}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setConfirmPassword(e.target.value);
-                }}
-                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleSubmit();
-                  }
-                }}
-              />
-              {confirmPassword && password !== confirmPassword && (
-                <p className="text-xs text-red-500">Passwords do not match</p>
-              )}
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full"
-              isLoading={isPending}
-              disabled={
-                !password.trim() ||
-                !confirmPassword.trim() ||
-                password !== confirmPassword ||
-                password.length < 8
-              }
-              onClick={handleSubmit}
-            >
-              Reset Password
-            </Button>
-
-            <div className={cn('w-full flex items-center justify-center')}>
-              <span className="text-xs text-gray-500">
-                Remember your password?{' '}
-                <Link
-                  to="/login"
-                  className="text-primary/70 underline hover:text-primary"
-                >
-                  Sign in here
-                </Link>
-              </span>
+            <div className="flex flex-col gap-2">
+              <Link to="/forgot-password">
+                <Button className="w-full">Request New Reset Link</Button>
+              </Link>
+              <Link
+                to="/login"
+                className="text-center text-sm text-primary/70 underline hover:text-primary"
+              >
+                Back to Login
+              </Link>
             </div>
           </div>
         </CardContent>

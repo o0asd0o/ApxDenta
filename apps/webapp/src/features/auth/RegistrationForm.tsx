@@ -1,4 +1,6 @@
 import { signUp } from '@/lib/auth-client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type RegistrationFormType, registrationSchema } from '@repo/schemas';
 import {
   Button,
   Card,
@@ -6,46 +8,41 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Input,
-  Label,
 } from '@repo/ui/components';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { Loader2, X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import type React from 'react';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-export default function RegistrationForm() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+export const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const form = useForm<RegistrationFormType>({
+    resolver: zodResolver(registrationSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+    },
+  });
 
   const { mutate: registerAccount, isPending } = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (values: RegistrationFormType) => {
       const response = await signUp.email({
-        email,
-        password,
-        name: `${firstName} ${lastName}`,
-        image: image ? await convertImageToBase64(image) : '',
+        email: values.email,
+        password: values.password,
+        name: `${values.firstName} ${values.lastName}`,
         callbackURL: '/verification-sent',
       });
 
@@ -53,9 +50,9 @@ export default function RegistrationForm() {
         throw new Error(response.error.message);
       }
 
-      navigate({ to: '/verification-sent', search: { email } });
+      navigate({ to: '/verification-sent', search: { email: values.email } });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast.error(error.message);
     },
   });
@@ -82,136 +79,128 @@ export default function RegistrationForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="first-name">First name</Label>
-                <Input
-                  id="first-name"
-                  placeholder="Max"
-                  required
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setFirstName(e.target.value);
-                  }}
-                  value={firstName}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="last-name">Last name</Label>
-                <Input
-                  id="last-name"
-                  placeholder="Robinson"
-                  required
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setLastName(e.target.value);
-                  }}
-                  value={lastName}
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setEmail(e.target.value);
-                }}
-                value={email}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPassword(e.target.value)
-                }
-                autoComplete="new-password"
-                placeholder="Password"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Confirm Password</Label>
-              <Input
-                id="password_confirmation"
-                type="password"
-                value={passwordConfirmation}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPasswordConfirmation(e.target.value)
-                }
-                autoComplete="new-password"
-                placeholder="Confirm Password"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="image">Profile Image (optional)</Label>
-              <div className="flex items-center gap-4 justify-center">
-                {imagePreview && (
-                  <div
-                    className="size-12 rounded-lg bg-cover! border border-gray-300"
-                    style={{ background: `url('${imagePreview}')` }}
-                  />
-                )}
-                <div className="flex items-center gap-2 w-full flex-1">
-                  <Input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="w-full"
-                  />
-                  {imagePreview && (
-                    <X
-                      className="cursor-pointer text-gray-500"
-                      onClick={() => {
-                        setImage(null);
-                        setImagePreview(null);
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isPending}
-              onClick={() => registerAccount()}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((values) => registerAccount(values))}
+              className="grid gap-4"
             >
-              {isPending ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                'Create an account'
-              )}
-            </Button>
-            <div className="w-full flex justify-center-safe">
-              <span className="text-xs text-gray-500 leading-3">
-                Already have an account?{' '}
-                <Link
-                  to="/login"
-                  className="text-primary/70 underline hover:text-primary"
-                >
-                  Login here
-                </Link>
-              </span>
-            </div>
-          </div>
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First name</FormLabel>
+                      <FormControl>
+                        <Input {...field} id="first-name" placeholder="Max" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last name</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          id="last-name"
+                          placeholder="Robinson"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="password"
+                        type="password"
+                        autoComplete="new-password"
+                        placeholder="Password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="passwordConfirmation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="password_confirmation"
+                        type="password"
+                        autoComplete="new-password"
+                        placeholder="Confirm Password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  'Create an account'
+                )}
+              </Button>
+
+              <div className="w-full flex justify-center-safe">
+                <span className="text-sm text-gray-500 leading-3">
+                  Already have an account?{' '}
+                  <Link
+                    to="/login"
+                    className="text-primary/70 underline hover:text-primary"
+                  >
+                    Login here
+                  </Link>
+                </span>
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </div>
   );
-}
+};
 
-async function convertImageToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
+export default RegistrationForm;

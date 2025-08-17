@@ -24,7 +24,7 @@ export const Route = createFileRoute('/(auth)/verify-email')({
   },
 
   onError: (error) => {
-    toast.error('Error verifying email:', error || 'Unknown');
+    toast.error('Error verifying email:', error.message || 'Unknown');
   },
   pendingComponent: VeifyEmailPending,
   errorComponent: VerifyEmailError,
