@@ -2,6 +2,8 @@ import { GoogleSVG } from '@/assets/google';
 import { signIn } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { Route } from '@/routes/(auth)/login';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type LoginFormType, loginSchema } from '@repo/schemas';
 import {
   Button,
   Card,
@@ -10,32 +12,46 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Input,
   Label,
 } from '@repo/ui/components';
 import { useMutation } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import type React from 'react';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-
+  const navigate = useNavigate();
   const { redirect } = Route.useSearch();
 
-  const { mutate: loginUser, isPending } = useMutation({
-    mutationFn: async () => {
-      const response = await signIn.email({ email, password });
+  const form = useForm<LoginFormType>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '', remember: false },
+  });
 
+  const { mutate: loginUser, isPending } = useMutation({
+    mutationFn: async (payload: { email: string; password: string }) => {
+      const response = await signIn.email(payload);
       if (response.error) {
         throw new Error(response.error.message);
       }
+      return response;
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast.error(error.message);
+    },
+    onSuccess: async () => {
+      const dest = redirect
+        ? `${import.meta.env.VITE_PUBLIC_WEB_URL}${redirect}`
+        : '/dashboard';
+      navigate({ to: dest });
     },
   });
 
@@ -56,7 +72,7 @@ export const LoginForm: React.FC = () => {
         throw new Error(response.error.message);
       }
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast.error(error.message);
     },
   });
@@ -83,95 +99,120 @@ export const LoginForm: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setEmail(e.target.value);
-                }}
-                value={email}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((values) =>
+                loginUser({
+                  email: values.email,
+                  password: values.password,
+                }),
+              )}
+              className="grid gap-4"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                        autoComplete="email"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        id="password"
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex items-center gap-2">
+                <FormField
+                  control={form.control}
+                  name="remember"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-2">
+                      <FormControl>
+                        <Checkbox
+                          className="mb-0"
+                          checked={!!field.value}
+                          onCheckedChange={(val) => field.onChange(!!val)}
+                          id="remember"
+                        />
+                      </FormControl>
+                      <Label htmlFor="remember">Remember me</Label>
+                    </FormItem>
+                  )}
+                />
+
+                <Link
+                  to="/forgot-password"
+                  className="ml-auto inline-block text-sm underline"
+                >
+                  Forgot your password?
+                </Link>
               </div>
 
-              <Input
-                id="password"
-                type="password"
-                placeholder="password"
-                autoComplete="password"
-                value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPassword(e.target.value)
-                }
-                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    loginUser();
-                  }
-                }}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="remember"
-                onClick={() => {
-                  setRememberMe(!rememberMe);
-                }}
-              />
-              <Label htmlFor="remember">Remember me</Label>
-              <Link
-                to="/forgot-password"
-                className="ml-auto inline-block text-sm underline"
-              >
-                Forgot your password?
-              </Link>
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-              isLoading={isPending}
-              disabled={isPendingSocial}
-              onClick={async () => loginUser()}
-            >
-              Login
-            </Button>
-            <div
-              className={cn(
-                'w-full gap-2 flex items-center',
-                'justify-between flex-col',
-              )}
-            >
               <Button
-                variant="outline"
-                className={cn('w-full gap-2')}
-                disabled={isPending}
-                isLoading={isPendingSocial}
-                onClick={() => loginSocial()}
+                type="submit"
+                className="w-full"
+                isLoading={isPending}
+                disabled={isPendingSocial}
               >
-                <GoogleSVG />
-                Sign in with Google
+                Login
               </Button>
-              <span className="text-xs text-gray-500 mt-2">
-                Don't have an account yet?{' '}
-                <Link
-                  to="/register"
-                  className="text-primary/70 underline hover:text-primary"
+
+              <div
+                className={cn(
+                  'w-full gap-2 flex items-center',
+                  'justify-between flex-col',
+                )}
+              >
+                <Button
+                  variant="outline"
+                  className={cn('w-full gap-2')}
+                  disabled={isPending}
+                  isLoading={isPendingSocial}
+                  onClick={() => loginSocial()}
                 >
-                  Register here
-                </Link>
-              </span>
-            </div>
-          </div>
+                  <GoogleSVG />
+                  Sign in with Google
+                </Button>
+                <span className="text-sm text-gray-500 mt-2">
+                  Don't have an account yet?{' '}
+                  <Link
+                    to="/register"
+                    className="text-primary/70 underline hover:text-primary"
+                  >
+                    Register here
+                  </Link>
+                </span>
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </div>
