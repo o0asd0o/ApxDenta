@@ -1,6 +1,6 @@
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { staffDbActions } from './__db-actions';
+import { getAllStaffCount } from './db-operations/getAllStaffCount';
 
 const inputSchema = z.object({
   staffType: z.enum(['DOCTOR', 'STAFF']).optional(),
@@ -9,7 +9,7 @@ const inputSchema = z.object({
 export type GetAllStaffsProps = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: GetAllStaffsProps) => {
-  const result = await staffDbActions.getAllStaffCount(
+  const result = await getAllStaffCount(
     ctx.db,
     ctx.organizationId,
     input.staffType,

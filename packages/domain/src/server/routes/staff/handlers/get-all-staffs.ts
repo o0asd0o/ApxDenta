@@ -6,7 +6,7 @@ import {
 } from '@/server/common/schemas';
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { staffDbActions } from './__db-actions';
+import { getAllStaff } from './db-operations/getAllStaff';
 
 const inputSchema = z
   .object({
@@ -30,7 +30,7 @@ const inputSchema = z
 export type GetAllStaffsProps = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async (context: GetAllStaffsProps) => {
-  const result = await staffDbActions.getAllStaff(context);
+  const result = await getAllStaff(context);
 
   return {
     status: 'SUCCESS' as const,

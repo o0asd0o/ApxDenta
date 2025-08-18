@@ -81,6 +81,9 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
           },
         });
       },
+      // async onEmailVerification(user) {
+      //   const email = user.email;
+      // },
 
       sendOnSignUp: true,
       expiresIn: 3600, // 1 hour

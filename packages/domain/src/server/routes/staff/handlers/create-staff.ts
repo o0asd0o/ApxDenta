@@ -8,8 +8,9 @@ import {
   workingHoursSchema,
 } from '@repo/schemas';
 import { z } from 'zod';
-import { staffDbActions } from './__db-actions';
 import { sendStaffConfirmationEmail } from './__helpers';
+import { StaffDbAfterSaveActions } from './db-operations/StaffAfterSaveActions.class';
+import { saveStaff } from './db-operations/saveStaff';
 
 const inputSchema = z.object({
   type: z.enum(['DOCTOR', 'STAFF']),
@@ -31,13 +32,9 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
     const returnedStaff = await ctx.db
       .transaction()
       .execute(async (transaction) => {
-        const staff = await staffDbActions.saveStaff(
-          transaction,
-          input,
-          ctx.organizationId,
-        );
+        const staff = await saveStaff(transaction, input, ctx.organizationId);
 
-        const staffDbAfterCreate = new staffDbActions.StaffDbAfterSaveActions(
+        const staffDbAfterCreate = new StaffDbAfterSaveActions(
           transaction,
           staff.id,
         );
