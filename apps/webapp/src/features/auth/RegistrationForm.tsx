@@ -1,4 +1,6 @@
 import { signUp } from '@/lib/auth-client';
+import { useTRPCClient } from '@/lib/trpc';
+import { Route } from '@/routes/(auth)/register';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type RegistrationFormType, registrationSchema } from '@repo/schemas';
 import {
@@ -23,17 +25,38 @@ import type React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+const DEFAULT_VALUES = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  passwordConfirmation: '',
+};
+
 export const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
 
+  const { staffId } = Route.useSearch();
+
+  const trpc = useTRPCClient();
+
   const form = useForm<RegistrationFormType>({
     resolver: zodResolver(registrationSchema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      passwordConfirmation: '',
+    defaultValues: async () => {
+      if (staffId) {
+        const staff = await trpc.staffs.getInvitedStaff.query({
+          id: staffId as string,
+        });
+
+        return {
+          ...DEFAULT_VALUES,
+          firstName: staff?.data.firstName || '',
+          lastName: staff?.data.lastName || '',
+          email: staff?.data.email || '',
+        };
+      }
+
+      return DEFAULT_VALUES;
     },
   });
 
@@ -48,6 +71,13 @@ export const RegistrationForm: React.FC = () => {
 
       if (response.error) {
         throw new Error(response.error.message);
+      }
+
+      if (staffId) {
+        await trpc.staffs.tieStaffToAccount.mutate({
+          userId: response.data.user.id,
+          staffId,
+        });
       }
 
       navigate({ to: '/verification-sent', search: { email: values.email } });
@@ -92,7 +122,12 @@ export const RegistrationForm: React.FC = () => {
                     <FormItem>
                       <FormLabel>First name</FormLabel>
                       <FormControl>
-                        <Input {...field} id="first-name" placeholder="Max" />
+                        <Input
+                          disabled={!!staffId}
+                          {...field}
+                          id="first-name"
+                          placeholder="Max"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -106,6 +141,7 @@ export const RegistrationForm: React.FC = () => {
                       <FormLabel>Last name</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={!!staffId}
                           {...field}
                           id="last-name"
                           placeholder="Robinson"
@@ -125,6 +161,7 @@ export const RegistrationForm: React.FC = () => {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
+                        disabled={!!staffId}
                         {...field}
                         id="email"
                         type="email"
@@ -178,7 +215,7 @@ export const RegistrationForm: React.FC = () => {
 
               <Button type="submit" className="w-full" disabled={isPending}>
                 {isPending ? (
-                  <Loader2 size={16} className="animate-spin" />
+                  <Loader2 size={20} className="animate-spin" />
                 ) : (
                   'Create an account'
                 )}

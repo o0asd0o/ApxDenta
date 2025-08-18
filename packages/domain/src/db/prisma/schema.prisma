@@ -133,11 +133,11 @@ model Staff {
   lastName             String
   lat                  Float?
   long                 Float?
-  position             String
+  position             String?
   specialistsRecordId  String?
   updatedAt            DateTime           @default(now())
   status               StaffStatus?       @default(ACTIVE)
-  email                String?
+  email                String             @unique
   createdAssets        Asset[]
   createdAssetTransfer AssetTransfer[]
   processedBillHistory BillHistory[]
