@@ -65,7 +65,7 @@ export const DialogDrawer: React.FC<Props> = ({
       )}
       {!disabledTooltip && (
         <SheetTrigger asChild>
-          <Button variant="primary" disabled className={className}>
+          <Button variant="primary" className={className}>
             <span className="hidden sm:inline">{actionText || 'Open'}</span>
             <span className="sm:hidden inline">{mobileIcon}</span>
           </Button>
