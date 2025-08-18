@@ -1,6 +1,7 @@
 import { DialogDrawer } from '@/components/DialogDrawer';
 import StepperComponent from '@/components/stepper/StepperComponent';
 import { useUploadFile } from '@/hooks/upload/useUploadFile';
+import { useActiveOrganization } from '@/lib/auth-client';
 import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type {
@@ -15,7 +16,7 @@ import { type WritableDraft, produce } from 'immer';
 import { PlusIcon } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
@@ -35,6 +36,7 @@ import { WorkingHoursForm } from './forms/WorkingHoursForm';
 
 const CreateStaff: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const stepper = useFormStepper();
   const utils = useStepperUtls();
   const steps = useStepperSteps();
@@ -46,11 +48,12 @@ const CreateStaff: React.FC = () => {
     resolver: zodResolver(stepper.current.schema),
   });
 
+  const { data: activeOrg } = useActiveOrganization();
   const trpc = useTRPC();
 
   const queryClient = useQueryClient();
 
-  const { mutate: saveStaff, isPending } = useMutation(
+  const { mutateAsync: saveStaff, isPending } = useMutation(
     trpc.staffs.createStaff.mutationOptions({
       onSuccess: async () => {
         form.reset();
@@ -92,10 +95,11 @@ const CreateStaff: React.FC = () => {
       );
 
       if (stepper.isLast) {
+        setSubmitting(true);
         const avatar = formValues?.staffInfo?.file as File;
         const savedFile = await uploadFile({ file: avatar });
 
-        saveStaff({
+        await saveStaff({
           type: 'DOCTOR',
           staffInfo: {
             ...(formValues?.staffInfo as StaffInfoFormType),
@@ -108,6 +112,7 @@ const CreateStaff: React.FC = () => {
           extraDayOffs: additionDayOff,
           workingHours: formValues?.workingHours as WorkingHoursFormType,
         });
+        setSubmitting(false);
       } else {
         stepper.next();
       }
@@ -125,6 +130,9 @@ const CreateStaff: React.FC = () => {
         className="ml-auto"
         title="Add new Doctor Staff"
         actionText="Add Doctor"
+        disabledTooltip={
+          !activeOrg ? 'You need to setup an organization first' : undefined
+        }
         mobileIcon={<PlusIcon className="size-5" />}
         onSubmit={form.handleSubmit((values) =>
           onSubmit({ id: stepper.current.id, values }),
@@ -152,8 +160,8 @@ const CreateStaff: React.FC = () => {
               type="submit"
               variant="primary"
               className="w-[120px]"
-              disabled={isPending}
-              isLoading={isPending}
+              disabled={isPending || submitting}
+              isLoading={isPending || submitting}
               loadingText="Saving..."
             >
               {stepper.isLast ? 'Save' : 'Next'}
