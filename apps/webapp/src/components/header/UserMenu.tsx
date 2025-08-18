@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
   SidebarMenuButton,
 } from '@repo/ui/components';
+import { useNavigate } from '@tanstack/react-router';
 import {
   BellIcon,
   ChevronDown,
@@ -21,16 +22,20 @@ import {
 } from 'lucide-react';
 
 export const UserMenu = () => {
-  const { data: session } = useSession();
+  const { data: session, refetch } = useSession();
+  const navigate = useNavigate();
+
   const handleSignOut = async () => {
     await signOut({
       fetchOptions: {
-        onSuccess: () => {
-          window.location.reload();
+        onSuccess: async () => {
+          await refetch();
+          setTimeout(() => navigate({ to: '/login' }), 100);
         },
       },
     });
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

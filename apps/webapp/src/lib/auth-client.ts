@@ -17,6 +17,7 @@ export const {
   organization,
   useListOrganizations,
   useActiveOrganization,
+  getSession,
   useActiveMember,
   verifyEmail,
 } = authClient;

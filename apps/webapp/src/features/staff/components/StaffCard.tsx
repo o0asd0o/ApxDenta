@@ -19,7 +19,6 @@ import { renderStaffActions, renderWorkingDays } from '../__renderers';
 import type { StaffColumnType } from '../__types';
 
 const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
-  console.log({ staff });
   return (
     <div
       key={staff.id}
@@ -36,10 +35,6 @@ const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
           </AvatarFallback>
         </Avatar>
 
-        {/* <div className="min-w-12 w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-xl font-bold text-white">
-          {staff.firstName?.[0]}
-          {staff.lastName?.[0]}
-        </div> */}
         <div className="flex min-w-0 flex-col gap-0 ">
           <div className="font-bold text-lg flex items-center gap-3 pr-9">
             <span className="truncate">

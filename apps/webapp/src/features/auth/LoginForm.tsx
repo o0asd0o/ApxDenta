@@ -1,5 +1,5 @@
 import { GoogleSVG } from '@/assets/google';
-import { signIn } from '@/lib/auth-client';
+import { signIn, useSession } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { Route } from '@/routes/(auth)/login';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,6 +29,9 @@ import { toast } from 'sonner';
 
 export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+
+  const { refetch } = useSession();
+
   const { redirect } = Route.useSearch();
 
   const form = useForm<LoginFormType>({
@@ -42,16 +45,13 @@ export const LoginForm: React.FC = () => {
       if (response.error) {
         throw new Error(response.error.message);
       }
-      return response;
+      await refetch();
     },
     onError: (error: Error) => {
       toast.error(error.message);
     },
     onSuccess: async () => {
-      const dest = redirect
-        ? `${import.meta.env.VITE_PUBLIC_WEB_URL}${redirect}`
-        : '/dashboard';
-      navigate({ to: dest });
+      setTimeout(() => navigate({ to: redirect || '/dashboard' }), 100);
     },
   });
 
@@ -192,6 +192,7 @@ export const LoginForm: React.FC = () => {
                 )}
               >
                 <Button
+                  type="button"
                   variant="outline"
                   className={cn('w-full gap-2')}
                   disabled={isPending}
