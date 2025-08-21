@@ -1,6 +1,6 @@
-import { staffAccountConfirmation } from '@/templates/staff/staff-account-confirmation';
-import { forgotPassword } from '@/templates/users/forgot-password';
+import { staffAccountConfirmation } from './templates/staff/staff-account-confirmation';
 import { emailVerification } from './templates/users/email-verification';
+import { forgotPassword } from './templates/users/forgot-password';
 
 type TemplateType = (param: Record<string, string>) => string;
 

@@ -1,4 +1,4 @@
-import templateShell from '@/template-shell';
+import templateShell from '../../template-shell';
 // import type { StaffAccountConfirmationProps } from './staff-account-confirmation';
 
 export interface StaffAccountConfirmationProps {

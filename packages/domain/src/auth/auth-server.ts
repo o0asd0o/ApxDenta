@@ -1,8 +1,8 @@
 import type { DatabaseInstance } from '@/db/client';
-import mailer from '@/server/common/lib/mailer';
 import { betterAuth, logger } from 'better-auth';
 import { organization } from 'better-auth/plugins';
 import { getOrganizationIdForUser } from './db-operations/organization';
+import { sendResetPasswordEmail, sendVerificationEmail } from './emails/user';
 import { accessControl } from './permissions/__common';
 import { admin } from './permissions/admin';
 import { doctor } from './permissions/doctor';
@@ -70,15 +70,10 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
     emailVerification: {
       autoSignInAfterVerification: true,
       async sendVerificationEmail({ user, token }) {
-        const email = user.email;
-        await mailer.sendEmail({
-          template: 'email-verification',
-          to: email,
-          data: {
-            email,
-            firstName: user.name.split(' ')[0] as string,
-            token,
-          },
+        sendVerificationEmail({
+          email: user.email,
+          name: user.name,
+          token,
         });
       },
       // async onEmailVerification(user) {
@@ -97,16 +92,10 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
       requireEmailVerification: true,
 
       async sendResetPassword({ user, token }) {
-        const email = user.email;
-        await mailer.sendEmail({
-          template: 'forgot-password',
-          to: email,
-          data: {
-            email,
-            name: user.name,
-            firstName: user.name.split(' ')[0] as string,
-            token,
-          },
+        sendResetPasswordEmail({
+          email: user.email,
+          name: user.name,
+          token,
         });
       },
     },
@@ -134,14 +123,6 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
               slogan: { type: 'string', required: true },
             },
           },
-        },
-        async sendInvitationEmail(data) {
-          // await resend.emails.send({
-          //   from: process.env.RESEND_EMAIL as string,
-          //   to: data.email,
-          //   subject: "You've been invited to join an organization",
-          //   text: 'You are are invited',
-          // });
         },
       }),
     ],

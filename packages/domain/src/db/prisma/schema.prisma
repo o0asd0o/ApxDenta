@@ -89,40 +89,34 @@ model member {
 }
 
 model organization {
-  id         String       @id
-  name       String
-  slug       String       @unique
-  logo       String?
-  createdAt  DateTime     @db.Timestamp(0)
-  metadata   String?
-  address    String?
-  lat        Int?
-  long       Int?
-  slogan     String
-  invitation invitation[]
-  member     member[]
-
-  // app related
-  staffs         Staff[]
-  treatments     Treatment[]
-  patients       Patient[]
-  vendors        Vendor[]
-  reservations   Reservation[]
-  stocks         Stock[]
-  peripherals    Peripheral[]
-  billHistory    BillHistory[]
-  assetTransfers AssetTransfer[]
-  assets         Asset[]
-
-  // services
+  id               String            @id
+  name             String
+  slug             String            @unique
+  logo             String?
+  createdAt        DateTime          @db.Timestamp(0)
+  metadata         String?
+  address          String?
+  lat              Int?
+  long             Int?
+  slogan           String
+  assets           Asset[]
+  assetTransfers   AssetTransfer[]
+  billHistory      BillHistory[]
   cosmeticServices CosmeticService[]
   medicalServices  MedicalService[]
+  patients         Patient[]
+  peripherals      Peripheral[]
+  reservations     Reservation[]
+  staffs           Staff[]
+  stocks           Stock[]
+  treatments       Treatment[]
+  vendors          Vendor[]
+  invitation       invitation[]
+  member           member[]
 }
 
 model Staff {
   id                   String             @id @default(dbgenerated("gen_random_uuid()"))
-  avatar               File?              @relation(fields: [avatarId], references: [id])
-  avatarId             String?
   type                 StaffType
   accountId            String?
   address              String?
@@ -133,26 +127,27 @@ model Staff {
   lastName             String
   lat                  Float?
   long                 Float?
-  position             String?
+  position             String
   specialistsRecordId  String?
   updatedAt            DateTime           @default(now())
   status               StaffStatus?       @default(ACTIVE)
-  email                String             @unique
+  email                String?
+  organizationId       String?
+  avatarId             String?
   createdAssets        Asset[]
   createdAssetTransfer AssetTransfer[]
   processedBillHistory BillHistory[]
   createdPeripherals   Peripheral[]
   reservations         Reservation[]
   account              account?           @relation(fields: [accountId], references: [id])
+  avatar               File?              @relation(fields: [avatarId], references: [id])
+  organization         organization?      @relation(fields: [organizationId], references: [id])
   specialist           SpecialistsRecord? @relation(fields: [specialistsRecordId], references: [id])
   workingSchedules     WorkSchedule[]
   assignedTreatments   Treatment[]        @relation("StaffAssignedTreatment")
   daysOff              DayOff[]           @relation("StaffDayOff")
 
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
-
-  @@index([email, firstName, lastName], name: "idx_staff_email_first_last")
+  @@index([email, firstName, lastName], map: "idx_staff_email_first_last")
 }
 
 model DayOff {
@@ -207,17 +202,16 @@ model Treatment {
   pricePerDuration Float
   status           TreatmentStatus      @default(FINALIZED)
   unit             String?
+  organizationId   String?
   cosmeticServices CosmeticService[]
   medicalServices  MedicalService[]
   ratings          Rating[]
   reservations     Reservation[]
   reviews          Review[]
+  organization     organization?        @relation(fields: [organizationId], references: [id])
   components       TreatmentComponent[]
   visits           TreatmentVisit[]
   staffsAssigned   Staff[]              @relation("StaffAssignedTreatment")
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
 }
 
 model TreatmentComponent {
@@ -284,8 +278,8 @@ model File {
   review        Review?      @relation(fields: [reviewId], references: [id])
   notes         Note[]
   peripherals   Peripheral[]
-  stocks        Stock[]
   staffs        Staff[]
+  stocks        Stock[]
 }
 
 model Rating {
@@ -317,13 +311,12 @@ model Patient {
   usingDentalFloss          Boolean
   washTeethFrequency        WashTeethFrequency
   changeToothBrushFrequency ChangeToothBrushFrequency
+  organizationId            String?
   billHistory               BillHistory[]
   medicalCheckups           MedicalCheckup[]
   account                   account?                  @relation(fields: [accountId], references: [id])
+  organization              organization?             @relation(fields: [organizationId], references: [id])
   reservations              Reservation[]
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
 }
 
 model Reservation {
@@ -334,16 +327,15 @@ model Reservation {
   staffId            String
   patientId          String
   initialTreatmentId String
+  organizationId     String?
   bills              Bill[]
   billsHistory       BillHistory[]
   attachments        File[]
   medicalCheckups    MedicalCheckup[]
   initialTreatment   Treatment         @relation(fields: [initialTreatmentId], references: [id])
+  organization       organization?     @relation(fields: [organizationId], references: [id])
   patient            Patient           @relation(fields: [patientId], references: [id])
   doctor             Staff             @relation(fields: [staffId], references: [id])
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
 }
 
 model MedicalCheckup {
@@ -379,11 +371,10 @@ model CosmeticService {
   approved         Boolean         @default(false)
   unapprovedReason String?
   medicalCheckupId String?
+  organizationId   String?
   medicalCheckup   MedicalCheckup? @relation(fields: [medicalCheckupId], references: [id])
+  organization     organization?   @relation(fields: [organizationId], references: [id])
   treatment        Treatment       @relation(fields: [treatmentId], references: [id])
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
 }
 
 model MedicalService {
@@ -396,12 +387,11 @@ model MedicalService {
   medicalCheckupId String?
   treatmentId      String
   toothConditionId String
+  organizationId   String?
   medicalCheckup   MedicalCheckup?      @relation(fields: [medicalCheckupId], references: [id])
+  organization     organization?        @relation(fields: [organizationId], references: [id])
   condition        ToothCondition       @relation(fields: [toothConditionId], references: [id])
   treatment        Treatment            @relation(fields: [treatmentId], references: [id])
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
 }
 
 model ToothCondition {
@@ -412,67 +402,64 @@ model ToothCondition {
 }
 
 model Vendor {
-  id            String       @id @default(dbgenerated("gen_random_uuid()"))
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @default(now())
-  name          String
-  shortName     String
-  contactPerson String
-  contactNumber String
-  email         String
-  address       String
-  lat           Float?
-  long          Float?
-  Peripheral    Peripheral[]
-  stock         Stock[]      @relation("VendorStock")
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
+  id             String        @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
+  name           String
+  shortName      String
+  contactPerson  String
+  contactNumber  String
+  email          String
+  address        String
+  lat            Float?
+  long           Float?
   organizationId String?
+  Peripheral     Peripheral[]
+  organization   organization? @relation(fields: [organizationId], references: [id])
+  stock          Stock[]       @relation("VendorStock")
 }
 
 model Stock {
-  id        String        @id @default(dbgenerated("gen_random_uuid()"))
-  category  StockCategory
-  createdAt DateTime      @default(now())
-  fileId    String?
-  name      String
-  quantity  Int
-  sku       String        @unique
-  status    StockStatus
-  unit      String?
-  unitPrice Float
-  updatedAt DateTime      @default(now())
-  image     File?         @relation(fields: [fileId], references: [id])
-  vendors   Vendor[]      @relation("VendorStock")
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
+  id             String        @id @default(dbgenerated("gen_random_uuid()"))
+  category       StockCategory
+  createdAt      DateTime      @default(now())
+  fileId         String?
+  name           String
+  quantity       Int
+  sku            String        @unique
+  status         StockStatus
+  unit           String?
+  unitPrice      Float
+  updatedAt      DateTime      @default(now())
   organizationId String?
+  image          File?         @relation(fields: [fileId], references: [id])
+  organization   organization? @relation(fields: [organizationId], references: [id])
+  vendors        Vendor[]      @relation("VendorStock")
 }
 
 model Peripheral {
-  id            String             @id @default(dbgenerated("gen_random_uuid()"))
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @default(now())
-  fileId        String?
-  weight        Float
-  category      PeripheralCategory
-  barcode       String
-  purchaseDate  DateTime
-  invoiceNumber String
-  price         Float
-  quantity      Int
-  vendorId      String
-  sku           String             @unique
-  name          String
-  roomId        String
-  staffId       String
-  image         File?              @relation(fields: [fileId], references: [id])
-  assignedRoom  Room               @relation(fields: [roomId], references: [id])
-  createdBy     Staff              @relation(fields: [staffId], references: [id])
-  vendor        Vendor             @relation(fields: [vendorId], references: [id])
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
+  id             String             @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @default(now())
+  fileId         String?
+  weight         Float
+  category       PeripheralCategory
+  barcode        String
+  purchaseDate   DateTime
+  invoiceNumber  String
+  price          Float
+  quantity       Int
+  vendorId       String
+  sku            String             @unique
+  name           String
+  roomId         String
+  staffId        String
   organizationId String?
+  image          File?              @relation(fields: [fileId], references: [id])
+  organization   organization?      @relation(fields: [organizationId], references: [id])
+  assignedRoom   Room               @relation(fields: [roomId], references: [id])
+  createdBy      Staff              @relation(fields: [staffId], references: [id])
+  vendor         Vendor             @relation(fields: [vendorId], references: [id])
 }
 
 model Room {
@@ -491,13 +478,12 @@ model BillHistory {
   staffId            String?
   patientId          String?
   reservationId      String?
+  organizationId     String?
   bill               Bill?           @relation(fields: [billId], references: [id])
+  organization       organization?   @relation(fields: [organizationId], references: [id])
   processedByPatient Patient?        @relation(fields: [patientId], references: [id])
   reservation        Reservation?    @relation(fields: [reservationId], references: [id])
   processedByStaff   Staff?          @relation(fields: [staffId], references: [id])
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
 }
 
 model Bill {
@@ -515,19 +501,18 @@ model Bill {
 }
 
 model AssetTransfer {
-  id          String   @id @default(dbgenerated("gen_random_uuid()"))
-  createdAt   DateTime @default(now())
-  amount      Float
-  fromAssetId String
-  toAssetId   String
-  note        String?
-  staffId     String
-  from        Asset    @relation("FromAsset", fields: [fromAssetId], references: [id])
-  createdBy   Staff    @relation(fields: [staffId], references: [id])
-  to          Asset    @relation("ToAsset", fields: [toAssetId], references: [id])
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
+  id             String        @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt      DateTime      @default(now())
+  amount         Float
+  fromAssetId    String
+  toAssetId      String
+  note           String?
+  staffId        String
   organizationId String?
+  from           Asset         @relation("FromAsset", fields: [fromAssetId], references: [id])
+  organization   organization? @relation(fields: [organizationId], references: [id])
+  createdBy      Staff         @relation(fields: [staffId], references: [id])
+  to             Asset         @relation("ToAsset", fields: [toAssetId], references: [id])
 }
 
 model Asset {
@@ -542,13 +527,12 @@ model Asset {
   icon               String
   currentAmount      Float
   staffId            String
+  organizationId     String?
+  organization       organization?   @relation(fields: [organizationId], references: [id])
   createdBy          Staff           @relation(fields: [staffId], references: [id])
   fromAssetTransfers AssetTransfer[] @relation("FromAsset")
   toAssetTransfers   AssetTransfer[] @relation("ToAsset")
   bills              Bill[]
-
-  organization   organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
 }
 
 enum PeripheralCategory {
