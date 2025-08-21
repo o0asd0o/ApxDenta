@@ -41,6 +41,7 @@ const App: React.FC = () => {
   const { data: authData, isPending } = useSession();
   const trpc = useTRPC();
 
+  console.log({ authData });
   if (isPending) {
     return (
       <div className="flex items-center justify-center h-dvh bg-card">

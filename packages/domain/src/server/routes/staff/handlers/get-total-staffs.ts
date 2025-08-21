@@ -11,7 +11,7 @@ export type GetAllStaffsProps = HandlerType<z.infer<typeof inputSchema>>;
 const handler = async ({ input, ctx }: GetAllStaffsProps) => {
   const result = await getAllStaffCount(
     ctx.db,
-    ctx.organizationId,
+    ctx.organizationId as string,
     input.staffType,
   );
 

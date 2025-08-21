@@ -1,4 +1,4 @@
-import type { Staff } from '@/db';
+import type { Staff, invitation, organization } from '@/db';
 import mailer from '@/server/common/lib/mailer';
 import type { WorkingHoursFormType } from '@repo/schemas';
 import type { Selectable } from 'kysely';
@@ -35,18 +35,21 @@ export const getWorkScheduleByDayFromWorkingHours = (
   }));
 };
 
-export const sendStaffConfirmationEmail = async (
-  staff: Selectable<Staff>,
-  staffEmail: string,
-) => {
+export const sendStaffConfirmationEmail = async (params: {
+  staff: Selectable<Staff>;
+  invitation: Selectable<invitation>;
+  organization: Pick<organization, 'id' | 'name' | 'logo'>;
+}) => {
   await mailer.sendEmail({
     template: 'staff-account-confirmation',
-    to: staffEmail,
+    to: params.staff.email as string,
     data: {
-      firstName: staff.firstName,
-      name: `${staff.firstName} ${staff.lastName}`,
-      staffId: staff.id,
+      firstName: params.staff.firstName,
+      name: `${params.staff.firstName} ${params.staff.lastName}`,
+      staffId: params.staff.id,
       createdDate: new Date().toISOString(),
+      invitationId: params.invitation.id,
+      organization: params.organization,
     },
   });
 };

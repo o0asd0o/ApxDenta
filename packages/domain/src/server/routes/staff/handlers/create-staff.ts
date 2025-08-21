@@ -10,6 +10,7 @@ import {
 import { z } from 'zod';
 import { sendStaffConfirmationEmail } from './__helpers';
 import { StaffDbAfterSaveActions } from './db-operations/StaffAfterSaveActions.class';
+import { getOrganizationById } from './db-operations/getOrganization';
 import { saveStaff } from './db-operations/saveStaff';
 
 const inputSchema = z.object({
@@ -29,10 +30,14 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
   const dayOffs = input.dayOffs.dayOffs.slice(0);
 
   try {
-    const returnedStaff = await ctx.db
+    const [returnedStaff, staffInvite] = await ctx.db
       .transaction()
       .execute(async (transaction) => {
-        const staff = await saveStaff(transaction, input, ctx.organizationId);
+        const staff = await saveStaff(
+          transaction,
+          input,
+          ctx.organizationId as string,
+        );
 
         const staffDbAfterCreate = new StaffDbAfterSaveActions(
           transaction,
@@ -46,7 +51,9 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
           dayOffs.concat(extraDayOffs.map((dayOff) => dayOff.id));
         }
 
-        await Promise.all([
+        const [invite] = await Promise.all([
+          /** INVITATION */
+          staffDbAfterCreate.createInvitation({ input, ctx }),
           /** ASSIGNED TREATMENTS (M2M) */
           staffDbAfterCreate.saveStaffAssignedServices(input.assignedServices),
           /** WORK SCHEDULES */
@@ -55,10 +62,16 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
           staffDbAfterCreate.saveStaffDayOffs(dayOffs),
         ]);
 
-        return staff;
+        return [staff, invite];
       });
 
-    await sendStaffConfirmationEmail(returnedStaff, input.staffInfo.email);
+    const org = await getOrganizationById(ctx.db, ctx.organizationId as string);
+
+    await sendStaffConfirmationEmail({
+      staff: returnedStaff,
+      invitation: staffInvite,
+      organization: org,
+    });
   } catch (error) {
     console.error('Error creating staff:', error);
     throw errors.serverError();

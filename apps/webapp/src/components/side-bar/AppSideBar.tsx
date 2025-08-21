@@ -1,4 +1,5 @@
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useActiveMember } from '@/lib/auth-client';
 import {
   Sidebar,
   SidebarContent,
@@ -126,7 +127,9 @@ export const AppSideBar = () => {
   const { toggleSidebar } = useSidebar();
   const isMobile = useIsMobile();
 
-  // const debouncedToggle = useCallback(debounce(toggleSidebar, 100), []);
+  const { data } = useActiveMember();
+
+  const role = data?.role as 'genStaff' | 'doctor' | 'owner' | 'admin' | null;
 
   return (
     <Sidebar collapsible="icon">
@@ -142,7 +145,7 @@ export const AppSideBar = () => {
             slogan="845 Euclid Avenue, CA"
           />
         </div>
-        {MENU_LIST.map((menu) => {
+        {(role === 'owner' ? MENU_LIST : [MENU_LIST[0]]).map((menu) => {
           if (menu.subMenu && !menu.path) {
             return (
               <SidebarGroup>

@@ -2,7 +2,7 @@ import { TRPCError, initTRPC } from '@trpc/server';
 import SuperJSON from 'superjson';
 import { ZodError, z } from 'zod/v4';
 import type { TRPCContext, TrpcContextSession } from './types';
-import { extractOrganizationIdFromSession } from './utils/organization';
+import { extractOrganizationInfoFromSession } from './utils/organization';
 
 export const createTRPCContext = async ({
   auth,
@@ -10,7 +10,7 @@ export const createTRPCContext = async ({
   headers,
 }: TRPCContext): Promise<TrpcContextSession> => {
   const session = await auth.api.getSession({ headers });
-  const organizationId = extractOrganizationIdFromSession(session);
+  const organizationId = extractOrganizationInfoFromSession(session);
   return { db, session, organizationId };
 };
 
