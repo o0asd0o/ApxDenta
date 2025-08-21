@@ -27,8 +27,6 @@ export const CompanySection: React.FC<Props> = () => {
     slogan: string;
   };
 
-  console.log({ _organizations, _activeOrg });
-
   if (!activeOrg && !isPending) {
     return (
       <div className={cn(state === 'collapsed' && 'ml-1')}>
@@ -87,7 +85,7 @@ export const CompanySection: React.FC<Props> = () => {
         {!isPending && (
           <img
             src={activeOrg?.logo as string}
-            className="size-5! rounded-full text-xs"
+            className="size-5! rounded-full text-xs object-cover"
             alt="logo"
           />
         )}

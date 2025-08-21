@@ -36,14 +36,14 @@ const DEFAULT_VALUES = {
 export const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
 
-  const { staffId } = Route.useSearch();
+  const { staffId, invitationId } = Route.useSearch();
 
   const trpc = useTRPCClient();
 
   const form = useForm<RegistrationFormType>({
     resolver: zodResolver(registrationSchema),
     defaultValues: async () => {
-      if (staffId) {
+      if (staffId && invitationId) {
         const staff = await trpc.staffs.getInvitedStaff.query({
           id: staffId as string,
         });
@@ -73,17 +73,18 @@ export const RegistrationForm: React.FC = () => {
         throw new Error(response.error.message);
       }
 
-      if (staffId) {
+      if (staffId && invitationId) {
         await trpc.staffs.tieStaffToAccount.mutate({
           userId: response.data.user.id,
           staffId,
+          invitationId,
         });
       }
 
       navigate({ to: '/verification-sent', search: { email: values.email } });
     },
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast.error(error.message || 'Something went wrong');
     },
   });
 

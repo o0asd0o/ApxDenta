@@ -1,4 +1,4 @@
-import templateShell from '@/template-shell';
+import templateShell from '../../template-shell';
 
 export type EmailVerificationProps = {
   firstName: string;

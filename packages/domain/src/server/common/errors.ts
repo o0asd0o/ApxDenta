@@ -120,11 +120,11 @@ const invalid = (resourceType: string, reason?: string): CustomError => {
     },
   );
 };
-const badRequest = (code?: string): CustomError => {
+const badRequest = (code?: string, message?: string): CustomError => {
   return Object.assign(
     new TRPCError({
       code: 'BAD_REQUEST',
-      message: 'Bad request',
+      message: message || 'Bad request',
     }),
     {
       causeData: {
