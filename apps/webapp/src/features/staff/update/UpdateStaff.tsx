@@ -26,8 +26,8 @@ const UpdateStaff: React.FC = () => {
           <SheetTitle className="text-lg">Update staff </SheetTitle>
         </SheetHeader>
         <div className="flex flex-col h-[calc(100%_-_56px)] flex-1">
-          <div className={cn('grid gap-2 overflow-y-scroll h-full')}>
-            <div className="flex flex-col overflow-x-hidden h-full">
+          <div className={cn('grid gap-2 overflow-y-hidden h-full')}>
+            <div className="flex flex-col overflow-y-hidden h-full">
               <Root defaultValue={STAFF_FORMS[0].id}>
                 <List>
                   {STAFF_FORMS.map((form) => (
