@@ -19,7 +19,9 @@ export const dayOffsSchema = z.object({
 });
 
 export const staffInfoSchema = z.object({
-  file: z.instanceof(File, { message: 'Please attach a valid image' }),
+  file: z
+    .string()
+    .or(z.instanceof(File, { message: 'Please attach a valid image' })),
   type: z.enum(['FULL_TIME', 'PART_TIME'], {
     required_error: 'Employment type is required',
   }),

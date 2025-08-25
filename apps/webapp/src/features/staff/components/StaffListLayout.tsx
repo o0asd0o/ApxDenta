@@ -12,6 +12,10 @@ const StaffListLayout: React.FC<LayoutProps> = ({
   sorting,
   setSorting,
   setPagination,
+
+  // staff actions
+  onDeleteStaff,
+  onViewStaff,
 }) => {
   const trpc = useTRPC();
   const { data: staffList, isLoading } = useQuery(
@@ -39,7 +43,10 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         data={staffList?.data || []}
         sort={{ sorting, setSorting }}
         loading={isLoading}
-        columns={columns}
+        columns={columns({
+          onView: onViewStaff,
+          onDelete: onDeleteStaff,
+        })}
         onDeleteItems={(items) => Promise.resolve(console.log({ items }))}
       />
       {staffList?.count !== 0 && (

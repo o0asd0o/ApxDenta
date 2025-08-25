@@ -60,4 +60,8 @@ export type LayoutProps = {
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
   sorting: SortingState;
   filters: StaffFilterType;
+
+  // staff actions
+  onViewStaff: (staffId: string) => void;
+  onDeleteStaff: (staffId: string) => void;
 };

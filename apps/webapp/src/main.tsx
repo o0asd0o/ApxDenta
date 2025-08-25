@@ -15,7 +15,7 @@ import reportWebVitals from './reportWebVitals.ts';
 
 // scan({
 //   _debug: 'verbose',
-//   enabled: false,
+//   enabled: true,
 // });
 
 // Create a new router instance

@@ -17,9 +17,9 @@ const FilterButton: React.FC<Props> = ({ onClick, hasFilters, className }) => {
       className={cn(className, 'h-[38px]')}
     >
       <div className="relative inline-flex sm:mr-1.5">
-        <ListFilterIcon className="size-4.5 sm:size-3" />
+        <ListFilterIcon className="size-5 sm:size-4" />
         {hasFilters && (
-          <span className="right-[-3px] top-[-3px] absolute rounded-full size-[10px] bg-[#61B0FF] border-2 border-white" />
+          <span className="right-[-2px] top-[-1px] absolute rounded-full size-[10px] bg-[#61B0FF] border-2 border-white" />
         )}
       </div>
       <span className="hidden sm:inline">Filter</span>

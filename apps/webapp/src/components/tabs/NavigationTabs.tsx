@@ -2,11 +2,13 @@ import { cn } from '@repo/ui/lib/utils';
 import { produce } from 'immer';
 import React, {
   useCallback,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
 } from 'react';
+import ScrollContainer from 'react-indiana-drag-scroll';
 import { createContext, useContextSelector } from 'use-context-selector';
 type TabType = {
   value: string;
@@ -26,23 +28,34 @@ const List: React.FC<{ className?: string; children: React.ReactNode }> = ({
   className,
   children,
 }) => {
+  const ref = useRef<HTMLDivElement>(null);
   const selected = useContextSelector(NavigationTabsContext, (state) => {
     return state?.tabs.find((item) => item.value === state?.selectedTab);
   });
+
+  useEffect(() => {
+    ref.current?.scrollTo({
+      left: (selected?.left ?? 0) - 120,
+      behavior: 'smooth',
+    });
+  }, [selected]);
+
   return (
     <div className="flex w-full">
-      <ul
-        style={
-          {
-            '--indicator-width': `${selected?.width ?? 0}px`,
-            '--indicator-left': `${selected?.left ?? 0}px`,
-          } as CSSProperties
-        }
-        className={cn('flex flex-row relative border-b w-full', className)}
-      >
-        {children}
-        <SelectIndicator />
-      </ul>
+      <ScrollContainer className="scroll-container w-full" innerRef={ref}>
+        <ul
+          style={
+            {
+              '--indicator-width': `${selected?.width ?? 0}px`,
+              '--indicator-left': `${selected?.left ?? 0}px`,
+            } as CSSProperties
+          }
+          className={cn('flex flex-row relative border-b w-full', className)}
+        >
+          {children}
+          <SelectIndicator />
+        </ul>
+      </ScrollContainer>
     </div>
   );
 };
@@ -113,6 +126,7 @@ const ListItem: React.FC<{
     >
       <button
         ref={ref}
+        tabIndex={-1}
         className="py-3 px-5"
         type="button"
         onClick={() => setSelected?.(value)}
@@ -161,8 +175,9 @@ Root.displayName = 'NavigationTabsRoot';
 const TabContent: React.FC<{
   className?: string;
   value: string;
+  animated?: boolean;
   children: React.ReactNode;
-}> = ({ value, children, className }) => {
+}> = ({ value, children, className, animated }) => {
   const isSelected = useContextSelector(NavigationTabsContext, (state) => {
     const selectedTab = state?.selectedTab;
     const currentTab = state?.tabs.find((item) => item.value === value);

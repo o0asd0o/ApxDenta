@@ -12,6 +12,18 @@ export const getStaffById = async (db: DatabaseInstance, staffId: string) => {
           .whereRef('File.id', '=', 'Staff.avatarId'),
       ).as('avatar');
     })
+    .select((eb) => {
+      return jsonObjectFrom(
+        eb
+          .selectFrom('SpecialistsRecord')
+          .select([
+            'SpecialistsRecord.id',
+            'SpecialistsRecord.title',
+            'SpecialistsRecord.code',
+          ])
+          .whereRef('SpecialistsRecord.id', '=', 'Staff.specialistsRecordId'),
+      ).as('specialist');
+    })
     .selectAll()
     .where('Staff.id', '=', staffId)
     .executeTakeFirstOrThrow();

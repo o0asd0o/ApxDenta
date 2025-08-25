@@ -12,10 +12,17 @@ import {
   TooltipTrigger,
 } from '@repo/ui/components';
 import type { ColumnDef } from '@tanstack/react-table';
-import { renderStaffActions, renderWorkingDays } from './__renderers';
+import { RenderStaffActions, renderWorkingDays } from './__renderers';
 import type { StaffColumnType } from './__types';
 
-export const columns: ColumnDef<StaffColumnType>[] = [
+type Actions = {
+  onView: (staffId: string) => void;
+  onDelete: (staffId: string) => void;
+};
+export const columns: (actions: Actions) => ColumnDef<StaffColumnType>[] = ({
+  onView,
+  onDelete,
+}) => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -143,6 +150,12 @@ export const columns: ColumnDef<StaffColumnType>[] = [
   {
     id: 'actions',
     size: 50,
-    cell: ({ row }) => renderStaffActions(row.original),
+    cell: ({ row }) => (
+      <RenderStaffActions
+        staffId={row.original.id}
+        onDelete={onDelete}
+        onView={onView}
+      />
+    ),
   },
 ];

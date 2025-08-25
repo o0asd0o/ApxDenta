@@ -2,25 +2,29 @@ import React, { useState } from 'react';
 
 type Props = {
   name: string;
-  onChange?: (file: File | null) => void;
-  value: File | null;
+  onChange?: (file: File | null | string) => void;
+  value: File | string | null;
 };
 
 export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
   const [avatar, setAvatar] = useState<string | undefined>(
-    value ? URL.createObjectURL(value) : undefined,
+    value && typeof value !== 'string'
+      ? URL.createObjectURL(value as File)
+      : value || undefined,
   );
+
+  const imageAvatar = avatar || value;
 
   return (
     <div className="flex gap-2 items-center">
       <>
-        {avatar && (
+        {imageAvatar && (
           <div
             className="size-14 rounded-full bg-cover! border border-gray-300"
-            style={{ background: `url('${avatar}')` }}
+            style={{ background: `url('${imageAvatar}')` }}
           />
         )}
-        {!avatar && <div className="size-14 bg-gray-200 rounded-full" />}
+        {!imageAvatar && <div className="size-14 bg-gray-200 rounded-full" />}
       </>
 
       <div className="flex flex-col gap-1.5">
@@ -30,7 +34,7 @@ export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
               htmlFor={name}
               className="text-primary text-sm cursor-pointer"
             >
-              {avatar ? 'Replace' : 'Upload photo'}
+              {imageAvatar ? 'Replace' : 'Upload photo'}
             </label>
             <input
               id={name}
@@ -45,7 +49,7 @@ export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
               type="file"
             />
           </div>
-          {avatar && (
+          {imageAvatar && (
             <>
               <div className="flex w-[1px] h-4 bg-gray-200 mt-1" />
               <button

@@ -11,7 +11,7 @@ import type React from 'react';
 import { createContext, useContextSelector } from 'use-context-selector';
 import type { AdditionalDayOffType, AllFormsType } from '../../__types';
 
-const { useStepper, steps, utils } = defineStepper(
+export const STAFF_FORMS = [
   {
     id: 'staffInfo',
     label: 'Staff Info',
@@ -36,16 +36,18 @@ const { useStepper, steps, utils } = defineStepper(
     schema: dayOffsSchema,
     icon: <ClockAlert />,
   },
-);
+] as const;
 
-export const params = { useStepper, steps, utils };
+export const createStaffFormStepper = () => defineStepper(...STAFF_FORMS);
+
+type CreateStaffFormType = ReturnType<typeof createStaffFormStepper>;
 
 export const CreateStaffContext = createContext<{
   currentTab: number;
   setCurrentTab: React.Dispatch<React.SetStateAction<number>>;
-  stepper: ReturnType<typeof useStepper>;
-  steps: typeof steps;
-  utils: typeof utils;
+  stepper: ReturnType<CreateStaffFormType['useStepper']>;
+  steps: CreateStaffFormType['steps'];
+  utils: CreateStaffFormType['utils'];
   additionDayOff: AdditionalDayOffType;
   setAdditionDayOff: React.Dispatch<React.SetStateAction<AdditionalDayOffType>>;
   formValues?: AllFormsType;
@@ -66,7 +68,7 @@ export const useCurrentTab = () => {
 export const useFormStepper = () => {
   return useContextSelector(
     CreateStaffContext,
-    (state) => state?.stepper as ReturnType<typeof useStepper>,
+    (state) => state?.stepper as ReturnType<CreateStaffFormType['useStepper']>,
   );
 };
 

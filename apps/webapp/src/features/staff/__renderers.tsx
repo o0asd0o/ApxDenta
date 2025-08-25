@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import type { WorkingDay } from '@repo/domain/db';
 import { Button, V2 } from '@repo/ui/components';
 import { EditIcon, EyeIcon, MoreVertical, Trash2Icon } from 'lucide-react';
-import type { StaffColumnType } from './__types';
+import { useUpdateStaffIdAction } from './update/context/context';
 
 export const renderWorkingDays = (
   value: { day: WorkingDay }[],
@@ -31,10 +31,16 @@ export const renderWorkingDays = (
   );
 };
 
-export const renderStaffActions = (staff: StaffColumnType) => {
+export const RenderStaffActions = (actions: {
+  staffId: string;
+  onView: (staffId: string) => void;
+  onDelete: (staffId: string) => void;
+}) => {
+  const onShowUpdateModal = useUpdateStaffIdAction();
+
   return (
     <div className="flex justify-end">
-      <V2.DropdownMenu>
+      <V2.DropdownMenu modal={false}>
         <V2.DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
@@ -45,19 +51,25 @@ export const renderStaffActions = (staff: StaffColumnType) => {
           <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
           <V2.DropdownMenuSeparator />
           <V2.DropdownMenuGroup>
-            <V2.DropdownMenuItem>
+            <V2.DropdownMenuItem
+              onClick={() => actions.onView(actions.staffId)}
+            >
               <span className="flex items-center gap-x-2">
                 <EyeIcon className="size-4 text-inherit" />
                 <span>View Doctor</span>
               </span>
             </V2.DropdownMenuItem>
-            <V2.DropdownMenuItem>
+            <V2.DropdownMenuItem
+              onClick={() => onShowUpdateModal(actions.staffId)}
+            >
               <span className="flex items-center gap-x-2">
                 <EditIcon className="size-4 text-inherit" />
                 <span>Update Doctor</span>
               </span>
             </V2.DropdownMenuItem>
-            <V2.DropdownMenuItem>
+            <V2.DropdownMenuItem
+              onClick={() => actions.onDelete(actions.staffId)}
+            >
               <span className="flex items-center gap-x-2 text-red-500">
                 <Trash2Icon className="size-4 text-inherit" />
                 <span>Delete</span>
