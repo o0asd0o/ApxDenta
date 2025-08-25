@@ -1,4 +1,4 @@
-import { DialogDrawer } from '@/components/DialogDrawer';
+import { DialogDrawer } from '@/components/dialog/DialogDrawer';
 import StepperComponent from '@/components/stepper/StepperComponent';
 import { useUploadFile } from '@/hooks/upload/useUploadFile';
 import { useActiveOrganization } from '@/lib/auth-client';

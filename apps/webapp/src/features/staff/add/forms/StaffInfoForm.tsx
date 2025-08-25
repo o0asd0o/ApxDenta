@@ -19,16 +19,17 @@ import type { UseFormReturn } from 'react-hook-form';
 
 type Props = {
   form: UseFormReturn<StaffInfoFormType>;
+  isUpdate?: boolean;
 };
 
-export const StaffInfoForm: React.FC<Props> = ({ form }) => {
+export const StaffInfoForm: React.FC<Props> = ({ form, isUpdate }) => {
   return (
     <div className="flex flex-col gap-3">
       <FormField
         control={form.control}
         name="file"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="mb-2">
             <FormControl>
               <UploadAvatar
                 name="file"
@@ -137,6 +138,7 @@ export const StaffInfoForm: React.FC<Props> = ({ form }) => {
       <FormField
         control={form.control}
         name="email"
+        disabled={isUpdate}
         render={({ field }) => (
           <FormItem className="space-y-1 flex flex-col">
             <FormLabel>Email</FormLabel>

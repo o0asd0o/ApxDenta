@@ -19,6 +19,8 @@ import StaffActions from './components/StaffActions';
 import StaffCardLayout from './components/StaffCardLayout';
 import StaffListLayout from './components/StaffListLayout';
 import TotalStaff from './components/TotalStaff';
+import UpdateStaff from './update/UpdateStaff';
+import { UpdateStaffProvider } from './update/context/UpdateStaffProvider';
 
 const StaffList: React.FC = () => {
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
@@ -109,24 +111,31 @@ const StaffList: React.FC = () => {
             />
           </div>
           <div>
-            {layoutTab === 'card' && (
-              <StaffCardLayout
-                filters={filters}
-                pagination={pagination}
-                sorting={sorting}
-                setSorting={setSorting}
-                setPagination={setPagination}
-              />
-            )}
-            {layoutTab === 'list' && (
-              <StaffListLayout
-                filters={filters}
-                pagination={pagination}
-                sorting={sorting}
-                setSorting={setSorting}
-                setPagination={setPagination}
-              />
-            )}
+            <UpdateStaffProvider>
+              <UpdateStaff />
+              {layoutTab === 'card' && (
+                <StaffCardLayout
+                  filters={filters}
+                  pagination={pagination}
+                  sorting={sorting}
+                  setSorting={setSorting}
+                  setPagination={setPagination}
+                  onViewStaff={(staffId) => console.log('VIEW', staffId)}
+                  onDeleteStaff={(staffId) => console.log('DELETE', staffId)}
+                />
+              )}
+              {layoutTab === 'list' && (
+                <StaffListLayout
+                  filters={filters}
+                  pagination={pagination}
+                  sorting={sorting}
+                  setSorting={setSorting}
+                  setPagination={setPagination}
+                  onViewStaff={(staffId) => console.log('VIEW', staffId)}
+                  onDeleteStaff={(staffId) => console.log('DELETE', staffId)}
+                />
+              )}
+            </UpdateStaffProvider>
           </div>
         </TabContent>
         <TabContent value="general">General Staff content</TabContent>

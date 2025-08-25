@@ -8,7 +8,6 @@ export const tieStaffToAccount = async (
   userId: string,
   invitationId: string,
 ) => {
-  console.log({ staffId, userId, invitationId });
   const [account, staff, invitation] = await Promise.all([
     db
       .selectFrom('account')

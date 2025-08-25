@@ -15,10 +15,15 @@ import {
   PhoneCall,
 } from 'lucide-react';
 import React from 'react';
-import { renderStaffActions, renderWorkingDays } from '../__renderers';
+import { RenderStaffActions, renderWorkingDays } from '../__renderers';
 import type { StaffColumnType } from '../__types';
 
-const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
+type Props = {
+  staff: StaffColumnType;
+  onViewStaff: (id: string) => void;
+  onDeleteStaff: (id: string) => void;
+};
+const StaffCard: React.FC<Props> = ({ staff, onViewStaff, onDeleteStaff }) => {
   return (
     <div
       key={staff.id}
@@ -70,7 +75,7 @@ const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
           </div>
           <ul className="text-gray-950 list-disc w-[calc(100%-100px)]">
             {staff.assignedServices.slice(0, 3).map((s, index) => (
-              <li key={s.id} className="truncate flex-1 pl-3">
+              <li key={s.id} className="truncate flex-1 pl-3 text-sm">
                 • {s.name}{' '}
                 {index === 2 && !!(staff.assignedServices.length - 3) ? (
                   <>
@@ -116,7 +121,13 @@ const StaffCard: React.FC<{ staff: StaffColumnType }> = ({ staff }) => {
           {renderWorkingDays(staff.workSchedules)}
         </div>
       )}
-      <div className="absolute top-4 right-4">{renderStaffActions(staff)}</div>
+      <div className="absolute top-4 right-4">
+        <RenderStaffActions
+          staffId={staff.id}
+          onView={onViewStaff}
+          onDelete={onDeleteStaff}
+        />
+      </div>
     </div>
   );
 };

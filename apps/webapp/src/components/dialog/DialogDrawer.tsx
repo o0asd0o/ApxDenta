@@ -38,6 +38,7 @@ export const DialogDrawer: React.FC<Props> = ({
   footer,
   onSubmit,
 }) => {
+  const Comp = typeof onSubmit === 'function' ? 'form' : 'div';
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       {disabledTooltip && (
@@ -63,7 +64,7 @@ export const DialogDrawer: React.FC<Props> = ({
           </TooltipContent>
         </Tooltip>
       )}
-      {!disabledTooltip && (
+      {!disabledTooltip && typeof actionText !== 'undefined' && (
         <SheetTrigger asChild>
           <Button variant="primary" className={className}>
             <span className="hidden sm:inline">{actionText || 'Open'}</span>
@@ -75,11 +76,17 @@ export const DialogDrawer: React.FC<Props> = ({
         <SheetHeader className="border-b border-b-border px-4 py-3 h-14">
           <SheetTitle className="text-lg">{title}</SheetTitle>
         </SheetHeader>
-        <form
+        <Comp
           className="flex flex-col h-[calc(100%_-_56px)] flex-1"
+          // @ts-ignore
           onSubmit={onSubmit}
         >
-          <div className="grid gap-4 py-4 px-6 h-[calc(100%_-_70px)] overflow-y-scroll">
+          <div
+            className={cn(
+              'grid gap-4 py-4 h-[calc(100%_-_70px)] overflow-y-scroll',
+              !!footer && 'px-6',
+            )}
+          >
             {children}
           </div>
           {!!footer && (
@@ -87,7 +94,7 @@ export const DialogDrawer: React.FC<Props> = ({
               {footer}
             </SheetFooter>
           )}
-        </form>
+        </Comp>
       </SheetContent>
     </Sheet>
   );

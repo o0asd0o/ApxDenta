@@ -15,3 +15,11 @@ export const slugify = (_string: string): string => {
     .replace(/-+/g, '-'); // remove consecutive hyphens
   return str;
 };
+
+export const urlToFile = async (imageUrl: string) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_PUBLIC_CDN_URL}${imageUrl}`,
+  );
+  const blob = await response.blob();
+  return new File([blob], 'image.jpg', { type: blob.type });
+};
