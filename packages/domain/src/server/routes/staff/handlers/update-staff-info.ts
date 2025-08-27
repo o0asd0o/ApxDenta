@@ -7,9 +7,9 @@ import { updateStaffInfo } from './db-operations/updateStaffInfo';
 const inputSchema = z.object({
   staffId: z.string(),
   staffData: staffInfoSchema
+    .partial()
     .omit({ file: true })
-    .extend({ file: z.object({ id: z.string() }).optional() })
-    .partial(),
+    .extend({ file: z.object({ id: z.string() }).optional() }),
 });
 
 export type UpdateStaffInfoParams = HandlerType<z.infer<typeof inputSchema>>;

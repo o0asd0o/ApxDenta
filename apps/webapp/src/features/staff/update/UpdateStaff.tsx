@@ -29,7 +29,7 @@ const UpdateStaff: React.FC = () => {
           <div className={cn('grid gap-2 overflow-y-hidden h-full')}>
             <div className="flex flex-col overflow-y-hidden h-full">
               <Root defaultValue={STAFF_FORMS[0].id}>
-                <List>
+                <List className="w-fit">
                   {STAFF_FORMS.map((form) => (
                     <ListItem key={form.id} value={form.id}>
                       <div className="inline-flex gap-2 items-center whitespace-nowrap">
@@ -44,7 +44,7 @@ const UpdateStaff: React.FC = () => {
                   value="staffInfo"
                   className="flex flex-col p-0 h-[calc(100%_-_46px)]"
                 >
-                  <UpdateStaffInfo />
+                  <UpdateStaffInfo onSubmitted={() => setOpen(false)} />
                 </TabContent>
                 <TabContent value="assignedServices">
                   General Staff content

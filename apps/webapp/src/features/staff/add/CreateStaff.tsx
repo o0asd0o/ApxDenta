@@ -20,6 +20,7 @@ import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
+import { invalidateStaffList } from '../__common/queries';
 import { extractSpecialistIdFromValue } from '../__helpers';
 import type { AllFormsType, CreateStaffFormType } from '../__types';
 import {
@@ -60,15 +61,7 @@ const CreateStaff: React.FC = () => {
         setDrawerOpen(false);
         toast.success('Staff created successfully!');
 
-        await Promise.all([
-          queryClient.invalidateQueries({
-            queryKey: trpc.staffs.getTotalStaffs.queryKey(),
-          }),
-          queryClient.invalidateQueries({
-            queryKey: trpc.staffs.getAllStaffs.queryKey(),
-          }),
-          queryClient.invalidateQueries({ queryKey: ['staffList'] }),
-        ]);
+        await invalidateStaffList(queryClient, trpc);
       },
       onError: (error) => {
         console.error('Error creating staff:', error);
