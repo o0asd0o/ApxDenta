@@ -7,15 +7,17 @@ export const updateStaffInfo = async (
   staffId: string,
   staffData: UpdateStaffInfoParams['input']['staffData'],
 ) => {
-  let qb = db.updateTable(['Staff', 'File']).set({
-    firstName: staffData.firstName,
-    lastName: staffData.lastName,
-    contactNumber: staffData.phoneNumber,
-    email: staffData.email,
-    address: staffData.address,
-    specialistsRecordId: staffData.specialistId,
-    updatedAt: GET_DETAULT_UPDATED_AT(),
-  });
+  let qb = db
+    .updateTable(staffData.file?.id ? ['Staff', 'File'] : ['Staff'])
+    .set({
+      firstName: staffData.firstName || undefined,
+      lastName: staffData.lastName || undefined,
+      contactNumber: staffData.phoneNumber || undefined,
+      email: staffData.email || undefined,
+      address: staffData.address || undefined,
+      specialistsRecordId: staffData.specialistId || undefined,
+      updatedAt: GET_DETAULT_UPDATED_AT(),
+    });
 
   if (staffData.file?.id) {
     qb = qb
