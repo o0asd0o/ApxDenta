@@ -72,7 +72,7 @@ export const DialogDrawer: React.FC<Props> = ({
           </Button>
         </SheetTrigger>
       )}
-      <SheetContent className="gap-0 absolute top-10 right-2.5 h-[calc(100%_-_80px)] rounded-3xl w-[calc(100%-20px)] sm:max-w-[500px]">
+      <SheetContent className="gap-0 absolute top-5 sm:top-10 right-2.5 h-[calc(100%_-_40px)] sm:h-[calc(100%_-_80px)] rounded-3xl w-[calc(100%-20px)] sm:max-w-[500px]">
         <SheetHeader className="border-b border-b-border px-4 py-3 h-14">
           <SheetTitle className="text-lg">{title}</SheetTitle>
         </SheetHeader>
