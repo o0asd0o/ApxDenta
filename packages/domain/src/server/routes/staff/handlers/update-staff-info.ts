@@ -18,7 +18,8 @@ const inputSchema = z.object({
   staffData: staffInfoSchema
     .partial()
     .omit({ file: true })
-    .extend({ file: z.object({ id: z.string() }).optional() }),
+    .extend({ file: z.object({ id: z.string() }).optional() })
+    .optional(),
   assignedServices: assignedServicesSchema.optional(),
   dayOffs: dayOffsSchema.optional(),
   extraDayOffs: additionalDaysOffSchema.optional(),

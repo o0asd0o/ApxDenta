@@ -14,6 +14,7 @@ import { cn } from '@repo/ui/lib/utils';
 import React from 'react';
 import { STAFF_FORMS } from '../add/context/context';
 import { useUpdateModalVisibility } from './context/context';
+import UpdateStaffServices from './forms/UpdateAssignServices';
 import UpdateStaffInfo from './forms/UpdateStaffInfo';
 
 const UpdateStaff: React.FC = () => {
@@ -39,16 +40,22 @@ const UpdateStaff: React.FC = () => {
                     </ListItem>
                   ))}
                 </List>
-
                 <TabContent
                   value="staffInfo"
                   className="flex flex-col p-0 h-[calc(100%_-_46px)]"
                 >
                   <UpdateStaffInfo onSubmitted={() => setOpen(false)} />
                 </TabContent>
-                <TabContent value="assignedServices">
-                  General Staff content
+                <TabContent
+                  value="assignedServices"
+                  className="flex flex-col p-0 h-[calc(100%_-_46px)]"
+                >
+                  <UpdateStaffServices onSubmitted={() => setOpen(false)} />
                 </TabContent>
+
+                {/* <TabContent value="assignedServices">
+                  General Staff content
+                </TabContent> */}
               </Root>
             </div>
           </div>
