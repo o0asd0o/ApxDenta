@@ -8,14 +8,14 @@ export const updateStaffInfo = async (
   staffData: UpdateStaffParams['input']['staffData'],
 ) => {
   const qb = db.updateTable('Staff').set({
-    avatarId: staffData.file?.id || undefined,
-    firstName: staffData.firstName || undefined,
-    lastName: staffData.lastName || undefined,
-    contactNumber: staffData.phoneNumber || undefined,
-    employmentType: staffData.type || undefined,
-    email: staffData.email || undefined,
-    address: staffData.address || undefined,
-    specialistsRecordId: staffData.specialistId || undefined,
+    avatarId: staffData?.file?.id || undefined,
+    firstName: staffData?.firstName || undefined,
+    lastName: staffData?.lastName || undefined,
+    contactNumber: staffData?.phoneNumber || undefined,
+    employmentType: staffData?.type || undefined,
+    email: staffData?.email || undefined,
+    address: staffData?.address || undefined,
+    specialistsRecordId: staffData?.specialistId || undefined,
     updatedAt: GET_DETAULT_UPDATED_AT(),
   });
 
