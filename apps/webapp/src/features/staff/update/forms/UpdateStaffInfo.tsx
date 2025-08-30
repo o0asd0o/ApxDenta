@@ -1,4 +1,6 @@
+import { useUploadFile } from '@/hooks/upload/useUploadFile';
 import { useTRPC, useTRPCClient } from '@/lib/trpc';
+import { extractFileIdFromUrl } from '@/lib/utils';
 import { queryClient } from '@/providers/Root';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type StaffInfoFormType, staffInfoSchema } from '@repo/schemas';
@@ -22,6 +24,9 @@ type Props = {
 const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted }) => {
   const directTrpc = useTRPCClient();
   const staffId = useUpdateStaffId();
+  const [uploadFile] = useUploadFile();
+
+  const [processingFile, setProcessingFile] = React.useState<boolean>(false);
 
   const form = useForm({
     mode: 'onTouched',
@@ -67,26 +72,43 @@ const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted }) => {
     <Form {...form}>
       <form
         className="h-full flex flex-col"
-        onSubmit={form.handleSubmit((values) => {
-          const { dirtyFields } = form.formState;
+        onSubmit={form.handleSubmit(async (values) => {
+          const { dirtyFields, defaultValues } = form.formState;
 
-          const includeDirty = <T,>(keys: keyof StaffInfoFormType) => {
+          let newAvatarUrl: string | undefined = undefined;
+
+          const includeIfDirty = <T,>(keys: keyof StaffInfoFormType) => {
             return dirtyFields[keys] ? (values[keys] as T) : undefined;
           };
+
+          if (includeIfDirty('file')) {
+            setProcessingFile(true);
+            const oldAvatarUrl = extractFileIdFromUrl(
+              defaultValues?.file as string,
+            );
+
+            const [response] = await Promise.all([
+              uploadFile({ file: values.file as File }),
+              directTrpc.files.deleteFile.mutate({ fileId: oldAvatarUrl }),
+            ]);
+
+            newAvatarUrl = response.id;
+            setProcessingFile(false);
+          }
 
           updateStaffInfo({
             staffId: staffId as string,
             staffData: {
-              email: includeDirty('email'),
-              phoneNumber: includeDirty('phoneNumber'),
-              // file: values.file, // TODO: handle file upload
-              address: includeDirty('address'),
-              firstName: includeDirty('firstName'),
-              lastName: includeDirty('lastName'),
-              specialistId: (includeDirty('specialistId') as string)?.split(
+              email: includeIfDirty('email'),
+              phoneNumber: includeIfDirty('phoneNumber'),
+              file: newAvatarUrl ? { id: newAvatarUrl } : undefined,
+              address: includeIfDirty('address'),
+              firstName: includeIfDirty('firstName'),
+              lastName: includeIfDirty('lastName'),
+              specialistId: (includeIfDirty('specialistId') as string)?.split(
                 '--',
               )[0],
-              type: includeDirty('type'),
+              type: includeIfDirty('type'),
             },
           });
         })}
@@ -107,8 +129,8 @@ const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted }) => {
             type="submit"
             variant="primary"
             className="w-[120px]"
-            disabled={isPending}
-            isLoading={isPending}
+            disabled={isPending || processingFile}
+            isLoading={isPending || processingFile}
             loadingText="Saving..."
           >
             Update

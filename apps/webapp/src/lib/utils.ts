@@ -23,3 +23,12 @@ export const urlToFile = async (imageUrl: string) => {
   const blob = await response.blob();
   return new File([blob], 'image.jpg', { type: blob.type });
 };
+
+export const extractFileIdFromUrl = (imageUrl: string) => {
+  const olderAvatarUrl = imageUrl.replace(
+    `${import.meta.env.VITE_PUBLIC_CDN_URL}`,
+    '',
+  );
+
+  return olderAvatarUrl;
+};
