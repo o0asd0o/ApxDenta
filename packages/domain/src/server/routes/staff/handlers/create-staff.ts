@@ -27,7 +27,7 @@ const inputSchema = z.object({
 export type CreateStaffParams = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: CreateStaffParams) => {
-  const dayOffs = input.dayOffs.dayOffs.slice(0);
+  let dayOffs = input.dayOffs.dayOffs.slice(0);
 
   try {
     const [returnedStaff, staffInvite] = await ctx.db
@@ -48,7 +48,8 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
           const extraDayOffs = await staffDbAfterCreate.saveStaffExtraDayOffs(
             input.extraDayOffs,
           );
-          dayOffs.concat(extraDayOffs.map((dayOff) => dayOff.id));
+
+          dayOffs = dayOffs.concat(extraDayOffs.map((dayOff) => dayOff.id));
         }
 
         const [invite] = await Promise.all([

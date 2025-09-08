@@ -23,7 +23,7 @@ export class StaffDbAfterSaveActions {
     const dayOffs = extraDayOffs || [];
     return this.transaction
       .insertInto('DayOff')
-      .values(dayOffs.map((dayOff) => ({ ...dayOff, staffId: this.staffId })))
+      .values(dayOffs)
       .returning('id')
       .execute();
   };

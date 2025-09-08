@@ -16,6 +16,7 @@ export const dayOffsSchema = z.object({
     .array(z.string())
     .min(1, 'Should be selecting at least 1 day off')
     .default([]),
+  extraDaysCount: z.number().default(0).optional(),
 });
 
 export const staffInfoSchema = z.object({
@@ -54,6 +55,7 @@ export const additionalDaysOffSchema = z
       from: z.date({ required_error: 'From date is required' }),
       to: z.date().optional(),
       repeat: z.boolean().optional(),
+      id: z.string().optional(),
     }),
   )
   .default([]);

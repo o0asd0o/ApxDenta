@@ -63,14 +63,22 @@ export const DaySchedule: React.FC<Props> = ({
       {checked && (
         <div className="ml-auto flex items-center gap-2 h-[38px]">
           <TimeSelector
-            error={error?.startTime?.message}
+            error={
+              typeof error?.startTime?.message === 'string'
+                ? error?.startTime?.message
+                : undefined
+            }
             value={schedule.from}
             onSelect={(value) => onChange(value, 'from')}
             disabledGt={end}
           />
           <span className="text-xs xs:text-sm text-gray-500 ">to</span>
           <TimeSelector
-            error={error?.endTime?.message}
+            error={
+              typeof error?.endTime?.message === 'string'
+                ? error?.endTime?.message
+                : undefined
+            }
             value={schedule.to}
             onSelect={(value) => onChange(value, 'to')}
             disabledLt={start}

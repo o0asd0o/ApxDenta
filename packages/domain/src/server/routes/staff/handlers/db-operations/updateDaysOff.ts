@@ -8,13 +8,15 @@ export const updateStaffDayOffs = async (
   _dayOffs: UpdateStaffParams['input']['dayOffs'],
   extraDayOffs?: UpdateStaffParams['input']['extraDayOffs'],
 ) => {
-  const dayOffs = _dayOffs?.dayOffs || [].slice(0);
+  let dayOffs = _dayOffs?.dayOffs || [].slice(0);
   await db.transaction().execute(async (tx) => {
     const saveStaff = new StaffDbAfterSaveActions(tx, staffId);
 
     if ((extraDayOffs || []).length > 0) {
-      const result = await saveStaff.saveStaffExtraDayOffs(extraDayOffs);
-      dayOffs.concat(result.map((item) => item.id));
+      const result = await saveStaff.saveStaffExtraDayOffs(
+        extraDayOffs?.filter((item) => item.id === undefined) || [],
+      );
+      dayOffs = dayOffs.concat(result.map((item) => item.id));
     }
 
     await tx.deleteFrom('_StaffDayOff').where('B', '=', staffId).execute();

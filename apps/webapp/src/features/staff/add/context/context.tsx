@@ -42,7 +42,7 @@ export const createStaffFormStepper = () => defineStepper(...STAFF_FORMS);
 
 type CreateStaffFormType = ReturnType<typeof createStaffFormStepper>;
 
-export const CreateStaffContext = createContext<{
+export type CreateStaffContextType = {
   currentTab: number;
   setCurrentTab: React.Dispatch<React.SetStateAction<number>>;
   stepper: ReturnType<CreateStaffFormType['useStepper']>;
@@ -52,7 +52,10 @@ export const CreateStaffContext = createContext<{
   setAdditionDayOff: React.Dispatch<React.SetStateAction<AdditionalDayOffType>>;
   formValues?: AllFormsType;
   setFormValues: React.Dispatch<React.SetStateAction<AllFormsType>>;
-} | null>(null);
+};
+export const CreateStaffContext = createContext<CreateStaffContextType | null>(
+  null,
+);
 
 export const useCurrentTab = () => {
   return useContextSelector(
