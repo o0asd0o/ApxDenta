@@ -3,6 +3,7 @@ import { AuthQueryProvider } from '@daveyplate/better-auth-tanstack';
 import { Toaster } from '@repo/ui/components';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type React from 'react';
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

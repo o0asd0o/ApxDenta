@@ -16,6 +16,7 @@ import { STAFF_FORMS } from '../add/context/context';
 import { useUpdateModalVisibility } from './context/context';
 import UpdateStaffServices from './forms/UpdateAssignServices';
 import UpdateStaffInfo from './forms/UpdateStaffInfo';
+import UpdateWorkingHours from './forms/UpdateWorkingHours';
 
 const UpdateStaff: React.FC = () => {
   const [open, setOpen] = useUpdateModalVisibility();
@@ -51,6 +52,12 @@ const UpdateStaff: React.FC = () => {
                   className="flex flex-col p-0 h-[calc(100%_-_46px)]"
                 >
                   <UpdateStaffServices onSubmitted={() => setOpen(false)} />
+                </TabContent>
+                <TabContent
+                  value="workingHours"
+                  className="flex flex-col p-0 h-[calc(100%_-_46px)]"
+                >
+                  <UpdateWorkingHours onSubmitted={() => setOpen(false)} />
                 </TabContent>
 
                 {/* <TabContent value="assignedServices">

@@ -35,6 +35,7 @@ export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
             control={form.control}
             name={item}
             render={({ field }) => {
+              const defaultValue = form.formState.defaultValues?.[item];
               return (
                 <FormItem className="space-y-1 flex flex-col">
                   <FormControl>
@@ -45,6 +46,16 @@ export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
                       schedule={{
                         from: field.value?.startTime,
                         to: field.value?.endTime,
+                      }}
+                      onToggle={(checked) => {
+                        field.onChange(
+                          checked
+                            ? {
+                                startTime: defaultValue?.startTime,
+                                endTime: defaultValue?.endTime,
+                              }
+                            : undefined,
+                        );
                       }}
                       onChange={(selected, what) => {
                         if (what === 'from') {
