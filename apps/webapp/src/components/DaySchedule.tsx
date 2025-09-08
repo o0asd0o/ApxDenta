@@ -1,5 +1,6 @@
 import type { WorkingHoursDays } from '@/features/staff/add/forms/WorkingHoursForm';
 import { getTimeIntervalItems } from '@/lib/dates';
+import { cn } from '@/lib/utils';
 import type { workingHoursSchema } from '@repo/schemas';
 import {
   Label,
@@ -9,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
   Switch,
+  useFormField,
 } from '@repo/ui/components';
 import { Clock8 } from 'lucide-react';
 import React, { useMemo, useState } from 'react';
@@ -22,17 +24,25 @@ type Props = {
 
   schedule: { to?: number; from?: number };
   onChange: (value: number, what: 'to' | 'from') => void;
+  onToggle: (checked: boolean) => void;
 };
 export const DaySchedule: React.FC<Props> = ({
   name,
   label,
   schedule,
   onChange,
+  onToggle,
   form,
 }) => {
   const [checked, setChecked] = useState<boolean>(
     !!schedule.from || !!schedule.to,
   );
+
+  const { error: err } = useFormField();
+
+  const error = err as unknown as
+    | { startTime: { message: string }; endTime: { message: string } }
+    | undefined;
 
   const start = form.watch(`${name}.startTime`);
   const end = form.watch(`${name}.endTime`);
@@ -43,19 +53,24 @@ export const DaySchedule: React.FC<Props> = ({
         <Switch
           id={name}
           checked={checked}
-          onCheckedChange={(checked) => setChecked(checked)}
+          onCheckedChange={(checked) => {
+            setChecked(checked);
+            onToggle(checked);
+          }}
         />
         <Label htmlFor={name}>{label}</Label>
       </div>
       {checked && (
         <div className="ml-auto flex items-center gap-2 h-[38px]">
           <TimeSelector
+            error={error?.startTime?.message}
             value={schedule.from}
             onSelect={(value) => onChange(value, 'from')}
             disabledGt={end}
           />
           <span className="text-xs xs:text-sm text-gray-500 ">to</span>
           <TimeSelector
+            error={error?.endTime?.message}
             value={schedule.to}
             onSelect={(value) => onChange(value, 'to')}
             disabledLt={start}
@@ -75,6 +90,7 @@ const data = getTimeIntervalItems();
 
 type TimeProps = {
   onSelect: (value: number) => void;
+  error?: string;
   value?: number;
   disabledGt?: number;
   disabledLt?: number;
@@ -84,6 +100,7 @@ const TimeSelector: React.FC<TimeProps> = ({
   value,
   disabledGt,
   disabledLt,
+  error,
 }) => {
   const list = useMemo(() => {
     return data
@@ -100,7 +117,10 @@ const TimeSelector: React.FC<TimeProps> = ({
         icon={
           <Clock8 className="xs:block hidden opacity-50 size-4 text-[11px] xs:text-xs" />
         }
-        className="w-[94px] xs:w-[130px] px-1.5 xs:p-2 flex h-[32px] [&>span]:text-[12px] xs:[&>span]:text-[13px]"
+        className={cn(
+          'w-[94px] xs:w-[130px] px-1.5 xs:p-2 flex h-[32px] [&>span]:text-[12px] xs:[&>span]:text-[13px]',
+          error && 'border-rose-500 focus:border-rose-500',
+        )}
       >
         <SelectValue placeholder="Pick time" />
       </SelectTrigger>
