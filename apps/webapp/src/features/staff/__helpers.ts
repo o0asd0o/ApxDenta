@@ -1,5 +1,7 @@
+import type { DayOffType } from '@/components/AddOffDay';
+import { slugify } from '@/lib/utils';
 import type { StaffStatus, WorkingDay } from '@repo/domain/db';
-import type { StaffInfoFormType } from '@repo/schemas';
+import type { DayOffsFormType, StaffInfoFormType } from '@repo/schemas';
 
 export const extractSpecialistIdFromValue = (staffInfo?: StaffInfoFormType) => {
   return staffInfo?.specialistId.split('--')[0] as string;
@@ -23,3 +25,18 @@ export const EMPLOYEE_WORKDAYS: { label: string; value: WorkingDay }[] = [
   { label: 'Saturday', value: 'SATURDAY' },
   { label: 'Sunday', value: 'SUNDAY' },
 ];
+
+export const getExcludedAdditionalDayOffs = (
+  additionalDayOffs: DayOffType[],
+  formDayOffs: DayOffsFormType['dayOffs'],
+) => {
+  const additionalDayOffSlugs = additionalDayOffs.map((dayOff) =>
+    slugify(dayOff.name),
+  );
+
+  const dayOffs = formDayOffs.filter(
+    (item) => !additionalDayOffSlugs.includes(item),
+  );
+
+  return dayOffs;
+};

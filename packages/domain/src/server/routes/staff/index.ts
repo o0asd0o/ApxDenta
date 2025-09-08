@@ -3,6 +3,7 @@ import * as createStaff from './handlers/create-staff';
 import * as getAllStaffs from './handlers/get-all-staffs';
 import * as getInvitedStaff from './handlers/get-invited-staff';
 import * as getStaff from './handlers/get-staff';
+import * as getStaffDaysOff from './handlers/get-staff-days-off';
 import * as getStaffServices from './handlers/get-staff-services';
 import * as getStaffWorkingHours from './handlers/get-staff-working-hours';
 import * as getTotalStaffs from './handlers/get-total-staffs';
@@ -28,6 +29,9 @@ const staffs = router({
   getStaffWorkingHours: protectedProcedure
     .input(getStaffWorkingHours.inputSchema)
     .query(getStaffWorkingHours.handler),
+  getStaffDaysOff: protectedProcedure
+    .input(getStaffDaysOff.inputSchema)
+    .query(getStaffDaysOff.handler),
   updateStaffInfo: protectedProcedure
     .input(updateStaffInfo.inputSchema)
     .mutation(updateStaffInfo.handler),

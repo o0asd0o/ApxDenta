@@ -1,4 +1,9 @@
-import React from 'react';
+import type { DayOff } from '@repo/domain/db';
+import React, { useState } from 'react';
+import {
+  CreateStaffContext,
+  type CreateStaffContextType,
+} from '../../add/context/context';
 import { UpdateStaffContext } from './context';
 
 type Props = {
@@ -6,6 +11,9 @@ type Props = {
 };
 
 export const UpdateStaffProvider: React.FC<Props> = ({ children }) => {
+  const [additionDayOff, setAdditionDayOff] = useState<Pick<DayOff, 'name'>[]>(
+    [],
+  );
   const [{ open, staffId }, setState] = React.useState<{
     open: boolean;
     staffId?: string;
@@ -33,7 +41,16 @@ export const UpdateStaffProvider: React.FC<Props> = ({ children }) => {
         onShowUpdateModal,
       }}
     >
-      {children as React.JSX.Element}
+      <CreateStaffContext.Provider
+        value={
+          {
+            additionDayOff,
+            setAdditionDayOff,
+          } as unknown as CreateStaffContextType
+        }
+      >
+        {children as React.JSX.Element}
+      </CreateStaffContext.Provider>
     </UpdateStaffContext.Provider>
   );
 };

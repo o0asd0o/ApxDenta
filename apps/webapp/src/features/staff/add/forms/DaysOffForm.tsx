@@ -35,7 +35,7 @@ export const DaysOffForm: React.FC<Props> = ({ form }) => {
     const mainList = defaultDayOffList?.data || [];
     const additional = (additionDayOff || []).map((item) => ({
       ...item,
-      id: slugify(item.name),
+      id: item.id || slugify(item.name),
     }));
     return [...mainList, ...additional];
   }, [defaultDayOffList, additionDayOff]);
@@ -126,6 +126,10 @@ export const DaysOffForm: React.FC<Props> = ({ form }) => {
       <AddDayOff
         onAdd={(added) => {
           setAdditinalDayOff((prev) => [...prev, added]);
+          form.setValue(
+            'extraDaysCount',
+            (form.getValues('extraDaysCount') || 0) + 1,
+          );
           const currentSelected = form.getValues('dayOffs') || [];
           form.setValue('dayOffs', [...currentSelected, slugify(added.name)]);
         }}

@@ -15,6 +15,7 @@ import React from 'react';
 import { STAFF_FORMS } from '../add/context/context';
 import { useUpdateModalVisibility } from './context/context';
 import UpdateStaffServices from './forms/UpdateAssignServices';
+import { UpdateDaysOff } from './forms/UpdateDaysOff';
 import UpdateStaffInfo from './forms/UpdateStaffInfo';
 import UpdateWorkingHours from './forms/UpdateWorkingHours';
 
@@ -25,7 +26,7 @@ const UpdateStaff: React.FC = () => {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent className="gap-0 absolute top-5 sm:top-10 right-2.5 sm:h-[calc(100%_-_80px)] h-[calc(100%_-_40px)] rounded-3xl w-[calc(100%-20px)] sm:max-w-[500px]">
         <SheetHeader className="border-b border-b-border px-4 py-3 h-14">
-          <SheetTitle className="text-lg">Update staff </SheetTitle>
+          <SheetTitle className="text-lg">Update staff</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col h-[calc(100%_-_56px)] flex-1">
           <div className={cn('grid gap-2 overflow-y-hidden h-full')}>
@@ -60,9 +61,12 @@ const UpdateStaff: React.FC = () => {
                   <UpdateWorkingHours onSubmitted={() => setOpen(false)} />
                 </TabContent>
 
-                {/* <TabContent value="assignedServices">
-                  General Staff content
-                </TabContent> */}
+                <TabContent
+                  value="dayOffs"
+                  className="flex flex-col p-0 h-[calc(100%_-_46px)]"
+                >
+                  <UpdateDaysOff onSubmitted={() => setOpen(false)} />
+                </TabContent>
               </Root>
             </div>
           </div>

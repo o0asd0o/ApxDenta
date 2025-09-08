@@ -21,7 +21,10 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
 import { invalidateStaffList } from '../__common/queries';
-import { extractSpecialistIdFromValue } from '../__helpers';
+import {
+  extractSpecialistIdFromValue,
+  getExcludedAdditionalDayOffs,
+} from '../__helpers';
 import type { AllFormsType, CreateStaffFormType } from '../__types';
 import {
   useAdditionalDayOff,
@@ -45,8 +48,11 @@ const CreateStaff: React.FC = () => {
   const [additionDayOff] = useAdditionalDayOff();
   const form = useForm({
     mode: 'onTouched',
-    // @ts-ignore type mismatch
-    resolver: zodResolver(stepper.current.schema),
+
+    resolver: stepper?.current.schema
+      ? // @ts-ignore type mismatch
+        zodResolver(stepper.current?.schema)
+      : undefined,
   });
 
   const { data: activeOrg } = useActiveOrganization();
@@ -64,7 +70,11 @@ const CreateStaff: React.FC = () => {
         await invalidateStaffList(queryClient, trpc);
       },
       onError: (error) => {
-        console.error('Error creating staff:', error);
+        toast.error(
+          error.message ||
+            'There was an error while creating the staff. Please try again.',
+        );
+        setSubmitting(false);
       },
     }),
   );
@@ -92,6 +102,11 @@ const CreateStaff: React.FC = () => {
         const avatar = formValues?.staffInfo?.file as File;
         const savedFile = await uploadFile({ file: avatar });
 
+        const dayOffs = getExcludedAdditionalDayOffs(
+          additionDayOff,
+          (currentValues as DayOffsFormType).dayOffs,
+        );
+
         await saveStaff({
           type: 'DOCTOR',
           staffInfo: {
@@ -101,7 +116,7 @@ const CreateStaff: React.FC = () => {
           },
           assignedServices:
             formValues?.assignedServices as AssignedServicesFormType,
-          dayOffs: currentValues as DayOffsFormType,
+          dayOffs: { dayOffs },
           extraDayOffs: additionDayOff,
           workingHours: formValues?.workingHours as WorkingHoursFormType,
         });
@@ -113,7 +128,14 @@ const CreateStaff: React.FC = () => {
     [setFormValues, saveStaff, uploadFile, formValues, additionDayOff, stepper],
   );
 
-  const currentIndex = utils?.getIndex(stepper.current.id) || 0;
+  const currentIndex =
+    utils?.getIndex(
+      stepper?.current.id as
+        | 'assignedServices'
+        | 'dayOffs'
+        | 'workingHours'
+        | 'staffInfo',
+    ) || 0;
 
   return (
     <Form {...form}>
@@ -128,18 +150,25 @@ const CreateStaff: React.FC = () => {
         }
         mobileIcon={<PlusIcon className="size-5" />}
         onSubmit={form.handleSubmit((values) =>
-          onSubmit({ id: stepper.current.id, values }),
+          onSubmit({
+            id: stepper?.current.id as
+              | 'assignedServices'
+              | 'dayOffs'
+              | 'workingHours'
+              | 'staffInfo',
+            values,
+          }),
         )}
         footer={
           <>
-            {stepper.isFirst && (
+            {stepper?.isFirst && (
               <SheetClose>
                 <Button variant="ghost" className="w-[120px]" type="button">
                   Cancel
                 </Button>
               </SheetClose>
             )}
-            {!stepper.isFirst && (
+            {!stepper?.isFirst && (
               <Button
                 variant="ghost"
                 className="w-[120px]"
@@ -157,7 +186,7 @@ const CreateStaff: React.FC = () => {
               isLoading={isPending || submitting}
               loadingText="Saving..."
             >
-              {stepper.isLast ? 'Save' : 'Next'}
+              {stepper?.isLast ? 'Save' : 'Next'}
             </Button>
           </>
         }
@@ -171,7 +200,7 @@ const CreateStaff: React.FC = () => {
           />
           <AnimatePresence mode="wait">
             <motion.div
-              key={stepper.current?.id || 'empty'}
+              key={stepper?.current?.id || 'empty'}
               initial={{ y: 5, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -5, opacity: 0 }}
@@ -182,7 +211,6 @@ const CreateStaff: React.FC = () => {
                   <AssignedServicesForm form={form as CreateStaffFormType} />
                 ),
                 dayOffs: () => (
-                  // ts
                   <DaysOffForm form={form as CreateStaffFormType} />
                 ),
                 staffInfo: () => (

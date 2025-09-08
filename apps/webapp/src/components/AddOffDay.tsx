@@ -27,6 +27,7 @@ const dayOffSchema = z.object({
   to: z.date({ required_error: '"to" date is required' }),
   from: z.date({ required_error: '"from" date is required' }),
   repeat: z.boolean().optional(),
+  id: z.string().optional(),
 });
 
 export type DayOffType = z.infer<typeof dayOffSchema>;
