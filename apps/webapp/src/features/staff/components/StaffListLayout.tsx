@@ -14,7 +14,6 @@ const StaffListLayout: React.FC<LayoutProps> = ({
   setPagination,
 
   // staff actions
-  onDeleteStaff,
   onViewStaff,
 }) => {
   const trpc = useTRPC();
@@ -45,7 +44,6 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         loading={isLoading}
         columns={columns({
           onView: onViewStaff,
-          onDelete: onDeleteStaff,
         })}
         onDeleteItems={(items) => Promise.resolve(console.log({ items }))}
       />

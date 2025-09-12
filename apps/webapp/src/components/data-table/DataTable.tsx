@@ -28,7 +28,7 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
-  onDeleteItems?: (itemIds: string[]) => Promise<void>;
+  onDeleteItems?: (itemIds: TData[]) => Promise<void>;
   sort?: {
     sorting: SortingState;
     setSorting: OnChangeFn<SortingState>;
@@ -140,7 +140,13 @@ export function DataTable<TData extends { id: string }, TValue>({
         selectedCount={Object.keys(state).filter((key) => state[key]).length}
         onDelete={async () => {
           if (onDeleteItems) {
-            await onDeleteItems(Object.keys(table.getState().rowSelection));
+            const rowsSelected = Object.keys(table.getState().rowSelection);
+            const actualSelectedRows = table
+              .getRowModel()
+              .rows.filter((row) => rowsSelected.includes(row.id))
+              .map((item) => item.original);
+
+            await onDeleteItems(actualSelectedRows);
           }
           table.setRowSelection({});
         }}

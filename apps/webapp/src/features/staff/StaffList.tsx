@@ -14,6 +14,8 @@ import { parseAsStringEnum, useQueryState } from 'nuqs';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import type { StaffFilterType } from './__types';
+import ArchiveMultipleStaff from './archive/ArchiveMultipleStaff';
+import ArchiveStaff from './archive/ArchiveStaff';
 import FilterStaffDialog from './components/FilterStaffDialog';
 import StaffActions from './components/StaffActions';
 import StaffCardLayout from './components/StaffCardLayout';
@@ -113,6 +115,8 @@ const StaffList: React.FC = () => {
           <div>
             <UpdateStaffProvider>
               <UpdateStaff />
+              <ArchiveStaff />
+              <ArchiveMultipleStaff />
               {layoutTab === 'card' && (
                 <StaffCardLayout
                   filters={filters}
@@ -121,7 +125,6 @@ const StaffList: React.FC = () => {
                   setSorting={setSorting}
                   setPagination={setPagination}
                   onViewStaff={(staffId) => console.log('VIEW', staffId)}
-                  onDeleteStaff={(staffId) => console.log('DELETE', staffId)}
                 />
               )}
               {layoutTab === 'list' && (
@@ -132,7 +135,6 @@ const StaffList: React.FC = () => {
                   setSorting={setSorting}
                   setPagination={setPagination}
                   onViewStaff={(staffId) => console.log('VIEW', staffId)}
-                  onDeleteStaff={(staffId) => console.log('DELETE', staffId)}
                 />
               )}
             </UpdateStaffProvider>

@@ -106,6 +106,11 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
         trustedProviders: ['google'],
       },
     },
+    user: {
+      deleteUser: {
+        enabled: true,
+      },
+    },
     socialProviders: {
       google: { ...googleCredentials },
     },

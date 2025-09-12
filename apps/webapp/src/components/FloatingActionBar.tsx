@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Button, useSidebar } from '@repo/ui/components';
-import { Trash2 } from 'lucide-react';
+import { ArchiveIcon } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
 
@@ -52,8 +52,8 @@ const FloatingActionBar: React.FC<Props> = ({
               setDeleting(false);
             }}
           >
-            <Trash2 className="h-4 w-4 mr-1" />
-            Delete
+            <ArchiveIcon className="h-4 w-4 mr-1" />
+            Archive
           </Button>
         </div>
       </div>

@@ -21,9 +21,8 @@ import type { StaffColumnType } from '../__types';
 type Props = {
   staff: StaffColumnType;
   onViewStaff: (id: string) => void;
-  onDeleteStaff: (id: string) => void;
 };
-const StaffCard: React.FC<Props> = ({ staff, onViewStaff, onDeleteStaff }) => {
+const StaffCard: React.FC<Props> = ({ staff, onViewStaff }) => {
   return (
     <div
       key={staff.id}
@@ -123,9 +122,9 @@ const StaffCard: React.FC<Props> = ({ staff, onViewStaff, onDeleteStaff }) => {
         )}
         <div className="absolute top-6 right-4">
           <RenderStaffActions
+            name={`${staff.firstName} ${staff.lastName}`}
             staffId={staff.id}
             onView={onViewStaff}
-            onDelete={onDeleteStaff}
           />
         </div>
       </div>

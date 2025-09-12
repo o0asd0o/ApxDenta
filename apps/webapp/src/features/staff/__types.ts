@@ -12,7 +12,7 @@ import type { UseFormReturn } from 'react-hook-form';
 
 export type StaffColumnType = Omit<
   Staff,
-  'id' | 'createdAt' | 'updatedAt' | 'status'
+  'id' | 'createdAt' | 'updatedAt' | 'status' | 'isArchived'
 > & {
   id: string;
   createdAt: Date;
@@ -25,6 +25,7 @@ export type StaffColumnType = Omit<
     title: string;
     code: string;
   } | null;
+  isArchived: boolean | null;
   account?: {
     user: {
       email: string;
@@ -63,5 +64,4 @@ export type LayoutProps = {
 
   // staff actions
   onViewStaff: (staffId: string) => void;
-  onDeleteStaff: (staffId: string) => void;
 };

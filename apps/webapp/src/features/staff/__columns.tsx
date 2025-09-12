@@ -17,11 +17,9 @@ import type { StaffColumnType } from './__types';
 
 type Actions = {
   onView: (staffId: string) => void;
-  onDelete: (staffId: string) => void;
 };
 export const columns: (actions: Actions) => ColumnDef<StaffColumnType>[] = ({
   onView,
-  onDelete,
 }) => [
   {
     id: 'select',
@@ -152,8 +150,8 @@ export const columns: (actions: Actions) => ColumnDef<StaffColumnType>[] = ({
     size: 50,
     cell: ({ row }) => (
       <RenderStaffActions
+        name={`${row.original.firstName} ${row.original.lastName}`}
         staffId={row.original.id}
-        onDelete={onDelete}
         onView={onView}
       />
     ),
