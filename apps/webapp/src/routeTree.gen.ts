@@ -30,6 +30,7 @@ import { Route as ProtectedclinicTreatmentsImport } from './routes/_protected/(c
 import { Route as ProtectedclinicStaffListImport } from './routes/_protected/(clinic)/staff-list'
 import { Route as ProtectedclinicReservationsImport } from './routes/_protected/(clinic)/reservations'
 import { Route as ProtectedclinicPatientsImport } from './routes/_protected/(clinic)/patients'
+import { Route as ProtectedclinicStaffStaffIdImport } from './routes/_protected/(clinic)/staff.$staffId'
 
 // Create/Update Routes
 
@@ -149,6 +150,13 @@ const ProtectedclinicPatientsRoute = ProtectedclinicPatientsImport.update({
   path: '/patients',
   getParentRoute: () => ProtectedLayoutRoute,
 } as any)
+
+const ProtectedclinicStaffStaffIdRoute =
+  ProtectedclinicStaffStaffIdImport.update({
+    id: '/(clinic)/staff/$staffId',
+    path: '/staff/$staffId',
+    getParentRoute: () => ProtectedLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -287,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedphysicalAssetStocksImport
       parentRoute: typeof ProtectedLayoutImport
     }
+    '/_protected/(clinic)/staff/$staffId': {
+      id: '/_protected/(clinic)/staff/$staffId'
+      path: '/staff/$staffId'
+      fullPath: '/staff/$staffId'
+      preLoaderRoute: typeof ProtectedclinicStaffStaffIdImport
+      parentRoute: typeof ProtectedLayoutImport
+    }
   }
 }
 
@@ -304,6 +319,7 @@ interface ProtectedLayoutRouteChildren {
   ProtectedfinanceSalesRoute: typeof ProtectedfinanceSalesRoute
   ProtectedphysicalAssetPeripheralsRoute: typeof ProtectedphysicalAssetPeripheralsRoute
   ProtectedphysicalAssetStocksRoute: typeof ProtectedphysicalAssetStocksRoute
+  ProtectedclinicStaffStaffIdRoute: typeof ProtectedclinicStaffStaffIdRoute
 }
 
 const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
@@ -319,6 +335,7 @@ const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
   ProtectedphysicalAssetPeripheralsRoute:
     ProtectedphysicalAssetPeripheralsRoute,
   ProtectedphysicalAssetStocksRoute: ProtectedphysicalAssetStocksRoute,
+  ProtectedclinicStaffStaffIdRoute: ProtectedclinicStaffStaffIdRoute,
 }
 
 const ProtectedLayoutRouteWithChildren = ProtectedLayoutRoute._addFileChildren(
@@ -345,6 +362,7 @@ export interface FileRoutesByFullPath {
   '/sales': typeof ProtectedfinanceSalesRoute
   '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/stocks': typeof ProtectedphysicalAssetStocksRoute
+  '/staff/$staffId': typeof ProtectedclinicStaffStaffIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -367,6 +385,7 @@ export interface FileRoutesByTo {
   '/sales': typeof ProtectedfinanceSalesRoute
   '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/stocks': typeof ProtectedphysicalAssetStocksRoute
+  '/staff/$staffId': typeof ProtectedclinicStaffStaffIdRoute
 }
 
 export interface FileRoutesById {
@@ -390,6 +409,7 @@ export interface FileRoutesById {
   '/_protected/(finance)/sales': typeof ProtectedfinanceSalesRoute
   '/_protected/(physical-asset)/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/_protected/(physical-asset)/stocks': typeof ProtectedphysicalAssetStocksRoute
+  '/_protected/(clinic)/staff/$staffId': typeof ProtectedclinicStaffStaffIdRoute
 }
 
 export interface FileRouteTypes {
@@ -414,6 +434,7 @@ export interface FileRouteTypes {
     | '/sales'
     | '/peripherals'
     | '/stocks'
+    | '/staff/$staffId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -435,6 +456,7 @@ export interface FileRouteTypes {
     | '/sales'
     | '/peripherals'
     | '/stocks'
+    | '/staff/$staffId'
   id:
     | '__root__'
     | '/'
@@ -456,6 +478,7 @@ export interface FileRouteTypes {
     | '/_protected/(finance)/sales'
     | '/_protected/(physical-asset)/peripherals'
     | '/_protected/(physical-asset)/stocks'
+    | '/_protected/(clinic)/staff/$staffId'
   fileRoutesById: FileRoutesById
 }
 
@@ -517,7 +540,8 @@ export const routeTree = rootRoute
         "/_protected/(finance)/purchases",
         "/_protected/(finance)/sales",
         "/_protected/(physical-asset)/peripherals",
-        "/_protected/(physical-asset)/stocks"
+        "/_protected/(physical-asset)/stocks",
+        "/_protected/(clinic)/staff/$staffId"
       ]
     },
     "/(auth)/forgot-password": {
@@ -580,6 +604,10 @@ export const routeTree = rootRoute
     },
     "/_protected/(physical-asset)/stocks": {
       "filePath": "_protected/(physical-asset)/stocks.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(clinic)/staff/$staffId": {
+      "filePath": "_protected/(clinic)/staff.$staffId.tsx",
       "parent": "/_protected"
     }
   }

@@ -8,6 +8,7 @@ export const getAllStaffCount = async (
   let query = db
     .selectFrom('Staff')
     .where('Staff.organizationId', '=', orgId)
+    .where('Staff.isArchived', '=', false)
     .select((eb) => eb.fn.countAll().as('count'));
 
   if (staffType) {

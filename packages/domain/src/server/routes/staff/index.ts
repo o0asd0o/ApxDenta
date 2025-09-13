@@ -1,4 +1,5 @@
 import { protectedProcedure, publicProcedure, router } from '../../trpc';
+import * as archiveStaffInfo from './handlers/archive-staff';
 import * as createStaff from './handlers/create-staff';
 import * as getAllStaffs from './handlers/get-all-staffs';
 import * as getInvitedStaff from './handlers/get-invited-staff';
@@ -35,6 +36,9 @@ const staffs = router({
   updateStaffInfo: protectedProcedure
     .input(updateStaffInfo.inputSchema)
     .mutation(updateStaffInfo.handler),
+  archiveStaffInfo: protectedProcedure
+    .input(archiveStaffInfo.inputSchema)
+    .mutation(archiveStaffInfo.handler),
   getInvitedStaff: publicProcedure
     .input(getInvitedStaff.inputSchema)
     .query(getInvitedStaff.handler),

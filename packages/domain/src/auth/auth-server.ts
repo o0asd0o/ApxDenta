@@ -1,7 +1,12 @@
 import type { DatabaseInstance } from '@/db/client';
 import { betterAuth, logger } from 'better-auth';
-import { organization } from 'better-auth/plugins';
+import { APIError } from 'better-auth/api';
+import { createAuthMiddleware, organization } from 'better-auth/plugins';
 import { getOrganizationIdForUser } from './db-operations/organization';
+import {
+  getInActiveStaffByEmail,
+  getInactiveStaffByUserId,
+} from './db-operations/staffs';
 import { sendResetPasswordEmail, sendVerificationEmail } from './emails/user';
 import { accessControl } from './permissions/__common';
 import { admin } from './permissions/admin';
@@ -29,6 +34,7 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
 }: AuthOptions) => {
   return betterAuth({
     rateLimit: { window: 20, max: 80 },
+
     logger: {
       disabled: false,
       level: 'error',
@@ -43,11 +49,18 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
     databaseHooks: {
       session: {
         create: {
-          async before(session) {
-            const activeOrganizationId = await getOrganizationIdForUser(
-              db,
-              session.userId,
-            );
+          async before(session, ctx) {
+            const [activeOrganizationId, inactiveStaff] = await Promise.all([
+              getOrganizationIdForUser(db, session.userId),
+              getInactiveStaffByUserId(db, session.userId),
+            ]);
+
+            if (inactiveStaff?.id) {
+              ctx?.error?.('UNAUTHORIZED', {
+                message: 'No active organization found for the user.',
+                code: 'UNAUTHORIZED',
+              });
+            }
 
             return { data: { ...session, activeOrganizationId } };
           },
@@ -76,9 +89,6 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
           token,
         });
       },
-      // async onEmailVerification(user) {
-      //   const email = user.email;
-      // },
 
       sendOnSignUp: true,
       expiresIn: 3600, // 1 hour
@@ -105,6 +115,28 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
         enabled: true,
         trustedProviders: ['google'],
       },
+    },
+    user: {
+      deleteUser: {
+        enabled: true,
+      },
+    },
+
+    hooks: {
+      before: createAuthMiddleware(async (ctx) => {
+        if (ctx.path.startsWith('/sign-in/email')) {
+          const email = ctx.body.email;
+          if (email) {
+            const staff = await getInActiveStaffByEmail(db, email as string);
+            if (staff) {
+              throw new APIError('UNAUTHORIZED', {
+                message:
+                  'Your account is deactivated. Please contact admin for more information.',
+              });
+            }
+          }
+        }
+      }),
     },
     socialProviders: {
       google: { ...googleCredentials },

@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { columns } from '../__columns';
 import type { LayoutProps } from '../__types';
+import { useArchiveMultipleStaffIdAction } from '../update/context/context';
 
 const StaffListLayout: React.FC<LayoutProps> = ({
   filters,
@@ -12,12 +13,10 @@ const StaffListLayout: React.FC<LayoutProps> = ({
   sorting,
   setSorting,
   setPagination,
-
-  // staff actions
-  onDeleteStaff,
   onViewStaff,
 }) => {
   const trpc = useTRPC();
+  const onShowArchiveMultipleModal = useArchiveMultipleStaffIdAction();
   const { data: staffList, isLoading } = useQuery(
     trpc.staffs.getAllStaffs.queryOptions({
       search: filters.search,
@@ -43,11 +42,10 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         data={staffList?.data || []}
         sort={{ sorting, setSorting }}
         loading={isLoading}
-        columns={columns({
-          onView: onViewStaff,
-          onDelete: onDeleteStaff,
-        })}
-        onDeleteItems={(items) => Promise.resolve(console.log({ items }))}
+        columns={columns}
+        onDeleteItems={async (items, callback) =>
+          onShowArchiveMultipleModal(items, callback)
+        }
       />
       {staffList?.count !== 0 && (
         <Paginate

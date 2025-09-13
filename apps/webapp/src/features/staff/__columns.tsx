@@ -15,14 +15,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { RenderStaffActions, renderWorkingDays } from './__renderers';
 import type { StaffColumnType } from './__types';
 
-type Actions = {
-  onView: (staffId: string) => void;
-  onDelete: (staffId: string) => void;
-};
-export const columns: (actions: Actions) => ColumnDef<StaffColumnType>[] = ({
-  onView,
-  onDelete,
-}) => [
+export const columns: ColumnDef<StaffColumnType>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -152,9 +145,9 @@ export const columns: (actions: Actions) => ColumnDef<StaffColumnType>[] = ({
     size: 50,
     cell: ({ row }) => (
       <RenderStaffActions
+        name={`${row.original.firstName} ${row.original.lastName}`}
         staffId={row.original.id}
-        onDelete={onDelete}
-        onView={onView}
+        original={row.original}
       />
     ),
   },

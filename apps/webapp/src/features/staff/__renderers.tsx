@@ -2,8 +2,13 @@ import { BASE_SCHEDULES } from '@/constants/schedules';
 import { cn } from '@/lib/utils';
 import type { WorkingDay } from '@repo/domain/db';
 import { Button, V2 } from '@repo/ui/components';
-import { EditIcon, EyeIcon, MoreVertical, Trash2Icon } from 'lucide-react';
-import { useUpdateStaffIdAction } from './update/context/context';
+import { Link } from '@tanstack/react-router';
+import { ArchiveIcon, EditIcon, EyeIcon, MoreVertical } from 'lucide-react';
+import type { StaffColumnType } from './__types';
+import {
+  useArchiveStaffIdAction,
+  useUpdateStaffIdAction,
+} from './update/context/context';
 
 export const renderWorkingDays = (
   value: { day: WorkingDay }[],
@@ -33,10 +38,11 @@ export const renderWorkingDays = (
 
 export const RenderStaffActions = (actions: {
   staffId: string;
-  onView: (staffId: string) => void;
-  onDelete: (staffId: string) => void;
+  name: string;
+  original: StaffColumnType;
 }) => {
   const onShowUpdateModal = useUpdateStaffIdAction();
+  const onShowArchiveModal = useArchiveStaffIdAction();
 
   return (
     <div className="flex justify-end">
@@ -51,16 +57,21 @@ export const RenderStaffActions = (actions: {
           <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
           <V2.DropdownMenuSeparator />
           <V2.DropdownMenuGroup>
-            <V2.DropdownMenuItem
-              onClick={() => actions.onView(actions.staffId)}
-            >
-              <span className="flex items-center gap-x-2">
-                <EyeIcon className="size-4 text-inherit" />
-                <span>View Doctor</span>
-              </span>
+            <V2.DropdownMenuItem>
+              <Link to="/staff/$staffId" params={{ staffId: actions.staffId }}>
+                <span className="flex items-center gap-x-2">
+                  <EyeIcon className="size-4 text-inherit" />
+                  <span>View Doctor</span>
+                </span>
+              </Link>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem
-              onClick={() => onShowUpdateModal(actions.staffId)}
+              onClick={() =>
+                onShowUpdateModal({
+                  staffId: actions.staffId,
+                  name: actions.name,
+                })
+              }
             >
               <span className="flex items-center gap-x-2">
                 <EditIcon className="size-4 text-inherit" />
@@ -68,11 +79,11 @@ export const RenderStaffActions = (actions: {
               </span>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem
-              onClick={() => actions.onDelete(actions.staffId)}
+              onClick={() => onShowArchiveModal(actions.original)}
             >
               <span className="flex items-center gap-x-2 text-red-500">
-                <Trash2Icon className="size-4 text-inherit" />
-                <span>Delete</span>
+                <ArchiveIcon className="size-4 text-inherit" />
+                <span>Archive</span>
               </span>
             </V2.DropdownMenuItem>
           </V2.DropdownMenuGroup>

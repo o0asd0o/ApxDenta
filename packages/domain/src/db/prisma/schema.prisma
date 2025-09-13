@@ -134,6 +134,7 @@ model Staff {
   email                String?
   organizationId       String?
   avatarId             String?
+  isArchived           Boolean?           @default(false)
   createdAssets        Asset[]
   createdAssetTransfer AssetTransfer[]
   processedBillHistory BillHistory[]

@@ -4,10 +4,10 @@ import { showRoutes } from 'hono/dev';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { requestId } from 'hono/request-id';
+import type { AppType } from './__types';
 import { api, auth } from './domains';
 import { env } from './env';
 import { authCors, rateLimit, trpcCors } from './middlewares/cors';
-import type { AppType } from './__types';
 
 const SERVER_PATHS = {
   ALL: '*',
@@ -17,7 +17,7 @@ const SERVER_PATHS = {
 } as const;
 
 const app = new Hono<AppType>({ strict: false })
-  .get('/', (c) => c.text('Welcome to ApxDenta API! (c)'))
+  .get('/', (c) => c.redirect(`${env.PUBLIC_WEB_URL}/login`))
   .get('/healthcheck', (c) => c.text('OK'))
   .use(SERVER_PATHS.ALL, requestId())
   .use(SERVER_PATHS.ALL, logger())
