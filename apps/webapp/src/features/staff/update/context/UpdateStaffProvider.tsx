@@ -1,5 +1,6 @@
 import type { DayOff } from '@repo/domain/db';
 import React, { useState } from 'react';
+import type { StaffColumnType } from '../../__types';
 import {
   CreateStaffContext,
   type CreateStaffContextType,
@@ -14,16 +15,17 @@ export const UpdateStaffProvider: React.FC<Props> = ({ children }) => {
   const [additionDayOff, setAdditionDayOff] = useState<Pick<DayOff, 'name'>[]>(
     [],
   );
-  const [{ open, mode, staffId, name }, setState] = React.useState<{
+  const [{ open, mode, staffId, name, callback }, setState] = React.useState<{
     open: boolean;
     mode?: 'update' | 'archive' | 'multi-archive';
     staffId?: string;
     name?: string;
+    callback?: () => void;
   }>({ open: false });
 
-  const [staffsForArchive, setStaffsForArchive] = useState<
-    { staffId: string; name: string }[]
-  >([]);
+  const [staffsForArchive, setStaffsForArchive] = useState<StaffColumnType[]>(
+    [],
+  );
 
   const onHide = () => {
     setState({ open: false });
@@ -39,14 +41,20 @@ export const UpdateStaffProvider: React.FC<Props> = ({ children }) => {
   };
 
   const onShowArchiveMultipleModal = (
-    params: { staffId: string; name: string }[],
+    params: StaffColumnType[],
+    callback: () => void,
   ) => {
-    setState({ open: true, mode: 'multi-archive' });
+    setState({ open: true, mode: 'multi-archive', callback });
     setStaffsForArchive(params);
   };
 
-  const onShowArchiveModal = (params: { staffId: string; name: string }) => {
-    setState({ ...params, open: true, mode: 'archive' });
+  const onShowArchiveModal = (params: StaffColumnType) => {
+    setState({
+      staffId: params.id,
+      name: `${params.firstName} ${params.lastName}`,
+      open: true,
+      mode: 'archive',
+    });
   };
 
   const setOpen = (open: boolean) => {
@@ -63,6 +71,7 @@ export const UpdateStaffProvider: React.FC<Props> = ({ children }) => {
         staffId,
         name,
         staffsForArchive,
+        callback,
         onHide,
         setOpen,
         onShowUpdateModal,

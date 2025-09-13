@@ -12,7 +12,7 @@ interface ArchiveDialogProps {
   open: boolean;
   loading: boolean;
   setOpen: (open: boolean) => void;
-  onArchive: () => Promise<void>;
+  onArchive: () => void;
   doctorName?: string;
 }
 
@@ -42,14 +42,7 @@ const ArchiveDialog: React.FC<ArchiveDialogProps> = ({
           </p>
         </div>
         <DialogFooter>
-          <Button
-            isLoading={loading}
-            variant="destructive"
-            onClick={async () => {
-              await onArchive();
-              setOpen(false);
-            }}
-          >
+          <Button isLoading={loading} variant="destructive" onClick={onArchive}>
             Archive
           </Button>
           <Button

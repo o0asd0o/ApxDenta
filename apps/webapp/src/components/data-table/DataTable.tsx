@@ -28,7 +28,7 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
-  onDeleteItems?: (itemIds: TData[]) => Promise<void>;
+  onDeleteItems?: (itemIds: TData[], callback: () => void) => Promise<void>;
   sort?: {
     sorting: SortingState;
     setSorting: OnChangeFn<SortingState>;
@@ -146,9 +146,10 @@ export function DataTable<TData extends { id: string }, TValue>({
               .rows.filter((row) => rowsSelected.includes(row.id))
               .map((item) => item.original);
 
-            await onDeleteItems(actualSelectedRows);
+            await onDeleteItems(actualSelectedRows, () =>
+              table.setRowSelection({}),
+            );
           }
-          table.setRowSelection({});
         }}
         onClear={() => table.setRowSelection({})}
       />

@@ -12,6 +12,7 @@ export const getAllStaff = async (context: GetAllStaffsProps) => {
     .selectFrom('Staff')
     .selectAll()
     .where('Staff.organizationId', '=', organizationId)
+    .where('Staff.isArchived', '=', false)
     .select((eb) => {
       return jsonObjectFrom(
         eb

@@ -66,6 +66,7 @@ export const LoginForm: React.FC = () => {
         provider: 'google',
         callbackURL:
           callbackUrl || `${import.meta.env.VITE_PUBLIC_WEB_URL}/dashboard`,
+        errorCallbackURL: '/auth/error',
       });
 
       if (response.error) {

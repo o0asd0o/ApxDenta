@@ -1,5 +1,6 @@
 import type React from 'react';
 import { createContext, useContextSelector } from 'use-context-selector';
+import type { StaffColumnType } from '../../__types';
 
 export const UpdateStaffContext = createContext<{
   open: boolean;
@@ -9,18 +10,17 @@ export const UpdateStaffContext = createContext<{
   staffId?: string;
   mode?: 'update' | 'archive' | 'multi-archive';
   name?: string;
-  staffsForArchive: { staffId: string; name: string }[];
+  callback?: () => void;
+  staffsForArchive: StaffColumnType[];
 
   onShowUpdateModal: (param: {
     staffId: string;
     name: string;
   }) => void;
-  onShowArchiveModal: (params: { staffId: string; name: string }) => void;
+  onShowArchiveModal: (params: StaffColumnType) => void;
   onShowArchiveMultipleModal: (
-    params: {
-      staffId: string;
-      name: string;
-    }[],
+    params: StaffColumnType[],
+    callback: () => void,
   ) => void;
 } | null>(null);
 
@@ -57,7 +57,8 @@ export const useArchiveMultipleModalVisibility = () => {
       [
         (state?.open && state.mode === 'multi-archive') as boolean,
         state?.setOpen as React.Dispatch<React.SetStateAction<boolean>>,
-        state?.staffsForArchive as { staffId: string; name: string }[],
+        state?.staffsForArchive as StaffColumnType[],
+        state?.callback as (() => void) | undefined,
       ] as const,
   );
 };
@@ -83,10 +84,17 @@ export const useUpdateStaffIdAction = () => {
 export const useArchiveStaffIdAction = () => {
   return useContextSelector(
     UpdateStaffContext,
+    (state) => state?.onShowArchiveModal as (params: StaffColumnType) => void,
+  );
+};
+
+export const useArchiveMultipleStaffIdAction = () => {
+  return useContextSelector(
+    UpdateStaffContext,
     (state) =>
-      state?.onShowArchiveModal as (params: {
-        staffId: string;
-        name: string;
-      }) => void,
+      state?.onShowArchiveMultipleModal as (
+        params: StaffColumnType[],
+        callback: () => void,
+      ) => void,
   );
 };

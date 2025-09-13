@@ -124,7 +124,7 @@ const StaffCard: React.FC<Props> = ({ staff, onViewStaff }) => {
           <RenderStaffActions
             name={`${staff.firstName} ${staff.lastName}`}
             staffId={staff.id}
-            onView={onViewStaff}
+            original={staff}
           />
         </div>
       </div>

@@ -2,7 +2,9 @@ import { BASE_SCHEDULES } from '@/constants/schedules';
 import { cn } from '@/lib/utils';
 import type { WorkingDay } from '@repo/domain/db';
 import { Button, V2 } from '@repo/ui/components';
+import { Link } from '@tanstack/react-router';
 import { ArchiveIcon, EditIcon, EyeIcon, MoreVertical } from 'lucide-react';
+import type { StaffColumnType } from './__types';
 import {
   useArchiveStaffIdAction,
   useUpdateStaffIdAction,
@@ -37,7 +39,7 @@ export const renderWorkingDays = (
 export const RenderStaffActions = (actions: {
   staffId: string;
   name: string;
-  onView: (staffId: string) => void;
+  original: StaffColumnType;
 }) => {
   const onShowUpdateModal = useUpdateStaffIdAction();
   const onShowArchiveModal = useArchiveStaffIdAction();
@@ -55,13 +57,13 @@ export const RenderStaffActions = (actions: {
           <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
           <V2.DropdownMenuSeparator />
           <V2.DropdownMenuGroup>
-            <V2.DropdownMenuItem
-              onClick={() => actions.onView(actions.staffId)}
-            >
-              <span className="flex items-center gap-x-2">
-                <EyeIcon className="size-4 text-inherit" />
-                <span>View Doctor</span>
-              </span>
+            <V2.DropdownMenuItem>
+              <Link to="/staff/$staffId" params={{ staffId: actions.staffId }}>
+                <span className="flex items-center gap-x-2">
+                  <EyeIcon className="size-4 text-inherit" />
+                  <span>View Doctor</span>
+                </span>
+              </Link>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem
               onClick={() =>
@@ -77,12 +79,7 @@ export const RenderStaffActions = (actions: {
               </span>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem
-              onClick={() =>
-                onShowArchiveModal({
-                  staffId: actions.staffId,
-                  name: actions.name,
-                })
-              }
+              onClick={() => onShowArchiveModal(actions.original)}
             >
               <span className="flex items-center gap-x-2 text-red-500">
                 <ArchiveIcon className="size-4 text-inherit" />

@@ -1,4 +1,7 @@
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Button,
   Dialog,
   DialogContent,
@@ -7,13 +10,14 @@ import {
   DialogTitle,
 } from '@repo/ui/components';
 import React from 'react';
+import type { StaffColumnType } from '../__types';
 
 interface ArchiveMultipleDialogProps {
   open: boolean;
   loading: boolean;
   setOpen: (open: boolean) => void;
-  onArchive: () => Promise<void>;
-  doctorNames?: string[];
+  onArchive: () => void;
+  staffs?: StaffColumnType[];
 }
 
 const ArchiveMultipleDialog: React.FC<ArchiveMultipleDialogProps> = ({
@@ -21,9 +25,9 @@ const ArchiveMultipleDialog: React.FC<ArchiveMultipleDialogProps> = ({
   loading,
   setOpen,
   onArchive,
-  doctorNames,
+  staffs,
 }) => {
-  const count = doctorNames?.length || 0;
+  const count = staffs?.length || 0;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -44,23 +48,32 @@ const ArchiveMultipleDialog: React.FC<ArchiveMultipleDialogProps> = ({
             ? This action will disable their access and hide their accounts from
             staff lists.
           </p>
-          {doctorNames && doctorNames.length > 0 && (
-            <ul className="mt-2 text-xs text-gray-600 list-disc list-inside">
-              {doctorNames.map((name) => (
-                <li key={name}>Dr. {name}</li>
-              ))}
+          {staffs && staffs.length > 0 && (
+            <ul className="mt-4 text-xs text-gray-600 list-disc list-inside">
+              {staffs.map((staff) => {
+                const name = `${staff.firstName} ${staff.lastName}`;
+                return (
+                  <li key={staff.id} className="flex items-center gap-3 py-2">
+                    <Avatar className="size-9">
+                      <AvatarImage
+                        src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${staff.avatar?.url as string}`}
+                        alt={name}
+                      />
+                      <AvatarFallback className="bg-amber-500 text-white font-bold">
+                        {[name.split(' ')[0][0], name.split(' ')[1][0]]
+                          .join('')
+                          .toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm">Dr. {name}</span>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
         <DialogFooter>
-          <Button
-            isLoading={loading}
-            variant="destructive"
-            onClick={async () => {
-              await onArchive();
-              setOpen(false);
-            }}
-          >
+          <Button isLoading={loading} variant="destructive" onClick={onArchive}>
             Archive All
           </Button>
           <Button
