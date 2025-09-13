@@ -144,8 +144,8 @@ export const StaffInfoForm: React.FC<Props> = ({ form, isUpdate }) => {
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
-                type="email"
                 {...field}
+                type="email"
                 icon={<Mail className="size-4" />}
               />
             </FormControl>

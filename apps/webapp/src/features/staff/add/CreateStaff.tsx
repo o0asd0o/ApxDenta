@@ -30,6 +30,7 @@ import {
   useAdditionalDayOff,
   useFormStepper,
   useFormValues,
+  useStaffType,
   useStepperSteps,
   useStepperUtls,
 } from './context/context';
@@ -46,6 +47,7 @@ const CreateStaff: React.FC = () => {
   const steps = useStepperSteps();
   const [formValues, setFormValues] = useFormValues();
   const [additionDayOff] = useAdditionalDayOff();
+  const type = useStaffType();
   const form = useForm({
     mode: 'onTouched',
 
@@ -137,14 +139,16 @@ const CreateStaff: React.FC = () => {
         | 'staffInfo',
     ) || 0;
 
+  const staffLabel = type === 'DOCTOR' ? 'Doctor' : 'Staff';
+
   return (
     <Form {...form}>
       <DialogDrawer
         open={drawerOpen}
         setOpen={setDrawerOpen}
         className="ml-auto"
-        title="Add new Doctor Staff"
-        actionText="Add Doctor"
+        title={`Add new ${staffLabel}`}
+        actionText={`Add ${staffLabel}`}
         disabledTooltip={
           !activeOrg ? 'You need to setup an organization first' : undefined
         }

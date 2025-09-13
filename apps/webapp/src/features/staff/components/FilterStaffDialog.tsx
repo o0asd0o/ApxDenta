@@ -1,6 +1,7 @@
 import CheckboxCard from '@/components/CheckCard';
 import MultiSelect from '@/components/MultiSelect';
 import { useTRPC } from '@/lib/trpc';
+import type { StaffType } from '@repo/domain/db';
 import {
   Button,
   Dialog,
@@ -22,6 +23,7 @@ import { EMPLOYEE_STATUS, EMPLOYEE_WORKDAYS } from '../__helpers';
 import type { StaffFilterType } from '../__types';
 
 type Props = {
+  type: StaffType;
   open: boolean;
   setOpen: (open: boolean) => void;
   applyFilters: (filters: StaffFilterType) => void;
@@ -32,6 +34,7 @@ const FilterStaffDialog: React.FC<Props> = ({
   setOpen,
   applyFilters,
   defaultFilters,
+  type,
 }) => {
   const trpc = useTRPC();
   const [
@@ -128,69 +131,76 @@ const FilterStaffDialog: React.FC<Props> = ({
               selectedKeys={filters.status}
             />
           </div>
-          <div>
-            <label
-              htmlFor="assignedServices"
-              className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
-            >
-              <ShieldPlus className="size-4" />
-              <span>Assigned Treatment</span>
-            </label>
-            <MultiSelect
-              items={assignedServicesList}
-              loading={isLoadingAssignedServices}
-              onSelect={(value) => {
-                setFilters(
-                  produce((draft) => {
-                    draft.assignedServices = [
-                      ...(draft.assignedServices || []),
-                      value,
-                    ];
-                  }),
-                );
-              }}
-              onUnselect={(value) => {
-                setFilters(
-                  produce((draft) => {
-                    draft.assignedServices = (
-                      draft.assignedServices || []
-                    ).filter((v) => v !== value);
-                  }),
-                );
-              }}
-              selectedKeys={filters.assignedServices}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="specialistRecord"
-              className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
-            >
-              <Stethoscope className="size-4" />
-              <span>Specialist Record</span>
-            </label>
-            <MultiSelect
-              items={specialistRecordsList}
-              loading={isLoadingSpecialistRecords}
-              onSelect={(value) => {
-                setFilters(
-                  produce((draft) => {
-                    draft.specialists = [...(draft.specialists || []), value];
-                  }),
-                );
-              }}
-              onUnselect={(value) => {
-                setFilters(
-                  produce((draft) => {
-                    draft.specialists = (draft.specialists || []).filter(
-                      (v) => v !== value,
+          {type === 'DOCTOR' && (
+            <>
+              <div>
+                <label
+                  htmlFor="assignedServices"
+                  className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+                >
+                  <ShieldPlus className="size-4" />
+                  <span>Assigned Treatment</span>
+                </label>
+                <MultiSelect
+                  items={assignedServicesList}
+                  loading={isLoadingAssignedServices}
+                  onSelect={(value) => {
+                    setFilters(
+                      produce((draft) => {
+                        draft.assignedServices = [
+                          ...(draft.assignedServices || []),
+                          value,
+                        ];
+                      }),
                     );
-                  }),
-                );
-              }}
-              selectedKeys={filters.specialists}
-            />
-          </div>
+                  }}
+                  onUnselect={(value) => {
+                    setFilters(
+                      produce((draft) => {
+                        draft.assignedServices = (
+                          draft.assignedServices || []
+                        ).filter((v) => v !== value);
+                      }),
+                    );
+                  }}
+                  selectedKeys={filters.assignedServices}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="specialistRecord"
+                  className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+                >
+                  <Stethoscope className="size-4" />
+                  <span>Specialist Record</span>
+                </label>
+                <MultiSelect
+                  items={specialistRecordsList}
+                  loading={isLoadingSpecialistRecords}
+                  onSelect={(value) => {
+                    setFilters(
+                      produce((draft) => {
+                        draft.specialists = [
+                          ...(draft.specialists || []),
+                          value,
+                        ];
+                      }),
+                    );
+                  }}
+                  onUnselect={(value) => {
+                    setFilters(
+                      produce((draft) => {
+                        draft.specialists = (draft.specialists || []).filter(
+                          (v) => v !== value,
+                        );
+                      }),
+                    );
+                  }}
+                  selectedKeys={filters.specialists}
+                />
+              </div>
+            </>
+          )}
         </div>
         <DialogFooter>
           <Button

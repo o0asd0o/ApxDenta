@@ -11,7 +11,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export const UpdateStaffProvider: React.FC<Props> = ({ children }) => {
+export const StaffActionsProvider: React.FC<Props> = ({ children }) => {
   const [additionDayOff, setAdditionDayOff] = useState<Pick<DayOff, 'name'>[]>(
     [],
   );

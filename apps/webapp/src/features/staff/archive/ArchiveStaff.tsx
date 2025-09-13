@@ -2,9 +2,9 @@ import { useTRPC } from '@/lib/trpc';
 import { queryClient } from '@/providers/Root';
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
+import { useArchiveModalVisibility } from '../__common/context/context';
 import { invalidateStaffList } from '../__common/queries';
 import ArchiveDialog from '../components/ArchiveDialog';
-import { useArchiveModalVisibility } from '../update/context/context';
 
 const ArchiveStaff: React.FC = () => {
   const [open, setOpen, staff] = useArchiveModalVisibility();

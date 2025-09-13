@@ -20,9 +20,8 @@ import type { StaffColumnType } from '../__types';
 
 type Props = {
   staff: StaffColumnType;
-  onViewStaff: (id: string) => void;
 };
-const StaffCard: React.FC<Props> = ({ staff, onViewStaff }) => {
+const StaffCard: React.FC<Props> = ({ staff }) => {
   return (
     <div
       key={staff.id}

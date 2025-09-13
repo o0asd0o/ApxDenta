@@ -28,7 +28,24 @@ export function RootProvider({ children }: { children: React.JSX.Element }) {
       <TrpcProvider queryClient={queryClient}>
         <AuthQueryProvider>{children}</AuthQueryProvider>
       </TrpcProvider>
-      <Toaster />
+      <Toaster
+        position="top-right"
+        theme="light"
+        richColors
+        closeButton
+        toastOptions={{
+          style: {
+            borderRadius: '0.75rem',
+            fontSize: '1rem',
+            boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
+          },
+          className: 'bg-white text-gray-900',
+        }}
+        duration={3500}
+        visibleToasts={4}
+        expand
+        gap={16}
+      />
     </QueryClientProvider>
   );
 }

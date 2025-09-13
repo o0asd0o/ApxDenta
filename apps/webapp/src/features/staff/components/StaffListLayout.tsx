@@ -4,8 +4,9 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { columns } from '../__columns';
+import { useArchiveMultipleStaffIdAction } from '../__common/context/context';
 import type { LayoutProps } from '../__types';
-import { useArchiveMultipleStaffIdAction } from '../update/context/context';
+import StaffListLoaderItem from './StaffListLoaderItem';
 
 const StaffListLayout: React.FC<LayoutProps> = ({
   filters,
@@ -13,12 +14,13 @@ const StaffListLayout: React.FC<LayoutProps> = ({
   sorting,
   setSorting,
   setPagination,
-  onViewStaff,
+  type,
 }) => {
   const trpc = useTRPC();
   const onShowArchiveMultipleModal = useArchiveMultipleStaffIdAction();
   const { data: staffList, isLoading } = useQuery(
     trpc.staffs.getAllStaffs.queryOptions({
+      type,
       search: filters.search,
       assignedServicesIn: filters.assignedServices,
       schedulesIn: filters.schedules,
@@ -43,11 +45,12 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         sort={{ sorting, setSorting }}
         loading={isLoading}
         columns={columns}
+        LoaderRow={StaffListLoaderItem}
         onDeleteItems={async (items, callback) =>
           onShowArchiveMultipleModal(items, callback)
         }
       />
-      {staffList?.count !== 0 && (
+      {staffList?.count !== 0 && !isLoading && (
         <Paginate
           listCount={staffList?.count || 0}
           pagination={{ setState: setPagination, state: pagination }}

@@ -1,14 +1,17 @@
-import type { DayOff } from '@repo/domain/db';
+import type { DayOff, StaffType } from '@repo/domain/db';
 import React, { useState } from 'react';
 import type { AllFormsType } from '../../__types';
 import { CreateStaffContext, createStaffFormStepper } from './context';
 
 type Props = {
   children?: React.ReactNode;
+  type: StaffType;
 };
 
-export const CreateStaffProvider: React.FC<Props> = ({ children }) => {
-  const [{ useStepper, steps, utils }] = useState(createStaffFormStepper());
+export const CreateStaffProvider: React.FC<Props> = ({ children, type }) => {
+  const [{ useStepper, steps, utils }] = useState(
+    createStaffFormStepper(type === 'DOCTOR'),
+  );
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [additionDayOff, setAdditionDayOff] = useState<Pick<DayOff, 'name'>[]>(
     [],
@@ -27,6 +30,7 @@ export const CreateStaffProvider: React.FC<Props> = ({ children }) => {
         steps,
         utils,
         stepper,
+        type,
 
         // additional day off management
         additionDayOff,
