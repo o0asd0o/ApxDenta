@@ -124,7 +124,6 @@ const StaffList: React.FC = () => {
                   sorting={sorting}
                   setSorting={setSorting}
                   setPagination={setPagination}
-                  onViewStaff={(staffId) => console.log('VIEW', staffId)}
                 />
               )}
               {layoutTab === 'list' && (
@@ -134,7 +133,6 @@ const StaffList: React.FC = () => {
                   sorting={sorting}
                   setSorting={setSorting}
                   setPagination={setPagination}
-                  onViewStaff={(staffId) => console.log('VIEW', staffId)}
                 />
               )}
             </UpdateStaffProvider>

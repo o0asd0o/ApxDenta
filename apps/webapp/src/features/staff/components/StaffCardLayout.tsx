@@ -10,9 +10,6 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
   filters,
   pagination,
   sorting,
-
-  // staff actions
-  ...staffActions
 }) => {
   const trpc = useTRPCClient();
   const {
@@ -77,7 +74,7 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {(flatten || []).map((staff) => (
-          <StaffCard key={staff.id} staff={staff} {...staffActions} />
+          <StaffCard key={staff.id} staff={staff} />
         ))}
         {isLoading && (
           <div className="h-[567px] justify-center items-center w-full col-span-1 sm:col-span-2 md:col-span-3">

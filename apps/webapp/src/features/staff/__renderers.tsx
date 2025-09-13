@@ -24,7 +24,7 @@ export const renderWorkingDays = (
           <div
             key={sched}
             className={cn(
-              'h-5.5 w-5.5 rounded-full bg-gray-200 flex  text-gray-400 items-center justify-center text-[10px] font-medium',
+              'size-5.5 rounded-full bg-gray-200 flex  text-gray-400 items-center justify-center text-[10px] font-medium',
               hit && 'bg-[#61B0FF] text-primary-foreground border-blue-400',
             )}
           >

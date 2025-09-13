@@ -21,6 +21,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
+import type React from 'react';
 import FloatingActionBar from '../FloatingActionBar';
 import { getColumnTitle } from './helpers';
 
@@ -28,6 +29,7 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
+  LoaderRow?: React.FC<{ key: string }>;
   onDeleteItems?: (itemIds: TData[], callback: () => void) => Promise<void>;
   sort?: {
     sorting: SortingState;
@@ -39,6 +41,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
   loading,
+  LoaderRow,
   sort,
   onDeleteItems,
 }: DataTableProps<TData, TValue>) {
@@ -111,26 +114,31 @@ export function DataTable<TData extends { id: string }, TValue>({
           ) : (
             <>
               {loading &&
-                [...Array(8)].map((_, rowIdx) => (
-                  <TableRow
-                    key={`rowId${
-                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                      rowIdx
-                    }`}
-                  >
-                    {[...Array(columns.length)].map((_, colIdx) => (
-                      <TableCell
-                        key={`colId${
-                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                          colIdx
-                        }`}
-                        className="first:pl-3 last:pr-3"
-                      >
-                        <Skeleton className="h-6 w-full rounded" />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                [...Array(4)].map((_, rowIdx) => {
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  if (LoaderRow) return <LoaderRow key={`rowId${rowIdx}`} />;
+
+                  return (
+                    <TableRow
+                      key={`rowId${
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                        rowIdx
+                      }`}
+                    >
+                      {[...Array(columns.length)].map((_, colIdx) => (
+                        <TableCell
+                          key={`colId${
+                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                            colIdx
+                          }`}
+                          className="first:pl-3 last:pr-3"
+                        >
+                          <Skeleton className="h-6 w-full rounded" />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
             </>
           )}
         </TableBody>
