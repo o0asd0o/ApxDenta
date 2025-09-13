@@ -1,11 +1,13 @@
 import PillTabs from '@/components/PillTabs';
 import { cn } from '@/lib/utils';
+import type { StaffType } from '@repo/domain/db';
 import { LayoutGrid, ListIcon } from 'lucide-react';
 import React from 'react';
 import CreateStaff from '../add/CreateStaff';
 import { CreateStaffProvider } from '../add/context/CreateStaffProvider';
 
 type Props = {
+  staffType: StaffType;
   className?: string;
   layoutTab: 'card' | 'list';
   setLayoutTab: (value: 'card' | 'list') => void;
@@ -18,6 +20,7 @@ const StaffActions: React.FC<Props> = ({
   setLayoutTab,
   setPagination,
   className,
+  staffType,
 }) => {
   return (
     <div className={cn('items-center gap-2', className)}>
@@ -36,7 +39,7 @@ const StaffActions: React.FC<Props> = ({
           { label: <LayoutGrid className="size-4" />, value: 'card' },
         ]}
       />
-      <CreateStaffProvider>
+      <CreateStaffProvider type={staffType}>
         <CreateStaff />
       </CreateStaffProvider>
     </div>

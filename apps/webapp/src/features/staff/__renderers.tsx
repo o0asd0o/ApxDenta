@@ -4,11 +4,11 @@ import type { WorkingDay } from '@repo/domain/db';
 import { Button, V2 } from '@repo/ui/components';
 import { Link } from '@tanstack/react-router';
 import { ArchiveIcon, EditIcon, EyeIcon, MoreVertical } from 'lucide-react';
-import type { StaffColumnType } from './__types';
 import {
   useArchiveStaffIdAction,
   useUpdateStaffIdAction,
-} from './update/context/context';
+} from './__common/context/context';
+import type { StaffColumnType } from './__types';
 
 export const renderWorkingDays = (
   value: { day: WorkingDay }[],

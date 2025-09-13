@@ -1,5 +1,10 @@
 import type { PaginationState } from '@/components/__types';
-import type { Staff, StaffStatus, WorkingDay } from '@repo/domain/db';
+import type {
+  Staff,
+  StaffStatus,
+  StaffType,
+  WorkingDay,
+} from '@repo/domain/db';
 import type {
   AssignedServicesFormType,
   DayOffsFormType,
@@ -61,4 +66,5 @@ export type LayoutProps = {
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
   sorting: SortingState;
   filters: StaffFilterType;
+  type: StaffType;
 };

@@ -4,8 +4,8 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { columns } from '../__columns';
+import { useArchiveMultipleStaffIdAction } from '../__common/context/context';
 import type { LayoutProps } from '../__types';
-import { useArchiveMultipleStaffIdAction } from '../update/context/context';
 import StaffListLoaderItem from './StaffListLoaderItem';
 
 const StaffListLayout: React.FC<LayoutProps> = ({
@@ -14,11 +14,13 @@ const StaffListLayout: React.FC<LayoutProps> = ({
   sorting,
   setSorting,
   setPagination,
+  type,
 }) => {
   const trpc = useTRPC();
   const onShowArchiveMultipleModal = useArchiveMultipleStaffIdAction();
   const { data: staffList, isLoading } = useQuery(
     trpc.staffs.getAllStaffs.queryOptions({
+      type,
       search: filters.search,
       assignedServicesIn: filters.assignedServices,
       schedulesIn: filters.schedules,

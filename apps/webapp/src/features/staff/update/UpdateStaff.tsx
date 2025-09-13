@@ -12,8 +12,8 @@ import {
 } from '@repo/ui/components';
 import { cn } from '@repo/ui/lib/utils';
 import React from 'react';
+import { useUpdateModalVisibility } from '../__common/context/context';
 import { STAFF_FORMS } from '../add/context/context';
-import { useUpdateModalVisibility } from './context/context';
 import UpdateStaffServices from './forms/UpdateAssignServices';
 import { UpdateDaysOff } from './forms/UpdateDaysOff';
 import UpdateStaffInfo from './forms/UpdateStaffInfo';

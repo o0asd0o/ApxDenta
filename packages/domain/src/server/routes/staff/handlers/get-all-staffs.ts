@@ -10,6 +10,7 @@ import { getAllStaff } from './db-operations/getAllStaff';
 
 const inputSchema = z
   .object({
+    type: z.enum(['DOCTOR', 'STAFF']),
     search: z.string().optional(),
     specialistIn: z.string().array().optional(),
     assignedServicesIn: z.string().array().optional(),

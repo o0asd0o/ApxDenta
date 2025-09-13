@@ -1,4 +1,5 @@
 import type { DayOffType } from '@/components/AddOffDay';
+import type { StaffType } from '@repo/domain/db';
 import {
   assignedServicesSchema,
   dayOffsSchema,
@@ -38,11 +39,17 @@ export const STAFF_FORMS = [
   },
 ] as const;
 
-export const createStaffFormStepper = () => defineStepper(...STAFF_FORMS);
+export const createStaffFormStepper = (isDoctor?: boolean) =>
+  defineStepper(
+    ...STAFF_FORMS.filter((item) =>
+      !isDoctor ? item.id !== 'assignedServices' : true,
+    ),
+  );
 
 type CreateStaffFormType = ReturnType<typeof createStaffFormStepper>;
 
 export type CreateStaffContextType = {
+  type: StaffType;
   currentTab: number;
   setCurrentTab: React.Dispatch<React.SetStateAction<number>>;
   stepper: ReturnType<CreateStaffFormType['useStepper']>;
@@ -72,6 +79,13 @@ export const useFormStepper = () => {
   return useContextSelector(
     CreateStaffContext,
     (state) => state?.stepper as ReturnType<CreateStaffFormType['useStepper']>,
+  );
+};
+
+export const useStaffType = () => {
+  return useContextSelector(
+    CreateStaffContext,
+    (state) => state?.type as StaffType,
   );
 };
 

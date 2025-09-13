@@ -12,6 +12,7 @@ export const Route = createFileRoute('/_protected/(clinic)/staff-list')({
     if (context.trpc) {
       await context.queryClient.ensureQueryData(
         context.trpc.staffs.getAllStaffs.queryOptions({
+          type: 'DOCTOR',
           search: '',
           assignedServicesIn: [],
           schedulesIn: [],
