@@ -64,7 +64,7 @@
     "@types/axios": "^0.14.4",
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.0.15",
-    "@types/react": "^19.0.8",
+    "@types/react": "^18.3.25",
     "@types/react-dom": "^19.0.8",
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^26.0.0",
