@@ -213,6 +213,7 @@ model Treatment {
   components       TreatmentComponent[]
   visits           TreatmentVisit[]
   staffsAssigned   Staff[]              @relation("StaffAssignedTreatment")
+  tiedVisits       TreatmentVisit[]     @relation("VisitationTreatment")
 }
 
 model TreatmentComponent {
@@ -238,10 +239,14 @@ model MedicalComponent {
 }
 
 model TreatmentVisit {
-  id          String     @id @default(dbgenerated("gen_random_uuid()"))
-  days        Int
-  treatmentId String?
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  sequence Int
+
   treatment   Treatment? @relation(fields: [treatmentId], references: [id])
+  treatmentId String?
+
+  visitTreatment   Treatment? @relation(fields: [visitTreatmentId], references: [id], name: "VisitationTreatment")
+  visitTreatmentId String?
 }
 
 model Review {
@@ -675,6 +680,7 @@ enum VisitStatus {
 enum TreatmentStatus {
   SAMPLE
   FINALIZED
+  INACTIVE
 }
 
 enum OralHygienDuration {

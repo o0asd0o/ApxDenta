@@ -4,14 +4,16 @@ import {
   Root,
   TabContent,
 } from '@/components/tabs/NavigationTabs';
+import { useQueryState } from 'nuqs';
 import type React from 'react';
 import Doctors from './Doctors';
 import GenStaffs from './GenStaffs';
 
 const StaffList: React.FC = () => {
+  const [tab, setTab] = useQueryState('tab', { defaultValue: 'doctor' });
   return (
     <div>
-      <Root defaultValue="doctor">
+      <Root defaultValue={tab} onChangeTab={setTab}>
         <List>
           <ListItem value="doctor">Doctor Staff</ListItem>
           <ListItem value="general">General Staff</ListItem>

@@ -5,6 +5,8 @@ import {
   SheetClose,
   SheetFooter,
 } from '@repo/ui/components';
+import { AnimatePresence } from 'motion/react';
+import * as motion from 'motion/react-client';
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
@@ -14,6 +16,7 @@ type Props<T extends {}> = {
   onSubmit: (data: T) => Promise<void>;
   children: React.ReactNode;
 };
+
 function Wrapper<T extends {}>({
   isLoading,
   form,
@@ -32,9 +35,17 @@ function Wrapper<T extends {}>({
         className="h-full flex flex-col"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className="px-5 py-4 max-h-[calc(100%_-_70px)] overflow-x-auto">
-          {children}
-        </div>
+        <AnimatePresence>
+          <motion.div
+            initial={{ y: 5, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -5, opacity: 0 }}
+            transition={{ duration: 0.1 }}
+            className="px-5 py-4 max-h-[calc(100%_-_70px)] overflow-x-auto"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
         <SheetFooter className="px-5 flex justify-end border-t">
           <SheetClose>
             <Button variant="ghost" className="w-[120px]" type="button">

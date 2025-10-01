@@ -112,12 +112,12 @@ const MENU_LIST: MenuItem[] = [
 const EXTRA_MENUS: MenuItem[] = [
   {
     title: 'Report',
-    path: '/',
+    path: '',
     icon: FileChartColumnIncreasing,
   },
   {
     title: 'Customer Support',
-    path: '/',
+    path: '',
     icon: Headset,
   },
 ];

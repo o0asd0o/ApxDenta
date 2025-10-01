@@ -27,10 +27,10 @@ import { Route as ProtectedfinancePurchasesImport } from './routes/_protected/(f
 import { Route as ProtectedfinancePaymentMethodsImport } from './routes/_protected/(finance)/payment-methods'
 import { Route as ProtectedfinanceAccountsImport } from './routes/_protected/(finance)/accounts'
 import { Route as ProtectedclinicTreatmentsImport } from './routes/_protected/(clinic)/treatments'
-import { Route as ProtectedclinicStaffListImport } from './routes/_protected/(clinic)/staff-list'
 import { Route as ProtectedclinicReservationsImport } from './routes/_protected/(clinic)/reservations'
 import { Route as ProtectedclinicPatientsImport } from './routes/_protected/(clinic)/patients'
-import { Route as ProtectedclinicStaffStaffIdImport } from './routes/_protected/(clinic)/staff.$staffId'
+import { Route as ProtectedclinicStaffListIndexImport } from './routes/_protected/(clinic)/staff-list/index'
+import { Route as ProtectedclinicStaffListStaffIdImport } from './routes/_protected/(clinic)/staff-list/$staffId'
 
 // Create/Update Routes
 
@@ -132,12 +132,6 @@ const ProtectedclinicTreatmentsRoute = ProtectedclinicTreatmentsImport.update({
   getParentRoute: () => ProtectedLayoutRoute,
 } as any)
 
-const ProtectedclinicStaffListRoute = ProtectedclinicStaffListImport.update({
-  id: '/(clinic)/staff-list',
-  path: '/staff-list',
-  getParentRoute: () => ProtectedLayoutRoute,
-} as any)
-
 const ProtectedclinicReservationsRoute =
   ProtectedclinicReservationsImport.update({
     id: '/(clinic)/reservations',
@@ -151,10 +145,17 @@ const ProtectedclinicPatientsRoute = ProtectedclinicPatientsImport.update({
   getParentRoute: () => ProtectedLayoutRoute,
 } as any)
 
-const ProtectedclinicStaffStaffIdRoute =
-  ProtectedclinicStaffStaffIdImport.update({
-    id: '/(clinic)/staff/$staffId',
-    path: '/staff/$staffId',
+const ProtectedclinicStaffListIndexRoute =
+  ProtectedclinicStaffListIndexImport.update({
+    id: '/(clinic)/staff-list/',
+    path: '/staff-list/',
+    getParentRoute: () => ProtectedLayoutRoute,
+  } as any)
+
+const ProtectedclinicStaffListStaffIdRoute =
+  ProtectedclinicStaffListStaffIdImport.update({
+    id: '/(clinic)/staff-list/$staffId',
+    path: '/staff-list/$staffId',
     getParentRoute: () => ProtectedLayoutRoute,
   } as any)
 
@@ -239,13 +240,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedclinicReservationsImport
       parentRoute: typeof ProtectedLayoutImport
     }
-    '/_protected/(clinic)/staff-list': {
-      id: '/_protected/(clinic)/staff-list'
-      path: '/staff-list'
-      fullPath: '/staff-list'
-      preLoaderRoute: typeof ProtectedclinicStaffListImport
-      parentRoute: typeof ProtectedLayoutImport
-    }
     '/_protected/(clinic)/treatments': {
       id: '/_protected/(clinic)/treatments'
       path: '/treatments'
@@ -295,11 +289,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedphysicalAssetStocksImport
       parentRoute: typeof ProtectedLayoutImport
     }
-    '/_protected/(clinic)/staff/$staffId': {
-      id: '/_protected/(clinic)/staff/$staffId'
-      path: '/staff/$staffId'
-      fullPath: '/staff/$staffId'
-      preLoaderRoute: typeof ProtectedclinicStaffStaffIdImport
+    '/_protected/(clinic)/staff-list/$staffId': {
+      id: '/_protected/(clinic)/staff-list/$staffId'
+      path: '/staff-list/$staffId'
+      fullPath: '/staff-list/$staffId'
+      preLoaderRoute: typeof ProtectedclinicStaffListStaffIdImport
+      parentRoute: typeof ProtectedLayoutImport
+    }
+    '/_protected/(clinic)/staff-list/': {
+      id: '/_protected/(clinic)/staff-list/'
+      path: '/staff-list'
+      fullPath: '/staff-list'
+      preLoaderRoute: typeof ProtectedclinicStaffListIndexImport
       parentRoute: typeof ProtectedLayoutImport
     }
   }
@@ -311,7 +312,6 @@ interface ProtectedLayoutRouteChildren {
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
   ProtectedclinicPatientsRoute: typeof ProtectedclinicPatientsRoute
   ProtectedclinicReservationsRoute: typeof ProtectedclinicReservationsRoute
-  ProtectedclinicStaffListRoute: typeof ProtectedclinicStaffListRoute
   ProtectedclinicTreatmentsRoute: typeof ProtectedclinicTreatmentsRoute
   ProtectedfinanceAccountsRoute: typeof ProtectedfinanceAccountsRoute
   ProtectedfinancePaymentMethodsRoute: typeof ProtectedfinancePaymentMethodsRoute
@@ -319,14 +319,14 @@ interface ProtectedLayoutRouteChildren {
   ProtectedfinanceSalesRoute: typeof ProtectedfinanceSalesRoute
   ProtectedphysicalAssetPeripheralsRoute: typeof ProtectedphysicalAssetPeripheralsRoute
   ProtectedphysicalAssetStocksRoute: typeof ProtectedphysicalAssetStocksRoute
-  ProtectedclinicStaffStaffIdRoute: typeof ProtectedclinicStaffStaffIdRoute
+  ProtectedclinicStaffListStaffIdRoute: typeof ProtectedclinicStaffListStaffIdRoute
+  ProtectedclinicStaffListIndexRoute: typeof ProtectedclinicStaffListIndexRoute
 }
 
 const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
   ProtectedDashboardRoute: ProtectedDashboardRoute,
   ProtectedclinicPatientsRoute: ProtectedclinicPatientsRoute,
   ProtectedclinicReservationsRoute: ProtectedclinicReservationsRoute,
-  ProtectedclinicStaffListRoute: ProtectedclinicStaffListRoute,
   ProtectedclinicTreatmentsRoute: ProtectedclinicTreatmentsRoute,
   ProtectedfinanceAccountsRoute: ProtectedfinanceAccountsRoute,
   ProtectedfinancePaymentMethodsRoute: ProtectedfinancePaymentMethodsRoute,
@@ -335,7 +335,8 @@ const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
   ProtectedphysicalAssetPeripheralsRoute:
     ProtectedphysicalAssetPeripheralsRoute,
   ProtectedphysicalAssetStocksRoute: ProtectedphysicalAssetStocksRoute,
-  ProtectedclinicStaffStaffIdRoute: ProtectedclinicStaffStaffIdRoute,
+  ProtectedclinicStaffListStaffIdRoute: ProtectedclinicStaffListStaffIdRoute,
+  ProtectedclinicStaffListIndexRoute: ProtectedclinicStaffListIndexRoute,
 }
 
 const ProtectedLayoutRouteWithChildren = ProtectedLayoutRoute._addFileChildren(
@@ -354,7 +355,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
-  '/staff-list': typeof ProtectedclinicStaffListRoute
   '/treatments': typeof ProtectedclinicTreatmentsRoute
   '/accounts': typeof ProtectedfinanceAccountsRoute
   '/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
@@ -362,7 +362,8 @@ export interface FileRoutesByFullPath {
   '/sales': typeof ProtectedfinanceSalesRoute
   '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/stocks': typeof ProtectedphysicalAssetStocksRoute
-  '/staff/$staffId': typeof ProtectedclinicStaffStaffIdRoute
+  '/staff-list/$staffId': typeof ProtectedclinicStaffListStaffIdRoute
+  '/staff-list': typeof ProtectedclinicStaffListIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -377,7 +378,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
-  '/staff-list': typeof ProtectedclinicStaffListRoute
   '/treatments': typeof ProtectedclinicTreatmentsRoute
   '/accounts': typeof ProtectedfinanceAccountsRoute
   '/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
@@ -385,7 +385,8 @@ export interface FileRoutesByTo {
   '/sales': typeof ProtectedfinanceSalesRoute
   '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/stocks': typeof ProtectedphysicalAssetStocksRoute
-  '/staff/$staffId': typeof ProtectedclinicStaffStaffIdRoute
+  '/staff-list/$staffId': typeof ProtectedclinicStaffListStaffIdRoute
+  '/staff-list': typeof ProtectedclinicStaffListIndexRoute
 }
 
 export interface FileRoutesById {
@@ -401,7 +402,6 @@ export interface FileRoutesById {
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/_protected/(clinic)/patients': typeof ProtectedclinicPatientsRoute
   '/_protected/(clinic)/reservations': typeof ProtectedclinicReservationsRoute
-  '/_protected/(clinic)/staff-list': typeof ProtectedclinicStaffListRoute
   '/_protected/(clinic)/treatments': typeof ProtectedclinicTreatmentsRoute
   '/_protected/(finance)/accounts': typeof ProtectedfinanceAccountsRoute
   '/_protected/(finance)/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
@@ -409,7 +409,8 @@ export interface FileRoutesById {
   '/_protected/(finance)/sales': typeof ProtectedfinanceSalesRoute
   '/_protected/(physical-asset)/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/_protected/(physical-asset)/stocks': typeof ProtectedphysicalAssetStocksRoute
-  '/_protected/(clinic)/staff/$staffId': typeof ProtectedclinicStaffStaffIdRoute
+  '/_protected/(clinic)/staff-list/$staffId': typeof ProtectedclinicStaffListStaffIdRoute
+  '/_protected/(clinic)/staff-list/': typeof ProtectedclinicStaffListIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -426,7 +427,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/patients'
     | '/reservations'
-    | '/staff-list'
     | '/treatments'
     | '/accounts'
     | '/payment-methods'
@@ -434,7 +434,8 @@ export interface FileRouteTypes {
     | '/sales'
     | '/peripherals'
     | '/stocks'
-    | '/staff/$staffId'
+    | '/staff-list/$staffId'
+    | '/staff-list'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -448,7 +449,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/patients'
     | '/reservations'
-    | '/staff-list'
     | '/treatments'
     | '/accounts'
     | '/payment-methods'
@@ -456,7 +456,8 @@ export interface FileRouteTypes {
     | '/sales'
     | '/peripherals'
     | '/stocks'
-    | '/staff/$staffId'
+    | '/staff-list/$staffId'
+    | '/staff-list'
   id:
     | '__root__'
     | '/'
@@ -470,7 +471,6 @@ export interface FileRouteTypes {
     | '/_protected/dashboard'
     | '/_protected/(clinic)/patients'
     | '/_protected/(clinic)/reservations'
-    | '/_protected/(clinic)/staff-list'
     | '/_protected/(clinic)/treatments'
     | '/_protected/(finance)/accounts'
     | '/_protected/(finance)/payment-methods'
@@ -478,7 +478,8 @@ export interface FileRouteTypes {
     | '/_protected/(finance)/sales'
     | '/_protected/(physical-asset)/peripherals'
     | '/_protected/(physical-asset)/stocks'
-    | '/_protected/(clinic)/staff/$staffId'
+    | '/_protected/(clinic)/staff-list/$staffId'
+    | '/_protected/(clinic)/staff-list/'
   fileRoutesById: FileRoutesById
 }
 
@@ -533,7 +534,6 @@ export const routeTree = rootRoute
         "/_protected/dashboard",
         "/_protected/(clinic)/patients",
         "/_protected/(clinic)/reservations",
-        "/_protected/(clinic)/staff-list",
         "/_protected/(clinic)/treatments",
         "/_protected/(finance)/accounts",
         "/_protected/(finance)/payment-methods",
@@ -541,7 +541,8 @@ export const routeTree = rootRoute
         "/_protected/(finance)/sales",
         "/_protected/(physical-asset)/peripherals",
         "/_protected/(physical-asset)/stocks",
-        "/_protected/(clinic)/staff/$staffId"
+        "/_protected/(clinic)/staff-list/$staffId",
+        "/_protected/(clinic)/staff-list/"
       ]
     },
     "/(auth)/forgot-password": {
@@ -574,10 +575,6 @@ export const routeTree = rootRoute
       "filePath": "_protected/(clinic)/reservations.tsx",
       "parent": "/_protected"
     },
-    "/_protected/(clinic)/staff-list": {
-      "filePath": "_protected/(clinic)/staff-list.tsx",
-      "parent": "/_protected"
-    },
     "/_protected/(clinic)/treatments": {
       "filePath": "_protected/(clinic)/treatments.tsx",
       "parent": "/_protected"
@@ -606,8 +603,12 @@ export const routeTree = rootRoute
       "filePath": "_protected/(physical-asset)/stocks.tsx",
       "parent": "/_protected"
     },
-    "/_protected/(clinic)/staff/$staffId": {
-      "filePath": "_protected/(clinic)/staff.$staffId.tsx",
+    "/_protected/(clinic)/staff-list/$staffId": {
+      "filePath": "_protected/(clinic)/staff-list/$staffId.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(clinic)/staff-list/": {
+      "filePath": "_protected/(clinic)/staff-list/index.tsx",
       "parent": "/_protected"
     }
   }

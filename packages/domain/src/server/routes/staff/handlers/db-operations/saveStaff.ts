@@ -19,7 +19,9 @@ export const saveStaff = async (
       type: input.type,
       address: input.staffInfo.address,
       employmentType: input.staffInfo.type,
-      specialistsRecordId: input.staffInfo.specialistId,
+      ...(input.staffInfo.specialistId && {
+        specialistId: input.staffInfo.specialistId,
+      }),
       avatarId: input.staffInfo.file?.id,
       organizationId: orgId,
       ...GET_DETAULT_DATES(),

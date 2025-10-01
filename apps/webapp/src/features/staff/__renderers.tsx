@@ -58,7 +58,10 @@ export const RenderStaffActions = (actions: {
           <V2.DropdownMenuSeparator />
           <V2.DropdownMenuGroup>
             <V2.DropdownMenuItem>
-              <Link to="/staff/$staffId" params={{ staffId: actions.staffId }}>
+              <Link
+                to="/staff-list/$staffId"
+                params={{ staffId: actions.staffId }}
+              >
                 <span className="flex items-center gap-x-2">
                   <EyeIcon className="size-4 text-inherit" />
                   <span>View Doctor</span>

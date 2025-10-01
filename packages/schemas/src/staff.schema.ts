@@ -34,6 +34,20 @@ export const staffInfoSchema = z.object({
   address: z.string().optional(),
 });
 
+export const getStaffInfoSchema = z.object({
+  file: z
+    .string()
+    .or(z.instanceof(File, { message: 'Please attach a valid image' })),
+  type: z.enum(['FULL_TIME', 'PART_TIME'], {
+    required_error: 'Employment type is required',
+  }),
+  firstName: z.string({ required_error: 'First Name is required' }),
+  lastName: z.string({ required_error: 'Last Name is required' }),
+  phoneNumber: z.string({ required_error: 'Phone Number is required' }),
+  email: z.string({ required_error: 'Email is required' }),
+  address: z.string().optional(),
+});
+
 const interval = z
   .object({ startTime: z.number(), endTime: z.number() })
   .optional();

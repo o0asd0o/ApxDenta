@@ -3,7 +3,7 @@ import React from 'react';
 
 interface Props {
   name: string;
-  role: string;
+  role?: string;
   id: string;
   profile: string;
 }
@@ -23,7 +23,11 @@ export const PersonalInfo: React.FC<Props> = ({ name, role, profile }) => {
       </Avatar>
       <div className="flex gap-1 flex-col">
         <span className="text-xs">{name}</span>
-        <span className="text-muted-foreground text-xs capitalize">{role}</span>
+        {role && (
+          <span className="text-muted-foreground text-xs capitalize">
+            {role}
+          </span>
+        )}
       </div>
     </div>
   );

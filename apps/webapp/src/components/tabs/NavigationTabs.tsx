@@ -1,5 +1,6 @@
 import { cn } from '@repo/ui/lib/utils';
 import { produce } from 'immer';
+import * as motion from 'motion/react-client';
 import React, {
   useCallback,
   useEffect,
@@ -138,14 +139,19 @@ const ListItem: React.FC<{
 };
 ListItem.displayName = 'NavigationTabsListItem';
 
-const Root: React.FC<{ children: React.ReactNode; defaultValue?: string }> = ({
-  children,
-  defaultValue,
-}) => {
+type RootProps = {
+  children: React.ReactNode;
+  defaultValue?: string;
+  onChangeTab?: (tab: string | null) => void;
+};
+const Root: React.FC<RootProps> = ({ children, defaultValue, onChangeTab }) => {
   const [tabs, setTabs] = useState<TabType[]>([]);
-  const [selectedTab, setSelectedTab] = useState<string | null>(
-    defaultValue || null,
-  );
+  const [selectedTab, setTab] = useState<string | null>(defaultValue || null);
+
+  const setSelectedTab = (tab: string | null) => {
+    setTab(tab);
+    onChangeTab?.(tab);
+  };
 
   const registerTab = useCallback((params: TabType) => {
     setTabs(
@@ -184,8 +190,24 @@ const TabContent: React.FC<{
     return currentTab?.value === selectedTab;
   });
 
-  if (isSelected)
+  if (isSelected) {
+    if (animated) {
+      return (
+        <motion.div
+          key={value || 'empty'}
+          initial={{ y: 5, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -5, opacity: 0 }}
+          transition={{ duration: 0.1 }}
+          className='flex-1'
+        >
+          {children}
+        </motion.div>
+      );
+    }
     return <div className={cn('px-5 py-2', className)}>{children}</div>;
+  }
+
   return null;
 };
 TabContent.displayName = 'NavigationTabsContent';

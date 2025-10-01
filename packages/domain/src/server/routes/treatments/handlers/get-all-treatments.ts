@@ -1,12 +1,13 @@
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
+import { getAllTreatments } from './db-operations/getAllTreatments';
 
 const inputSchema = z.void();
 
-type Params = HandlerType<z.infer<typeof inputSchema>>;
+export type GetAllTreatmentsParams = HandlerType<z.infer<typeof inputSchema>>;
 
-const handler = async ({ ctx }: Params) => {
-  const result = await ctx.db.selectFrom('Treatment').selectAll().execute();
+const handler = async (params: GetAllTreatmentsParams) => {
+  const result = await getAllTreatments(params);
 
   return { status: 'SUCCESS' as const, data: result };
 };
