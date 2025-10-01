@@ -1,5 +1,6 @@
 import SpecialistInput from '@/components/SpecialistInput';
 import { UploadAvatar } from '@/components/UploadAvatar';
+import type { StaffType } from '@repo/domain/db';
 import type { StaffInfoFormType } from '@repo/schemas';
 import {
   FormControl,
@@ -20,9 +21,14 @@ import type { UseFormReturn } from 'react-hook-form';
 type Props = {
   form: UseFormReturn<StaffInfoFormType>;
   isUpdate?: boolean;
+  type?: StaffType;
 };
 
-export const StaffInfoForm: React.FC<Props> = ({ form, isUpdate }) => {
+export const StaffInfoForm: React.FC<Props> = ({
+  form,
+  isUpdate,
+  type = 'DOCTOR',
+}) => {
   return (
     <div className="flex flex-col gap-3">
       <FormField
@@ -100,24 +106,27 @@ export const StaffInfoForm: React.FC<Props> = ({ form, isUpdate }) => {
           )}
         />
       </div>
-      <FormField
-        control={form.control}
-        name="specialistId"
-        render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
-            <FormLabel>Specialist</FormLabel>
-            <FormControl>
-              <SpecialistInput
-                key={field.name}
-                onChange={field.onChange}
-                value={field.value}
-                placeholder="Select specialty..."
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {type === 'DOCTOR' && (
+        <FormField
+          control={form.control}
+          name="specialistId"
+          render={({ field }) => (
+            <FormItem className="space-y-1 flex flex-col">
+              <FormLabel>Specialist</FormLabel>
+              <FormControl>
+                <SpecialistInput
+                  key={field.name}
+                  onChange={field.onChange}
+                  value={field.value}
+                  placeholder="Select specialty..."
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
       <FormField
         control={form.control}
         name="phoneNumber"

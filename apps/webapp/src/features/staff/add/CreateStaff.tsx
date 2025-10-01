@@ -110,11 +110,13 @@ const CreateStaff: React.FC = () => {
         );
 
         await saveStaff({
-          type: 'DOCTOR',
+          type,
           staffInfo: {
             ...(formValues?.staffInfo as StaffInfoFormType),
             file: { id: savedFile.id },
-            specialistId: extractSpecialistIdFromValue(formValues?.staffInfo),
+            ...(type === 'DOCTOR' && {
+              specialistId: extractSpecialistIdFromValue(formValues?.staffInfo),
+            }),
           },
           assignedServices:
             formValues?.assignedServices as AssignedServicesFormType,
@@ -127,7 +129,15 @@ const CreateStaff: React.FC = () => {
         stepper.next();
       }
     },
-    [setFormValues, saveStaff, uploadFile, formValues, additionDayOff, stepper],
+    [
+      setFormValues,
+      saveStaff,
+      uploadFile,
+      type,
+      formValues,
+      additionDayOff,
+      stepper,
+    ],
   );
 
   const currentIndex =
@@ -218,7 +228,10 @@ const CreateStaff: React.FC = () => {
                   <DaysOffForm form={form as CreateStaffFormType} />
                 ),
                 staffInfo: () => (
-                  <StaffInfoForm form={form as CreateStaffFormType} />
+                  <StaffInfoForm
+                    type={type}
+                    form={form as CreateStaffFormType}
+                  />
                 ),
                 workingHours: () => (
                   <WorkingHoursForm form={form as CreateStaffFormType} />

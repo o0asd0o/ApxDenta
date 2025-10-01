@@ -9,7 +9,7 @@ import { routeTree } from './routeTree.gen.ts';
 import { Loader2 } from 'lucide-react';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 import { useSession } from './lib/auth-client';
-import { useTRPC } from './lib/trpc';
+import { useTRPC, useTRPCClient } from './lib/trpc';
 import { RootProvider, getContext } from './providers/Root';
 import reportWebVitals from './reportWebVitals.ts';
 
@@ -21,7 +21,7 @@ import reportWebVitals from './reportWebVitals.ts';
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { ...getContext(), auth: undefined, trpc: null },
+  context: { ...getContext(), auth: undefined, trpc: null, client: null },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
@@ -40,8 +40,7 @@ declare module '@tanstack/react-router' {
 const App: React.FC = () => {
   const { data: authData, isPending } = useSession();
   const trpc = useTRPC();
-
-  console.log({ authData });
+  const client = useTRPCClient();
   if (isPending) {
     return (
       <div className="flex items-center justify-center h-dvh bg-card">
@@ -53,7 +52,7 @@ const App: React.FC = () => {
   return (
     <RouterProvider
       router={router}
-      context={{ ...getContext(), auth: authData, trpc }}
+      context={{ ...getContext(), auth: authData, trpc, client }}
     />
   );
 };

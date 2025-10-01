@@ -4,6 +4,7 @@ import {
   Root,
   TabContent,
 } from '@/components/tabs/NavigationTabs';
+import type { StaffType } from '@repo/domain/db';
 import {
   Sheet,
   SheetContent,
@@ -19,7 +20,10 @@ import { UpdateDaysOff } from './forms/UpdateDaysOff';
 import UpdateStaffInfo from './forms/UpdateStaffInfo';
 import UpdateWorkingHours from './forms/UpdateWorkingHours';
 
-const UpdateStaff: React.FC = () => {
+type Props = {
+  type: StaffType;
+};
+const UpdateStaff: React.FC<Props> = ({ type }) => {
   const [open, setOpen] = useUpdateModalVisibility();
 
   return (
@@ -46,7 +50,10 @@ const UpdateStaff: React.FC = () => {
                   value="staffInfo"
                   className="flex flex-col p-0 h-[calc(100%_-_46px)]"
                 >
-                  <UpdateStaffInfo onSubmitted={() => setOpen(false)} />
+                  <UpdateStaffInfo
+                    type={type}
+                    onSubmitted={() => setOpen(false)}
+                  />
                 </TabContent>
                 <TabContent
                   value="assignedServices"

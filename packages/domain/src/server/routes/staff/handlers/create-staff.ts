@@ -15,9 +15,10 @@ import { saveStaff } from './db-operations/saveStaff';
 
 const inputSchema = z.object({
   type: z.enum(['DOCTOR', 'STAFF']),
-  staffInfo: staffInfoSchema
-    .omit({ file: true })
-    .extend({ file: z.object({ id: z.string() }).optional() }),
+  staffInfo: staffInfoSchema.omit({ file: true, specialistId: true }).extend({
+    file: z.object({ id: z.string() }).optional(),
+    specialistId: z.string().optional(),
+  }),
   assignedServices: assignedServicesSchema,
   dayOffs: dayOffsSchema,
   extraDayOffs: additionalDaysOffSchema.optional(),

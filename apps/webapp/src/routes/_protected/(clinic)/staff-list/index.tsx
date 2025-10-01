@@ -5,7 +5,7 @@ import React from 'react';
 
 const StaffList = React.lazy(() => import('@/features/staff/StaffList'));
 
-export const Route = createFileRoute('/_protected/(clinic)/staff-list')({
+export const Route = createFileRoute('/_protected/(clinic)/staff-list/')({
   component: StaffList,
   loader: async ({ context }) => {
     console.log({ context });

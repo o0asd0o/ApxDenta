@@ -39,12 +39,40 @@ export const STAFF_FORMS = [
   },
 ] as const;
 
-export const createStaffFormStepper = (isDoctor?: boolean) =>
-  defineStepper(
-    ...STAFF_FORMS.filter((item) =>
-      !isDoctor ? item.id !== 'assignedServices' : true,
-    ),
+export const createStaffFormStepper = (isDoctor?: boolean) => {
+  const staffSchema = isDoctor
+    ? staffInfoSchema
+    : staffInfoSchema.omit({ specialistId: true });
+
+  return defineStepper(
+    ...[
+      {
+        id: 'staffInfo',
+        label: 'Staff Info',
+        schema: staffSchema,
+        icon: <UserPen />,
+      },
+      {
+        id: 'assignedServices',
+        label: 'Assigned Services',
+        schema: assignedServicesSchema,
+        icon: <Stethoscope />,
+      },
+      {
+        id: 'workingHours',
+        label: 'Working Hours',
+        schema: workingHoursSchema,
+        icon: <RefreshCcwDot />,
+      },
+      {
+        id: 'dayOffs',
+        label: 'Days Off',
+        schema: dayOffsSchema,
+        icon: <ClockAlert />,
+      },
+    ],
   );
+};
 
 type CreateStaffFormType = ReturnType<typeof createStaffFormStepper>;
 

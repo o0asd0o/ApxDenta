@@ -15,8 +15,9 @@ import Wrapper from './Wrapper';
 
 type Props = {
   onSubmitted: () => void;
+  type: 'DOCTOR' | 'STAFF';
 };
-const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted }) => {
+const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted, type }) => {
   const [processingFile, setProcessingFile] = React.useState<boolean>(false);
 
   const directTrpc = useTRPCClient();
@@ -111,7 +112,11 @@ const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted }) => {
         });
       }}
     >
-      <StaffInfoForm isUpdate form={form as UseFormReturn<StaffInfoFormType>} />
+      <StaffInfoForm
+        isUpdate
+        type={type}
+        form={form as UseFormReturn<StaffInfoFormType>}
+      />
     </Wrapper>
   );
 };

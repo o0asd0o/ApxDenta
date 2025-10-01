@@ -15,7 +15,7 @@ export const SideBarButton: React.FC<Props> = ({ item, pathname, onClick }) => {
     <SidebarMenuButton
       asChild
       className="text-[14px]"
-      isActive={item.path === pathname}
+      isActive={item.path ? pathname.includes(item.path) : false}
       tooltip={state === 'collapsed' ? item.title : undefined}
       onClick={onClick}
     >

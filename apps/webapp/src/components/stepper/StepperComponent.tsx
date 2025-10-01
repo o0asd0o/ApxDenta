@@ -30,7 +30,7 @@ function StepperComponent<T>({
         className="flex items-center justify-between gap-2 relative"
         aria-orientation="horizontal"
       >
-        {stepper.all.map((step, index) => {
+        {(stepper?.all || []).map((step, index) => {
           const isSelected = stepper.current.id === step.id;
           return (
             <React.Fragment key={step.id as Key}>

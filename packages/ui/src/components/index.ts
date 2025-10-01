@@ -31,4 +31,5 @@ export * from './divider';
 export * from './loader';
 export * from './sonner';
 export * from './pagination';
-export * from "./scroll-area"
+export * from './scroll-area';
+export * from './breadcrumb';

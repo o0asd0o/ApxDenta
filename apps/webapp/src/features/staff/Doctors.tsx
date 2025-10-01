@@ -3,7 +3,7 @@ import type { PaginationState } from '@/components/__types';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
-import { Stethoscope } from 'lucide-react';
+import { UsersRound } from 'lucide-react';
 import { parseAsStringEnum, useQueryState } from 'nuqs';
 import React, { useCallback, useState } from 'react';
 import { StaffActionsProvider } from './__common/context/StaffActionsProvider';
@@ -47,7 +47,7 @@ const Doctors: React.FC = () => {
         <div className="flex">
           <div className="flex items-center gap-1.5">
             <span className="p-1.5 rounded-sm bg-accent">
-              <Stethoscope className="size-4" />
+              <UsersRound className="size-4" />
             </span>
             <TotalStaff staffType="DOCTOR" />
             <span className="text-xs text-gray-400">Doctor(s)</span>
@@ -101,7 +101,7 @@ const Doctors: React.FC = () => {
       </div>
       <div>
         <StaffActionsProvider>
-          <UpdateStaff />
+          <UpdateStaff type="DOCTOR" />
           <ArchiveStaff />
           <ArchiveMultipleStaff />
           {layoutTab === 'card' && (
