@@ -1,3 +1,4 @@
+import { GET_DETAULT_DATES } from '@/server/utils/helpers';
 import dayjs from 'dayjs';
 import { createDb } from './client';
 import { dentalTreatments } from './seeder-fixtures/dental-treatments';
@@ -37,12 +38,15 @@ const createTreatments = async () => {
     .values(
       combiled.map((item) => {
         return {
+          status: 'FINALIZED',
+          ...GET_DETAULT_DATES(),
           category:
             item.type === 'COSMETIC' ? 'COSMETIC_SERVICE' : 'MEDICAL_SERVICE',
           description: item.description,
+          organizationId: 'XBvCMVZx8yaqmz0Y4k8RjVr4ienbVzk6',
           name: item.name,
           pricePerDuration: 100,
-          duration: 1,
+          duration: 5,
           visitType: item.visits > 1 ? 'MULTIPLE_VISIT' : 'SINGLE_VISIT',
         };
       }),
@@ -67,9 +71,9 @@ const createDefaultHolidays = async () => {
   );
 };
 const main = async () => {
-  await createSpecialistRecords();
+  // await createSpecialistRecords();
   await createTreatments();
-  await createDefaultHolidays();
+  // await createDefaultHolidays();
 };
 
 main().then(async () => {
