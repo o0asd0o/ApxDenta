@@ -1,12 +1,10 @@
 import PillTabs from '@/components/PillTabs';
 import { cn } from '@/lib/utils';
-import type { StaffType } from '@repo/domain/db';
 import { LayoutGrid, ListIcon } from 'lucide-react';
 import React from 'react';
 import CreateTreatment from '../add/CreateTreatment';
 
 type Props = {
-  staffType: StaffType;
   className?: string;
   layoutTab: 'card' | 'list';
   setLayoutTab: (value: 'card' | 'list') => void;

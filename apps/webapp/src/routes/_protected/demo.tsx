@@ -1,27 +1,52 @@
 import { StackDialogDrawer } from '@/components/dialog/stacked/StackDialogDrawer';
-import StackProvider from '@/components/dialog/stacked/StackProvider';
+import StackProvider, {
+  useCurrentIndexAction,
+} from '@/components/dialog/stacked/StackProvider';
 import { useActiveOrganization } from '@/lib/auth-client';
 import { Button, Form } from '@repo/ui/components';
+import { createFileRoute } from '@tanstack/react-router';
 import { PlusIcon } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import MultipleVisitForm from './forms/MultipleVisitForm';
-import TreatmentBaseForm from './forms/TreatmentBaseForm';
+
+export const Route = createFileRoute('/_protected/demo')({
+  component: RouteComponent,
+});
+
+const ChildComponent: React.FC = () => {
+  const next = useCurrentIndexAction('increment');
+  const prev = useCurrentIndexAction('decrement');
+
+  return (
+    <div className="p-5">
+      Protected Demo Route
+      <div className="flex gap-2">
+        <Button onClick={() => next()}>next</Button>
+        <Button onClick={() => prev()}>prev</Button>
+      </div>
+    </div>
+  );
+};
 
 const STACKS = [
   {
-    id: 'treatment-form-1',
-    component: <TreatmentBaseForm />,
-    title: 'Add Treatment',
+    id: 'first',
+    component: <ChildComponent />,
+    title: 'Child Component 1',
   },
   {
-    id: 'treatment-form-2',
-    component: <MultipleVisitForm />,
-    title: 'Set Multiple Visits',
+    id: 'second',
+    component: <ChildComponent />,
+    title: 'Child Component 2',
+  },
+  {
+    id: 'third',
+    component: <ChildComponent />,
+    title: 'Child Component 3',
   },
 ];
 
-const CreateTreatment: React.FC = () => {
+function RouteComponent() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const form = useForm();
@@ -47,6 +72,8 @@ const CreateTreatment: React.FC = () => {
               type="submit"
               variant="primary"
               className="w-[120px]"
+              // disabled={isPending || submitting}
+              // isLoading={isPending || submitting}
               loadingText="Saving..."
             >
               Save
@@ -56,6 +83,4 @@ const CreateTreatment: React.FC = () => {
       </StackProvider>
     </Form>
   );
-};
-
-export default CreateTreatment;
+}

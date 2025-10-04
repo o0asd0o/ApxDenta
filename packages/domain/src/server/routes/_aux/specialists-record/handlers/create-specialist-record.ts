@@ -4,7 +4,7 @@ import { z } from 'zod';
 const inputSchema = z.object({
   title: z.string(),
   code: z.string(),
-  descrpition: z.string().optional(),
+  description: z.string().optional(),
 });
 
 type Params = HandlerType<z.infer<typeof inputSchema>>;
