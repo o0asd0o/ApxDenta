@@ -51,11 +51,11 @@ export const getAllTreatments = async ({
     query = query.where('Treatment.visitType', '=', input.type);
   }
 
-  if (input.rating?.[0] !== null || input.rating?.[1] !== null) {
+  if (input.rating?.[0] && input.rating?.[1]) {
     query = query.where((eb) => filterRatingRange(eb, input.rating));
   }
 
-  if (input.priceRange?.[0] !== null || input.priceRange?.[1] !== null) {
+  if (input.priceRange?.[0] && input.priceRange?.[1]) {
     query = query.where((eb) => filterPriceRange(eb, input.priceRange));
   }
 

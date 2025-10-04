@@ -1,17 +1,9 @@
 'use client';
-import { Contact } from '@/components/Contact';
-import { PersonalInfo } from '@/components/PersonalInfo';
-import { EMPLOYMENT_TYPE_BADGES } from '@/constants/badges';
-import { STAFF_LIST } from '@/constants/options';
-import { Tooltip } from '@radix-ui/react-tooltip';
-import type { EmploymentType, WorkingDay } from '@repo/domain/db';
-import {
-  Button,
-  Checkbox,
-  TooltipContent,
-  TooltipTrigger,
-} from '@repo/ui/components';
+import { TREATMENT_TYPE_BADGES } from '@/constants/badges';
+import type { TreatmentVisitType } from '@repo/domain/db';
+import { Checkbox } from '@repo/ui/components';
 import type { ColumnDef } from '@tanstack/react-table';
+import { Star } from 'lucide-react';
 // import { RenderStaffActions, renderWorkingDays } from './__renderers';
 import type { TreatmentColumnType } from './__types';
 
@@ -43,112 +35,82 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
   {
     accessorKey: 'name',
     enableSorting: true,
-    header: ({ column }) => {
-      return (
-        <Button
-          className="text-grayish-blue uppercase text-xs p-1"
-          variant="ghost"
-          onClick={() => {
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          Name
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const staff = row.original;
-      return (
-        <PersonalInfo
-          id={staff.id}
-          profile={staff.avatar?.url as string}
-          name={
-            staff.account?.user.name || `${staff.firstName} ${staff.lastName}`
-          }
-          role={STAFF_LIST.find((s) => s.value === staff.type)?.label as string}
-        />
-      );
-    },
+    header: 'Treatment Name',
   },
   {
-    accessorKey: 'contact',
-    header: 'Contact',
+    accessorKey: 'price',
+    header: 'Price',
     cell: ({ row }) => {
-      const staff = row.original;
+      const treatment = row.original;
 
       return (
-        <Contact
-          email={staff.account?.user.email || (staff.email as string)}
-          phone={staff.contactNumber}
-        />
+        <span className="text-sm">
+          Start from{' '}
+          <span className="font-bold">
+            ₱{treatment.pricePerDuration * treatment.duration}
+          </span>
+        </span>
       );
     },
   },
   {
-    accessorKey: 'workSchedules',
-    header: 'Working Days',
-    cell: ({ cell }) => {
-      const value = cell.getValue<{ day: WorkingDay }[]>();
-      return renderWorkingDays(value, 'flex-nowrap');
-    },
-  },
-  {
-    accessorKey: 'assignedServices',
-    size: 200,
-    header: 'Offered Services',
-    cell: ({ cell }) => {
-      const assignedTreatments =
-        cell.getValue<{ name: string; id: string }[]>();
+    accessorKey: 'duration',
+    header: 'Estimate Duration',
+    cell: ({ row }) => {
+      const treatment = row.original;
+
+      if (treatment.visitType === 'SINGLE_VISIT')
+        return <span>= {treatment.duration} hour(s)</span>;
       return (
-        <div className="w-full items-center gap-1">
-          <span className="text-[13px]">{assignedTreatments[0].name}</span>
-          {assignedTreatments.length > 1 && (
-            <Tooltip>
-              <TooltipTrigger
-                asChild
-                className="bg-transparent text-primary text-xs font-bold"
-              >
-                <span className="ml-1 cursor-default">
-                  +{assignedTreatments.length - 1}
-                </span>
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                align="center"
-                className="bg-gray-200 text-shadow-gray-800 [&>span>svg]:bg-gray-200 [&>span>svg]:fill-gray-200"
-              >
-                <ul className="text-gray-950 list-disc pl-3">
-                  {assignedTreatments.slice(1).map((treatment) => (
-                    <li key={treatment.id} className="text-sm">
-                      {treatment.name}
-                    </li>
-                  ))}
-                </ul>
-              </TooltipContent>
-            </Tooltip>
-          )}
-        </div>
+        <span>= {treatment.averageDuration || 1} hour(s) / treatment</span>
       );
     },
   },
   {
-    accessorKey: 'employmentType',
-    header: 'Type',
-    size: 70,
+    accessorKey: 'visitType',
+    header: 'Type of Visit',
+    size: 80,
     cell: ({ cell }) => {
-      const value = cell.getValue<EmploymentType>();
-      return EMPLOYMENT_TYPE_BADGES[value];
+      const visitType = cell.getValue<TreatmentVisitType>();
+      return <div className="py-2">{TREATMENT_TYPE_BADGES[visitType]}</div>;
     },
   },
   {
-    id: 'actions',
-    size: 50,
-    cell: ({ row }) => (
-      <RenderStaffActions
-        name={`${row.original.firstName} ${row.original.lastName}`}
-        staffId={row.original.id}
-        original={row.original}
-      />
-    ),
+    accessorKey: 'averageRating',
+    header: 'Rating',
+    cell: ({ cell }) => {
+      const rating = cell.getValue<number | null>();
+
+      if (rating) {
+        return (
+          <span className="inline-flex items-center gap-1 text-sm font-medium ">
+            <Star className="text-yellow-500" />
+            {rating.toFixed(1)}
+          </span>
+        );
+      }
+      return <span className="text-sm text-gray-400">No ratings</span>;
+    },
   },
+  {
+    accessorKey: 'totalReviews',
+    header: 'Reviews',
+    cell: ({ cell }) => {
+      const reviews = cell.getValue<number | null>();
+      return (
+        <span className="text-sm text-gray-400">{reviews || 0} Review(s)</span>
+      );
+    },
+  },
+  // {
+  //   id: 'actions',
+  //   size: 50,
+  //   cell: ({ row }) => (
+  //     <RenderStaffActions
+  //       name={`${row.original.firstName} ${row.original.lastName}`}
+  //       staffId={row.original.id}
+  //       original={row.original}
+  //     />
+  //   ),
+  // },
 ];

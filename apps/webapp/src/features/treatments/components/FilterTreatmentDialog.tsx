@@ -12,7 +12,7 @@ import {
   Slider,
 } from '@repo/ui/components';
 import { produce } from 'immer';
-import { CalendarSearch, DollarSign, StarIcon } from 'lucide-react';
+import { CalendarSearch, StarIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { TreatmentFilterType } from '../__types';
 
@@ -87,7 +87,7 @@ const FilterTreatmentDialog: React.FC<Props> = ({
               htmlFor="priceRange"
               className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
             >
-              <DollarSign className="size-4" />
+              <span className="font-bold text-xl">₱</span>
               <span>Price Range</span>
             </label>
             <div className="w-[60%] space-y-3">
@@ -105,8 +105,8 @@ const FilterTreatmentDialog: React.FC<Props> = ({
                 step={1}
               />
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Min: {filters.priceRange?.[0] || 0}</span>
-                <span>Max: {filters.priceRange?.[1] || 10000}</span>
+                <span>Min: ₱{filters.priceRange?.[0] || 0}</span>
+                <span>Max: ₱{filters.priceRange?.[1] || 10000}</span>
               </div>
             </div>
           </div>
