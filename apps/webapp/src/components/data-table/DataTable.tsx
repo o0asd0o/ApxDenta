@@ -114,7 +114,7 @@ export function DataTable<TData extends { id: string }, TValue>({
           ) : (
             <>
               {loading &&
-                [...Array(4)].map((_, rowIdx) => {
+                [...Array(5)].map((_, rowIdx) => {
                   // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   if (LoaderRow) return <LoaderRow key={`rowId${rowIdx}`} />;
 

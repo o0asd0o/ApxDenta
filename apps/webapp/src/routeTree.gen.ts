@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProtectedLayoutImport } from './routes/_protected/layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as ProtectedDemoImport } from './routes/_protected/demo'
 import { Route as ProtectedDashboardImport } from './routes/_protected/dashboard'
 import { Route as authVerifyEmailImport } from './routes/(auth)/verify-email'
 import { Route as authVerificationSentImport } from './routes/(auth)/verification-sent'
@@ -43,6 +44,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedDemoRoute = ProtectedDemoImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => ProtectedLayoutRoute,
 } as any)
 
 const ProtectedDashboardRoute = ProtectedDashboardImport.update({
@@ -226,6 +233,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardImport
       parentRoute: typeof ProtectedLayoutImport
     }
+    '/_protected/demo': {
+      id: '/_protected/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof ProtectedDemoImport
+      parentRoute: typeof ProtectedLayoutImport
+    }
     '/_protected/(clinic)/patients': {
       id: '/_protected/(clinic)/patients'
       path: '/patients'
@@ -310,6 +324,7 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedLayoutRouteChildren {
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
+  ProtectedDemoRoute: typeof ProtectedDemoRoute
   ProtectedclinicPatientsRoute: typeof ProtectedclinicPatientsRoute
   ProtectedclinicReservationsRoute: typeof ProtectedclinicReservationsRoute
   ProtectedclinicTreatmentsRoute: typeof ProtectedclinicTreatmentsRoute
@@ -325,6 +340,7 @@ interface ProtectedLayoutRouteChildren {
 
 const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
   ProtectedDashboardRoute: ProtectedDashboardRoute,
+  ProtectedDemoRoute: ProtectedDemoRoute,
   ProtectedclinicPatientsRoute: ProtectedclinicPatientsRoute,
   ProtectedclinicReservationsRoute: ProtectedclinicReservationsRoute,
   ProtectedclinicTreatmentsRoute: ProtectedclinicTreatmentsRoute,
@@ -353,6 +369,7 @@ export interface FileRoutesByFullPath {
   '/verification-sent': typeof authVerificationSentRoute
   '/verify-email': typeof authVerifyEmailRoute
   '/dashboard': typeof ProtectedDashboardRoute
+  '/demo': typeof ProtectedDemoRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
   '/treatments': typeof ProtectedclinicTreatmentsRoute
@@ -376,6 +393,7 @@ export interface FileRoutesByTo {
   '/verification-sent': typeof authVerificationSentRoute
   '/verify-email': typeof authVerifyEmailRoute
   '/dashboard': typeof ProtectedDashboardRoute
+  '/demo': typeof ProtectedDemoRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
   '/treatments': typeof ProtectedclinicTreatmentsRoute
@@ -400,6 +418,7 @@ export interface FileRoutesById {
   '/(auth)/verification-sent': typeof authVerificationSentRoute
   '/(auth)/verify-email': typeof authVerifyEmailRoute
   '/_protected/dashboard': typeof ProtectedDashboardRoute
+  '/_protected/demo': typeof ProtectedDemoRoute
   '/_protected/(clinic)/patients': typeof ProtectedclinicPatientsRoute
   '/_protected/(clinic)/reservations': typeof ProtectedclinicReservationsRoute
   '/_protected/(clinic)/treatments': typeof ProtectedclinicTreatmentsRoute
@@ -425,6 +444,7 @@ export interface FileRouteTypes {
     | '/verification-sent'
     | '/verify-email'
     | '/dashboard'
+    | '/demo'
     | '/patients'
     | '/reservations'
     | '/treatments'
@@ -447,6 +467,7 @@ export interface FileRouteTypes {
     | '/verification-sent'
     | '/verify-email'
     | '/dashboard'
+    | '/demo'
     | '/patients'
     | '/reservations'
     | '/treatments'
@@ -469,6 +490,7 @@ export interface FileRouteTypes {
     | '/(auth)/verification-sent'
     | '/(auth)/verify-email'
     | '/_protected/dashboard'
+    | '/_protected/demo'
     | '/_protected/(clinic)/patients'
     | '/_protected/(clinic)/reservations'
     | '/_protected/(clinic)/treatments'
@@ -532,6 +554,7 @@ export const routeTree = rootRoute
       "filePath": "_protected/layout.tsx",
       "children": [
         "/_protected/dashboard",
+        "/_protected/demo",
         "/_protected/(clinic)/patients",
         "/_protected/(clinic)/reservations",
         "/_protected/(clinic)/treatments",
@@ -565,6 +588,10 @@ export const routeTree = rootRoute
     },
     "/_protected/dashboard": {
       "filePath": "_protected/dashboard.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/demo": {
+      "filePath": "_protected/demo.tsx",
       "parent": "/_protected"
     },
     "/_protected/(clinic)/patients": {

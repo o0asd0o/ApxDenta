@@ -120,7 +120,7 @@ const ListItem: React.FC<{
       key={value}
       data-value={value}
       className={cn(
-        'text-sm font-medium text-[#b5b8b4] transition-colors duration-200 ease-out hover:text-primary/60',
+        'whitespace-nowrap text-sm font-medium text-[#b5b8b4] transition-colors duration-200 ease-out hover:text-primary/60',
         isSelected && 'text-primary!',
         className,
       )}
@@ -199,7 +199,7 @@ const TabContent: React.FC<{
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -5, opacity: 0 }}
           transition={{ duration: 0.1 }}
-          className='flex-1'
+          className="flex-1"
         >
           {children}
         </motion.div>

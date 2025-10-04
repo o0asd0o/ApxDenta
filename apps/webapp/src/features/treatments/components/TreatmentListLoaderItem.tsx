@@ -5,7 +5,7 @@ import React from 'react';
 type Props = {
   key: string;
 };
-const StaffListLoaderItem: React.FC<Props> = ({ key }) => {
+const TreatmentListLoaderItem: React.FC<Props> = ({ key }) => {
   return (
     <TableRow key={key}>
       <TableCell key={`${key}11`} className="h-[61px] first:pl-3 last:pr-3">
@@ -48,4 +48,4 @@ const StaffListLoaderItem: React.FC<Props> = ({ key }) => {
   );
 };
 
-export default StaffListLoaderItem;
+export default TreatmentListLoaderItem;

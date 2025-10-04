@@ -197,7 +197,7 @@ model Treatment {
   updatedAt        DateTime             @default(now())
   name             String
   category         TreatmentCategory
-  descrpition      String
+  description      String               @default("")
   visitType        TreatmentVisitType
   duration         Float
   pricePerDuration Float
@@ -213,7 +213,8 @@ model Treatment {
   components       TreatmentComponent[]
   visits           TreatmentVisit[]
   staffsAssigned   Staff[]              @relation("StaffAssignedTreatment")
-  tiedVisits       TreatmentVisit[]     @relation("VisitationTreatment")
+
+  @@index([name, category, visitType], map: "idx_treatment_name_category_visitType")
 }
 
 model TreatmentComponent {
@@ -245,8 +246,7 @@ model TreatmentVisit {
   treatment   Treatment? @relation(fields: [treatmentId], references: [id])
   treatmentId String?
 
-  visitTreatment   Treatment? @relation(fields: [visitTreatmentId], references: [id], name: "VisitationTreatment")
-  visitTreatmentId String?
+  @@index([treatmentId], map: "idx_treatment_visit_treatment_id")
 }
 
 model Review {
@@ -257,6 +257,8 @@ model Review {
   treatmentId String?
   images      File[]
   treatment   Treatment? @relation(fields: [treatmentId], references: [id])
+
+  @@index([treatmentId], map: "idx_review_treatment_id")
 }
 
 model Note {
@@ -295,6 +297,8 @@ model Rating {
   treatmentId String?
   createdAt   DateTime   @default(now())
   treatment   Treatment? @relation(fields: [treatmentId], references: [id])
+
+  @@index([treatmentId], map: "idx_rating_treatment_id")
 }
 
 model Patient {

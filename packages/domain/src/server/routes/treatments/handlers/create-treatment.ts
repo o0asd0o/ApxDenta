@@ -10,7 +10,7 @@ import {
 const inputSchema = z.object({
   name: z.string(),
   category: z.enum(['MEDICAL_SERVICE', 'COSMETIC_SERVICE']),
-  descrpition: z.string(),
+  description: z.string(),
   visitType: z.enum(['MULTIPLE_VISIT', 'SINGLE_VISIT']),
   duration: z.number(),
   pricePerduration: z.number(),

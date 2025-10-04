@@ -6,7 +6,7 @@ export const createTreatment = ({ ctx, input }: CreateTreatmentParams) => {
     .insertInto('Treatment')
     .values({
       category: input.category,
-      descrpition: input.descrpition,
+      description: input.description,
       duration: input.duration,
       name: input.name,
       pricePerDuration: input.pricePerduration,

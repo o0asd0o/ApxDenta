@@ -33,3 +33,4 @@ export * from './sonner';
 export * from './pagination';
 export * from './scroll-area';
 export * from './breadcrumb';
+export * from './slider';

@@ -39,7 +39,7 @@ const createTreatments = async () => {
         return {
           category:
             item.type === 'COSMETIC' ? 'COSMETIC_SERVICE' : 'MEDICAL_SERVICE',
-          descrpition: item.description,
+          description: item.description,
           name: item.name,
           pricePerDuration: 100,
           duration: 1,

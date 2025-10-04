@@ -49,7 +49,7 @@ function SheetContent({
   overlay = true,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: 'top' | 'right' | 'bottom' | 'left' | 'none';
   overlay?: boolean;
 }) {
   return (
@@ -67,6 +67,8 @@ function SheetContent({
             'data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b',
           side === 'bottom' &&
             'data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t',
+          side === 'none' &&
+            'data-[state=closed]:fade-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left data-[state=open]:fade-in  data-[state=open]:animate-[enter_0.5s_ease] inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm',
           className,
         )}
         {...props}
