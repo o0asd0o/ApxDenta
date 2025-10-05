@@ -69,7 +69,7 @@ function DialogContent({
             focusRing,
           )}
         >
-          <XIcon />
+          <XIcon className="size-6" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
@@ -92,7 +92,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end',
+        'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end mt-4',
         className,
       )}
       {...props}

@@ -5,8 +5,15 @@ import {
 import {
   MultipleVisitBadge,
   SingleVisitBadge,
+  TreatmentFinalizedBadge,
+  TreatmentInactiveBadge,
+  TreatmentSampleBadge,
 } from '@/components/badges/VisityType';
-import type { EmploymentType, TreatmentVisitType } from '@repo/domain/db';
+import type {
+  EmploymentType,
+  TreatmentStatus,
+  TreatmentVisitType,
+} from '@repo/domain/db';
 import type React from 'react';
 
 export const EMPLOYMENT_TYPE_BADGES: Record<EmploymentType, React.ReactNode> = {
@@ -21,3 +28,10 @@ export const TREATMENT_TYPE_BADGES: Record<
   SINGLE_VISIT: <SingleVisitBadge />,
   MULTIPLE_VISIT: <MultipleVisitBadge />,
 };
+
+export const TREATMENT_STATUS_BADGES: Record<TreatmentStatus, React.ReactNode> =
+  {
+    FINALIZED: <TreatmentFinalizedBadge />,
+    INACTIVE: <TreatmentInactiveBadge />,
+    SAMPLE: <TreatmentSampleBadge />,
+  };

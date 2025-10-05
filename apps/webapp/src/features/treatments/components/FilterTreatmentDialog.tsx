@@ -12,7 +12,7 @@ import {
   Slider,
 } from '@repo/ui/components';
 import { produce } from 'immer';
-import { CalendarSearch, StarIcon } from 'lucide-react';
+import { CalendarSearch, Star } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import type { TreatmentFilterType } from '../__types';
 
@@ -63,7 +63,7 @@ const FilterTreatmentDialog: React.FC<Props> = ({
               defaultValue={filters.type || 'ALL'}
             >
               <RadioCardItem value="ALL">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 text-xs">
                   <RadioCardIndicator />
                   <span>All</span>
                 </div>
@@ -71,13 +71,17 @@ const FilterTreatmentDialog: React.FC<Props> = ({
               <RadioCardItem value="SINGLE_VISIT">
                 <div className="flex items-center gap-3">
                   <RadioCardIndicator />
-                  <span>Single Visit</span>
+                  <span className="inline-block xs:hidden text-xs">Single</span>
+                  <span className="hidden xs:inline-block">Single Visit</span>
                 </div>
               </RadioCardItem>
               <RadioCardItem value="MULTIPLE_VISIT">
                 <div className="flex items-center gap-3">
                   <RadioCardIndicator />
-                  <span>Multiple Visit</span>
+                  <span className="inline-block xs:hidden text-xs">
+                    Multiple
+                  </span>
+                  <span className="hidden xs:inline-block">Multiple Visit</span>
                 </div>
               </RadioCardItem>
             </RadioCardGroup>
@@ -90,10 +94,10 @@ const FilterTreatmentDialog: React.FC<Props> = ({
               <span className="font-bold text-xl">₱</span>
               <span>Price Range</span>
             </label>
-            <div className="w-[60%] space-y-3">
+            <div className="w-full space-y-3">
               <Slider
                 name="priceRange"
-                value={filters.priceRange || [0, 10000]}
+                value={filters.priceRange || [0, 5000]}
                 onValueChange={(value) => {
                   setFilters(
                     produce((draft) => {
@@ -101,12 +105,12 @@ const FilterTreatmentDialog: React.FC<Props> = ({
                     }),
                   );
                 }}
-                max={10000}
+                max={5000}
                 step={1}
               />
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>Min: ₱{filters.priceRange?.[0] || 0}</span>
-                <span>Max: ₱{filters.priceRange?.[1] || 10000}</span>
+                <span>Max: ₱{filters.priceRange?.[1] || 5000}</span>
               </div>
             </div>
           </div>
@@ -115,10 +119,10 @@ const FilterTreatmentDialog: React.FC<Props> = ({
               htmlFor="rating"
               className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
             >
-              <StarIcon className="size-4" />
+              <Star className="size-5 fill-yellow-400 text-yellow-400" />
               <span>Rating</span>
             </label>
-            <div className="w-[60%] space-y-3">
+            <div className="w-full space-y-3">
               <Slider
                 name="rating"
                 value={filters.rating || [0, 5]}
@@ -133,13 +137,31 @@ const FilterTreatmentDialog: React.FC<Props> = ({
                 step={1}
               />
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Min: {filters.rating?.[0] || 0}</span>
-                <span>Max: {filters.rating?.[1] || 5}</span>
+                <span className="flex items-center gap-1">
+                  Min:{' '}
+                  <Star className="size-4 fill-yellow-400 text-yellow-400" />{' '}
+                  {filters.rating?.[0] || 0}
+                </span>
+                <span className="flex items-center gap-1">
+                  Max:{' '}
+                  <Star className="size-4 fill-yellow-400 text-yellow-400" />{' '}
+                  {filters.rating?.[1] || 5}
+                </span>
               </div>
             </div>
           </div>
         </div>
         <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setFilters({});
+              applyFilters({});
+              setOpen(false);
+            }}
+          >
+            Reset
+          </Button>
           <Button
             onClick={() => {
               // You can add your filter logic here, e.g., refetch with filters
@@ -148,16 +170,6 @@ const FilterTreatmentDialog: React.FC<Props> = ({
             }}
           >
             Apply Filters
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setFilters({});
-              applyFilters({});
-              setOpen(false);
-            }}
-          >
-            Reset
           </Button>
         </DialogFooter>
       </DialogContent>

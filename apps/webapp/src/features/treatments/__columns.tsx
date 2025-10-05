@@ -1,10 +1,12 @@
-'use client';
-import { TREATMENT_TYPE_BADGES } from '@/constants/badges';
+import {
+  TREATMENT_STATUS_BADGES,
+  TREATMENT_TYPE_BADGES,
+} from '@/constants/badges';
 import type { TreatmentVisitType } from '@repo/domain/db';
 import { Checkbox } from '@repo/ui/components';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Star } from 'lucide-react';
-// import { RenderStaffActions, renderWorkingDays } from './__renderers';
+import { RenderTreatmentActions } from './__renderers';
 import type { TreatmentColumnType } from './__types';
 
 export const columns: ColumnDef<TreatmentColumnType>[] = [
@@ -36,6 +38,17 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
     accessorKey: 'name',
     enableSorting: true,
     header: 'Treatment Name',
+    cell: ({ cell, row }) => {
+      const status = row.original.status;
+
+      const name = cell.getValue<string>();
+      return (
+        <span className="font-medium">
+          {name}{' '}
+          {status === 'SAMPLE' && TREATMENT_STATUS_BADGES['SAMPLE' as const]}
+        </span>
+      );
+    },
   },
   {
     accessorKey: 'price',
@@ -44,9 +57,9 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
       const treatment = row.original;
 
       return (
-        <span className="text-sm">
+        <span className="text-sm text-gray-500">
           Start from{' '}
-          <span className="font-bold">
+          <span className="font-medium text-black">
             ₱{treatment.pricePerDuration * treatment.duration}
           </span>
         </span>
@@ -62,7 +75,10 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
       if (treatment.visitType === 'SINGLE_VISIT')
         return <span>= {treatment.duration} hour(s)</span>;
       return (
-        <span>= {treatment.averageDuration || 1} hour(s) / treatment</span>
+        <span className="font-medium">
+          = {treatment.averageDuration || 1} hour(s){' '}
+          <span className="text-gray-500 font-normal">/ treatment</span>
+        </span>
       );
     },
   },
@@ -89,7 +105,7 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
           </span>
         );
       }
-      return <span className="text-sm text-gray-400">No ratings</span>;
+      return <span className="text-sm">No ratings</span>;
     },
   },
   {
@@ -97,20 +113,18 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
     header: 'Reviews',
     cell: ({ cell }) => {
       const reviews = cell.getValue<number | null>();
-      return (
-        <span className="text-sm text-gray-400">{reviews || 0} Review(s)</span>
-      );
+      return <span className="text-sm">{reviews || 0} Review(s)</span>;
     },
   },
-  // {
-  //   id: 'actions',
-  //   size: 50,
-  //   cell: ({ row }) => (
-  //     <RenderStaffActions
-  //       name={`${row.original.firstName} ${row.original.lastName}`}
-  //       staffId={row.original.id}
-  //       original={row.original}
-  //     />
-  //   ),
-  // },
+  {
+    id: 'actions',
+    size: 50,
+    cell: ({ row }) => (
+      <RenderTreatmentActions
+        name={`${row.original.name}`}
+        treatmentId={row.original.id}
+        original={row.original}
+      />
+    ),
+  },
 ];
