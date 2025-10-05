@@ -42,9 +42,12 @@ const FilterStaffDialog: React.FC<Props> = ({
     { data: specialistRecords, isLoading: isLoadingSpecialistRecords },
   ] = useQueries({
     queries: [
-      trpc.treatments.getAllTreatments.queryOptions(undefined, {
-        enabled: open,
-      }),
+      trpc.treatments.getAllTreatments.queryOptions(
+        { status: 'ACTIVE', excludeTotalCount: true },
+        {
+          enabled: open,
+        },
+      ),
       trpc.specialistRecord.getAllSpecialistRecords.queryOptions(undefined, {
         enabled: open,
       }),
@@ -213,7 +216,7 @@ const FilterStaffDialog: React.FC<Props> = ({
             Apply Filters
           </Button>
           <Button
-            variant="ghost"
+            variant="outline"
             onClick={() => {
               setFilters({});
               applyFilters({});

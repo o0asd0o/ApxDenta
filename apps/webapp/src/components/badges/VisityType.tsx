@@ -22,3 +22,36 @@ export const SingleVisitBadge: React.FC = () => {
     </Badge>
   );
 };
+
+export const TreatmentSampleBadge: React.FC = () => {
+  return (
+    <Badge
+      variant="default"
+      className="bg-gray-100 text-gray-700 uppercase rounded-full text-[10px]"
+    >
+      Sample
+    </Badge>
+  );
+};
+
+export const TreatmentFinalizedBadge: React.FC = () => {
+  return (
+    <Badge
+      variant="default"
+      className="bg-conic-100 text-conic-700 uppercase rounded-full text-[10px]"
+    >
+      Finalized
+    </Badge>
+  );
+};
+
+export const TreatmentInactiveBadge: React.FC = () => {
+  return (
+    <Badge
+      variant="default"
+      className="bg-red-100 text-red-700 uppercase rounded-full text-[10px]"
+    >
+      Inactive
+    </Badge>
+  );
+};

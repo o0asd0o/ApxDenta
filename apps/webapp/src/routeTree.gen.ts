@@ -26,10 +26,11 @@ import { Route as ProtectedfinanceSalesImport } from './routes/_protected/(finan
 import { Route as ProtectedfinancePurchasesImport } from './routes/_protected/(finance)/purchases'
 import { Route as ProtectedfinancePaymentMethodsImport } from './routes/_protected/(finance)/payment-methods'
 import { Route as ProtectedfinanceAccountsImport } from './routes/_protected/(finance)/accounts'
-import { Route as ProtectedclinicTreatmentsImport } from './routes/_protected/(clinic)/treatments'
 import { Route as ProtectedclinicReservationsImport } from './routes/_protected/(clinic)/reservations'
 import { Route as ProtectedclinicPatientsImport } from './routes/_protected/(clinic)/patients'
+import { Route as ProtectedclinicTreatmentsIndexImport } from './routes/_protected/(clinic)/treatments/index'
 import { Route as ProtectedclinicStaffListIndexImport } from './routes/_protected/(clinic)/staff-list/index'
+import { Route as ProtectedclinicTreatmentsTreatmentIdImport } from './routes/_protected/(clinic)/treatments/$treatmentId'
 import { Route as ProtectedclinicStaffListStaffIdImport } from './routes/_protected/(clinic)/staff-list/$staffId'
 
 // Create/Update Routes
@@ -126,12 +127,6 @@ const ProtectedfinanceAccountsRoute = ProtectedfinanceAccountsImport.update({
   getParentRoute: () => ProtectedLayoutRoute,
 } as any)
 
-const ProtectedclinicTreatmentsRoute = ProtectedclinicTreatmentsImport.update({
-  id: '/(clinic)/treatments',
-  path: '/treatments',
-  getParentRoute: () => ProtectedLayoutRoute,
-} as any)
-
 const ProtectedclinicReservationsRoute =
   ProtectedclinicReservationsImport.update({
     id: '/(clinic)/reservations',
@@ -145,10 +140,24 @@ const ProtectedclinicPatientsRoute = ProtectedclinicPatientsImport.update({
   getParentRoute: () => ProtectedLayoutRoute,
 } as any)
 
+const ProtectedclinicTreatmentsIndexRoute =
+  ProtectedclinicTreatmentsIndexImport.update({
+    id: '/(clinic)/treatments/',
+    path: '/treatments/',
+    getParentRoute: () => ProtectedLayoutRoute,
+  } as any)
+
 const ProtectedclinicStaffListIndexRoute =
   ProtectedclinicStaffListIndexImport.update({
     id: '/(clinic)/staff-list/',
     path: '/staff-list/',
+    getParentRoute: () => ProtectedLayoutRoute,
+  } as any)
+
+const ProtectedclinicTreatmentsTreatmentIdRoute =
+  ProtectedclinicTreatmentsTreatmentIdImport.update({
+    id: '/(clinic)/treatments/$treatmentId',
+    path: '/treatments/$treatmentId',
     getParentRoute: () => ProtectedLayoutRoute,
   } as any)
 
@@ -240,13 +249,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedclinicReservationsImport
       parentRoute: typeof ProtectedLayoutImport
     }
-    '/_protected/(clinic)/treatments': {
-      id: '/_protected/(clinic)/treatments'
-      path: '/treatments'
-      fullPath: '/treatments'
-      preLoaderRoute: typeof ProtectedclinicTreatmentsImport
-      parentRoute: typeof ProtectedLayoutImport
-    }
     '/_protected/(finance)/accounts': {
       id: '/_protected/(finance)/accounts'
       path: '/accounts'
@@ -296,11 +298,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedclinicStaffListStaffIdImport
       parentRoute: typeof ProtectedLayoutImport
     }
+    '/_protected/(clinic)/treatments/$treatmentId': {
+      id: '/_protected/(clinic)/treatments/$treatmentId'
+      path: '/treatments/$treatmentId'
+      fullPath: '/treatments/$treatmentId'
+      preLoaderRoute: typeof ProtectedclinicTreatmentsTreatmentIdImport
+      parentRoute: typeof ProtectedLayoutImport
+    }
     '/_protected/(clinic)/staff-list/': {
       id: '/_protected/(clinic)/staff-list/'
       path: '/staff-list'
       fullPath: '/staff-list'
       preLoaderRoute: typeof ProtectedclinicStaffListIndexImport
+      parentRoute: typeof ProtectedLayoutImport
+    }
+    '/_protected/(clinic)/treatments/': {
+      id: '/_protected/(clinic)/treatments/'
+      path: '/treatments'
+      fullPath: '/treatments'
+      preLoaderRoute: typeof ProtectedclinicTreatmentsIndexImport
       parentRoute: typeof ProtectedLayoutImport
     }
   }
@@ -312,7 +328,6 @@ interface ProtectedLayoutRouteChildren {
   ProtectedDashboardRoute: typeof ProtectedDashboardRoute
   ProtectedclinicPatientsRoute: typeof ProtectedclinicPatientsRoute
   ProtectedclinicReservationsRoute: typeof ProtectedclinicReservationsRoute
-  ProtectedclinicTreatmentsRoute: typeof ProtectedclinicTreatmentsRoute
   ProtectedfinanceAccountsRoute: typeof ProtectedfinanceAccountsRoute
   ProtectedfinancePaymentMethodsRoute: typeof ProtectedfinancePaymentMethodsRoute
   ProtectedfinancePurchasesRoute: typeof ProtectedfinancePurchasesRoute
@@ -320,14 +335,15 @@ interface ProtectedLayoutRouteChildren {
   ProtectedphysicalAssetPeripheralsRoute: typeof ProtectedphysicalAssetPeripheralsRoute
   ProtectedphysicalAssetStocksRoute: typeof ProtectedphysicalAssetStocksRoute
   ProtectedclinicStaffListStaffIdRoute: typeof ProtectedclinicStaffListStaffIdRoute
+  ProtectedclinicTreatmentsTreatmentIdRoute: typeof ProtectedclinicTreatmentsTreatmentIdRoute
   ProtectedclinicStaffListIndexRoute: typeof ProtectedclinicStaffListIndexRoute
+  ProtectedclinicTreatmentsIndexRoute: typeof ProtectedclinicTreatmentsIndexRoute
 }
 
 const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
   ProtectedDashboardRoute: ProtectedDashboardRoute,
   ProtectedclinicPatientsRoute: ProtectedclinicPatientsRoute,
   ProtectedclinicReservationsRoute: ProtectedclinicReservationsRoute,
-  ProtectedclinicTreatmentsRoute: ProtectedclinicTreatmentsRoute,
   ProtectedfinanceAccountsRoute: ProtectedfinanceAccountsRoute,
   ProtectedfinancePaymentMethodsRoute: ProtectedfinancePaymentMethodsRoute,
   ProtectedfinancePurchasesRoute: ProtectedfinancePurchasesRoute,
@@ -336,7 +352,10 @@ const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
     ProtectedphysicalAssetPeripheralsRoute,
   ProtectedphysicalAssetStocksRoute: ProtectedphysicalAssetStocksRoute,
   ProtectedclinicStaffListStaffIdRoute: ProtectedclinicStaffListStaffIdRoute,
+  ProtectedclinicTreatmentsTreatmentIdRoute:
+    ProtectedclinicTreatmentsTreatmentIdRoute,
   ProtectedclinicStaffListIndexRoute: ProtectedclinicStaffListIndexRoute,
+  ProtectedclinicTreatmentsIndexRoute: ProtectedclinicTreatmentsIndexRoute,
 }
 
 const ProtectedLayoutRouteWithChildren = ProtectedLayoutRoute._addFileChildren(
@@ -355,7 +374,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
-  '/treatments': typeof ProtectedclinicTreatmentsRoute
   '/accounts': typeof ProtectedfinanceAccountsRoute
   '/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
   '/purchases': typeof ProtectedfinancePurchasesRoute
@@ -363,7 +381,9 @@ export interface FileRoutesByFullPath {
   '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/stocks': typeof ProtectedphysicalAssetStocksRoute
   '/staff-list/$staffId': typeof ProtectedclinicStaffListStaffIdRoute
+  '/treatments/$treatmentId': typeof ProtectedclinicTreatmentsTreatmentIdRoute
   '/staff-list': typeof ProtectedclinicStaffListIndexRoute
+  '/treatments': typeof ProtectedclinicTreatmentsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -378,7 +398,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof ProtectedDashboardRoute
   '/patients': typeof ProtectedclinicPatientsRoute
   '/reservations': typeof ProtectedclinicReservationsRoute
-  '/treatments': typeof ProtectedclinicTreatmentsRoute
   '/accounts': typeof ProtectedfinanceAccountsRoute
   '/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
   '/purchases': typeof ProtectedfinancePurchasesRoute
@@ -386,7 +405,9 @@ export interface FileRoutesByTo {
   '/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/stocks': typeof ProtectedphysicalAssetStocksRoute
   '/staff-list/$staffId': typeof ProtectedclinicStaffListStaffIdRoute
+  '/treatments/$treatmentId': typeof ProtectedclinicTreatmentsTreatmentIdRoute
   '/staff-list': typeof ProtectedclinicStaffListIndexRoute
+  '/treatments': typeof ProtectedclinicTreatmentsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -402,7 +423,6 @@ export interface FileRoutesById {
   '/_protected/dashboard': typeof ProtectedDashboardRoute
   '/_protected/(clinic)/patients': typeof ProtectedclinicPatientsRoute
   '/_protected/(clinic)/reservations': typeof ProtectedclinicReservationsRoute
-  '/_protected/(clinic)/treatments': typeof ProtectedclinicTreatmentsRoute
   '/_protected/(finance)/accounts': typeof ProtectedfinanceAccountsRoute
   '/_protected/(finance)/payment-methods': typeof ProtectedfinancePaymentMethodsRoute
   '/_protected/(finance)/purchases': typeof ProtectedfinancePurchasesRoute
@@ -410,7 +430,9 @@ export interface FileRoutesById {
   '/_protected/(physical-asset)/peripherals': typeof ProtectedphysicalAssetPeripheralsRoute
   '/_protected/(physical-asset)/stocks': typeof ProtectedphysicalAssetStocksRoute
   '/_protected/(clinic)/staff-list/$staffId': typeof ProtectedclinicStaffListStaffIdRoute
+  '/_protected/(clinic)/treatments/$treatmentId': typeof ProtectedclinicTreatmentsTreatmentIdRoute
   '/_protected/(clinic)/staff-list/': typeof ProtectedclinicStaffListIndexRoute
+  '/_protected/(clinic)/treatments/': typeof ProtectedclinicTreatmentsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -427,7 +449,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/patients'
     | '/reservations'
-    | '/treatments'
     | '/accounts'
     | '/payment-methods'
     | '/purchases'
@@ -435,7 +456,9 @@ export interface FileRouteTypes {
     | '/peripherals'
     | '/stocks'
     | '/staff-list/$staffId'
+    | '/treatments/$treatmentId'
     | '/staff-list'
+    | '/treatments'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -449,7 +472,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/patients'
     | '/reservations'
-    | '/treatments'
     | '/accounts'
     | '/payment-methods'
     | '/purchases'
@@ -457,7 +479,9 @@ export interface FileRouteTypes {
     | '/peripherals'
     | '/stocks'
     | '/staff-list/$staffId'
+    | '/treatments/$treatmentId'
     | '/staff-list'
+    | '/treatments'
   id:
     | '__root__'
     | '/'
@@ -471,7 +495,6 @@ export interface FileRouteTypes {
     | '/_protected/dashboard'
     | '/_protected/(clinic)/patients'
     | '/_protected/(clinic)/reservations'
-    | '/_protected/(clinic)/treatments'
     | '/_protected/(finance)/accounts'
     | '/_protected/(finance)/payment-methods'
     | '/_protected/(finance)/purchases'
@@ -479,7 +502,9 @@ export interface FileRouteTypes {
     | '/_protected/(physical-asset)/peripherals'
     | '/_protected/(physical-asset)/stocks'
     | '/_protected/(clinic)/staff-list/$staffId'
+    | '/_protected/(clinic)/treatments/$treatmentId'
     | '/_protected/(clinic)/staff-list/'
+    | '/_protected/(clinic)/treatments/'
   fileRoutesById: FileRoutesById
 }
 
@@ -534,7 +559,6 @@ export const routeTree = rootRoute
         "/_protected/dashboard",
         "/_protected/(clinic)/patients",
         "/_protected/(clinic)/reservations",
-        "/_protected/(clinic)/treatments",
         "/_protected/(finance)/accounts",
         "/_protected/(finance)/payment-methods",
         "/_protected/(finance)/purchases",
@@ -542,7 +566,9 @@ export const routeTree = rootRoute
         "/_protected/(physical-asset)/peripherals",
         "/_protected/(physical-asset)/stocks",
         "/_protected/(clinic)/staff-list/$staffId",
-        "/_protected/(clinic)/staff-list/"
+        "/_protected/(clinic)/treatments/$treatmentId",
+        "/_protected/(clinic)/staff-list/",
+        "/_protected/(clinic)/treatments/"
       ]
     },
     "/(auth)/forgot-password": {
@@ -575,10 +601,6 @@ export const routeTree = rootRoute
       "filePath": "_protected/(clinic)/reservations.tsx",
       "parent": "/_protected"
     },
-    "/_protected/(clinic)/treatments": {
-      "filePath": "_protected/(clinic)/treatments.tsx",
-      "parent": "/_protected"
-    },
     "/_protected/(finance)/accounts": {
       "filePath": "_protected/(finance)/accounts.tsx",
       "parent": "/_protected"
@@ -607,8 +629,16 @@ export const routeTree = rootRoute
       "filePath": "_protected/(clinic)/staff-list/$staffId.tsx",
       "parent": "/_protected"
     },
+    "/_protected/(clinic)/treatments/$treatmentId": {
+      "filePath": "_protected/(clinic)/treatments/$treatmentId.tsx",
+      "parent": "/_protected"
+    },
     "/_protected/(clinic)/staff-list/": {
       "filePath": "_protected/(clinic)/staff-list/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/(clinic)/treatments/": {
+      "filePath": "_protected/(clinic)/treatments/index.tsx",
       "parent": "/_protected"
     }
   }

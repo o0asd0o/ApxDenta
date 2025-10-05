@@ -1,5 +1,9 @@
 import type { PaginationState } from '@/components/__types';
-import type { Treatment, TreatmentVisitType } from '@repo/domain/db';
+import type {
+  Treatment,
+  TreatmentStatus,
+  TreatmentVisitType,
+} from '@repo/domain/db';
 import type { SortingState } from '@tanstack/react-table';
 import type React from 'react';
 
@@ -10,7 +14,7 @@ export type TreatmentColumnType = Omit<
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  status: string;
+  status: TreatmentStatus;
   description: string;
 
   averageDuration: number | null;
