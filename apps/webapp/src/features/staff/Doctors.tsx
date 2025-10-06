@@ -38,6 +38,7 @@ const Doctors: React.FC = () => {
   const handleSearchChange = useCallback(
     debounce((value: string) => {
       setFilters((prev) => ({ ...prev, search: value }));
+      setPagination((prev) => ({ ...prev, current: 1 }));
     }, 300),
     [],
   );

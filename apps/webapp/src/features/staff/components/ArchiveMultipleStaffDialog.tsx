@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import type { StaffColumnType } from '../__types';
 
-interface ArchiveMultipleDialogProps {
+interface ArchiveMultipleStaffDialogProps {
   open: boolean;
   loading: boolean;
   setOpen: (open: boolean) => void;
@@ -20,7 +20,7 @@ interface ArchiveMultipleDialogProps {
   staffs?: StaffColumnType[];
 }
 
-const ArchiveMultipleDialog: React.FC<ArchiveMultipleDialogProps> = ({
+const ArchiveMultipleStaffDialog: React.FC<ArchiveMultipleStaffDialogProps> = ({
   open,
   loading,
   setOpen,
@@ -89,4 +89,4 @@ const ArchiveMultipleDialog: React.FC<ArchiveMultipleDialogProps> = ({
   );
 };
 
-export default ArchiveMultipleDialog;
+export default ArchiveMultipleStaffDialog;

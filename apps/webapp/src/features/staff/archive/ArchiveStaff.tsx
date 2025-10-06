@@ -4,14 +4,12 @@ import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { useArchiveModalVisibility } from '../__common/context/context';
 import { invalidateStaffList } from '../__common/queries';
-import ArchiveDialog from '../components/ArchiveDialog';
+import ArchiveStaffDialog from '../components/ArchiveStaffDialog';
 
 const ArchiveStaff: React.FC = () => {
   const [open, setOpen, staff] = useArchiveModalVisibility();
 
   const trpc = useTRPC();
-
-  console.log({ staff });
 
   const { mutateAsync, isPending } = useMutation(
     trpc.staffs.archiveStaffInfo.mutationOptions({
@@ -23,7 +21,7 @@ const ArchiveStaff: React.FC = () => {
   );
 
   return (
-    <ArchiveDialog
+    <ArchiveStaffDialog
       loading={isPending}
       open={open}
       setOpen={setOpen}
