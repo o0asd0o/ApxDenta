@@ -197,6 +197,7 @@ model Treatment {
   updatedAt        DateTime             @default(now())
   name             String
   category         TreatmentCategory
+  isArchived       Boolean              @default(false)
   description      String               @default("")
   visitType        TreatmentVisitType
   duration         Float
@@ -334,6 +335,7 @@ model Reservation {
   createdAt          DateTime          @default(now())
   note               String?
   status             ReservationStatus
+  isArchived         Boolean           @default(false)
   staffId            String
   patientId          String
   initialTreatmentId String

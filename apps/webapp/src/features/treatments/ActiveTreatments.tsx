@@ -8,6 +8,8 @@ import { Stethoscope } from 'lucide-react';
 import { parseAsStringEnum, useQueryState } from 'nuqs';
 import React, { useCallback, useState } from 'react';
 import { TreatmentActionsProvider } from './__common/context/TreatmentActionsProvider';
+import ArchiveMultipleTreatment from './archive/ArchiveMultipleTreatment';
+import ArchiveTreatment from './archive/ArchiveTreatment';
 import FilterTreatmentDialog from './components/FilterTreatmentDialog';
 import TotalTreatments from './components/TotalTreatments';
 import TreatmentActions from './components/TreatmentActions';
@@ -31,6 +33,7 @@ const ActiveTreatments: React.FC = () => {
   const handleSearchChange = useCallback(
     debounce((value: string) => {
       setFilters((prev) => ({ ...prev, search: value }));
+      setPagination((prev) => ({ ...prev, current: 1 }));
     }, 300),
     [],
   );
@@ -96,9 +99,9 @@ const ActiveTreatments: React.FC = () => {
       </div>
       <div>
         <TreatmentActionsProvider>
-          {/* <UpdateStaff type="DOCTOR" />
-          <ArchiveStaff />
-          <ArchiveMultipleStaff /> */}
+          {/* <UpdateStaff type="DOCTOR" /> */}
+          <ArchiveTreatment />
+          <ArchiveMultipleTreatment />
           {/* {layoutTab === 'card' && (
             <StaffCardLayout
               type="DOCTOR"

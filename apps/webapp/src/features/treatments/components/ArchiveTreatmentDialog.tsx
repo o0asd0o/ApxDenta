@@ -8,34 +8,34 @@ import {
 } from '@repo/ui/components';
 import React from 'react';
 
-interface ArchiveDialogProps {
+interface ArchiveStaffDialogProps {
   open: boolean;
   loading: boolean;
   setOpen: (open: boolean) => void;
   onArchive: () => void;
-  doctorName?: string;
+  treatmentName?: string;
 }
 
-const ArchiveDialog: React.FC<ArchiveDialogProps> = ({
+const ArchiveTreatmentDialog: React.FC<ArchiveStaffDialogProps> = ({
   open,
   loading,
   setOpen,
   onArchive,
-  doctorName,
+  treatmentName,
 }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader className="mb-3">
-          <DialogTitle>Archive Doctor Account</DialogTitle>
+          <DialogTitle>Archive Treatment</DialogTitle>
         </DialogHeader>
         <div className="py-2">
           <p className="text-sm text-gray-700">
-            Are you sure you want to archive
-            {doctorName ? (
-              <span className="font-bold text-gray-900"> Dr. {doctorName}</span>
+            Are you sure you want to archive{' '}
+            {treatmentName ? (
+              <span className="font-bold text-gray-900">{treatmentName}</span>
             ) : (
-              ' this doctor'
+              ' this treatment'
             )}
             ? This action will disable their access and hide their account from
             staff lists.
@@ -58,4 +58,4 @@ const ArchiveDialog: React.FC<ArchiveDialogProps> = ({
   );
 };
 
-export default ArchiveDialog;
+export default ArchiveTreatmentDialog;

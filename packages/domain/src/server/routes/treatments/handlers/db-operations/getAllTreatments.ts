@@ -10,6 +10,7 @@ export const getAllTreatments = async ({
   let query = ctx.db
     .selectFrom('Treatment')
     .where('Treatment.organizationId', '=', ctx.organizationId)
+    .where('Treatment.isArchived', '=', false)
     .where(
       'Treatment.status',
       'in',

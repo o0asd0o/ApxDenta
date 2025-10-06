@@ -8,6 +8,7 @@ export const getAllTreatmentCount = async (
   let query = db
     .selectFrom('Treatment')
     .where('Treatment.organizationId', '=', orgId)
+    .where('Treatment.isArchived', '=', false)
     .select((eb) => eb.fn.countAll().as('count'));
 
   if (status === 'ACTIVE') {
