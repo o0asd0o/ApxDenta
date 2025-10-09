@@ -13,6 +13,8 @@ const ROUTE_LABEL_MAPPING: Record<AllRoutes, string> = {
   '/reset-password': '',
   '/login': '',
   '/register': '',
+  '/verify-email': '',
+  '/verification-sent': '',
 
   // Protected
   '/patients': 'Patients',
@@ -26,14 +28,21 @@ const ROUTE_LABEL_MAPPING: Record<AllRoutes, string> = {
   '/treatments': 'Treatments',
   '/accounts': 'Accounts',
   '/dashboard': 'Dashboard',
+  '/staff-list/$staffId': 'Details',
+  '/treatments/$treatmentId': 'Details',
 };
 
 export default function Header() {
   const location = useLocation();
+  console.log({ location, map: Object.entries(ROUTE_LABEL_MAPPING) });
   return (
     <header className="grid grid-cols-2 md:grid-cols-3 h-15 md:h-18 shrink-0 justify-center items-center gap-2 border-b px-6 py-2">
       <h1 className="text-2xl font-bold whitespace-nowrap">
-        {ROUTE_LABEL_MAPPING[location.pathname as AllRoutes]}
+        {Object.entries(ROUTE_LABEL_MAPPING).find(([_key]) => {
+          const key = _key.replace(/^\//g, '');
+          if (!key) return false;
+          return location.pathname.includes(key);
+        })?.[1] || 'Unknown Page'}
       </h1>
       <SearchBox />
       <div className="hidden md:flex ml-auto items-center justify-end gap-2 divide-accent-foreground">
