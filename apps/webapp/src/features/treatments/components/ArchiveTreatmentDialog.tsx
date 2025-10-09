@@ -42,15 +42,15 @@ const ArchiveTreatmentDialog: React.FC<ArchiveStaffDialogProps> = ({
           </p>
         </div>
         <DialogFooter>
-          <Button isLoading={loading} variant="destructive" onClick={onArchive}>
-            Archive
-          </Button>
           <Button
             disabled={loading}
-            variant="ghost"
+            variant="outline"
             onClick={() => setOpen(false)}
           >
             Cancel
+          </Button>
+          <Button isLoading={loading} variant="destructive" onClick={onArchive}>
+            Archive
           </Button>
         </DialogFooter>
       </DialogContent>

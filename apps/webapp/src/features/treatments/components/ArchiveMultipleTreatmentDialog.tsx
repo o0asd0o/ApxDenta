@@ -60,15 +60,15 @@ const ArchiveMultipleTreatmentDialog: React.FC<
           )}
         </div>
         <DialogFooter>
-          <Button isLoading={loading} variant="destructive" onClick={onArchive}>
-            Archive All
-          </Button>
           <Button
             disabled={loading}
-            variant="ghost"
+            variant="outline"
             onClick={() => setOpen(false)}
           >
             Cancel
+          </Button>
+          <Button isLoading={loading} variant="destructive" onClick={onArchive}>
+            Archive All
           </Button>
         </DialogFooter>
       </DialogContent>
