@@ -23,7 +23,7 @@ SelectValue.displayName = 'SelectValue';
 const selectTriggerStyles = [
   cn(
     // base
-    'group/trigger flex w-full select-none items-center justify-between gap-2 truncate rounded-md border px-3 py-2 shadow-xs outline-hidden transition sm:text-sm',
+    'group/trigger flex w-full select-none items-center justify-between gap-2 truncate rounded-sm border px-2.5 py-2 shadow-xs outline-hidden transition sm:text-sm',
     // border color
     'border-gray-300 dark:border-gray-800',
     // text color

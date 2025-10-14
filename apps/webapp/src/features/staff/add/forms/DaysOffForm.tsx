@@ -81,7 +81,7 @@ export const DaysOffForm: React.FC<Props> = ({ form }) => {
                   </Label>
                 </FormControl>
               </FormItem>
-              <FormItem className="space-y-1 flex flex-col">
+              <FormItem className="flex flex-col">
                 <FormControl>
                   <div className="flex flex-col gap-2">
                     {list.map((item) => {

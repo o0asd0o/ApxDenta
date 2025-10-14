@@ -20,7 +20,10 @@ type Props = {
 export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
   const trpc = useTRPC();
   const { data: allTreatments } = useQuery(
-    trpc.treatments.getAllTreatments.queryOptions(),
+    trpc.treatments.getAllTreatments.queryOptions({
+      status: 'ACTIVE',
+      excludeTotalCount: true,
+    }),
   );
 
   const { medical, cosmetics } = useMemo(() => {
@@ -37,7 +40,7 @@ export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
         control={form.control}
         name="cosmeticServices"
         render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
+          <FormItem className="flex flex-col">
             <FormControl>
               <CollapsibeSelection
                 name={field.name}
@@ -71,7 +74,7 @@ export const AssignedServicesForm: React.FC<Props> = ({ form }) => {
         control={form.control}
         name="treatmentService"
         render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
+          <FormItem className="flex flex-col">
             <FormControl>
               <CollapsibeSelection
                 name={field.name}

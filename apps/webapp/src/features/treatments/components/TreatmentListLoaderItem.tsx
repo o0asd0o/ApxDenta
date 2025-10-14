@@ -1,4 +1,3 @@
-import { BASE_SCHEDULES } from '@/constants/schedules';
 import { Skeleton, TableCell, TableRow } from '@repo/ui/components';
 import React from 'react';
 
@@ -8,41 +7,54 @@ type Props = {
 const TreatmentListLoaderItem: React.FC<Props> = ({ key }) => {
   return (
     <TableRow key={key}>
-      <TableCell key={`${key}11`} className="h-[61px] first:pl-3 last:pr-3">
-        <Skeleton className="h-6 w-full rounded" />
+      {/* Select checkbox */}
+      <TableCell
+        key={`${key}-select`}
+        className="h-[54px] first:pl-3 last:pr-3 w-[20px]"
+      >
+        <Skeleton className="size-4.5 rounded-sm" />
       </TableCell>
-      <TableCell key={`${key}12`} className="first:pl-3 last:pr-3">
-        <div className="flex gap-2.5 items-center animate-pulse">
-          <Skeleton className="size-7 rounded-full" />
-          <div className="flex gap-1 flex-col">
-            <Skeleton className="h-3 w-20 rounded" />
-            <Skeleton className="h-3 w-14 rounded" />
-          </div>
+      {/* Treatment Name + SAMPLE badge */}
+      <TableCell key={`${key}-name`} className="first:pl-3 last:pr-3">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-4 w-32 rounded" />
         </div>
       </TableCell>
-      <TableCell key={`${key}13`} className="first:pl-3 last:pr-3">
-        <div className="flex gap-1 flex-col">
-          <Skeleton className="h-4 w-30 rounded" />
-          <Skeleton className="h-4 w-44 rounded" />
+      {/* Price */}
+      <TableCell key={`${key}-price`} className="first:pl-3 last:pr-3">
+        <div className="flex items-center gap-1">
+          <span className="text-gray-500 text-sm">Start from</span>
+          <Skeleton className="h-4 w-16 rounded" />
         </div>
       </TableCell>
-      <TableCell key={`${key}13`} className="first:pl-3 last:pr-3">
-        <div className="gap-1 flex">
-          {Object.keys(BASE_SCHEDULES).map((sched) => {
-            return <Skeleton key={sched} className={'size-5.5 rounded-full'} />;
-          })}
+      {/* Estimate Duration */}
+      <TableCell key={`${key}-duration`} className="first:pl-3 last:pr-3">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-4 w-12 rounded" />
+          <span className="text-gray-500 text-xs">/ treatment</span>
         </div>
       </TableCell>
-      <TableCell key={`${key}13`} className="first:pl-3 last:pr-3">
-        <Skeleton className="h-4 w-full rounded" />
+      {/* Type of Visit badge */}
+      <TableCell key={`${key}-type`} className="first:pl-3 last:pr-3 w-[80px]">
+        <Skeleton className="h-6 w-20 rounded-full" />
       </TableCell>
-      <TableCell key={`${key}13`} className="first:pl-3 last:pr-3">
-        <Skeleton className="h-4 w-20 rounded-full" />
-      </TableCell>
-      <TableCell key={`${key}13`} className="first:pl-3 last:pr-3">
-        <div className="w-full flex justify-end pr-4">
-          <Skeleton className="h-6 w-3 rounded" />
+      {/* Rating (star + value) */}
+      <TableCell key={`${key}-rating`} className="first:pl-3 last:pr-3">
+        <div className="inline-flex items-center gap-1">
+          <Skeleton className="size-4 rounded-full text-gray-500 " />
+          <Skeleton className="h-4 w-8 rounded" />
         </div>
+      </TableCell>
+      {/* Reviews count */}
+      <TableCell key={`${key}-reviews`} className="first:pl-3 last:pr-3">
+        <Skeleton className="h-4 w-16 rounded" />
+      </TableCell>
+      {/* Actions */}
+      <TableCell
+        key={`${key}-actions`}
+        className="first:pl-3 last:pr-3 w-[50px]"
+      >
+        <Skeleton className="h-8 w-8 rounded-full" />
       </TableCell>
     </TableRow>
   );

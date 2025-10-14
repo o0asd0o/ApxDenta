@@ -19,8 +19,8 @@ export const saveStaff = async (
       type: input.type,
       address: input.staffInfo.address,
       employmentType: input.staffInfo.type,
-      ...(input.staffInfo.specialistId && {
-        specialistId: input.staffInfo.specialistId,
+      ...(!!input.staffInfo.specialistId && {
+        specialistsRecordId: input.staffInfo.specialistId,
       }),
       avatarId: input.staffInfo.file?.id,
       organizationId: orgId,

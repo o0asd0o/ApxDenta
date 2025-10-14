@@ -1,5 +1,5 @@
 // import { StaffList } from '@/features/staff/StaffList';
-import { Loader } from '@repo/ui/components';
+import LoadingCard from '@/components/LoaderCard';
 import { createFileRoute } from '@tanstack/react-router';
 import React from 'react';
 
@@ -25,8 +25,8 @@ export const Route = createFileRoute('/_protected/(clinic)/staff-list/')({
     }
   },
   pendingComponent: () => (
-    <div className="h-[400px] justify-center items-center w-full">
-      <Loader className="[&>svg]:size-[50px] [&>svg]:text-gray-300 h-full" />
+    <div className="flex h-[500px] justify-center items-center w-full">
+      <LoadingCard />
     </div>
   ),
 });

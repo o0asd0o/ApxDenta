@@ -3,15 +3,14 @@ import type React from 'react';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
-// Import the generated route tree
-import { routeTree } from './routeTree.gen.ts';
-
-import { Loader2 } from 'lucide-react';
 import { NuqsAdapter } from 'nuqs/adapters/react';
+import LoadingCard from './components/LoaderCard';
 import { useSession } from './lib/auth-client';
 import { useTRPC, useTRPCClient } from './lib/trpc';
 import { RootProvider, getContext } from './providers/Root';
 import reportWebVitals from './reportWebVitals.ts';
+// Import the generated route tree
+import { routeTree } from './routeTree.gen.ts';
 
 // scan({
 //   _debug: 'verbose',
@@ -44,7 +43,7 @@ const App: React.FC = () => {
   if (isPending) {
     return (
       <div className="flex items-center justify-center h-dvh bg-card">
-        <Loader2 className="size-10 animate-spin" />
+        <LoadingCard />
       </div>
     );
   }

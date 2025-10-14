@@ -73,6 +73,7 @@ const handler = async ({ input, ctx }: CreateStaffParams) => {
       staff: returnedStaff,
       invitation: staffInvite,
       organization: org,
+      user: ctx.session?.user,
     });
   } catch (error) {
     console.error('Error creating staff:', error);

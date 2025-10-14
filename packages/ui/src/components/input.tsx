@@ -52,6 +52,7 @@ interface InputProps
     VariantProps<typeof inputStyles> {
   inputClassName?: string;
   icon?: React.JSX.Element;
+  suffix?: React.JSX.Element;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -63,6 +64,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       enableStepper = true,
       type,
       icon,
+      suffix,
       ...props
     }: InputProps,
     forwardedRef,
@@ -101,6 +103,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
           {...props}
         />
+        {suffix && (
+          <div className="pointer-events-none absolute bottom-0 right-3 flex h-full items-center justify-center">
+            {suffix}
+          </div>
+        )}
         {isSearch && (
           <div
             className={cn(
@@ -116,6 +123,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             />
           </div>
         )}
+
         {isPassword && (
           <div
             className={cn(

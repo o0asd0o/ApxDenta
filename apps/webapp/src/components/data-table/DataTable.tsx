@@ -30,6 +30,7 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   data: TData[];
   loading?: boolean;
   LoaderRow?: React.FC<{ key: string }>;
+  loaderCount?: number;
   onDeleteItems?: (itemIds: TData[], callback: () => void) => Promise<void>;
   sort?: {
     sorting: SortingState;
@@ -42,6 +43,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   data,
   loading,
   LoaderRow,
+  loaderCount,
   sort,
   onDeleteItems,
 }: DataTableProps<TData, TValue>) {
@@ -114,7 +116,7 @@ export function DataTable<TData extends { id: string }, TValue>({
           ) : (
             <>
               {loading &&
-                [...Array(5)].map((_, rowIdx) => {
+                [...Array(loaderCount || 5)].map((_, rowIdx) => {
                   // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   if (LoaderRow) return <LoaderRow key={`rowId${rowIdx}`} />;
 
