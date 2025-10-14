@@ -37,7 +37,7 @@ export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
             render={({ field }) => {
               const defaultValue = form.formState.defaultValues?.[item];
               return (
-                <FormItem className="space-y-1 flex flex-col">
+                <FormItem className="flex flex-col">
                   <FormControl>
                     <DaySchedule
                       form={form}

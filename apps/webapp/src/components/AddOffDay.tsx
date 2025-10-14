@@ -86,7 +86,7 @@ const AddOffDay: React.FC<Props> = ({ onAdd }) => {
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItem className="space-y-1 flex flex-col">
+                    <FormItem className="flex flex-col">
                       <FormLabel>Day off name</FormLabel>
                       <FormControl>
                         <Input

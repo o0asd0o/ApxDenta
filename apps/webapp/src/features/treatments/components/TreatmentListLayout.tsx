@@ -43,6 +43,7 @@ const TreatmentListLayout: React.FC<LayoutProps> = ({
         sort={{ sorting, setSorting }}
         loading={isLoading}
         columns={columns}
+        loaderCount={pagination.pageSize}
         LoaderRow={TreatmentListLoaderItem}
         onDeleteItems={async (items, callback) =>
           onShowArchiveMultipleModal(items, callback)

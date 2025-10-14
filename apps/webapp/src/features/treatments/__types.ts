@@ -9,13 +9,14 @@ import type React from 'react';
 
 export type TreatmentColumnType = Omit<
   Treatment,
-  'id' | 'createdAt' | 'updatedAt' | 'status' | 'description'
+  'id' | 'createdAt' | 'updatedAt' | 'status' | 'description' | 'isArchived'
 > & {
   id: string;
   createdAt: Date;
   updatedAt: Date;
   status: TreatmentStatus;
   description: string;
+  isArchived: boolean;
 
   averageDuration: number | null;
   startingPrice: number | null;

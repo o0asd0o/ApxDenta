@@ -30,7 +30,7 @@ export const StaffInfoForm: React.FC<Props> = ({
   type = 'DOCTOR',
 }) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
       <FormField
         control={form.control}
         name="file"
@@ -52,7 +52,7 @@ export const StaffInfoForm: React.FC<Props> = ({
         control={form.control}
         name="type"
         render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
+          <FormItem className="flex flex-col">
             <FormLabel>Employment type</FormLabel>
             <FormControl>
               <RadioCardGroup
@@ -83,7 +83,7 @@ export const StaffInfoForm: React.FC<Props> = ({
           control={form.control}
           name="firstName"
           render={({ field }) => (
-            <FormItem className="space-y-1 flex flex-col w-full">
+            <FormItem className="flex flex-col w-full">
               <FormLabel>First name</FormLabel>
               <FormControl>
                 <Input placeholder="Enter first name" {...field} />
@@ -96,7 +96,7 @@ export const StaffInfoForm: React.FC<Props> = ({
           control={form.control}
           name="lastName"
           render={({ field }) => (
-            <FormItem className="space-y-1 flex flex-col w-full">
+            <FormItem className="flex flex-col w-full">
               <FormLabel>Last name</FormLabel>
               <FormControl>
                 <Input placeholder="Enter last name" {...field} />
@@ -111,7 +111,7 @@ export const StaffInfoForm: React.FC<Props> = ({
           control={form.control}
           name="specialistId"
           render={({ field }) => (
-            <FormItem className="space-y-1 flex flex-col">
+            <FormItem className="flex flex-col">
               <FormLabel>Specialist</FormLabel>
               <FormControl>
                 <SpecialistInput
@@ -131,7 +131,7 @@ export const StaffInfoForm: React.FC<Props> = ({
         control={form.control}
         name="phoneNumber"
         render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
+          <FormItem className="flex flex-col">
             <FormLabel>Phone Nuber</FormLabel>
             <FormControl>
               <Input
@@ -149,7 +149,7 @@ export const StaffInfoForm: React.FC<Props> = ({
         name="email"
         disabled={isUpdate}
         render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
+          <FormItem className="flex flex-col">
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
@@ -166,7 +166,7 @@ export const StaffInfoForm: React.FC<Props> = ({
         control={form.control}
         name="address"
         render={({ field }) => (
-          <FormItem className="space-y-1 flex flex-col">
+          <FormItem className="flex flex-col">
             <FormLabel>Address</FormLabel>
             <FormControl>
               <Textarea {...field} />

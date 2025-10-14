@@ -1,6 +1,7 @@
 import type { Staff, invitation, organization } from '@/db';
 import mailer from '@/server/common/lib/mailer';
 import type { WorkingHoursFormType } from '@repo/schemas';
+import type { User } from 'better-auth';
 import type { Selectable } from 'kysely';
 import type { WorkScheduleByDay } from './__types';
 
@@ -37,6 +38,7 @@ export const getWorkScheduleByDayFromWorkingHours = (
 
 export const sendStaffConfirmationEmail = async (params: {
   staff: Selectable<Staff>;
+  user?: User;
   invitation: Selectable<invitation>;
   organization: Pick<organization, 'id' | 'name' | 'logo'>;
 }) => {
@@ -50,6 +52,7 @@ export const sendStaffConfirmationEmail = async (params: {
       createdDate: new Date().toISOString(),
       invitationId: params.invitation.id,
       organization: params.organization,
+      inviter: params.user?.name || 'Admin',
     },
   });
 };
