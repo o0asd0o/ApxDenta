@@ -1,3 +1,4 @@
+import ImagePreloader from '@/components/ImagePreloader';
 import { TrpcProvider } from '@/providers/TrpcProvider';
 import { AuthQueryProvider } from '@daveyplate/better-auth-tanstack';
 import { Toaster } from '@repo/ui/components';
@@ -45,6 +46,15 @@ export function RootProvider({ children }: { children: React.JSX.Element }) {
         visibleToasts={4}
         expand
         gap={16}
+      />
+      <ImagePreloader
+        imageUrls={[
+          '/images/svg/blurry-gradient.svg',
+          '/images/svg/blurry-gradient-1.svg',
+          '/images/svg/blurry-gradient-2.svg',
+          '/images/svg/blurry-gradient-3.svg',
+          '/images/svg/blurry-gradient-4.svg',
+        ]}
       />
     </QueryClientProvider>
   );

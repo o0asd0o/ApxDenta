@@ -28,8 +28,9 @@ export const RenderTreatmentActions = (actions: {
           <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
           <V2.DropdownMenuSeparator />
           <V2.DropdownMenuGroup>
-            <V2.DropdownMenuItem>
+            <V2.DropdownMenuItem className="p-0">
               <Link
+                className="py-1.5 pl-2 pr-1"
                 to="/treatments/$treatmentId"
                 params={{ treatmentId: actions.treatmentId }}
               >
@@ -40,6 +41,7 @@ export const RenderTreatmentActions = (actions: {
               </Link>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem
+              className="p-0"
               onClick={() =>
                 onShowUpdateModal({
                   treatmentId: actions.treatmentId,
@@ -47,15 +49,16 @@ export const RenderTreatmentActions = (actions: {
                 })
               }
             >
-              <span className="flex items-center gap-x-2">
+              <span className="flex items-center gap-x-2 py-1.5 pl-2 pr-1">
                 <EditIcon className="size-4 text-inherit" />
                 <span>Update Treatment</span>
               </span>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem
+              className="p-0"
               onClick={() => onShowArchiveModal(actions.original)}
             >
-              <span className="flex items-center gap-x-2 text-red-500">
+              <span className="py-1.5 pl-2 pr-1 flex items-center gap-x-2 text-red-500">
                 <ArchiveIcon className="size-4 text-inherit" />
                 <span>Archive</span>
               </span>

@@ -7,9 +7,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Form,
   FormControl,
   FormField,
@@ -89,154 +86,214 @@ export const RegistrationForm: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
-      <div className="flex items-center justify-center mb-6 gap-2">
-        <img
-          className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
-          src="/images/apxdenta-logo.png"
-          alt="ApxDenta Logo"
-        />
-        <img
-          className="w-[140px] xs:w-[160px]"
-          src="/images/apx-denta-string-only.png"
-          alt="ApxDenta Logo Text"
-        />
+    <div className="flex h-dvh bg-gray-50">
+      {/* Left Panel - Gradient Background */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient-2.svg')] bg-cover relative overflow-hidden">
+        <div className="absolute top-8 left-8">
+          <img
+            className="w-7 h-7 brightness-0 invert"
+            src="/images/apxdenta-logo.png"
+            alt="ApxDenta Logo"
+          />
+        </div>
+        <div className="flex flex-col justify-center px-16 text-white">
+          <h2 className="text-sm font-normal mb-4 opacity-90">
+            Join thousands of practices
+          </h2>
+          <h1 className="text-4xl font-bold leading-tight">
+            Transform your dental
+            <br />
+            practice with modern
+            <br />
+            technology
+          </h1>
+        </div>
       </div>
-      <Card className="z-50 rounded-md rounded-t-none max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>
-          <CardDescription className="text-xs md:text-sm">
-            Enter your information to create an account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit((values) => registerAccount(values))}
-              className="grid gap-4"
-            >
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First name</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={!!staffId}
-                          {...field}
-                          id="first-name"
-                          placeholder="Max"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+
+      {/* Right Panel - Form */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+        <div className="max-w-md w-full mx-auto">
+          {/* Logo for mobile */}
+          <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
+            <img
+              className="w-[40px]"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+            <img
+              className="w-[140px]"
+              src="/images/apx-denta-string-only.png"
+              alt="ApxDenta Logo Text"
+            />
+          </div>
+
+          {/* ApxDenta brand symbol */}
+          <div className="hidden lg:block mb-8">
+            <img
+              className="w-8 h-8"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+          </div>
+
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Create your account
+            </h1>
+            <p className="text-gray-600 text-sm">
+              Start managing your dental practice more efficiently - create your
+              account to access comprehensive patient and treatment management
+              tools.
+            </p>
+          </div>
+
+          <Card className="border-0 shadow-none p-0">
+            <CardContent className="p-0">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit((values) =>
+                    registerAccount(values),
                   )}
-                />
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last name</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={!!staffId}
-                          {...field}
-                          id="last-name"
-                          placeholder="Robinson"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                  className="space-y-6"
+                >
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-sm font-medium text-gray-700">
+                            First name
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={!!staffId}
+                              {...field}
+                              placeholder="John"
+                              className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-sm font-medium text-gray-700">
+                            Last name
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={!!staffId}
+                              {...field}
+                              placeholder="Doe"
+                              className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={!!staffId}
-                        {...field}
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium text-gray-700">
+                          Email
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={!!staffId}
+                            {...field}
+                            type="email"
+                            placeholder="john.doe@example.com"
+                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="password"
-                        type="password"
-                        autoComplete="new-password"
-                        placeholder="Password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium text-gray-700">
+                          Password
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="password"
+                            autoComplete="new-password"
+                            placeholder="••••••••••"
+                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="passwordConfirmation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="password_confirmation"
-                        type="password"
-                        autoComplete="new-password"
-                        placeholder="Confirm Password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="passwordConfirmation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium text-gray-700">
+                          Confirm Password
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="password"
+                            autoComplete="new-password"
+                            placeholder="••••••••••"
+                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? (
-                  <Loader2 size={20} className="animate-spin" />
-                ) : (
-                  'Create an account'
-                )}
-              </Button>
-
-              <div className="w-full flex justify-center-safe">
-                <span className="text-sm text-gray-500 leading-3">
-                  Already have an account?{' '}
-                  <Link
-                    to="/login"
-                    className="text-primary/70 underline hover:text-primary"
+                  <Button
+                    type="submit"
+                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                    disabled={isPending}
                   >
-                    Login here
-                  </Link>
-                </span>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+                    {isPending ? (
+                      <Loader2 size={20} className="animate-spin" />
+                    ) : (
+                      'Create Account'
+                    )}
+                  </Button>
+
+                  <div className="text-center">
+                    <span className="text-sm text-gray-600">
+                      Already have an account?{' '}
+                      <Link
+                        to="/login"
+                        className="text-blue-600 font-medium hover:text-blue-700"
+                      >
+                        Sign in
+                      </Link>
+                    </span>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

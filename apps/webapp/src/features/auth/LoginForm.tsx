@@ -1,6 +1,5 @@
 import { GoogleSVG } from '@/assets/google';
 import { signIn, useSession } from '@/lib/auth-client';
-import { cn } from '@/lib/utils';
 import { Route } from '@/routes/(auth)/login';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type LoginFormType, loginSchema } from '@repo/schemas';
@@ -8,9 +7,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Checkbox,
   Form,
   FormControl,
@@ -79,144 +75,202 @@ export const LoginForm: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
-      <div className="flex items-center justify-center mb-6 gap-2">
-        <img
-          className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
-          src="/images/apxdenta-logo.png"
-          alt="ApxDenta Logo"
-        />
-        <img
-          className="w-[140px] xs:w-[160px]"
-          src="/images/apx-denta-string-only.png"
-          alt="ApxDenta Logo Text"
-        />
+    <div className="flex h-dvh bg-gray-50">
+      {/* Left Panel - Gradient Background */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient.svg')] bg-cover relative overflow-hidden">
+        <div className="absolute top-8 left-8">
+          <div className="hidden lg:block mb-8">
+            <img
+              className="w-7 h-7 brightness-0 invert"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col justify-center px-16 text-white">
+          <h2 className="text-sm font-normal mb-4 opacity-90">
+            You can easily
+          </h2>
+          <h1 className="text-4xl font-bold leading-tight">
+            Manage your dental
+            <br />
+            clinic with complete
+            <br />
+            efficiency
+          </h1>
+        </div>
       </div>
-      <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
-          <CardDescription className="text-xs md:text-sm">
-            Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit((values) =>
-                loginUser({
-                  email: values.email,
-                  password: values.password,
-                }),
-              )}
-              className="grid gap-4"
-            >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
-                        autoComplete="email"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="password"
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      {/* Right Panel - Form */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+        <div className="max-w-md w-full mx-auto">
+          {/* Logo for mobile */}
+          <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
+            <img
+              className="w-[35px]"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+            <img
+              className="w-[120px]"
+              src="/images/apx-denta-string-only.png"
+              alt="ApxDenta Logo Text"
+            />
+          </div>
 
-              <div className="flex items-center gap-2">
-                <FormField
-                  control={form.control}
-                  name="remember"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-2">
-                      <FormControl>
-                        <Checkbox
-                          className="mb-0"
-                          checked={!!field.value}
-                          onCheckedChange={(val) => field.onChange(!!val)}
-                          id="remember"
-                        />
-                      </FormControl>
-                      <Label htmlFor="remember">Remember me</Label>
-                    </FormItem>
+          {/* ApxDenta brand symbol */}
+          <div className="hidden lg:block mb-8">
+            <img
+              className="w-7 h-7"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+          </div>
+
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Login to your account
+            </h1>
+            <p className="text-gray-600 text-sm">
+              Manage patients, appointments, and treatments seamlessly -
+              streamline your dental practice operations in one unified
+              platform.
+            </p>
+          </div>
+
+          <Card className="border-0 shadow-none p-0">
+            <CardContent className="p-0">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit((values) =>
+                    loginUser({
+                      email: values.email,
+                      password: values.password,
+                    }),
                   )}
-                />
-
-                <Link
-                  to="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
+                  className="space-y-6"
                 >
-                  Forgot your password?
-                </Link>
-              </div>
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium text-gray-700">
+                          Email
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="email"
+                            placeholder="me@gmail.com"
+                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            autoComplete="email"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <Button
-                type="submit"
-                className="w-full"
-                isLoading={isPending}
-                disabled={isPendingSocial}
-              >
-                Login
-              </Button>
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium text-gray-700">
+                          Password
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="password"
+                            placeholder="••••••••••"
+                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            autoComplete="current-password"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <div
-                className={cn(
-                  'w-full gap-2 flex items-center',
-                  'justify-between flex-col',
-                )}
-              >
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={cn('w-full gap-2')}
-                  disabled={isPending}
-                  isLoading={isPendingSocial}
-                  onClick={() => loginSocial()}
-                >
-                  <GoogleSVG />
-                  Sign in with Google
-                </Button>
-                <span className="text-sm text-gray-500 mt-2">
-                  Don't have an account yet?{' '}
-                  <Link
-                    to="/register"
-                    className="text-primary/70 underline hover:text-primary"
+                  <div className="flex flex-col gap-3">
+                    <Button
+                      type="submit"
+                      className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                      isLoading={isPending}
+                      disabled={isPendingSocial}
+                    >
+                      Login
+                    </Button>
+                    <div className="flex items-center gap-2">
+                      <FormField
+                        control={form.control}
+                        name="remember"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center gap-2">
+                            <FormControl>
+                              <Checkbox
+                                className="mb-0"
+                                checked={!!field.value}
+                                onCheckedChange={(val) => field.onChange(!!val)}
+                                id="remember"
+                              />
+                            </FormControl>
+                            <Label className="text-xs" htmlFor="remember">
+                              Remember me
+                            </Label>
+                          </FormItem>
+                        )}
+                      />
+
+                      <Link
+                        to="/forgot-password"
+                        className="ml-auto inline-block text-xs underline"
+                      >
+                        Forgot your password?
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-gray-200" />
+                    </div>
+                    <div className="relative flex justify-center text-xs">
+                      <span className="bg-white px-2 text-gray-500">or</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full h-12 border-gray-200 bg-gray-50 hover:bg-gray-100 gap-2"
+                    disabled={isPending}
+                    isLoading={isPendingSocial}
+                    onClick={() => loginSocial()}
                   >
-                    Register here
-                  </Link>
-                </span>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+                    <GoogleSVG />
+                    Sign in with Google
+                  </Button>
+
+                  <div className="text-center">
+                    <span className="text-sm text-gray-600">
+                      Don't have an account?{' '}
+                      <Link
+                        to="/register"
+                        className="text-blue-600 font-medium hover:text-blue-700"
+                      >
+                        Sign up
+                      </Link>
+                    </span>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

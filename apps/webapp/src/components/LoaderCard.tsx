@@ -10,8 +10,8 @@ const LoadingCard: React.FC = () => {
         <p>loading</p>
         <div className="overflow-hidden relative">
           <span className="word">buttons</span>
+          <span className="word">tables</span>
           <span className="word">forms</span>
-          <span className="word">switches</span>
           <span className="word">cards</span>
           <span className="word">buttons</span>
         </div>
