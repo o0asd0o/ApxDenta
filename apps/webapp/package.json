@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "locale": "vite --port 8085 --mode locale",
+    "portfolio": "vite --port 8085 --mode portfolio",
     "dev": "vite --port 8085 --mode development",
     "build": "vite build --mode locale",
     "build:dev": "vite build --mode development",
@@ -64,8 +65,8 @@
     "@types/axios": "^0.14.4",
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.0.15",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.8",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.0",
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^26.0.0",
     "tailwindcss": "^4.1.8",

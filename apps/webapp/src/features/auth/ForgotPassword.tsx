@@ -1,5 +1,4 @@
 import { requestPasswordReset } from '@/lib/auth-client';
-import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   type ForgotPasswordFormType,
@@ -9,9 +8,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Form,
   FormControl,
   FormField,
@@ -61,152 +57,243 @@ export const ForgotPasswordForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
-        <div className="flex items-center justify-center mb-6 gap-2">
-          <img
-            className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
-            src="/images/apxdenta-logo.png"
-            alt="ApxDenta Logo"
-          />
-          <img
-            className="w-[140px] xs:w-[160px]"
-            src="/images/apx-denta-string-only.png"
-            alt="ApxDenta Logo Text"
-          />
+      <div className="flex h-dvh bg-gray-50">
+        {/* Left Panel - Gradient Background */}
+        <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient.svg')] bg-cover relative overflow-hidden">
+          <div className="absolute top-8 left-8">
+            <img
+              className="w-7 h-7 brightness-0 invert"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+          </div>
+          <div className="flex flex-col justify-center px-16 text-white">
+            <h2 className="text-sm font-normal mb-4 opacity-90">
+              Secure and reliable
+            </h2>
+            <h1 className="text-4xl font-bold leading-tight">
+              Password recovery
+              <br />
+              made simple for your
+              <br />
+              peace of mind
+            </h1>
+          </div>
         </div>
-        <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg md:text-xl">
-              Check Your Email
-            </CardTitle>
-            <CardDescription className="text-xs md:text-sm">
-              We've sent a password reset link to your email address
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-label="Success checkmark"
-                  >
-                    <title>Email sent successfully</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-gray-600">
-                  If an account with email <strong>{submittedEmail}</strong>{' '}
-                  exists, you will receive a password reset link shortly.
-                </p>
-                <p className="text-xs text-gray-500">
-                  Didn't receive the email? Check your spam folder or try again.
-                </p>
-              </div>
 
-              <div className="flex flex-col gap-2">
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => {
-                    setIsSubmitted(false);
-                    setSubmittedEmail('');
-                    form.reset();
-                  }}
-                >
-                  Try Again
-                </Button>
-                <Link
-                  to="/login"
-                  className="text-center text-sm text-primary/70 underline hover:text-primary"
-                >
-                  Back to Login
-                </Link>
-              </div>
+        {/* Right Panel - Form */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+          <div className="max-w-md w-full mx-auto">
+            {/* Logo for mobile */}
+            <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
+              <img
+                className="w-[40px]"
+                src="/images/apxdenta-logo.png"
+                alt="ApxDenta Logo"
+              />
+              <img
+                className="w-[140px]"
+                src="/images/apx-denta-string-only.png"
+                alt="ApxDenta Logo Text"
+              />
             </div>
-          </CardContent>
-        </Card>
+
+            {/* ApxDenta brand symbol */}
+            <div className="hidden lg:block mb-8">
+              <img
+                className="w-8 h-8"
+                src="/images/apxdenta-logo.png"
+                alt="ApxDenta Logo"
+              />
+            </div>
+
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                Check Your Email
+              </h1>
+              <p className="text-gray-600 text-sm">
+                We've sent a password reset link to your email address to help
+                you regain access to your dental practice management account.
+              </p>
+            </div>
+
+            <Card className="border-0 shadow-none p-0">
+              <CardContent className="p-0">
+                <div className="space-y-6">
+                  <div className="text-center space-y-4">
+                    <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-green-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-label="Success checkmark"
+                      >
+                        <title>Email sent successfully</title>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      If an account with email <strong>{submittedEmail}</strong>{' '}
+                      exists, you will receive a password reset link shortly.
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Didn't receive the email? Check your spam folder or try
+                      again.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      variant="outline"
+                      className="w-full h-12"
+                      onClick={() => {
+                        setIsSubmitted(false);
+                        setSubmittedEmail('');
+                        form.reset();
+                      }}
+                    >
+                      Try Again
+                    </Button>
+                    <div className="text-center">
+                      <Link
+                        to="/login"
+                        className="text-sm text-blue-600 font-medium hover:text-blue-700"
+                      >
+                        Back to Login
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
-      <div className="flex items-center justify-center mb-6 gap-2">
-        <img
-          className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
-          src="/images/apxdenta-logo.png"
-          alt="ApxDenta Logo"
-        />
-        <img
-          className="w-[140px] xs:w-[160px]"
-          src="/images/apx-denta-string-only.png"
-          alt="ApxDenta Logo Text"
-        />
+    <div className="flex h-dvh bg-gray-50">
+      {/* Left Panel - Gradient Background */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient-1.svg')] bg-cover relative overflow-hidden">
+        <div className="absolute top-8 left-8">
+          <img
+            className="w-7 h-7 brightness-0 invert"
+            src="/images/apxdenta-logo.png"
+            alt="ApxDenta Logo"
+          />
+        </div>
+        <div className="flex flex-col justify-center px-16 text-white">
+          <h2 className="text-sm font-normal mb-4 opacity-90">
+            Secure and reliable
+          </h2>
+          <h1 className="text-4xl font-bold leading-tight">
+            Password recovery
+            <br />
+            made simple for your
+            <br />
+            peace of mind
+          </h1>
+        </div>
       </div>
-      <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg md:text-xl">Forgot Password</CardTitle>
-          <CardDescription className="text-xs md:text-sm">
-            Enter your email address and we'll send you a link to reset your
-            password
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
-                        autoComplete="email"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <Button type="submit" className="w-full" isLoading={isPending}>
-                Send Reset Link
-              </Button>
-            </form>
-          </Form>
-
-          <div
-            className={cn(
-              'w-full gap-2 flex items-center',
-              'justify-between flex-col',
-            )}
-          >
-            <span className="text-sm text-gray-500 mt-2">
-              Remember your password?{' '}
-              <Link
-                to="/login"
-                className="text-primary/70 underline hover:text-primary"
-              >
-                Sign in here
-              </Link>
-            </span>
+      {/* Right Panel - Form */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+        <div className="max-w-md w-full mx-auto">
+          {/* Logo for mobile */}
+          <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
+            <img
+              className="w-[40px]"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+            <img
+              className="w-[140px]"
+              src="/images/apx-denta-string-only.png"
+              alt="ApxDenta Logo Text"
+            />
           </div>
-        </CardContent>
-      </Card>
+
+          {/* ApxDenta brand symbol */}
+          <div className="hidden lg:block mb-8">
+            <img
+              className="w-8 h-8"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+          </div>
+
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Forgot Password
+            </h1>
+            <p className="text-gray-600 text-sm">
+              Enter your email address and we'll send you a secure link to reset
+              your password and regain access to your practice management
+              account.
+            </p>
+          </div>
+
+          <Card className="border-0 shadow-none p-0">
+            <CardContent className="p-0">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-6"
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium text-gray-700">
+                          Your email
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="email"
+                            placeholder="Enter your email address"
+                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            autoComplete="email"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button
+                    type="submit"
+                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                    isLoading={isPending}
+                  >
+                    Send Reset Link
+                  </Button>
+
+                  <div className="text-center">
+                    <span className="text-sm text-gray-600">
+                      Remember your password?{' '}
+                      <Link
+                        to="/login"
+                        className="text-blue-600 font-medium hover:text-blue-700"
+                      >
+                        Sign in here
+                      </Link>
+                    </span>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

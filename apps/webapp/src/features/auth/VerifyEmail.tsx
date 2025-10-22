@@ -22,63 +22,106 @@ export const VerifyEmailPage: React.FC = () => {
 
   if (isVerified) {
     return (
-      <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
-        <div className="flex items-center justify-center mb-6 gap-2">
-          <img
-            className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
-            src="/images/apxdenta-logo.png"
-            alt="ApxDenta Logo"
-          />
-          <img
-            className="w-[140px] xs:w-[160px]"
-            src="/images/apx-denta-string-only.png"
-            alt="ApxDenta Logo Text"
-          />
+      <div className="flex h-dvh bg-gray-50">
+        {/* Left Panel - Gradient Background */}
+        <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient-4.svg')] bg-cover relative overflow-hidden">
+          <div className="absolute top-8 left-8">
+            <img
+              className="w-7 h-7 brightness-0 invert"
+              src="/images/apxdenta-logo.png"
+              alt="ApxDenta Logo"
+            />
+          </div>
+          <div className="flex flex-col justify-center px-16 text-white">
+            <h2 className="text-sm font-normal mb-4 opacity-90">
+              Welcome aboard!
+            </h2>
+            <h1 className="text-4xl font-bold leading-tight">
+              Your email is
+              <br />
+              verified and ready
+              <br />
+              to go
+            </h1>
+          </div>
         </div>
-        <Card className="max-w-md w-full bg-white border-none shadow-none xs:border xs:shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg md:text-xl text-green-600">
-              Email Verified
-            </CardTitle>
-            <CardDescription className="text-xs md:text-sm">
-              Your email has been successfully verified
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
-              <div className="text-center space-y-4">
-                <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-label="Success checkmark"
-                  >
-                    <title>Email verified successfully</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Your email has been verified. You can now sign in to your
-                  account.
-                </p>
-                <p className="text-xs text-gray-500">
-                  You will be automatically redirected to the login page in a
-                  few seconds.
-                </p>
-              </div>
-              <Link to="/login">
-                <Button className="w-full">Continue to Login</Button>
-              </Link>
+
+        {/* Right Panel - Success Message */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+          <div className="max-w-md w-full mx-auto">
+            {/* Logo for mobile */}
+            <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
+              <img
+                className="w-[40px]"
+                src="/images/apxdenta-logo.png"
+                alt="ApxDenta Logo"
+              />
+              <img
+                className="w-[140px]"
+                src="/images/apx-denta-string-only.png"
+                alt="ApxDenta Logo Text"
+              />
             </div>
-          </CardContent>
-        </Card>
+
+            {/* ApxDenta brand symbol */}
+            <div className="hidden lg:block mb-8">
+              <img
+                className="w-8 h-8"
+                src="/images/apxdenta-logo.png"
+                alt="ApxDenta Logo"
+              />
+            </div>
+
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold text-green-600 mb-2">
+                Email Verified
+              </h1>
+              <p className="text-gray-600 text-sm">
+                Your email has been successfully verified. You can now sign in
+                to your dental practice management account.
+              </p>
+            </div>
+
+            <Card className="border-0 shadow-none p-0">
+              <CardContent className="p-0">
+                <div className="space-y-6">
+                  <div className="text-center space-y-4">
+                    <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-green-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-label="Success checkmark"
+                      >
+                        <title>Email verified successfully</title>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      Your email has been verified. You can now sign in to your
+                      account.
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      You will be automatically redirected to the login page in
+                      a few seconds.
+                    </p>
+                  </div>
+                  <Link to="/login">
+                    <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg">
+                      Continue to Login
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }
