@@ -133,8 +133,7 @@ export const LoginForm: React.FC = () => {
             </h1>
             <p className="text-gray-600 text-sm">
               Manage patients, appointments, and treatments seamlessly -
-              streamline your dental practice operations in one unified
-              platform.
+              streamline your dental clinic operations in one unified platform.
             </p>
           </div>
 
@@ -238,7 +237,7 @@ export const LoginForm: React.FC = () => {
                       <span className="w-full border-t border-gray-200" />
                     </div>
                     <div className="relative flex justify-center text-xs">
-                      <span className="bg-white px-2 text-gray-500">or</span>
+                      <span className="px-2 text-gray-500 bg-card">or</span>
                     </div>
                   </div>
 

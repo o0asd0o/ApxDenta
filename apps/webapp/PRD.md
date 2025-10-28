@@ -1,8 +1,8 @@
-# Product Requirements Document (PRD): ApxDenta Dental Practice Webapp
+# Product Requirements Document (PRD): ApxDenta Dental Clinic Webapp
 
 ## 1. Purpose & Target Users
 
-ApxDenta is a modern, cloud-based dental practice management webapp designed for dental clinics, staff, and administrators. It streamlines patient care, staff management, treatment planning, inventory, and financial operations in a secure, user-friendly interface.
+ApxDenta is a modern, cloud-based dental clinic management webapp designed for dental clinics, staff, and administrators. It streamlines patient care, staff management, treatment planning, inventory, and financial operations in a secure, user-friendly interface.
 
 **Target Users:**
 - Dentists & Specialists
@@ -134,4 +134,4 @@ ApxDenta is a modern, cloud-based dental practice management webapp designed for
 ---
 
 **Summary:**  
-ApxDenta is a comprehensive dental practice management webapp, supporting staff, patient, treatment, inventory, and financial workflows. It is designed for modern dental clinics, with a focus on usability, security, and extensibility. Future features will further streamline operations and improve patient care.
+ApxDenta is a comprehensive dental clinic management webapp, supporting staff, patient, treatment, inventory, and financial workflows. It is designed for modern dental clinics, with a focus on usability, security, and extensibility. Future features will further streamline operations and improve patient care.

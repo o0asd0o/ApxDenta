@@ -119,8 +119,7 @@ export const ResetPasswordForm = () => {
               </h1>
               <p className="text-gray-600 text-sm">
                 Your password has been successfully reset. You can now sign in
-                with your new password and continue managing your dental
-                practice.
+                with your new password and continue managing your dental clinic.
               </p>
             </div>
 
@@ -223,7 +222,7 @@ export const ResetPasswordForm = () => {
             </h1>
             <p className="text-gray-600 text-sm">
               Enter your new password to complete the reset process and regain
-              access to your dental practice management account.
+              access to your dental clinic management account.
             </p>
           </div>
 

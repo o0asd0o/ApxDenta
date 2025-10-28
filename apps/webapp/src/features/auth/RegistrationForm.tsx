@@ -98,12 +98,12 @@ export const RegistrationForm: React.FC = () => {
         </div>
         <div className="flex flex-col justify-center px-16 text-white">
           <h2 className="text-sm font-normal mb-4 opacity-90">
-            Join thousands of practices
+            Join thousands of clinics
           </h2>
           <h1 className="text-4xl font-bold leading-tight">
             Transform your dental
             <br />
-            practice with modern
+            clinic with modern
             <br />
             technology
           </h1>
@@ -141,7 +141,7 @@ export const RegistrationForm: React.FC = () => {
               Create your account
             </h1>
             <p className="text-gray-600 text-sm">
-              Start managing your dental practice more efficiently - create your
+              Start managing your dental clinic more efficiently - create your
               account to access comprehensive patient and treatment management
               tools.
             </p>
