@@ -113,7 +113,7 @@ export const ForgotPasswordForm = () => {
               </h1>
               <p className="text-gray-600 text-sm">
                 We've sent a password reset link to your email address to help
-                you regain access to your dental practice management account.
+                you regain access to your dental clinic management account.
               </p>
             </div>
 
@@ -235,8 +235,7 @@ export const ForgotPasswordForm = () => {
             </h1>
             <p className="text-gray-600 text-sm">
               Enter your email address and we'll send you a secure link to reset
-              your password and regain access to your practice management
-              account.
+              your password and regain access to your clinic management account.
             </p>
           </div>
 

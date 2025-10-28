@@ -78,7 +78,7 @@ export const VerifyEmailPage: React.FC = () => {
               </h1>
               <p className="text-gray-600 text-sm">
                 Your email has been successfully verified. You can now sign in
-                to your dental practice management account.
+                to your dental clinic management account.
               </p>
             </div>
 

@@ -1,3 +1,5 @@
+import Tooth from '@/assets/tooth';
+import NumberButtonInput from '@/components/NumberButtonInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { treatmentSchema } from '@repo/schemas';
 import {
@@ -19,6 +21,7 @@ import {
   SelectValue,
   Textarea,
 } from '@repo/ui/components';
+import { Trash2, Wrench } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -196,7 +199,53 @@ const TreatmentBaseForm: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="">asd</div>
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-2">
+            <div className=" relative size-10 p-2 bg-accent rounded-sm text-gray-500">
+              <Tooth />
+              <Wrench
+                strokeWidth={2.5}
+                className="absolute size-3.5 p-[1px] bottom-[7px] right-[5px] transform scale-x-[-1] bg-accent rounded-full"
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <h3 className="text-black text-base font-medium">
+                Components used
+              </h3>
+              <span className="text-gray-500 text-xs">
+                Every part/component used for patient&apos;s treatment
+              </span>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between">
+              <div>
+                <Select>
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Select component" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={'component1'}>Component 1</SelectItem>
+                    <SelectItem value={'component2'}>Component 2</SelectItem>
+                    <SelectItem value={'component3'}>Component 3</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex gap-3">
+                <NumberButtonInput />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="size-8 p-1.5 hover:bg-red-50"
+                  aria-label="Submit"
+                >
+                  <Trash2 className="text-red-600" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </Form>
   );
