@@ -2,6 +2,8 @@
 // import type { DatabaseInstance } from '@repo/db/client';
 import type { AuthInstance } from '@/auth/auth-server';
 import type { DatabaseInstance } from '@/db/client';
+import seeder from './routes/_aux/@seeder';
+import components from './routes/_aux/components';
 import dayOff from './routes/_aux/day-off';
 import files from './routes/_aux/files';
 import specialistRecord from './routes/_aux/specialists-record';
@@ -23,7 +25,9 @@ const routes = {
   // auxilalries
   files,
   dayOff,
+  components,
   specialistRecord,
+  seeder,
 };
 
 export type ApiInstance = ReturnType<typeof createApi>;

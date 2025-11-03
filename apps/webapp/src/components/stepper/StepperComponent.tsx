@@ -74,7 +74,7 @@ function StepperComponent<T>({
                   <span className="text-[11px] text-gray-300 font-extrabold mt-1">
                     STEP {index + 1}
                   </span>
-                  <span className="text-xs font-medium whitespace-nowrap">
+                  <span className="text-xs font-medium  xs:whitespace-nowrap">
                     {step.label}
                   </span>
                 </div>

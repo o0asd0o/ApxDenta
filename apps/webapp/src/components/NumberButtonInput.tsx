@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { Button } from '@repo/ui/components';
 import { Minus, Plus } from 'lucide-react';
 import React from 'react';
@@ -5,9 +6,10 @@ import React from 'react';
 type Props = {
   value?: number;
   onChange?: (value: number) => void;
+  className?: string;
 };
 
-const NumberButtonInput: React.FC<Props> = ({ value, onChange }) => {
+const NumberButtonInput: React.FC<Props> = ({ value, onChange, className }) => {
   const [quantity, setQuantity] = React.useState(value || 0);
 
   const handleQuantity = (quantity: number) => {
@@ -25,7 +27,7 @@ const NumberButtonInput: React.FC<Props> = ({ value, onChange }) => {
   };
 
   return (
-    <div className="flex gap-5 bg-accent p-1 items-center rounded-md">
+    <div className="flex gap-5 bg-accent p-1 items-center rounded-md justify-between w-full">
       <Button
         type="button"
         onClick={() => handleQuantity(Math.max(0, (quantity ?? 0) - 1))}
@@ -38,8 +40,12 @@ const NumberButtonInput: React.FC<Props> = ({ value, onChange }) => {
         type="text"
         inputMode="numeric"
         value={quantity}
+        max={99999}
         onChange={handleInputChange}
-        className="w-8 text-center font-medium text-sm bg-transparent border-none outline-none focus:ring-0 p-0"
+        className={cn(
+          'max-w-10 text-center font-medium text-sm bg-transparent border-none outline-none focus:ring-0 p-0',
+          className,
+        )}
       />
       <Button
         type="button"

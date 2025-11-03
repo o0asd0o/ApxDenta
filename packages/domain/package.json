@@ -64,13 +64,14 @@
     "zod": "^3.25.51"
   },
   "devDependencies": {
-    "tsup": "^8.4.0",
-    "dotenv-cli": "^7.3.0",
+    "@better-auth/cli": "^1.1.15",
+    "@faker-js/faker": "^10.1.0",
+    "@repo/tsconfig": "workspace:*",
     "@types/bun": "latest",
     "@types/pg": "^8.11.11",
-    "@better-auth/cli": "^1.1.15",
+    "dotenv-cli": "^7.3.0",
     "prisma": "^6.3.0",
-    "@repo/tsconfig": "workspace:*",
+    "tsup": "^8.4.0",
     "tsx": "^4.19.1",
     "typescript": "^5.8.3"
   }

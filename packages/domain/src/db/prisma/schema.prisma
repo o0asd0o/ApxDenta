@@ -237,6 +237,7 @@ model MedicalComponent {
   updatedAt           DateTime             @default(now())
   name                String
   price               Float
+  organizationId      String?
   treatmentComponents TreatmentComponent[]
 }
 
