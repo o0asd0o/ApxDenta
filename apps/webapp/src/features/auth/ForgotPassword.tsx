@@ -182,13 +182,6 @@ export const ForgotPasswordForm = () => {
     <div className="flex h-dvh bg-gray-50">
       {/* Left Panel - Gradient Background */}
       <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient-1.svg')] bg-cover relative overflow-hidden">
-        <div className="absolute top-8 left-8">
-          <img
-            className="w-7 h-7 brightness-0 invert"
-            src="/images/apxdenta-logo.png"
-            alt="ApxDenta Logo"
-          />
-        </div>
         <div className="flex flex-col justify-center px-16 text-white">
           <h2 className="text-sm font-normal mb-4 opacity-90">
             Secure and reliable

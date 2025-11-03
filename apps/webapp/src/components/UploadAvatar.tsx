@@ -24,7 +24,9 @@ export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
             style={{ background: `url('${imageAvatar}')` }}
           />
         )}
-        {!imageAvatar && <div className="size-14 bg-gray-200 rounded-full" />}
+        {!imageAvatar && (
+          <div className="size-14 min-w-14 bg-gray-200 rounded-full" />
+        )}
       </>
 
       <div className="flex flex-col gap-1.5">
@@ -65,7 +67,7 @@ export const UploadAvatar: React.FC<Props> = ({ name, onChange, value }) => {
             </>
           )}
         </div>
-        <span className="text-xs text-gray-400 w-[260px] leading-[14px]">
+        <span className="text-xs text-gray-400 w-full max-w-[260px] leading-[14px]">
           An image of the person, it's best if it has the same length and height
         </span>
       </div>

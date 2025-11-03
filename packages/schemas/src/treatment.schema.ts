@@ -10,7 +10,10 @@ export const treatmentSchema = z.object({
   }),
   description: z.string({ required_error: 'Description is required' }),
   price: z.number().min(0, 'Price must be at least 0').optional(),
-  duration: z.number().min(1, 'Duration must be at least 1 hour').optional(),
+  duration: z
+    .number()
+    .min(0.5, 'Duration must be at least 30 minutes')
+    .optional(),
 
   components: z
     .object({
@@ -22,3 +25,5 @@ export const treatmentSchema = z.object({
     .array()
     .min(1, 'At least one component is required'),
 });
+
+export type TreatmentFormType = z.infer<typeof treatmentSchema>;
