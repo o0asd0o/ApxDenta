@@ -3,8 +3,7 @@ import { faker } from '@faker-js/faker';
 import { z } from 'zod';
 
 const inputSchema = z.object({
-  count: z.number().min(1).max(50).default(10),
-  organizationId: z.string(),
+  count: z.number().min(1).max(50).default(30),
   type: z.enum(['DOCTOR', 'STAFF', 'BOTH']).optional().default('BOTH'),
 });
 
@@ -33,7 +32,7 @@ const staffPositions = [
 ];
 
 const handler = async ({ input, ctx }: Params) => {
-  const { count, organizationId, type } = input;
+  const { count, type } = input;
   const createdIds: string[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -86,7 +85,7 @@ const handler = async ({ input, ctx }: Params) => {
         position,
         employmentType,
         status,
-        organizationId,
+        organizationId: ctx.organizationId,
         createdAt: faker.date.past({ years: 2 }),
         updatedAt: new Date(),
       })
@@ -107,23 +106,24 @@ const handler = async ({ input, ctx }: Params) => {
     );
 
     for (const day of selectedDays) {
-      const startHour = faker.number.int({ min: 7, max: 9 });
-      const endHour = faker.number.int({ min: 16, max: 18 });
+      const _startHour = faker.number.int({ min: 7, max: 9 });
+      const _startMin = faker.number.int({ min: 0, max: 59 });
+      const _endHour = faker.number.int({ min: 16, max: 18 });
+      const _endMin = faker.number.int({ min: 0, max: 59 });
 
-      // Create time objects (using arbitrary dates, only time matters)
-      const fromTime = new Date();
-      fromTime.setHours(startHour, 0, 0, 0);
+      const startHour = `${String(_startHour).padStart(4, '0').slice(0, 2)}`;
+      const startMin = `${String(_startMin).padStart(4, '0').slice(2)}`;
 
-      const toTime = new Date();
-      toTime.setHours(endHour, 0, 0, 0);
+      const endHour = `${String(_endHour).padStart(4, '0').slice(0, 2)}`;
+      const endMin = `${String(_endMin).padStart(4, '0').slice(2)}`;
 
       await ctx.db
         .insertInto('WorkSchedule')
         .values({
           staffId: staff.id,
           day,
-          from: fromTime,
-          to: toTime,
+          from: `${startHour}:${startMin}:00`,
+          to: `${endHour}:${endMin}:00`,
           createdAt: new Date(),
           updatedAt: new Date(),
         })
@@ -135,7 +135,7 @@ const handler = async ({ input, ctx }: Params) => {
       const treatments = await ctx.db
         .selectFrom('Treatment')
         .select('id')
-        .where('organizationId', '=', organizationId)
+        .where('organizationId', '=', ctx.organizationId)
         .limit(faker.number.int({ min: 3, max: 10 }))
         .execute();
 

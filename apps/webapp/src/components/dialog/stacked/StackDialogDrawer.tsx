@@ -19,10 +19,10 @@ type Props = {
   className?: string;
   stacks: {
     id: string;
-    title: string;
+    title: React.ReactNode;
     component: React.JSX.Element;
   }[];
-  actionText?: string;
+  actionText?: React.ReactNode;
   disabledTooltip?: string;
   mobileIcon?: React.JSX.Element;
   footer?: React.JSX.Element;

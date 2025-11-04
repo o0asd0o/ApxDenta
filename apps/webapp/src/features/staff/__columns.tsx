@@ -4,7 +4,7 @@ import { PersonalInfo } from '@/components/PersonalInfo';
 import { EMPLOYMENT_TYPE_BADGES } from '@/constants/badges';
 import { STAFF_LIST } from '@/constants/options';
 import { Tooltip } from '@radix-ui/react-tooltip';
-import type { EmploymentType, WorkingDay } from '@repo/domain/db';
+import type { EmploymentType, StaffType, WorkingDay } from '@repo/domain/db';
 import {
   Button,
   Checkbox,
@@ -15,7 +15,9 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { RenderStaffActions, renderWorkingDays } from './__renderers';
 import type { StaffColumnType } from './__types';
 
-export const columns: ColumnDef<StaffColumnType>[] = [
+export const getStaffColumns = (
+  type: StaffType,
+): ColumnDef<StaffColumnType>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -92,45 +94,52 @@ export const columns: ColumnDef<StaffColumnType>[] = [
       return renderWorkingDays(value, 'flex-nowrap');
     },
   },
-  {
-    accessorKey: 'assignedServices',
-    size: 200,
-    header: 'Offered Services',
-    cell: ({ cell }) => {
-      const assignedTreatments =
-        cell.getValue<{ name: string; id: string }[]>();
-      return (
-        <div className="w-full items-center gap-1">
-          <span className="text-[13px]">{assignedTreatments[0].name}</span>
-          {assignedTreatments.length > 1 && (
-            <Tooltip>
-              <TooltipTrigger
-                asChild
-                className="bg-transparent text-primary text-xs font-bold"
-              >
-                <span className="ml-1 cursor-default">
-                  +{assignedTreatments.length - 1}
+  ...(type === 'STAFF'
+    ? []
+    : [
+        {
+          accessorKey: 'assignedServices',
+          size: 200,
+          header: 'Offered Services',
+
+          cell: ({ cell }) => {
+            const assignedTreatments =
+              cell.getValue<{ name: string; id: string }[]>();
+            return (
+              <div className="w-full items-center gap-1">
+                <span className="text-[13px]">
+                  {assignedTreatments[0]?.name}
                 </span>
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                align="center"
-                className="bg-gray-200 text-shadow-gray-800 [&>span>svg]:bg-gray-200 [&>span>svg]:fill-gray-200"
-              >
-                <ul className="text-gray-950 list-disc pl-3">
-                  {assignedTreatments.slice(1).map((treatment) => (
-                    <li key={treatment.id} className="text-sm">
-                      {treatment.name}
-                    </li>
-                  ))}
-                </ul>
-              </TooltipContent>
-            </Tooltip>
-          )}
-        </div>
-      );
-    },
-  },
+                {assignedTreatments.length > 1 && (
+                  <Tooltip>
+                    <TooltipTrigger
+                      asChild
+                      className="bg-transparent text-primary text-xs font-bold"
+                    >
+                      <span className="ml-1 cursor-default">
+                        +{assignedTreatments.length - 1}
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      align="center"
+                      className="bg-gray-200 text-shadow-gray-800 [&>span>svg]:bg-gray-200 [&>span>svg]:fill-gray-200"
+                    >
+                      <ul className="text-gray-950 list-disc pl-3">
+                        {assignedTreatments.slice(1).map((treatment) => (
+                          <li key={treatment.id} className="text-sm">
+                            {treatment.name}
+                          </li>
+                        ))}
+                      </ul>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
+            );
+          },
+        } satisfies ColumnDef<StaffColumnType>,
+      ]),
   {
     accessorKey: 'employmentType',
     header: 'Type',

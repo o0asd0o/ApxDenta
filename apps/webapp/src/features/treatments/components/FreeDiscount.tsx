@@ -46,6 +46,7 @@ const FreeDiscount: React.FC<Props> = ({ value, onChange }) => {
         <Input
           className="w-20"
           type="number"
+          inputMode="numeric"
           min={0}
           value={localValue?.amount}
           onChange={(e) => {

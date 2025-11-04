@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 const inputSchema = z.object({
   count: z.number().min(1).max(100).default(20),
-  organizationId: z.string(),
 });
 
 type Params = HandlerType<z.infer<typeof inputSchema>>;
@@ -82,7 +81,7 @@ const componentCategories = {
 };
 
 const handler = async ({ input, ctx }: Params) => {
-  const { count, organizationId } = input;
+  const { count } = input;
   const createdIds: string[] = [];
 
   // Flatten all component names
@@ -138,7 +137,7 @@ const handler = async ({ input, ctx }: Params) => {
       .values({
         name: componentName,
         price: basePrice,
-        organizationId,
+        organizationId: ctx.organizationId,
         createdAt: faker.date.past({ years: 1 }),
         updatedAt: new Date(),
       })

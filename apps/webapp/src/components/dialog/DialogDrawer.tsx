@@ -16,7 +16,7 @@ import React, { type FormEventHandler } from 'react';
 type Props = {
   className?: string;
   children: React.ReactNode;
-  title: string;
+  title: React.ReactNode;
   actionText?: string;
   disabledTooltip?: string;
   mobileIcon?: React.JSX.Element;

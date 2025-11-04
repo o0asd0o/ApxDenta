@@ -3,7 +3,7 @@ import { DataTable } from '@/components/data-table/DataTable';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { columns } from '../__columns';
+import { getStaffColumns } from '../__columns';
 import { useArchiveMultipleStaffIdAction } from '../__common/context/context';
 import type { LayoutProps } from '../__types';
 import StaffListLoaderItem from './StaffListLoaderItem';
@@ -44,7 +44,7 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         data={staffList?.data || []}
         sort={{ sorting, setSorting }}
         loading={isLoading}
-        columns={columns}
+        columns={getStaffColumns(type)}
         LoaderRow={StaffListLoaderItem}
         onDeleteItems={async (items, callback) =>
           onShowArchiveMultipleModal(items, callback)

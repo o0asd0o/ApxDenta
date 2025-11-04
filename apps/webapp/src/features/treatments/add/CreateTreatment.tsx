@@ -1,3 +1,4 @@
+import TreatmentSeeder from '@/components/@seeders/TreatmentSeeder';
 import { StackDialogDrawer } from '@/components/dialog/stacked/StackDialogDrawer';
 import StackProvider from '@/components/dialog/stacked/StackProvider';
 import { useActiveOrganization } from '@/lib/auth-client';
@@ -14,7 +15,12 @@ const GetSacks = (form: UseFormReturn<TreatmentFormType>) => [
   {
     id: 'treatment-form-1',
     component: <TreatmentBaseForm form={form} />,
-    title: 'Add Treatment',
+    title: (
+      <span className="flex items-center">
+        <span>Add Treatment</span>
+        <TreatmentSeeder />
+      </span>
+    ),
   },
   {
     id: 'treatment-form-2',
@@ -25,7 +31,7 @@ const GetSacks = (form: UseFormReturn<TreatmentFormType>) => [
 
 /**
  * TODO:
- * 1. Refactor the form
+ * 1. Refactor the form (DONE)
  * 2. Integrate multiple visit form
  * 3. Integrate API for actual creation of treatment
  * 4. Implement other fetaures - update, delete, bulk delete
