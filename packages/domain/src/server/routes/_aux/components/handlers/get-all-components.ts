@@ -15,7 +15,10 @@ const inputSchema = z
 type Params = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: Params) => {
-  let query = ctx.db.selectFrom('MedicalComponent').selectAll();
+  let query = ctx.db
+    .selectFrom('MedicalComponent')
+    .select(['id', 'name', 'price'])
+    .where('organizationId', '=', ctx.organizationId);
 
   if (input?.search) {
     query = query.where('name', 'like', `%${input.search}%`);

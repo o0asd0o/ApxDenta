@@ -1,4 +1,5 @@
 import Tooth from '@/assets/tooth';
+import MedicalComponentSeeder from '@/components/@seeders/MedicalComponentSeeder';
 import NumberButtonInput from '@/components/NumberButtonInput';
 import { cn } from '@/lib/utils';
 import type { TreatmentFormType } from '@repo/schemas';
@@ -13,16 +14,12 @@ import {
   RadioCardGroup,
   RadioCardIndicator,
   RadioCardItem,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Textarea,
 } from '@repo/ui/components';
 import { Plus, Trash2, Wrench } from 'lucide-react';
 import React from 'react';
 import { type UseFormReturn, useFieldArray } from 'react-hook-form';
+import EstimatedHoursField from '../../components/EstimatedHoursField';
 import FreeDiscount from '../../components/FreeDiscount';
 import MedicalComponentSelector from '../../components/MedicalComponentSelector';
 
@@ -159,6 +156,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
                             <span className="text-gray-500 text-sm">/jaw</span>
                           }
                           type="text"
+                          inputMode="numeric"
                           icon={
                             <span className="text-gray-500 text-xl">₱</span>
                           }
@@ -184,33 +182,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
                   control={form.control}
                   name="duration"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col w-full">
-                      <FormLabel className="whitespace-nowrap">
-                        Estimated Duration (Hours)
-                      </FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value) =>
-                            field.onChange(Number(value))
-                          }
-                        >
-                          <SelectTrigger className="w-full h-[38px] text-sm">
-                            <SelectValue placeholder="Select duration" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value={'0.5'}>0.5 hours</SelectItem>
-                            <SelectItem value={'1'}>1 hour</SelectItem>
-                            <SelectItem value={'1.5'}>1.5 hours</SelectItem>
-                            <SelectItem value={'2'}>2 hours</SelectItem>
-                            <SelectItem value={'2.5'}>2.5 hours</SelectItem>
-                            <SelectItem value={'3'}>3 hours</SelectItem>
-                            <SelectItem value={'3.5'}>3.5 hours</SelectItem>
-                            <SelectItem value={'4'}>4 hours</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                    <EstimatedHoursField onChange={field.onChange} />
                   )}
                 />
               </div>
@@ -228,7 +200,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
 
               <div className="flex flex-col">
                 <h3 className="text-black text-base font-medium">
-                  Components used
+                  Components used <MedicalComponentSeeder />
                 </h3>
                 <span className="text-gray-500 text-xs">
                   Every part/component used for patient&apos;s treatment

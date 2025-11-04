@@ -12,7 +12,7 @@ const inputSchema = z.object({
 type Params = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: Params) => {
-  const { count, organizationId, generateReviews, reviewsPerPatient } = input;
+  const { count, generateReviews, reviewsPerPatient } = input;
   const createdPatientIds: string[] = [];
   const createdReviewIds: string[] = [];
   const createdRatingIds: string[] = [];
@@ -21,7 +21,7 @@ const handler = async ({ input, ctx }: Params) => {
   const treatments = await ctx.db
     .selectFrom('Treatment')
     .select('id')
-    .where('organizationId', '=', organizationId)
+    .where('organizationId', '=', ctx.organizationId)
     .execute();
 
   if (treatments.length === 0 && generateReviews) {
@@ -79,8 +79,7 @@ const handler = async ({ input, ctx }: Params) => {
           'AS_OCCUR',
         ] as const),
         usingDentalFloss: faker.datatype.boolean(),
-
-        organizationId,
+        organizationId: ctx.organizationId,
         createdAt: faker.date.past({ years: 3 }),
         updatedAt: new Date(),
       })

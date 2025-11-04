@@ -132,7 +132,7 @@ export const StaffInfoForm: React.FC<Props> = ({
         name="phoneNumber"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel>Phone Nuber</FormLabel>
+            <FormLabel>Phone Number</FormLabel>
             <FormControl>
               <Input
                 type="tel"

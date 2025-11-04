@@ -1,3 +1,4 @@
+import Empty from '@/components/Empty';
 import { useTRPC } from '@/lib/trpc';
 import {
   Select,
@@ -20,8 +21,6 @@ const MedicalComponentSelector: React.FC<Props> = ({ value, onChange }) => {
     trpc.components.getAllComponents.queryOptions({}),
   );
 
-  console.log({ components });
-
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="xs:w-[200px]">
@@ -33,6 +32,7 @@ const MedicalComponentSelector: React.FC<Props> = ({ value, onChange }) => {
             {component.name} - ₱{component.price.toFixed(2)}
           </SelectItem>
         ))}
+        {components?.data.length === 0 && <Empty />}
       </SelectContent>
     </Select>
   );

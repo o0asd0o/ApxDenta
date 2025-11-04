@@ -1,3 +1,5 @@
+import DoctorSeeder from '@/components/@seeders/DoctorSeeder';
+import GenStaffSSeeder from '@/components/@seeders/GenStaffSeeder';
 import { DialogDrawer } from '@/components/dialog/DialogDrawer';
 import StepperComponent from '@/components/stepper/StepperComponent';
 import { useUploadFile } from '@/hooks/upload/useUploadFile';
@@ -157,7 +159,15 @@ const CreateStaff: React.FC = () => {
         open={drawerOpen}
         setOpen={setDrawerOpen}
         className="ml-auto"
-        title={`Add new ${staffLabel}`}
+        title={
+          <span className="inline-flex">
+            <span>Add new {staffLabel}</span>
+            <>
+              {type === 'DOCTOR' && <DoctorSeeder />}
+              {type === 'STAFF' && <GenStaffSSeeder />}
+            </>
+          </span>
+        }
         actionText={`Add ${staffLabel}`}
         disabledTooltip={
           !activeOrg ? 'You need to setup an organization first' : undefined

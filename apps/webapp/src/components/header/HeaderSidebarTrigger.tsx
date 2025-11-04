@@ -10,8 +10,8 @@ export const HeaderSidebarTrigger: React.FC = () => {
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      variant="outline"
-      className={cn('size-9 p-2 ml-auto flex md:hidden')}
+      variant="ghost"
+      className={cn('size-9 p-0 ml-auto flex md:hidden')}
       onClick={toggleSidebar}
     >
       <MenuIcon />

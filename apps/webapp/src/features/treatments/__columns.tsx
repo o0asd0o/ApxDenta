@@ -55,13 +55,16 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
     header: 'Price',
     cell: ({ row }) => {
       const treatment = row.original;
+      const price = treatment.pricePerDuration * treatment.duration;
+      const formattedPrice = new Intl.NumberFormat('en-PH', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(price);
 
       return (
         <span className="text-sm text-gray-500">
-          Start from{' '}
-          <span className="font-medium text-black">
-            ₱{treatment.pricePerDuration * treatment.duration}
-          </span>
+          Starts from{' '}
+          <span className="font-medium text-black">₱{formattedPrice}</span>
         </span>
       );
     },

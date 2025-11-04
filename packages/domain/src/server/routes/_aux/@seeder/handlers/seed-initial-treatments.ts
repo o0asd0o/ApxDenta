@@ -3,8 +3,7 @@ import { faker } from '@faker-js/faker';
 import { z } from 'zod';
 
 const inputSchema = z.object({
-  count: z.number().min(1).max(50).default(10),
-  organizationId: z.string(),
+  count: z.number().min(1).max(50).default(30),
 });
 
 type Params = HandlerType<z.infer<typeof inputSchema>>;
@@ -42,14 +41,14 @@ const treatmentNames = {
 };
 
 const handler = async ({ input, ctx }: Params) => {
-  const { count, organizationId } = input;
+  const { count } = input;
   const createdIds: string[] = [];
 
   // Get existing medical components for treatment components
   const medicalComponents = await ctx.db
     .selectFrom('MedicalComponent')
     .select(['id', 'name', 'price'])
-    .where('organizationId', '=', organizationId)
+    .where('organizationId', '=', ctx.organizationId)
     .limit(20)
     .execute();
 
@@ -91,8 +90,12 @@ const handler = async ({ input, ctx }: Params) => {
         visitType,
         duration,
         pricePerDuration,
-        status: 'FINALIZED',
-        organizationId,
+        status: faker.helpers.arrayElement([
+          'FINALIZED',
+          'SAMPLE',
+          'INACTIVE',
+        ] as const),
+        organizationId: ctx.organizationId,
         createdAt: faker.date.past({ years: 1 }),
         updatedAt: new Date(),
       })
