@@ -46,9 +46,9 @@ const buttonVariants = tv({
       ],
       secondary: [
         // border
-        'border-primary-300 dark:border-primary-800',
+        'border-primary-200 dark:border-primary-800',
         // text color
-        'text-primary-900 dark:text-primary-50',
+        'text-primary-500 dark:text-primary-50',
         // background color
         'bg-white dark:bg-gray-950',
         //hover color

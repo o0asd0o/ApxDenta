@@ -81,7 +81,7 @@ export const getAllTreatments = async ({
 
 //// AUXILIARIES /////
 
-const getAverageDuration = (eb: ExpressionBuilder<DB, 'Treatment'>) => {
+export const getAverageDuration = (eb: ExpressionBuilder<DB, 'Treatment'>) => {
   return eb
     .case()
     .when('Treatment.visitType', '=', 'MULTIPLE_VISIT')
@@ -98,7 +98,7 @@ const getAverageDuration = (eb: ExpressionBuilder<DB, 'Treatment'>) => {
     .end();
 };
 
-const getStartingPrice = (eb: ExpressionBuilder<DB, 'Treatment'>) => {
+export const getStartingPrice = (eb: ExpressionBuilder<DB, 'Treatment'>) => {
   return eb
     .case()
     .when('Treatment.visitType', '=', 'SINGLE_VISIT')

@@ -15,6 +15,17 @@ export const treatmentSchema = z.object({
     .min(0.5, 'Duration must be at least 30 minutes')
     .optional(),
 
+  visits: z
+    .object({
+      treatmentId: z.string().or(z.null()),
+      gracePeriod: z
+        .number()
+        .min(0, 'Grace period must be at least 0')
+        .optional(),
+      gracePeriodUnit: z.enum(['DAYS', 'WEEKS', 'MONTHS']).optional(),
+    })
+    .array()
+    .optional(),
   components: z
     .object({
       id: z.string(),

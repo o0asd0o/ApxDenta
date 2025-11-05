@@ -1,4 +1,3 @@
-import { useActiveOrganization } from '@/lib/auth-client';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
@@ -9,8 +8,7 @@ const TreatmentSeeder: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const organization = useActiveOrganization();
-  const { data: treatments } = useQuery({
+  const { data: treatments, isLoading } = useQuery({
     ...trpc.treatments.getAllTreatments.queryOptions({
       status: 'ACTIVE',
       page: 1,
@@ -38,14 +36,16 @@ const TreatmentSeeder: React.FC = () => {
     return null;
   }
 
+  const loading = isLoading || isPending;
+
   return (
     <button
       className="bg-none border-none underline text-primary-400 text-sm ml-2 font-normal"
       type="button"
       onClick={() => seedTreatments({})}
     >
-      {!isPending && 'seed'}
-      {isPending && <Loader2 className="animate-spin size-5" />}
+      {!loading && 'seed'}
+      {loading && <Loader2 className="animate-spin size-5" />}
     </button>
   );
 };

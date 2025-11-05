@@ -1,6 +1,7 @@
 import Tooth from '@/assets/tooth';
 import MedicalComponentSeeder from '@/components/@seeders/MedicalComponentSeeder';
 import NumberButtonInput from '@/components/NumberButtonInput';
+import { useCurrentIndexAction } from '@/components/dialog/stacked/StackProvider';
 import { cn } from '@/lib/utils';
 import type { TreatmentFormType } from '@repo/schemas';
 import {
@@ -33,6 +34,8 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
   });
 
   const category = form.watch('category');
+
+  const setCurrentIndex = useCurrentIndexAction('increment');
 
   return (
     <div className="flex divide-y divide-gray-200 flex-col gap-4">
@@ -131,6 +134,10 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
               type="button"
               className="ml-auto text-primary"
               variant="ghost"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(1);
+              }}
             >
               Setup
             </Button>
@@ -181,9 +188,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
                 <FormField
                   control={form.control}
                   name="duration"
-                  render={({ field }) => (
-                    <EstimatedHoursField onChange={field.onChange} />
-                  )}
+                  render={({ field }) => <EstimatedHoursField {...field} />}
                 />
               </div>
             </div>

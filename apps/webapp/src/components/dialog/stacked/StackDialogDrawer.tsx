@@ -12,8 +12,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@repo/ui/components';
+import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import React, { type FormEventHandler } from 'react';
 import { useCurrentIndex, useCurrentIndexAction } from './StackProvider';
+import { getStackTranslation } from './__helpers';
 
 type Props = {
   className?: string;
@@ -45,7 +47,10 @@ export const StackDialogDrawer: React.FC<Props> = ({
 }) => {
   const currentIndex = useCurrentIndex();
   const setIndex = useCurrentIndexAction('set');
+  const decrementIndex = useCurrentIndexAction('decrement');
   const Comp = typeof onSubmit === 'function' ? 'form' : 'div';
+
+  const isMobile = useIsMobile();
 
   return (
     <Sheet
@@ -88,8 +93,8 @@ export const StackDialogDrawer: React.FC<Props> = ({
       )}
       <SheetOverlay />
       {stacks.map((stack, index) => {
+        console.log({ currentIndex, index });
         if (index > currentIndex) return null;
-        console.log('stack', stack);
         return (
           <SheetContent
             side={index !== 0 ? 'none' : undefined}
@@ -97,19 +102,13 @@ export const StackDialogDrawer: React.FC<Props> = ({
             className={cn(
               'gap-0 absolute top-5 sm:top-10 right-2.5 h-[calc(100%_-_40px)] sm:h-[calc(100%_-_80px)] rounded-3xl w-[calc(100%-20px)] sm:max-w-[500px]',
               currentIndex !== 0 && 'translate-x-[var(--translation)]',
-              index > currentIndex && 'hidden',
             )}
             overlay={false}
-            style={
-              {
-                '--translation':
-                  currentIndex > index
-                    ? `${(currentIndex - index) * 90}%`
-                    : currentIndex !== 0
-                      ? '-14%'
-                      : '0%',
-              } as React.CSSProperties
-            }
+            style={getStackTranslation(currentIndex, index, isMobile)}
+            {...(currentIndex === index &&
+              index !== 0 && {
+                onClose: decrementIndex,
+              })}
           >
             <SheetHeader className="border-b border-b-border px-4 py-3 h-14">
               <SheetTitle className="text-lg">{stack.title}</SheetTitle>

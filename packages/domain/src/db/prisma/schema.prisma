@@ -242,8 +242,11 @@ model MedicalComponent {
 }
 
 model TreatmentVisit {
-  id       String @id @default(dbgenerated("gen_random_uuid()"))
-  sequence Int
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  sequence        Int
+  gracePeriod     Int?
+  gracePeriodUnit GracePeriodUnit?
 
   treatment   Treatment? @relation(fields: [treatmentId], references: [id])
   treatmentId String?
@@ -755,4 +758,10 @@ enum MedicalCheckupStatus {
 enum BillHistoryType {
   COMMENT
   PAYMENT
+}
+
+enum GracePeriodUnit {
+  DAYS
+  WEEKS
+  MONTHS
 }

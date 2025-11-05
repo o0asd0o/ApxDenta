@@ -8,7 +8,7 @@ const DoctorSeeder: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: treatments } = useQuery({
+  const { data: treatments, isLoading } = useQuery({
     ...trpc.staffs.getAllStaffs.queryOptions({
       type: 'DOCTOR',
       page: 1,
@@ -36,6 +36,8 @@ const DoctorSeeder: React.FC = () => {
     return null;
   }
 
+  const loading = isLoading || isPending;
+
   return (
     <button
       className="bg-none border-none underline text-primary-400 text-sm ml-2 font-normal"
@@ -43,8 +45,8 @@ const DoctorSeeder: React.FC = () => {
       onClick={() => seedDoctors({ type: 'DOCTOR' })}
     >
       <>
-        {!isPending && 'seed'}
-        {isPending && <Loader2 className="animate-spin size-4" />}
+        {!loading && 'seed'}
+        {loading && <Loader2 className="animate-spin size-4" />}
       </>
     </button>
   );

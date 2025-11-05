@@ -13,16 +13,27 @@ import React from 'react';
 
 type Props = {
   onChange: (value: number) => void;
+  value?: number;
+  disabled?: boolean;
 };
-const EstimatedHoursField: React.FC<Props> = ({ onChange }) => {
+
+const EstimatedHoursField: React.FC<Props> = ({
+  onChange,
+  value,
+  disabled,
+}) => {
   return (
     <FormItem className="flex flex-col w-full">
       <FormLabel className="whitespace-nowrap">
         Estimated Duration (Hours)
       </FormLabel>
       <FormControl>
-        <Select onValueChange={(value) => onChange(Number(value))}>
-          <SelectTrigger className="w-full h-[38px] text-sm">
+        <Select
+          onValueChange={(value) => onChange(Number(value))}
+          value={String(value)}
+          disabled={disabled}
+        >
+          <SelectTrigger className="w-full h-[38px] text-sm mb-0">
             <SelectValue placeholder="Select duration" />
           </SelectTrigger>
           <SelectContent>
@@ -34,6 +45,8 @@ const EstimatedHoursField: React.FC<Props> = ({ onChange }) => {
             <SelectItem value={'3'}>3 hours</SelectItem>
             <SelectItem value={'3.5'}>3.5 hours</SelectItem>
             <SelectItem value={'4'}>4 hours</SelectItem>
+            <SelectItem value={'4.5'}>4.5 hours</SelectItem>
+            <SelectItem value={'5'}>5 hours</SelectItem>
           </SelectContent>
         </Select>
       </FormControl>
