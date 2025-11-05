@@ -8,12 +8,10 @@ const MedicalComponentSeeder: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: components } = useQuery({
+  const { data: components, isLoading } = useQuery({
     ...trpc.components.getAllComponents.queryOptions({ page: 1, perPage: 1 }),
     enabled: import.meta.env.VITE_ENABLE_SEEDERS === '1',
   });
-
-  console.log({ components, enabled: import.meta.env.VITE_ENABLE_SEEDERS });
 
   const { mutate: seedComponents, isPending } = useMutation(
     trpc.seeder.seedMedicalComponents.mutationOptions({
@@ -31,14 +29,15 @@ const MedicalComponentSeeder: React.FC = () => {
     return null;
   }
 
+  const loading = isLoading || isPending;
   return (
     <button
       className="bg-none border-none underline text-primary-300 text-sm ml-2 font-normal"
       type="button"
       onClick={() => seedComponents({})}
     >
-      {!isPending && 'seed'}
-      {isPending && <Loader2 className="animate-spin size-5" />}
+      {!loading && 'seed'}
+      {loading && <Loader2 className="animate-spin size-5" />}
     </button>
   );
 };

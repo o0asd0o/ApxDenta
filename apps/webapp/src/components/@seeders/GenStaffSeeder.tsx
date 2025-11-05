@@ -8,7 +8,7 @@ const GenStaffSSeeder: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: treatments } = useQuery({
+  const { data: treatments, isLoading } = useQuery({
     ...trpc.staffs.getAllStaffs.queryOptions({
       type: 'STAFF',
       page: 1,
@@ -36,6 +36,8 @@ const GenStaffSSeeder: React.FC = () => {
     return null;
   }
 
+  const loading = isLoading || isPending;
+
   return (
     <button
       className="bg-none border-none underline text-primary-400 text-sm ml-2 font-normal"
@@ -43,8 +45,8 @@ const GenStaffSSeeder: React.FC = () => {
       onClick={() => seedGetStaffs({ type: 'STAFF' })}
     >
       <>
-        {!isPending && 'seed'}
-        {isPending && <Loader2 className="animate-spin size-4" />}
+        {!loading && 'seed'}
+        {loading && <Loader2 className="animate-spin size-4" />}
       </>
     </button>
   );
