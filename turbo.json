@@ -7,6 +7,10 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"]
     },
+    "build-backend": {
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build-backend"]
+    },
     "build:dev": {
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "dependsOn": ["^build:dev"]

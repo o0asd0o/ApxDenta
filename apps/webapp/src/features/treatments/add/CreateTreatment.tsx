@@ -20,6 +20,8 @@ import TreatmentBaseForm from './forms/TreatmentBaseForm';
  * 1. Refactor the form (DONE)
  * 2. Integrate multiple visit form (DONE)
  * 3. Integrate API for actual creation of treatment (DONE)
+ *    a. See details for visit item
+ *    b. handle computed price and duration for multiple visit
  * 4. Implement other fetaures - update, delete, bulk delete
  * 5. Implement Seeder for every empty main records
  */
