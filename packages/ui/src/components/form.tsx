@@ -8,14 +8,12 @@ import {
   type ControllerProps,
   type FieldPath,
   type FieldValues,
-  FormProvider,
+  FormProvider as Form,
   useFormContext,
 } from 'react-hook-form';
 
 import { Label } from '@repo/ui/components';
 import { cn } from '@repo/ui/lib/utils';
-
-const Form = FormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,

@@ -11,14 +11,23 @@ import React from 'react';
 import { cn, focusInput, hasErrorInput } from '@repo/ui/lib/utils';
 import { ChevronDown } from 'lucide-react';
 
-const Select = SelectPrimitives.Root;
-Select.displayName = 'Select';
+function Select({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitives.Root>) {
+  return <SelectPrimitives.Root data-slot="select" {...props} />;
+}
 
-const SelectGroup = SelectPrimitives.Group;
-SelectGroup.displayName = 'SelectGroup';
+function SelectGroup({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitives.Group>) {
+  return <SelectPrimitives.Group data-slot="select" {...props} />;
+}
 
-const SelectValue = SelectPrimitives.Value;
-SelectValue.displayName = 'SelectValue';
+function SelectValue({
+  ...props
+}: React.ComponentProps<typeof SelectPrimitives.Value>) {
+  return <SelectPrimitives.Value data-slot="select" {...props} />;
+}
 
 const selectTriggerStyles = [
   cn(
