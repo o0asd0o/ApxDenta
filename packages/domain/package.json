@@ -46,7 +46,6 @@
     "@aws-sdk/s3-request-presigner": "^3.842.0",
     "@hono/trpc-server": "^0.3.4",
     "@hono/zod-openapi": "^0.18.3",
-    "@react-email/components": "0.0.14",
     "@repo/email": "workspace:*",
     "@repo/schemas": "workspace:*",
     "@trpc/server": "^11.0.4",

@@ -18,9 +18,12 @@
   "scripts": {
     "build": "turbo build",
     "build:dev": "turbo build:dev",
+    "build-backend": "turbo build --filter=@repo/webapp...",
+    "build-frontend": "turbo build  --filter=@repo/server...",
     "dev": "turbo dev",
     "ts-compile": "turbo ts-compile",
     "lint": "turbo lint",
+
     "lint:fix": "turbo lint:fix",
     "clean": "turbo clean && rm -rf node_modules",
     "changeset": "changeset",
