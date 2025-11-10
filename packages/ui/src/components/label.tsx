@@ -10,28 +10,34 @@ interface LabelProps
   disabled?: boolean;
 }
 
-const Label = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitives.Root>,
-  LabelProps
->(({ className, disabled, ...props }, forwardedRef) => (
-  <LabelPrimitives.Root
-    ref={forwardedRef}
-    className={cn(
-      // base
-      'text-sm leading-none',
-      // text color
-      'text-gray-900 dark:text-gray-50',
-      // disabled
-      {
-        'text-gray-400 dark:text-gray-600': disabled,
-      },
-      className,
-    )}
-    aria-disabled={disabled}
-    tremor-id="tremor-raw"
-    {...props}
-  />
-));
+function Label({
+  className,
+  disabled,
+  ref,
+  ...props
+}: LabelProps & {
+  ref?: React.Ref<React.ElementRef<typeof LabelPrimitives.Root>>;
+}) {
+  return (
+    <LabelPrimitives.Root
+      ref={ref}
+      className={cn(
+        // base
+        'text-sm leading-none',
+        // text color
+        'text-gray-900 dark:text-gray-50',
+        // disabled
+        {
+          'text-gray-400 dark:text-gray-600': disabled,
+        },
+        className,
+      )}
+      aria-disabled={disabled}
+      tremor-id="tremor-raw"
+      {...props}
+    />
+  );
+}
 
 Label.displayName = 'Label';
 

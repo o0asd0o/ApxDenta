@@ -5,29 +5,35 @@ import React from 'react';
 
 import { cn, focusRing } from '@repo/ui/lib/utils';
 
-const RadioGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Root>
->(({ className, ...props }, forwardedRef) => {
+function RadioGroup({
+  className,
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Root> & {
+  ref?: React.Ref<React.ElementRef<typeof RadioGroupPrimitives.Root>>;
+}) {
   return (
     <RadioGroupPrimitives.Root
-      ref={forwardedRef}
+      ref={ref}
       className={cn('grid gap-2', className)}
       tremor-id="tremor-raw"
       {...props}
     />
   );
-});
+}
 
 RadioGroup.displayName = 'RadioGroup';
 
-const RadioGroupIndicator = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitives.Indicator>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Indicator>
->(({ className, ...props }, forwardedRef) => {
+function RadioGroupIndicator({
+  className,
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Indicator> & {
+  ref?: React.Ref<React.ElementRef<typeof RadioGroupPrimitives.Indicator>>;
+}) {
   return (
     <RadioGroupPrimitives.Indicator
-      ref={forwardedRef}
+      ref={ref}
       className={cn('flex items-center justify-center', className)}
       {...props}
     >
@@ -43,17 +49,20 @@ const RadioGroupIndicator = React.forwardRef<
       />
     </RadioGroupPrimitives.Indicator>
   );
-});
+}
 
 RadioGroupIndicator.displayName = 'RadioGroupIndicator';
 
-const RadioGroupItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitives.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Item>
->(({ className, ...props }, forwardedRef) => {
+function RadioGroupItem({
+  className,
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Item> & {
+  ref?: React.Ref<React.ElementRef<typeof RadioGroupPrimitives.Item>>;
+}) {
   return (
     <RadioGroupPrimitives.Item
-      ref={forwardedRef}
+      ref={ref}
       className={cn(
         'group relative flex size-4 appearance-none items-center justify-center outline-hidden',
         className,
@@ -82,7 +91,7 @@ const RadioGroupItem = React.forwardRef<
       </div>
     </RadioGroupPrimitives.Item>
   );
-});
+}
 
 RadioGroupItem.displayName = 'RadioGroupItem';
 

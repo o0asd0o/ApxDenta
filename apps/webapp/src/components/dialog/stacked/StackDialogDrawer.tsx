@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { Tooltip } from '@radix-ui/react-tooltip';
 import {
   Button,
   Sheet,
@@ -9,6 +8,7 @@ import {
   SheetOverlay,
   SheetTitle,
   SheetTrigger,
+  Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@repo/ui/components';

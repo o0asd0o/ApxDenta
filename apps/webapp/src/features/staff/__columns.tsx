@@ -3,11 +3,11 @@ import { Contact } from '@/components/Contact';
 import { PersonalInfo } from '@/components/PersonalInfo';
 import { EMPLOYMENT_TYPE_BADGES } from '@/constants/badges';
 import { STAFF_LIST } from '@/constants/options';
-import { Tooltip } from '@radix-ui/react-tooltip';
 import type { EmploymentType, StaffType, WorkingDay } from '@repo/domain/db';
 import {
   Button,
   Checkbox,
+  Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@repo/ui/components';

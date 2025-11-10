@@ -6,10 +6,15 @@ import { cn } from '@repo/ui/lib/utils';
 
 type DividerProps = React.ComponentPropsWithoutRef<'div'>;
 
-const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
-  ({ className, children, ...props }, forwardedRef) => (
+function Divider({
+  className,
+  children,
+  ref,
+  ...props
+}: DividerProps & { ref?: React.Ref<HTMLDivElement> }) {
+  return (
     <div
-      ref={forwardedRef}
+      ref={ref}
       className={cn(
         // base
         'mx-auto my-6 flex w-full items-center justify-between gap-3 text-sm',
@@ -51,8 +56,8 @@ const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
         />
       )}
     </div>
-  ),
-);
+  );
+}
 
 Divider.displayName = 'Divider';
 

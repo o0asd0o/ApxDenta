@@ -30,44 +30,42 @@ interface NavigationButtonProps
   disabled?: boolean;
 }
 
-const NavigationButton = React.forwardRef<
-  HTMLButtonElement,
-  NavigationButtonProps
->(
-  (
-    { onClick, icon, disabled, ...props }: NavigationButtonProps,
-    forwardedRef,
-  ) => {
-    const Icon = icon;
-    return (
-      <button
-        ref={forwardedRef}
-        type="button"
-        disabled={disabled}
-        className={cn(
-          'flex size-8 shrink-0 select-none items-center justify-center rounded-sm border p-1 outline-hidden transition sm:size-[30px]',
-          // text color
-          'text-gray-600 hover:text-gray-800',
-          'dark:text-gray-400 dark:hover:text-gray-200',
-          // border color
-          'border-gray-300 dark:border-gray-800',
-          // background color
-          'hover:bg-gray-50 active:bg-gray-100',
-          'dark:hover:bg-gray-900 dark:active:bg-gray-800',
-          // disabled
-          'disabled:pointer-events-none',
-          'disabled:border-gray-200 dark:disabled:border-gray-800',
-          'disabled:text-gray-400 dark:disabled:text-gray-600',
-          focusRing,
-        )}
-        onClick={onClick}
-        {...props}
-      >
-        <Icon className="size-full shrink-0" />
-      </button>
-    );
-  },
-);
+function NavigationButton({
+  onClick,
+  icon,
+  disabled,
+  ref,
+  ...props
+}: NavigationButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
+  const Icon = icon;
+  return (
+    <button
+      ref={ref}
+      type="button"
+      disabled={disabled}
+      className={cn(
+        'flex size-8 shrink-0 select-none items-center justify-center rounded-sm border p-1 outline-hidden transition sm:size-[30px]',
+        // text color
+        'text-gray-600 hover:text-gray-800',
+        'dark:text-gray-400 dark:hover:text-gray-200',
+        // border color
+        'border-gray-300 dark:border-gray-800',
+        // background color
+        'hover:bg-gray-50 active:bg-gray-100',
+        'dark:hover:bg-gray-900 dark:active:bg-gray-800',
+        // disabled
+        'disabled:pointer-events-none',
+        'disabled:border-gray-200 dark:disabled:border-gray-800',
+        'disabled:text-gray-400 dark:disabled:text-gray-600',
+        focusRing,
+      )}
+      onClick={onClick}
+      {...props}
+    >
+      <Icon className="size-full shrink-0" />
+    </button>
+  );
+}
 
 NavigationButton.displayName = 'NavigationButton';
 
@@ -257,7 +255,11 @@ const Calendar = ({
         Day: ({ date, displayMonth }: DayProps) => {
           const buttonRef = React.useRef<HTMLButtonElement>(null);
           const { activeModifiers, buttonProps, divProps, isButton, isHidden } =
-            useDayRender(date, displayMonth, buttonRef);
+            useDayRender(
+              date,
+              displayMonth,
+              buttonRef as React.RefObject<HTMLButtonElement>,
+            );
 
           const { selected, today, disabled, range_middle } = activeModifiers;
 

@@ -68,14 +68,18 @@ interface SwitchProps
     >,
     VariantProps<typeof switchVariants> {}
 
-const Switch = React.forwardRef<
-  React.ElementRef<typeof SwitchPrimitives.Root>,
-  SwitchProps
->(({ className, size, ...props }: SwitchProps, forwardedRef) => {
+function Switch({
+  className,
+  size,
+  ref,
+  ...props
+}: SwitchProps & {
+  ref?: React.Ref<React.ElementRef<typeof SwitchPrimitives.Root>>;
+}) {
   const { root, thumb } = switchVariants({ size });
   return (
     <SwitchPrimitives.Root
-      ref={forwardedRef}
+      ref={ref}
       className={cn(root(), className)}
       tremor-id="tremor-raw"
       {...props}
@@ -83,7 +87,7 @@ const Switch = React.forwardRef<
       <SwitchPrimitives.Thumb className={cn(thumb())} />
     </SwitchPrimitives.Root>
   );
-});
+}
 
 Switch.displayName = 'Switch';
 
