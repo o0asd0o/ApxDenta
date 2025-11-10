@@ -1,4 +1,4 @@
-import { executeWithOffsetPagination } from '@/server/utils/pagination/offset';
+import { executeWithOffsetPagination } from '@/server/utils/pagination';
 import { jsonArrayFrom, jsonObjectFrom } from 'kysely/helpers/postgres';
 import type { GetAllStaffsProps } from '../get-all-staffs';
 
