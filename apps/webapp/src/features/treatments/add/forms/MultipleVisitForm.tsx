@@ -1,5 +1,4 @@
 import TreatmentsInput from '@/components/TreatmentsInput';
-import { useCurrentIndexAction } from '@/components/dialog/stacked/StackProvider';
 import type { TreatmentFormType } from '@repo/schemas';
 import {
   Button,
@@ -18,10 +17,6 @@ type Props = {
   form: UseFormReturn<TreatmentFormType>;
 };
 const MultipleVisitForm: React.FC<Props> = ({ form }) => {
-  console.log({ form });
-
-  const setCurrentIndex = useCurrentIndexAction('set');
-
   const { fields, append, remove, move } = useFieldArray({
     control: form.control,
     name: 'visits',

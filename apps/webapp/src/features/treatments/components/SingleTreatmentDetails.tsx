@@ -12,7 +12,6 @@ type Props = {
 };
 const SingleTreatmentDetails: React.FC<Props> = ({ treatmentId }) => {
   const trpc = useTRPC();
-  console.log({ treatmentId });
   const { data: treatment } = useQuery({
     ...trpc.treatments.getTreatment.queryOptions({ id: treatmentId as string }),
     enabled: Boolean(treatmentId),

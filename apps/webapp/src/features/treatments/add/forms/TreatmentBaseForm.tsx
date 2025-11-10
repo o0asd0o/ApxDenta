@@ -23,6 +23,7 @@ import { type UseFormReturn, useFieldArray } from 'react-hook-form';
 import EstimatedHoursField from '../../components/EstimatedHoursField';
 import FreeDiscount from '../../components/FreeDiscount';
 import MedicalComponentSelector from '../../components/MedicalComponentSelector';
+import MultipleVisitTrigger from '../../components/MultipleVisitTrigger';
 
 type Props = {
   form: UseFormReturn<TreatmentFormType>;
@@ -31,6 +32,10 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'components',
+  });
+
+  console.log('ERRORS!!', {
+    errors: form.formState.errors,
   });
 
   const category = form.watch('category');
@@ -123,25 +128,10 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
               </FormItem>
             )}
           />
-          <div className="flex bg-gray-50 px-4 py-3 rounded-md items-center relative before:content-[''] before:absolute before:left-0 before:top-1 before:bottom-1 before:w-[2px] before:bg-primary before:rounded-full">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm">Set Multiple Visit</h3>
-              <span className="text-xs text-gray-400">
-                Allow multiple visits for this treatment
-              </span>
-            </div>
-            <Button
-              type="button"
-              className="ml-auto text-primary"
-              variant="ghost"
-              onClick={(e) => {
-                e.stopPropagation();
-                setCurrentIndex(1);
-              }}
-            >
-              Setup
-            </Button>
-          </div>
+          <MultipleVisitTrigger
+            form={form}
+            onClick={() => setCurrentIndex(1)}
+          />
         </div>
       </div>
       {!!category && (
@@ -193,90 +183,87 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-6">
-            <div className="flex gap-2">
-              <div className=" relative size-10 p-2 bg-accent rounded-sm text-gray-500">
-                <Tooth />
-                <Wrench
-                  strokeWidth={2.5}
-                  className="absolute size-3.5 p-[1px] bottom-[7px] right-[5px] transform scale-x-[-1] bg-accent rounded-full"
-                />
-              </div>
+          {fields.length > 0 && (
+            <div className="flex flex-col gap-6">
+              <div className="flex gap-2">
+                <div className=" relative size-10 p-2 bg-accent rounded-sm text-gray-500">
+                  <Tooth />
+                  <Wrench
+                    strokeWidth={2.5}
+                    className="absolute size-3.5 p-[1px] bottom-[7px] right-[5px] transform scale-x-[-1] bg-accent rounded-full"
+                  />
+                </div>
 
-              <div className="flex flex-col">
-                <h3 className="text-black text-base font-medium">
-                  Components used <MedicalComponentSeeder />
-                </h3>
-                <span className="text-gray-500 text-xs">
-                  Every part/component used for patient&apos;s treatment
-                </span>
+                <div className="flex flex-col">
+                  <h3 className="text-black text-base font-medium">
+                    Components used <MedicalComponentSeeder />
+                  </h3>
+                  <span className="text-gray-500 text-xs">
+                    Every part/component used for patient&apos;s treatment
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-4">
-              {fields.map((field, index) => (
-                <div
-                  key={field.id}
-                  className="flex gap-3 items-center border-b border-accent pb-4"
-                >
-                  <div className="flex gap-3 flex-col w-full">
-                    <div className="flex justify-between gap-3 xs:flex-row flex-col w-full">
-                      <div className="flex flex-col gap-3 w-full">
+              <div className="flex flex-col gap-4">
+                {fields.map((field, index) => (
+                  <div
+                    key={field.id}
+                    className="flex gap-3 items-center border-b border-accent pb-4"
+                  >
+                    <div className="flex gap-3 flex-col w-full">
+                      <div className="flex justify-between gap-3 xs:flex-row flex-col w-full">
+                        <div className="flex flex-col gap-3 w-full">
+                          <FormField
+                            control={form.control}
+                            name={`components.${index}.id`}
+                            render={({ field }) => (
+                              <FormItem className="flex flex-col">
+                                <FormControl>
+                                  <MedicalComponentSelector
+                                    value={field.value as string}
+                                    onChange={field.onChange}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <div className="flex gap-3 items-center">
+                          <FormField
+                            control={form.control}
+                            name={`components.${index}.quantity`}
+                            render={({ field }) => (
+                              <FormItem className="flex flex-col w-full">
+                                <FormControl>
+                                  <NumberButtonInput
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            className={cn(
+                              'size-8 p-1.5 hover:bg-red-50 hidden xs:inline-flex',
+                              fields.length === 1 && 'invisible',
+                            )}
+                            aria-label="Remove component"
+                            onClick={() => remove(index)}
+                          >
+                            <Trash2 className="text-red-600" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div>
                         <FormField
                           control={form.control}
-                          name={`components.${index}.id`}
+                          name={`components.${index}.free`}
                           render={({ field }) => (
-                            <FormItem className="flex flex-col">
-                              <FormControl>
-                                <MedicalComponentSelector
-                                  value={field.value as string}
-                                  onChange={field.onChange}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-
-                      <div className="flex gap-3 items-center">
-                        <FormField
-                          control={form.control}
-                          name={`components.${index}.quantity`}
-                          render={({ field }) => (
-                            <FormItem className="flex flex-col w-full">
-                              <FormControl>
-                                <NumberButtonInput
-                                  value={field.value}
-                                  onChange={field.onChange}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          className={cn(
-                            'size-8 p-1.5 hover:bg-red-50 hidden xs:inline-flex',
-                            fields.length === 1 && 'invisible',
-                          )}
-                          aria-label="Remove component"
-                          onClick={() => remove(index)}
-                        >
-                          <Trash2 className="text-red-600" />
-                        </Button>
-                      </div>
-                    </div>
-                    <div>
-                      <FormField
-                        control={form.control}
-                        name={`components.${index}.free`}
-                        render={({ field }) => {
-                          console.log({ field });
-
-                          // field.name
-                          return (
                             <FormItem>
                               <FormControl>
                                 <FreeDiscount
@@ -299,43 +286,43 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
                               </FormControl>
                               <FormMessage />
                             </FormItem>
-                          );
-                        }}
-                      />
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex xs:hidden">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        className={cn(
+                          'size-8 p-1.5 hover:bg-red-50',
+                          fields.length === 1 && 'invisible',
+                        )}
+                        aria-label="Remove component"
+                        onClick={() => remove(index)}
+                      >
+                        <Trash2 className="text-red-600" />
+                      </Button>
                     </div>
                   </div>
-
-                  <div className="flex xs:hidden">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className={cn(
-                        'size-8 p-1.5 hover:bg-red-50',
-                        fields.length === 1 && 'invisible',
-                      )}
-                      aria-label="Remove component"
-                      onClick={() => remove(index)}
-                    >
-                      <Trash2 className="text-red-600" />
-                    </Button>
-                  </div>
+                ))}
+                <div>
+                  <Button
+                    variant="outline"
+                    className="gap-2 border-dashed w-full"
+                    type="button"
+                    onClick={() =>
+                      append({ id: '', quantity: 1, free: false, freeUpTo: 0 })
+                    }
+                  >
+                    <Plus className="size-4" />
+                    Add Component
+                  </Button>
                 </div>
-              ))}
-              <div>
-                <Button
-                  variant="outline"
-                  className="gap-2 border-dashed w-full"
-                  type="button"
-                  onClick={() =>
-                    append({ id: '', quantity: 1, free: false, freeUpTo: 0 })
-                  }
-                >
-                  <Plus className="size-4" />
-                  Add Component
-                </Button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

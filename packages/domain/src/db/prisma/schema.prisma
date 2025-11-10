@@ -213,7 +213,9 @@ model Treatment {
   organization     organization?        @relation(fields: [organizationId], references: [id])
   components       TreatmentComponent[]
   visits           TreatmentVisit[]
-  staffsAssigned   Staff[]              @relation("StaffAssignedTreatment")
+
+  visitTreatment TreatmentVisit[] @relation("VisitTreatment")
+  staffsAssigned Staff[]          @relation("StaffAssignedTreatment")
 
   @@index([name, category, visitType], map: "idx_treatment_name_category_visitType")
 }
@@ -247,6 +249,9 @@ model TreatmentVisit {
   sequence        Int
   gracePeriod     Int?
   gracePeriodUnit GracePeriodUnit?
+
+  visitTreatment   Treatment? @relation(fields: [visitTreatmentId], references: [id], name: "VisitTreatment")
+  visitTreatmentId String?
 
   treatment   Treatment? @relation(fields: [treatmentId], references: [id])
   treatmentId String?

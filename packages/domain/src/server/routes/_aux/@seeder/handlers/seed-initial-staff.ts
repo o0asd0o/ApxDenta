@@ -1,4 +1,5 @@
 import type { HandlerType } from '@/server/types';
+import { GET_DETAULT_DATES } from '@/server/utils/helpers';
 import { faker } from '@faker-js/faker';
 import { z } from 'zod';
 
@@ -107,25 +108,27 @@ const handler = async ({ input, ctx }: Params) => {
 
     for (const day of selectedDays) {
       const _startHour = faker.number.int({ min: 7, max: 9 });
-      const _startMin = faker.number.int({ min: 0, max: 59 });
+      const _startMinC = faker.number.int({ min: 0, max: 1 });
+      const _startMin = [0, 30][_startMinC];
+
       const _endHour = faker.number.int({ min: 16, max: 18 });
-      const _endMin = faker.number.int({ min: 0, max: 59 });
+      const _endMinC = faker.number.int({ min: 0, max: 1 });
+      const _endMin = [0, 30][_endMinC];
 
-      const startHour = `${String(_startHour).padStart(4, '0').slice(0, 2)}`;
-      const startMin = `${String(_startMin).padStart(4, '0').slice(2)}`;
+      const startHour = `${String(_startHour).padStart(2, '0')}`;
+      const startMin = `${String(_startMin).padStart(2, '0')}`;
 
-      const endHour = `${String(_endHour).padStart(4, '0').slice(0, 2)}`;
-      const endMin = `${String(_endMin).padStart(4, '0').slice(2)}`;
+      const endHour = `${String(_endHour).padStart(2, '0')}`;
+      const endMin = `${String(_endMin).padStart(2, '0')}`;
 
       await ctx.db
         .insertInto('WorkSchedule')
         .values({
-          staffId: staff.id,
           day,
+          staffId: staff.id,
           from: `${startHour}:${startMin}:00`,
           to: `${endHour}:${endMin}:00`,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          ...GET_DETAULT_DATES(),
         })
         .execute();
     }
@@ -136,6 +139,8 @@ const handler = async ({ input, ctx }: Params) => {
         .selectFrom('Treatment')
         .select('id')
         .where('organizationId', '=', ctx.organizationId)
+        .where('isArchived', '=', false)
+        .where('status', '!=', 'INACTIVE')
         .limit(faker.number.int({ min: 3, max: 10 }))
         .execute();
 

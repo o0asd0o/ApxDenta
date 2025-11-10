@@ -28,19 +28,10 @@ export const useCurrentIndexAction = (
   action: 'increment' | 'decrement' | 'set',
   max?: number,
 ) => {
-  const [stackCount, setCurrentIndex] = useContextSelector(context, (v) => [
-    v.stackCount,
-    v.setCurrentIndex,
-  ]);
+  const setCurrentIndex = useContextSelector(context, (v) => v.setCurrentIndex);
   return (value?: number) => {
     setCurrentIndex((prev) => {
       if (action === 'set' && typeof value === 'number') return value;
-      const cos =
-        action === 'increment'
-          ? Math.min(stackCount || 10, prev + 1)
-          : Math.max(0, prev - 1);
-
-      console.log({ cos, max, prev });
 
       return action === 'increment'
         ? Math.min(max || 10, prev + 1)

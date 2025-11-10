@@ -61,8 +61,6 @@ export const StaffActionsProvider: React.FC<Props> = ({ children }) => {
     setState((prev) => ({ ...prev, open }));
   };
 
-  console.log({});
-
   return (
     <UpdateStaffContext.Provider
       value={{
