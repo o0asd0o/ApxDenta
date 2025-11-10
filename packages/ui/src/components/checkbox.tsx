@@ -5,13 +5,17 @@ import React from 'react';
 
 import { cn, focusRing } from '@repo/ui/lib/utils';
 
-const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitives.Root>
->(({ className, checked, ...props }, forwardedRef) => {
+function Checkbox({
+  className,
+  checked,
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof CheckboxPrimitives.Root> & {
+  ref?: React.Ref<React.ComponentRef<typeof CheckboxPrimitives.Root>>;
+}) {
   return (
     <CheckboxPrimitives.Root
-      ref={forwardedRef}
+      ref={ref}
       {...props}
       checked={checked}
       className={cn(
@@ -24,8 +28,8 @@ const Checkbox = React.forwardRef<
         // ring color
         'ring-gray-300 dark:ring-gray-800',
         // disabled
-        'data-[disabled]:bg-gray-100 data-[disabled]:text-gray-400 data-[disabled]:ring-gray-300',
-        'data-[disabled]:dark:bg-gray-800 data-[disabled]:dark:text-gray-500 data-[disabled]:dark:ring-gray-700',
+        'data-disabled:bg-gray-100 data-disabled:text-gray-400 data-disabled:ring-gray-300',
+        'data-disabled:dark:bg-gray-800 data-disabled:dark:text-gray-500 data-disabled:dark:ring-gray-700',
         // checked and enabled
         'enabled:data-[state=checked]:bg-primary-500 enabled:data-[state=checked]:ring-0 enabled:data-[state=checked]:ring-transparent',
         // indeterminate
@@ -80,7 +84,7 @@ const Checkbox = React.forwardRef<
       </CheckboxPrimitives.Indicator>
     </CheckboxPrimitives.Root>
   );
-});
+}
 
 Checkbox.displayName = 'Checkbox';
 

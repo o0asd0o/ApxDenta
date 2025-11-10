@@ -5,29 +5,36 @@ import React from 'react';
 
 import { cn, focusInput, focusRing } from '@repo/ui/lib/utils';
 
-const RadioCardGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Root>
->(({ className, ...props }, forwardedRef) => {
+function RadioCardGroup({
+  className,
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Root> & {
+  ref?: React.Ref<React.ComponentRef<typeof RadioGroupPrimitives.Root>>;
+}) {
   return (
     <RadioGroupPrimitives.Root
-      ref={forwardedRef}
+      ref={ref}
       className={cn('grid gap-2', className)}
       tremor-id="tremor-raw"
       {...props}
     />
   );
-});
+}
 
 RadioCardGroup.displayName = 'RadioCardGroup';
 
-const RadioCardItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitives.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Item>
->(({ className, children, ...props }, forwardedRef) => {
+function RadioCardItem({
+  className,
+  children,
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Item> & {
+  ref?: React.Ref<React.ElementRef<typeof RadioGroupPrimitives.Item>>;
+}) {
   return (
     <RadioGroupPrimitives.Item
-      ref={forwardedRef}
+      ref={ref}
       className={cn(
         // base
         'group relative w-full rounded-md border p-2 text-left shadow-xs transition focus:outline-hidden',
@@ -48,14 +55,17 @@ const RadioCardItem = React.forwardRef<
       {children}
     </RadioGroupPrimitives.Item>
   );
-});
+}
 
 RadioCardItem.displayName = 'RadioCardItem';
 
-const RadioCardIndicator = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitives.Indicator>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Indicator>
->(({ className, ...props }, forwardedRef) => {
+function RadioCardIndicator({
+  className,
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitives.Indicator> & {
+  ref?: React.Ref<React.ElementRef<typeof RadioGroupPrimitives.Indicator>>;
+}) {
   return (
     <div
       className={cn(
@@ -76,7 +86,7 @@ const RadioCardIndicator = React.forwardRef<
       )}
     >
       <RadioGroupPrimitives.Indicator
-        ref={forwardedRef}
+        ref={ref}
         className={cn('flex items-center justify-center')}
         {...props}
       >
@@ -93,7 +103,7 @@ const RadioCardIndicator = React.forwardRef<
       </RadioGroupPrimitives.Indicator>
     </div>
   );
-});
+}
 
 RadioCardIndicator.displayName = 'RadioCardIndicator';
 

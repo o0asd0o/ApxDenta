@@ -55,113 +55,109 @@ interface InputProps
   suffix?: React.JSX.Element;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      className,
-      inputClassName,
-      hasError,
-      enableStepper = true,
-      type,
-      icon,
-      suffix,
-      ...props
-    }: InputProps,
-    forwardedRef,
-  ) => {
-    const [typeState, setTypeState] = React.useState(type);
+function Input({
+  className,
+  inputClassName,
+  hasError,
+  enableStepper = true,
+  type,
+  icon,
+  suffix,
+  ref,
+  ...props
+}: InputProps & { ref?: React.Ref<HTMLInputElement> }) {
+  const [typeState, setTypeState] = React.useState(type);
 
-    const isPassword = type === 'password';
-    const isSearch = type === 'search';
+  const isPassword = type === 'password';
+  const isSearch = type === 'search';
 
-    return (
-      <div className={cn('relative w-full', className)} tremor-id="tremor-raw">
-        {icon && (
-          <div
-            className={cn(
-              // base
-              'pointer-events-none absolute bottom-0 left-3 flex h-full items-center justify-center',
-              // text color
-              'text-gray-600 dark:text-gray-600',
-              'z-1',
-            )}
-          >
-            {icon}
-          </div>
-        )}
-        <input
-          ref={forwardedRef}
-          type={isPassword ? typeState : type}
+  return (
+    <div className={cn('relative w-full', className)} tremor-id="tremor-raw">
+      {icon && (
+        <div
           className={cn(
-            inputStyles({ hasError, enableStepper }),
-            {
-              'pl-9': isSearch,
-              'pr-10': isPassword,
-            },
-            !!icon && 'pl-9',
-            inputClassName,
+            // base
+            'pointer-events-none absolute bottom-0 left-3 flex h-full items-center justify-center',
+            // text color
+            'text-gray-600 dark:text-gray-600',
+            'z-1',
           )}
-          {...props}
-        />
-        {suffix && (
-          <div className="pointer-events-none absolute bottom-0 right-3 flex h-full items-center justify-center">
-            {suffix}
-          </div>
+        >
+          {icon}
+        </div>
+      )}
+      <input
+        ref={ref}
+        type={isPassword ? typeState : type}
+        className={cn(
+          inputStyles({ hasError, enableStepper }),
+          {
+            'pl-9': isSearch,
+            'pr-10': isPassword,
+          },
+          !!icon && 'pl-9',
+          inputClassName,
         )}
-        {isSearch && (
-          <div
+        {...props}
+      />
+      {suffix && (
+        <div className="pointer-events-none absolute bottom-0 right-3 flex h-full items-center justify-center">
+          {suffix}
+        </div>
+      )}
+      {isSearch && (
+        <div
+          className={cn(
+            // base
+            'pointer-events-none absolute bottom-0 left-3 flex h-full items-center justify-center',
+            // text color
+            'text-gray-400 dark:text-gray-600',
+          )}
+        >
+          <RiSearchLine
+            className="size-[1.125rem] shrink-0"
+            aria-hidden="true"
+          />
+        </div>
+      )}
+
+      {isPassword && (
+        <div
+          className={cn(
+            'absolute bottom-0 right-0 flex h-full items-center justify-center px-3',
+          )}
+        >
+          <button
+            tabIndex={-1}
+            aria-label="Change password visibility"
             className={cn(
               // base
-              'pointer-events-none absolute bottom-0 left-3 flex h-full items-center justify-center',
-              // text color
+              'h-fit w-fit rounded-sm outline-none transition-all',
+              // text
               'text-gray-400 dark:text-gray-600',
+              // hover
+              'hover:text-gray-500 hover:dark:text-gray-500',
+              focusRing,
             )}
+            type="button"
+            onClick={() => {
+              setTypeState(typeState === 'password' ? 'text' : 'password');
+            }}
           >
-            <RiSearchLine
-              className="size-[1.125rem] shrink-0"
-              aria-hidden="true"
-            />
-          </div>
-        )}
-
-        {isPassword && (
-          <div
-            className={cn(
-              'absolute bottom-0 right-0 flex h-full items-center justify-center px-3',
+            <span className="sr-only">
+              {typeState === 'password' ? 'Show password' : 'Hide password'}
+            </span>
+            {typeState === 'password' ? (
+              <RiEyeFill aria-hidden="true" className="size-5 shrink-0" />
+            ) : (
+              <RiEyeOffFill aria-hidden="true" className="size-5 shrink-0" />
             )}
-          >
-            <button
-              tabIndex={-1}
-              aria-label="Change password visibility"
-              className={cn(
-                // base
-                'h-fit w-fit rounded-sm outline-none transition-all',
-                // text
-                'text-gray-400 dark:text-gray-600',
-                // hover
-                'hover:text-gray-500 hover:dark:text-gray-500',
-                focusRing,
-              )}
-              type="button"
-              onClick={() => {
-                setTypeState(typeState === 'password' ? 'text' : 'password');
-              }}
-            >
-              <span className="sr-only">
-                {typeState === 'password' ? 'Show password' : 'Hide password'}
-              </span>
-              {typeState === 'password' ? (
-                <RiEyeFill aria-hidden="true" className="size-5 shrink-0" />
-              ) : (
-                <RiEyeOffFill aria-hidden="true" className="size-5 shrink-0" />
-              )}
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  },
-);
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 Input.displayName = 'Input';
 

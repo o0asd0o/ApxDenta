@@ -93,52 +93,54 @@ type TimeInputProps = Omit<
   'label' | 'shouldForceLeadingZeros' | 'description' | 'errorMessage'
 >;
 
-const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>(
-  ({ hourCycle, ...props }: TimeInputProps, ref) => {
-    const innerRef = React.useRef<HTMLDivElement>(null);
+function TimeInput({
+  hourCycle,
+  ref,
+  ...props
+}: TimeInputProps & { ref?: React.Ref<HTMLDivElement> }) {
+  const innerRef = React.useRef<HTMLDivElement>(null);
 
-    React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(
-      ref,
-      () => innerRef?.current,
-    );
+  React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(
+    ref,
+    () => innerRef?.current,
+  );
 
-    const locale = window !== undefined ? window.navigator.language : 'en-US';
+  const locale = window !== undefined ? window.navigator.language : 'en-US';
 
-    const state = useTimeFieldState({
-      hourCycle: hourCycle,
-      locale: locale,
-      shouldForceLeadingZeros: true,
-      autoFocus: true,
+  const state = useTimeFieldState({
+    hourCycle: hourCycle,
+    locale: locale,
+    shouldForceLeadingZeros: true,
+    autoFocus: true,
+    ...props,
+  });
+
+  const { fieldProps } = useTimeField(
+    {
       ...props,
-    });
+      hourCycle: hourCycle,
+      shouldForceLeadingZeros: true,
+    },
+    state,
+    innerRef,
+  );
 
-    const { fieldProps } = useTimeField(
-      {
-        ...props,
-        hourCycle: hourCycle,
-        shouldForceLeadingZeros: true,
-      },
-      state,
-      innerRef,
-    );
-
-    return (
-      <div
-        {...fieldProps}
-        ref={innerRef}
-        className="group/time-input inline-flex w-full gap-x-2"
-      >
-        {state.segments.map((segment, i) => (
-          <TimeSegment
-            key={`segment-${segment.value}-${i}`}
-            segment={segment}
-            state={state}
-          />
-        ))}
-      </div>
-    );
-  },
-);
+  return (
+    <div
+      {...fieldProps}
+      ref={innerRef}
+      className="group/time-input inline-flex w-full gap-x-2"
+    >
+      {state.segments.map((segment, i) => (
+        <TimeSegment
+          key={`segment-${segment.value}-${i}`}
+          segment={segment}
+          state={state}
+        />
+      ))}
+    </div>
+  );
+}
 TimeInput.displayName = 'TimeInput';
 
 //#region Trigger
@@ -180,47 +182,54 @@ interface TriggerProps
   placeholder?: string;
 }
 
-const Trigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
-  (
-    { className, children, placeholder, hasError, ...props }: TriggerProps,
-    forwardedRef,
-  ) => {
-    return (
-      <PopoverPrimitives.Trigger asChild>
-        <button
-          ref={forwardedRef}
-          className={cn(triggerStyles({ hasError }), className)}
-          {...props}
-        >
-          <RiCalendar2Fill className="size-5 shrink-0 text-gray-400 dark:text-gray-600" />
-          <span className="flex-1 overflow-hidden text-left text-ellipsis whitespace-nowrap text-gray-900 dark:text-gray-50">
-            {children ? (
-              children
-            ) : placeholder ? (
-              <span className="text-gray-400 dark:text-gray-600">
-                {placeholder}
-              </span>
-            ) : null}
-          </span>
-        </button>
-      </PopoverPrimitives.Trigger>
-    );
-  },
-);
+function Trigger({
+  className,
+  children,
+  placeholder,
+  hasError,
+  ref,
+  ...props
+}: TriggerProps & { ref?: React.Ref<HTMLButtonElement> }) {
+  return (
+    <PopoverPrimitives.Trigger asChild>
+      <button
+        ref={ref}
+        className={cn(triggerStyles({ hasError }), className)}
+        {...props}
+      >
+        <RiCalendar2Fill className="size-5 shrink-0 text-gray-400 dark:text-gray-600" />
+        <span className="flex-1 overflow-hidden text-left text-ellipsis whitespace-nowrap text-gray-900 dark:text-gray-50">
+          {children ? (
+            children
+          ) : placeholder ? (
+            <span className="text-gray-400 dark:text-gray-600">
+              {placeholder}
+            </span>
+          ) : null}
+        </span>
+      </button>
+    </PopoverPrimitives.Trigger>
+  );
+}
 
 Trigger.displayName = 'DatePicker.Trigger';
 
 //#region Popover
 // ============================================================================
 
-const CalendarPopover = React.forwardRef<
-  React.ElementRef<typeof PopoverPrimitives.Content>,
-  React.ComponentProps<typeof PopoverPrimitives.Content>
->(({ align, className, children, ...props }, forwardedRef) => {
+function CalendarPopover({
+  align,
+  className,
+  children,
+  ref,
+  ...props
+}: React.ComponentProps<typeof PopoverPrimitives.Content> & {
+  ref?: React.Ref<React.ElementRef<typeof PopoverPrimitives.Content>>;
+}) {
   return (
     <PopoverPrimitives.Portal>
       <PopoverPrimitives.Content
-        ref={forwardedRef}
+        ref={ref}
         sideOffset={10}
         side="bottom"
         align={align}
@@ -247,7 +256,7 @@ const CalendarPopover = React.forwardRef<
       </PopoverPrimitives.Content>
     </PopoverPrimitives.Portal>
   );
-});
+}
 
 CalendarPopover.displayName = 'DatePicker.CalendarPopover';
 
