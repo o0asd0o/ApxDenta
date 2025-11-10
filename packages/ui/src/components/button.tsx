@@ -125,7 +125,9 @@ function Button({
   children,
   ref,
   ...props
-}: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
+}: ButtonProps & {
+  ref?: React.Ref<HTMLButtonElement> | React.LegacyRef<HTMLButtonElement>;
+}) {
   const Component = asChild ? Slot : 'button';
   return (
     <Component
