@@ -1,5 +1,5 @@
 import type { SelectQueryBuilder } from 'kysely';
-import { executeWithOffsetPagination } from '../utils/pagination/offset';
+import { executeWithOffsetPagination } from '../utils/pagination';
 import type { OffsetPaginationInput } from './schemas';
 
 export async function getOffsetPaginatedRowsFromQuery<
