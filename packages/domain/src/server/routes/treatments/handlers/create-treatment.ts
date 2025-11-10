@@ -25,7 +25,18 @@ const inputSchema = z.object({
     })
     .array()
     .optional(),
-  visits: z.array(z.object({ treatmentId: z.string() })).optional(),
+  visits: z
+    .array(
+      z.object({
+        treatmentId: z.string(),
+        gracePeriod: z
+          .number()
+          .min(0, 'Grace period must be at least 0')
+          .optional(),
+        gracePeriodUnit: z.enum(['DAYS', 'WEEKS', 'MONTHS']).optional(),
+      }),
+    )
+    .optional(),
 });
 
 export type CreateTreatmentParams = HandlerType<z.infer<typeof inputSchema>>;

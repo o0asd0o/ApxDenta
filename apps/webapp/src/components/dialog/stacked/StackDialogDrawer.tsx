@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
 } from '@repo/ui/components';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
-import React, { type FormEventHandler } from 'react';
+import React from 'react';
 import { useCurrentIndex, useCurrentIndexAction } from './StackProvider';
 import { getStackTranslation } from './__helpers';
 
@@ -31,7 +31,7 @@ type Props = {
   open?: boolean;
 
   setOpen?: (open: boolean) => void;
-  onSubmit?: FormEventHandler<HTMLFormElement>;
+  onSubmit?: <T>(event: React.FormEvent<T>, currentIndex: number) => void;
 };
 
 export const StackDialogDrawer: React.FC<Props> = ({
@@ -93,7 +93,6 @@ export const StackDialogDrawer: React.FC<Props> = ({
       )}
       <SheetOverlay />
       {stacks.map((stack, index) => {
-        console.log({ currentIndex, index });
         if (index > currentIndex) return null;
         return (
           <SheetContent
@@ -116,7 +115,7 @@ export const StackDialogDrawer: React.FC<Props> = ({
             <Comp
               className="flex flex-col h-[calc(100%_-_56px)] flex-1"
               // @ts-ignore
-              onSubmit={onSubmit}
+              onSubmit={(e) => onSubmit(e, currentIndex)}
             >
               <div
                 className={cn(

@@ -32,6 +32,7 @@ export const getAllTreatments = async ({
     )
     .select((eb) => getAverageDuration(eb).as('averageDuration'))
     .select((eb) => getStartingPrice(eb).as('startingPrice'))
+    .orderBy('Treatment.createdAt', 'desc')
     .selectAll();
 
   if (input.search) {

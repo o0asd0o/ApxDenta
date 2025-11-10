@@ -54,8 +54,6 @@ export const TreatmentActionsProvider: React.FC<Props> = ({ children }) => {
     setState((prev) => ({ ...prev, open }));
   };
 
-  console.log({});
-
   return (
     <UpdateTreatmentContext.Provider
       value={{

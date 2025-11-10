@@ -53,6 +53,8 @@ export const createVisitsForTreatment = (
         sequence: index + 1,
         treatmentId: treatmentId,
         visitTreatmentId: item.treatmentId,
+        gracePeriod: item.gracePeriod,
+        gracePeriodUnit: item.gracePeriodUnit,
       })),
     )
     .execute();

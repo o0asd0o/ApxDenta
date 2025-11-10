@@ -12,8 +12,6 @@ const ArchiveMultipleTreatment: React.FC = () => {
 
   const trpc = useTRPC();
 
-  console.log({ open, setOpen, treatments, callback });
-
   const { mutateAsync, isPending } = useMutation(
     trpc.treatments.archiveTreatment.mutationOptions({
       onSuccess: async () => {

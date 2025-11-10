@@ -8,7 +8,6 @@ const StaffList = React.lazy(() => import('@/features/staff/StaffList'));
 export const Route = createFileRoute('/_protected/(clinic)/staff-list/')({
   component: StaffList,
   loader: async ({ context }) => {
-    console.log({ context });
     if (context.trpc) {
       await context.queryClient.ensureQueryData(
         context.trpc.staffs.getAllStaffs.queryOptions({
