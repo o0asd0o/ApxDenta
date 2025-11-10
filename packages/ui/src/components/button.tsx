@@ -115,47 +115,46 @@ interface ButtonProps
   loadingText?: string;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      asChild,
-      isLoading = false,
-      loadingText,
-      className,
-      disabled,
-      variant,
-      children,
-      ...props
-    }: ButtonProps,
-    forwardedRef,
-  ) => {
-    const Component = asChild ? Slot : 'button';
-    return (
-      <Component
-        ref={forwardedRef}
-        className={cn(buttonVariants({ variant }), className)}
-        disabled={disabled || isLoading}
-        tremor-id="tremor-raw"
-        {...props}
-      >
-        {isLoading ? (
-          <span className="pointer-events-none flex shrink-0 items-center justify-center gap-1.5">
-            <RiLoader2Fill
-              className="size-4 shrink-0 animate-spin"
-              aria-hidden="true"
-            />
-            <span className="sr-only">
-              {loadingText ? loadingText : 'Loading'}
-            </span>
-            {loadingText ? loadingText : children}
+function Button({
+  asChild,
+  isLoading = false,
+  loadingText,
+  className,
+  disabled,
+  variant,
+  children,
+  ref,
+  ...props
+}: ButtonProps & {
+  ref?: React.Ref<HTMLButtonElement> | React.LegacyRef<HTMLButtonElement>;
+}) {
+  const Component = asChild ? Slot : 'button';
+  return (
+    <Component
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      ref={ref as any}
+      className={cn(buttonVariants({ variant }), className)}
+      disabled={disabled || isLoading}
+      tremor-id="tremor-raw"
+      {...props}
+    >
+      {isLoading ? (
+        <span className="pointer-events-none flex shrink-0 items-center justify-center gap-1.5">
+          <RiLoader2Fill
+            className="size-4 shrink-0 animate-spin"
+            aria-hidden="true"
+          />
+          <span className="sr-only">
+            {loadingText ? loadingText : 'Loading'}
           </span>
-        ) : (
-          children
-        )}
-      </Component>
-    );
-  },
-);
+          {loadingText ? loadingText : children}
+        </span>
+      ) : (
+        children
+      )}
+    </Component>
+  );
+}
 
 Button.displayName = 'Button';
 
