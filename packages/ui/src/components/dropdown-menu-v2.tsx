@@ -13,20 +13,49 @@ import * as React from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-const DropdownMenu = DropdownMenuPrimitives.Root;
-DropdownMenu.displayName = 'DropdownMenu';
+function DropdownMenu({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitives.Root>) {
+  return <DropdownMenuPrimitives.Root data-slot="dropdown-menu" {...props} />;
+}
 
-const DropdownMenuTrigger = DropdownMenuPrimitives.Trigger;
-DropdownMenuTrigger.displayName = 'DropdownMenuTrigger';
+function DropdownMenuTrigger({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitives.Trigger>) {
+  return (
+    <DropdownMenuPrimitives.Trigger
+      data-slot="dropdown-menu-trigger"
+      {...props}
+    />
+  );
+}
 
-const DropdownMenuGroup = DropdownMenuPrimitives.Group;
-DropdownMenuGroup.displayName = 'DropdownMenuGroup';
+function DropdownMenuGroup({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitives.Group>) {
+  return (
+    <DropdownMenuPrimitives.Group data-slot="dropdown-menu-group" {...props} />
+  );
+}
 
-const DropdownMenuSubMenu = DropdownMenuPrimitives.Sub;
-DropdownMenuSubMenu.displayName = 'DropdownMenuSubMenu';
+function DropdownMenuSubMenu({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitives.Sub>) {
+  return (
+    <DropdownMenuPrimitives.Sub data-slot="dropdown-menu-sub" {...props} />
+  );
+}
 
-const DropdownMenuRadioGroup = DropdownMenuPrimitives.RadioGroup;
-DropdownMenuRadioGroup.displayName = 'DropdownMenuRadioGroup';
+function DropdownMenuRadioGroup({
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitives.RadioGroup>) {
+  return (
+    <DropdownMenuPrimitives.RadioGroup
+      data-slot="dropdown-menu-radio-group"
+      {...props}
+    />
+  );
+}
 
 const DropdownMenuSubMenuTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitives.SubTrigger>,
