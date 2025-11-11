@@ -1,5 +1,4 @@
 import { TRPCError, initTRPC } from '@trpc/server';
-import { treeifyError } from 'better-auth';
 import SuperJSON from 'superjson';
 import { ZodError } from 'zod';
 import type { TRPCContext, TrpcContextSession } from './types';
@@ -24,8 +23,7 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
         zodError:
           opts.error.code === 'BAD_REQUEST' &&
           opts.error.cause instanceof ZodError
-            ? // biome-ignore lint: no explicit any
-              treeifyError(opts.error.cause as any)
+            ? opts.error.cause
             : null,
         ...opts.shape.data,
       },
