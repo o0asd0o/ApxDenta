@@ -48,7 +48,10 @@ export const UserMenu = () => {
               src={session?.user.image as string}
               alt={session?.user.name}
             />
-            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            <AvatarFallback className="rounded-lg">
+              {session?.user.name.split(' ')[0].at(0)}
+              {session?.user.name.split(' ')[1].at(0)}
+            </AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-medium">
@@ -74,7 +77,10 @@ export const UserMenu = () => {
                 src={session?.user.image as string}
                 alt={session?.user.name}
               />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarFallback className="rounded-lg">
+                {session?.user.name.split(' ')[0].at(0)}
+                {session?.user.name.split(' ')[1].at(0)}
+              </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">
