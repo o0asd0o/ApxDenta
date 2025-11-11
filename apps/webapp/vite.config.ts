@@ -23,8 +23,15 @@ export default defineConfig({
   },
   define: { global: 'window' },
   resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-    },
+    alias: [
+      {
+        find: /zod\/v4\/core/,
+        replacement: resolve('../../', 'node_modules', 'zod', 'v4', 'core'),
+      },
+      {
+        find: '@',
+        replacement: resolve(__dirname, './src'),
+      },
+    ],
   },
 });
