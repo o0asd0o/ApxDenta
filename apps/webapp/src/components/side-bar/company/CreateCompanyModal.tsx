@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { useUploadFile } from '@/hooks/upload/useUploadFile';
-import { organization } from '@/lib/auth-client';
+import { organization, useActiveMember } from '@/lib/auth-client';
 import {
   Button,
   Dialog,
@@ -49,6 +49,7 @@ export const CreateCompanyModal: React.FC<CreateCompanyModalProps> = ({
   open,
   onOpenChange,
 }) => {
+  const { refetch } = useActiveMember();
   const [uploadFile] = useUploadFile();
   const form = useForm<CompanyFormValues>({
     resolver: zodResolver(companySchema),
@@ -80,7 +81,7 @@ export const CreateCompanyModal: React.FC<CreateCompanyModalProps> = ({
       const orgId = orgData.data?.id as string;
 
       organization.setActive({ organizationId: orgId });
-
+      setTimeout(() => refetch(), 1000);
       toast.success('Company created successfully!');
       form.reset();
       onOpenChange(false);

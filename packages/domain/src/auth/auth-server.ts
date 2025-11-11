@@ -128,7 +128,7 @@ export const createAuth: (_: AuthOptions) => ReturnType<typeof betterAuth> = ({
           const email = ctx.body.email;
           if (email) {
             const staff = await getInActiveStaffByEmail(db, email as string);
-            if (staff) {
+            if (staff?.id) {
               throw new APIError('UNAUTHORIZED', {
                 message:
                   'Your account is deactivated. Please contact admin for more information.',

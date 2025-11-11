@@ -25,12 +25,13 @@ import type React from 'react';
 import FloatingActionBar from '../FloatingActionBar';
 import { getColumnTitle } from './helpers';
 
-interface DataTableProps<TData extends { id: string }, TValue> {
+interface DataTableProps<TData extends { id: string }, TValue, LMeta> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
-  LoaderRow?: React.FC<{ key: string }>;
+  LoaderRow?: React.FC<LMeta & { key: string }>;
   loaderCount?: number;
+  loaderMeta?: LMeta;
   onDeleteItems?: (itemIds: TData[], callback: () => void) => Promise<void>;
   sort?: {
     sorting: SortingState;
@@ -38,7 +39,7 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   };
 }
 
-export function DataTable<TData extends { id: string }, TValue>({
+export function DataTable<TData extends { id: string }, TValue, LMeta>({
   columns,
   data,
   loading,
@@ -46,7 +47,8 @@ export function DataTable<TData extends { id: string }, TValue>({
   loaderCount,
   sort,
   onDeleteItems,
-}: DataTableProps<TData, TValue>) {
+  loaderMeta,
+}: DataTableProps<TData, TValue, LMeta>) {
   const table = useReactTable({
     data,
     columns,
@@ -117,8 +119,14 @@ export function DataTable<TData extends { id: string }, TValue>({
             <>
               {loading &&
                 [...Array(loaderCount || 5)].map((_, rowIdx) => {
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                  if (LoaderRow) return <LoaderRow key={`rowId${rowIdx}`} />;
+                  if (LoaderRow)
+                    return (
+                      <LoaderRow
+                        {...(loaderMeta as LMeta)}
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                        key={`rowId${rowIdx}`}
+                      />
+                    );
 
                   return (
                     <TableRow

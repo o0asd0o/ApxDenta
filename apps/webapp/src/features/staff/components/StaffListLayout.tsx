@@ -46,6 +46,8 @@ const StaffListLayout: React.FC<LayoutProps> = ({
         loading={isLoading}
         columns={getStaffColumns(type)}
         LoaderRow={StaffListLoaderItem}
+        loaderCount={pagination.pageSize}
+        loaderMeta={{ type }}
         onDeleteItems={async (items, callback) =>
           onShowArchiveMultipleModal(items, callback)
         }

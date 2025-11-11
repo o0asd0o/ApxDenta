@@ -1,6 +1,7 @@
 import type { HandlerType } from '@/server/types';
 import { faker } from '@faker-js/faker';
 import { z } from 'zod';
+import { handler as seedMedicalComponentsHandler } from './seed-medical-components';
 
 const inputSchema = z.object({
   count: z.number().min(1).max(50).default(30),
@@ -53,9 +54,7 @@ const handler = async ({ input, ctx }: Params) => {
     .execute();
 
   if (medicalComponents.length === 0) {
-    throw new Error(
-      'No medical components found. Please seed medical components first.',
-    );
+    await seedMedicalComponentsHandler({ input: { count: 20 }, ctx });
   }
 
   for (let i = 0; i < count; i++) {

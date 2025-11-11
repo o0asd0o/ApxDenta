@@ -13,7 +13,6 @@ export const {
   signUp,
   requestPasswordReset,
   resetPassword,
-  // useSession,
   organization,
   useListOrganizations,
   useActiveOrganization,
