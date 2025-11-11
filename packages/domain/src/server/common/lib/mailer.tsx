@@ -22,7 +22,7 @@ const createEmailSender = (): EmailSender => {
   return async (email) => {
     try {
       await transporter.emails.send({
-        from: 'ApxDenta Admin <admin@jomelortega.dev>',
+        from: `ApxDenta Admin <${env.SERVER_RESEND_EMAIL}>`,
         to: email.to,
         subject: getSubject(email.template),
         html: renderEmail(email.template, email.data),

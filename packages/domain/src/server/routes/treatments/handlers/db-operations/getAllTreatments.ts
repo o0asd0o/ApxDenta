@@ -35,6 +35,10 @@ export const getAllTreatments = async ({
     .orderBy('Treatment.createdAt', 'desc')
     .selectAll();
 
+  if (input.treatmentIdIn && input.treatmentIdIn.length > 0) {
+    query = query.where('Treatment.id', 'in', input.treatmentIdIn);
+  }
+
   if (input.search) {
     query = query.where((eb) => {
       const search = input.search?.toLowerCase();

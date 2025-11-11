@@ -20,10 +20,10 @@ import {
 import { Plus, Trash2, Wrench } from 'lucide-react';
 import React from 'react';
 import { type UseFormReturn, useFieldArray } from 'react-hook-form';
-import EstimatedHoursField from '../../components/EstimatedHoursField';
 import FreeDiscount from '../../components/FreeDiscount';
 import MedicalComponentSelector from '../../components/MedicalComponentSelector';
 import MultipleVisitTrigger from '../../components/MultipleVisitTrigger';
+import PriceAndDuration from '../../components/PriceAndDuration';
 
 type Props = {
   form: UseFormReturn<TreatmentFormType>;
@@ -136,53 +136,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
       </div>
       {!!category && (
         <div className="flex flex-col gap-4 divide-y divide-gray-200">
-          <div className="pb-4">
-            <h2 className="font-medium mb-3">Price & Duration</h2>
-            <div className="flex flex-col gap-5">
-              <div className="flex gap-2 w-full md:w-4/5 flex-col xs:flex-row">
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col w-full">
-                      <FormLabel>Treatment Price</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          suffix={
-                            <span className="text-gray-500 text-sm">/jaw</span>
-                          }
-                          type="text"
-                          inputMode="numeric"
-                          icon={
-                            <span className="text-gray-500 text-xl">₱</span>
-                          }
-                          value={
-                            field.value
-                              ? field.value.toLocaleString('en-US')
-                              : ''
-                          }
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/,/g, '');
-                            const numValue = Number.parseFloat(value);
-                            field.onChange(
-                              Number.isNaN(numValue) ? undefined : numValue,
-                            );
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="duration"
-                  render={({ field }) => <EstimatedHoursField {...field} />}
-                />
-              </div>
-            </div>
-          </div>
+          <PriceAndDuration form={form} />
           {fields.length > 0 && (
             <div className="flex flex-col gap-6">
               <div className="flex gap-2">
@@ -190,7 +144,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
                   <Tooth />
                   <Wrench
                     strokeWidth={2.5}
-                    className="absolute size-3.5 p-[1px] bottom-[7px] right-[5px] transform scale-x-[-1] bg-accent rounded-full"
+                    className="absolute size-3.5 p-px bottom-[7px] right-[5px] transform scale-x-[-1] bg-accent rounded-full"
                   />
                 </div>
 

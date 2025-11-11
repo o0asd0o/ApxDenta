@@ -11,6 +11,7 @@ const inputSchema = z
     priceRange: z.array(z.number()).length(2).optional(),
     type: z.enum(['MULTIPLE_VISIT', 'SINGLE_VISIT']).optional(),
     excludeTotalCount: z.boolean().default(false),
+    treatmentIdIn: z.array(z.string()).optional(),
 
     // sorting
     orderBy: z

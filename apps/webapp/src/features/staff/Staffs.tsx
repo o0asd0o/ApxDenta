@@ -1,32 +1,41 @@
 import FilterButton from '@/components/FilterButton';
 import type { PaginationState } from '@/components/__types';
-import type { TreatmentVisitType } from '@repo/domain/db';
+import type { StaffType } from '@repo/domain/db';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
-import { Stethoscope } from 'lucide-react';
+import { UsersRound } from 'lucide-react';
 import { parseAsStringEnum, useQueryState } from 'nuqs';
 import React, { useCallback, useState } from 'react';
-import { TreatmentActionsProvider } from './__common/context/TreatmentActionsProvider';
-import ArchiveMultipleTreatment from './archive/ArchiveMultipleTreatment';
-import ArchiveTreatment from './archive/ArchiveTreatment';
-import FilterTreatmentDialog from './components/FilterTreatmentDialog';
-import TotalTreatments from './components/TotalTreatments';
-import TreatmentActions from './components/TreatmentActions';
-import TreatmentListLayout from './components/TreatmentListLayout';
+import { StaffActionsProvider } from './__common/context/StaffActionsProvider';
+import type { StaffFilterType } from './__types';
+import ArchiveMultipleStaff from './archive/ArchiveMultipleStaff';
+import ArchiveStaff from './archive/ArchiveStaff';
+import FilterStaffDialog from './components/FilterStaffDialog';
+import StaffActions from './components/StaffActions';
+import StaffCardLayout from './components/StaffCardLayout';
+import StaffListLayout from './components/StaffListLayout';
+import TotalStaff from './components/TotalStaff';
+import UpdateStaff from './update/UpdateStaff';
 
-const ActiveTreatments: React.FC = () => {
+type Props = {
+  type: StaffType;
+};
+const Staffs: React.FC<Props> = ({ type }) => {
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
-  const [searchInput, setSearchInput] = useState<string>('');
-  const [filters, setFilters] = useState<{
-    search?: string;
-    type?: TreatmentVisitType | 'ALL';
-  }>({});
-
   const [pagination, setPagination] = useState<PaginationState>({
     current: 1,
     pageSize: 10,
   });
+
+  const [filters, setFilters] = useState<StaffFilterType>({});
+
+  const [layoutTab, setLayoutTab] = useQueryState(
+    'layoutTab',
+    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
+  );
+
+  const [searchInput, setSearchInput] = useState<string>('');
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -37,23 +46,19 @@ const ActiveTreatments: React.FC = () => {
     }, 300),
     [],
   );
-  const [layoutTab, setLayoutTab] = useQueryState(
-    'layoutTab',
-    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
-  );
-
   return (
     <div className="gap-5 flex flex-col">
       <div className="flex flex-col lg:flex-row gap-5">
         <div className="flex">
           <div className="flex items-center gap-1.5">
             <span className="p-1.5 rounded-sm bg-accent">
-              <Stethoscope className="size-4" />
+              <UsersRound className="size-4" />
             </span>
-            <TotalTreatments treatmentStatus="ACTIVE" />
-            <span className="text-xs text-gray-400">Treatment(s)</span>
+            <TotalStaff staffType={type} />
+            <span className="text-xs text-gray-400">Doctor(s)</span>
           </div>
-          <TreatmentActions
+          <StaffActions
+            staffType={type}
             className="lg:hidden flex ml-auto"
             layoutTab={layoutTab}
             setLayoutTab={setLayoutTab}
@@ -64,7 +69,7 @@ const ActiveTreatments: React.FC = () => {
         <div className="lg:ml-auto flex gap-2 items-center">
           <Input
             value={searchInput}
-            placeholder="Search treatment name"
+            placeholder="Search name, email, or phone"
             className="flex-1 w-full lg:w-[400px]!"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSearchInput(e.target.value);
@@ -83,14 +88,16 @@ const ActiveTreatments: React.FC = () => {
             className="mx-1 hidden lg:block"
             style={{ height: '30px', width: '1px' }}
           />
-          <TreatmentActions
+          <StaffActions
+            staffType={type}
             className="hidden lg:flex"
             layoutTab={layoutTab}
             setLayoutTab={setLayoutTab}
             setPagination={setPagination}
           />
         </div>
-        <FilterTreatmentDialog
+        <FilterStaffDialog
+          type={type}
           applyFilters={setFilters}
           defaultFilters={filters}
           open={filterOpen}
@@ -98,23 +105,13 @@ const ActiveTreatments: React.FC = () => {
         />
       </div>
       <div>
-        <TreatmentActionsProvider>
-          {/* <UpdateStaff type="DOCTOR" /> */}
-          <ArchiveTreatment />
-          <ArchiveMultipleTreatment />
-          {/* {layoutTab === 'card' && (
+        <StaffActionsProvider>
+          <UpdateStaff type={type} />
+          <ArchiveStaff />
+          <ArchiveMultipleStaff />
+          {layoutTab === 'card' && (
             <StaffCardLayout
-              type="DOCTOR"
-              filters={filters}
-              pagination={pagination}
-              sorting={sorting}
-              setSorting={setSorting}
-              setPagination={setPagination}
-            />
-          )} */}
-          {layoutTab === 'list' && (
-            <TreatmentListLayout
-              status="ACTIVE"
+              type={type}
               filters={filters}
               pagination={pagination}
               sorting={sorting}
@@ -122,10 +119,20 @@ const ActiveTreatments: React.FC = () => {
               setPagination={setPagination}
             />
           )}
-        </TreatmentActionsProvider>
+          {layoutTab === 'list' && (
+            <StaffListLayout
+              type={type}
+              filters={filters}
+              pagination={pagination}
+              sorting={sorting}
+              setSorting={setSorting}
+              setPagination={setPagination}
+            />
+          )}
+        </StaffActionsProvider>
       </div>
     </div>
   );
 };
 
-export default ActiveTreatments;
+export default Staffs;
