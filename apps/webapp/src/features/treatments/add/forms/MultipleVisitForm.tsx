@@ -24,7 +24,7 @@ const MultipleVisitForm: React.FC<Props> = ({ form }) => {
 
   return (
     <>
-      <div className="z-10 flex gap-4 py-4 px-10 justify-between items-center mb-8 fixed w-full bg-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] translate-x-[-24px] translate-y-[-17px] border-t border-gray-200">
+      <div className="z-10 flex gap-4 py-4 px-10 justify-between items-center mb-8 fixed w-full bg-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] -translate-x-6 translate-y-[-17px] border-t border-gray-200">
         <h2 className="font-medium">Visitation Settings</h2>
         <Button
           type="button"

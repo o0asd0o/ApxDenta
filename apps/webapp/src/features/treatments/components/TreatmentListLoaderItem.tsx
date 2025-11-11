@@ -10,7 +10,7 @@ const TreatmentListLoaderItem: React.FC<Props> = ({ key }) => {
       {/* Select checkbox */}
       <TableCell
         key={`${key}-select`}
-        className="h-[54px] first:pl-3 last:pr-3 w-[20px]"
+        className="h-[54px] first:pl-3 last:pr-3 w-5"
       >
         <Skeleton className="size-4.5 rounded-sm" />
       </TableCell>

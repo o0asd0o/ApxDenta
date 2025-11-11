@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormDescription,
   FormItem,
   FormLabel,
   FormMessage,
@@ -9,11 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@repo/ui/components';
+import { InfoIcon } from 'lucide-react';
 import React from 'react';
 
 type Props = {
   onChange: (value: number) => void;
   value?: number;
+  showDescription?: boolean;
   disabled?: boolean;
 };
 
@@ -21,6 +24,7 @@ const EstimatedHoursField: React.FC<Props> = ({
   onChange,
   value,
   disabled,
+  showDescription,
 }) => {
   return (
     <FormItem className="flex flex-col w-full">
@@ -31,9 +35,9 @@ const EstimatedHoursField: React.FC<Props> = ({
         <Select
           onValueChange={(value) => onChange(Number(value))}
           value={String(value)}
-          disabled={disabled}
+          disabled={disabled || showDescription}
         >
-          <SelectTrigger className="w-full h-[38px] text-sm mb-0">
+          <SelectTrigger className="w-full h-[38px] text-sm">
             <SelectValue placeholder="Select duration" />
           </SelectTrigger>
           <SelectContent>
@@ -47,9 +51,18 @@ const EstimatedHoursField: React.FC<Props> = ({
             <SelectItem value={'4'}>4 hours</SelectItem>
             <SelectItem value={'4.5'}>4.5 hours</SelectItem>
             <SelectItem value={'5'}>5 hours</SelectItem>
+            {showDescription && (value || 0) > 5 && (
+              <SelectItem value={String(value)}>{value} hours</SelectItem>
+            )}
           </SelectContent>
         </Select>
       </FormControl>
+      {showDescription && (
+        <FormDescription className="flex items-center">
+          <InfoIcon className="inline mr-1 size-3.5" />
+          <span className="whitespace-nowrap">Estimated total duration</span>
+        </FormDescription>
+      )}
       <FormMessage />
     </FormItem>
   );

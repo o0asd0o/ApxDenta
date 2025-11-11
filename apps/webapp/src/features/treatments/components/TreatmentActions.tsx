@@ -6,6 +6,7 @@ import CreateTreatment from '../add/CreateTreatment';
 
 type Props = {
   className?: string;
+  status: 'ACTIVE' | 'INACTIVE';
   layoutTab: 'card' | 'list';
   setLayoutTab: (value: 'card' | 'list') => void;
   setPagination: React.Dispatch<
@@ -16,6 +17,7 @@ const TreatmentActions: React.FC<Props> = ({
   layoutTab,
   setLayoutTab,
   setPagination,
+  status,
   className,
 }) => {
   return (
@@ -35,7 +37,7 @@ const TreatmentActions: React.FC<Props> = ({
           { label: <LayoutGrid className="size-4" />, value: 'card' },
         ]}
       />
-      <CreateTreatment />
+      {status === 'ACTIVE' && <CreateTreatment />}
     </div>
   );
 };

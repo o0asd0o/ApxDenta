@@ -1,37 +1,37 @@
 import FilterButton from '@/components/FilterButton';
 import type { PaginationState } from '@/components/__types';
+import type { TreatmentVisitType } from '@repo/domain/db';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
-import { UsersRound } from 'lucide-react';
+import { Stethoscope } from 'lucide-react';
 import { parseAsStringEnum, useQueryState } from 'nuqs';
 import React, { useCallback, useState } from 'react';
-import { StaffActionsProvider } from './__common/context/StaffActionsProvider';
-import type { StaffFilterType } from './__types';
-import ArchiveMultipleStaff from './archive/ArchiveMultipleStaff';
-import ArchiveStaff from './archive/ArchiveStaff';
-import FilterStaffDialog from './components/FilterStaffDialog';
-import StaffActions from './components/StaffActions';
-import StaffCardLayout from './components/StaffCardLayout';
-import StaffListLayout from './components/StaffListLayout';
-import TotalStaff from './components/TotalStaff';
-import UpdateStaff from './update/UpdateStaff';
+import { TreatmentActionsProvider } from './__common/context/TreatmentActionsProvider';
+import ArchiveMultipleTreatment from './archive/ArchiveMultipleTreatment';
+import ArchiveTreatment from './archive/ArchiveTreatment';
+import FilterTreatmentDialog from './components/FilterTreatmentDialog';
+import TotalTreatments from './components/TotalTreatments';
+import TreatmentActions from './components/TreatmentActions';
+import TreatmentCardLayout from './components/TreatmentCardLayout';
+import TreatmentListLayout from './components/TreatmentListLayout';
 
-const GenStaffs = () => {
+type Props = {
+  status: 'ACTIVE' | 'INACTIVE';
+};
+
+const Treatments: React.FC<Props> = ({ status }) => {
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [filters, setFilters] = useState<{
+    search?: string;
+    type?: TreatmentVisitType | 'ALL';
+  }>({});
+
   const [pagination, setPagination] = useState<PaginationState>({
     current: 1,
     pageSize: 10,
   });
-
-  const [filters, setFilters] = useState<StaffFilterType>({});
-
-  const [layoutTab, setLayoutTab] = useQueryState(
-    'layoutTab',
-    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
-  );
-
-  const [searchInput, setSearchInput] = useState<string>('');
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -42,30 +42,35 @@ const GenStaffs = () => {
     }, 300),
     [],
   );
+  const [layoutTab, setLayoutTab] = useQueryState(
+    'layoutTab',
+    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
+  );
+
   return (
     <div className="gap-5 flex flex-col">
       <div className="flex flex-col lg:flex-row gap-5">
         <div className="flex">
           <div className="flex items-center gap-1.5">
             <span className="p-1.5 rounded-sm bg-accent">
-              <UsersRound className="size-4" />
+              <Stethoscope className="size-4" />
             </span>
-            <TotalStaff staffType="STAFF" />
-            <span className="text-xs text-gray-400">Staff(s)</span>
+            <TotalTreatments treatmentStatus={status} />
+            <span className="text-xs text-gray-400">Treatment(s)</span>
           </div>
-          <StaffActions
-            staffType="STAFF"
+          <TreatmentActions
             className="lg:hidden flex ml-auto"
             layoutTab={layoutTab}
             setLayoutTab={setLayoutTab}
             setPagination={setPagination}
+            status={status}
           />
         </div>
 
         <div className="lg:ml-auto flex gap-2 items-center">
           <Input
             value={searchInput}
-            placeholder="Search name, email, or phone"
+            placeholder="Search treatment name"
             className="flex-1 w-full lg:w-[400px]!"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSearchInput(e.target.value);
@@ -84,16 +89,15 @@ const GenStaffs = () => {
             className="mx-1 hidden lg:block"
             style={{ height: '30px', width: '1px' }}
           />
-          <StaffActions
-            staffType="STAFF"
+          <TreatmentActions
             className="hidden lg:flex"
             layoutTab={layoutTab}
             setLayoutTab={setLayoutTab}
             setPagination={setPagination}
+            status={status}
           />
         </div>
-        <FilterStaffDialog
-          type="STAFF"
+        <FilterTreatmentDialog
           applyFilters={setFilters}
           defaultFilters={filters}
           open={filterOpen}
@@ -101,13 +105,13 @@ const GenStaffs = () => {
         />
       </div>
       <div>
-        <StaffActionsProvider>
-          <UpdateStaff type="STAFF" />
-          <ArchiveStaff />
-          <ArchiveMultipleStaff />
+        <TreatmentActionsProvider>
+          {/* <UpdateStaff type="DOCTOR" /> */}
+          <ArchiveTreatment />
+          <ArchiveMultipleTreatment />
           {layoutTab === 'card' && (
-            <StaffCardLayout
-              type="STAFF"
+            <TreatmentCardLayout
+              status={status}
               filters={filters}
               pagination={pagination}
               sorting={sorting}
@@ -116,8 +120,8 @@ const GenStaffs = () => {
             />
           )}
           {layoutTab === 'list' && (
-            <StaffListLayout
-              type="STAFF"
+            <TreatmentListLayout
+              status={status}
               filters={filters}
               pagination={pagination}
               sorting={sorting}
@@ -125,10 +129,10 @@ const GenStaffs = () => {
               setPagination={setPagination}
             />
           )}
-        </StaffActionsProvider>
+        </TreatmentActionsProvider>
       </div>
     </div>
   );
 };
 
-export default GenStaffs;
+export default Treatments;

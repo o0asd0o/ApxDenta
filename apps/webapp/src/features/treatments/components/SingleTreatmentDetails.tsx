@@ -38,6 +38,7 @@ const SingleTreatmentDetails: React.FC<Props> = ({ treatmentId }) => {
           value={treatment?.data.description}
           placeholder="Description"
           className="disabled:text-gray-400"
+          rows={4}
         />
       </div>
       <div className="flex gap-1 bg-accent rounded-sm px-1 py-2">
@@ -59,9 +60,10 @@ const SingleTreatmentDetails: React.FC<Props> = ({ treatmentId }) => {
           <span className="text-gray-500 text-xs">
             {(treatment?.data.components || []).length === 0 &&
               'No components to be displayed.'}
-            {(treatment?.data.components || []).map((component) => (
+            {(treatment?.data.components || []).map((component, index) => (
               <span key={component.id} className="inline-block mr-1">
                 {component.medicalComponent?.name || 'n/a'}
+                {index !== (treatment?.data.components.length || 0) - 1 && ', '}
               </span>
             ))}
           </span>

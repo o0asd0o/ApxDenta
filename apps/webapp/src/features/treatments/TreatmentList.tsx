@@ -5,8 +5,7 @@ import {
   TabContent,
 } from '@/components/tabs/NavigationTabs';
 import React, { useState } from 'react';
-import ActiveTreatments from './ActiveTreatments';
-import InactiveTreatments from './InactiveTreatments';
+import Treatments from './Treatments';
 
 const TreatmentList: React.FC = () => {
   const [tab, setTab] = useState<string>('active');
@@ -19,13 +18,13 @@ const TreatmentList: React.FC = () => {
           <ListItem value="inactive">Inactive Treatments</ListItem>
         </List>
         <TabContent value="active" className="py-5 gap-5 flex flex-col flex-1">
-          <ActiveTreatments />
+          <Treatments status="ACTIVE" />
         </TabContent>
         <TabContent
           value="inactive"
           className="py-5 gap-5 flex flex-col flex-1"
         >
-          <InactiveTreatments />
+          <Treatments status="INACTIVE" />
         </TabContent>
       </Root>
     </div>

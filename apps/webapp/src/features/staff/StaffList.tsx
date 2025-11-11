@@ -6,8 +6,7 @@ import {
 } from '@/components/tabs/NavigationTabs';
 import { useQueryState } from 'nuqs';
 import type React from 'react';
-import Doctors from './Doctors';
-import GenStaffs from './GenStaffs';
+import Staffs from './Staffs';
 
 const StaffList: React.FC = () => {
   const [tab, setTab] = useQueryState('tab', { defaultValue: 'doctor' });
@@ -19,10 +18,10 @@ const StaffList: React.FC = () => {
           <ListItem value="general">General Staff</ListItem>
         </List>
         <TabContent value="doctor" className="py-5 gap-5 flex flex-col flex-1">
-          <Doctors />
+          <Staffs type="DOCTOR" />
         </TabContent>
         <TabContent value="general" className="py-5 gap-5 flex flex-col flex-1">
-          <GenStaffs />
+          <Staffs type="STAFF" />
         </TabContent>
       </Root>
     </div>
