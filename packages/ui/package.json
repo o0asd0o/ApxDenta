@@ -18,7 +18,7 @@
     "@repo/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "20.14.15",
-    "@types/react": "18.3.18",
+    "@types/react": "18.3.27",
     "tailwindcss": "^4.1.8",
     "tsup": "^8.4.0",
     "typescript": "5.8.3"
