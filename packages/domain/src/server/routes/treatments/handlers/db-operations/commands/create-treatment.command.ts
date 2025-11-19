@@ -1,8 +1,12 @@
 import { GET_DETAULT_DATES } from '@/server/utils/helpers';
-import type { CreateTreatmentParams } from '../create-treatment';
+import type { InsertResult } from 'kysely';
+import type { CreateTreatmentParams } from '../../create-treatment';
 
-export const createTreatment = ({ ctx, input }: CreateTreatmentParams) => {
-  return ctx.db
+export const createTreatment = async ({
+  ctx,
+  input,
+}: CreateTreatmentParams) => {
+  const created = await ctx.db
     .insertInto('Treatment')
     .values({
       category: input.category,
@@ -17,9 +21,24 @@ export const createTreatment = ({ ctx, input }: CreateTreatmentParams) => {
     })
     .returning('id')
     .executeTakeFirstOrThrow();
+
+  const promises: Promise<InsertResult[]>[] = [];
+
+  if ((input.components?.length || 0) > 0) {
+    promises.push(createComponentForTreatment({ ctx, input }, created.id));
+  }
+
+  if ((input.visits?.length || 0) > 0) {
+    promises.push(createVisitsForTreatment({ ctx, input }, created.id));
+  }
+
+  await Promise.all(promises);
+
+  return created;
 };
 
-export const createComponentForTreatment = (
+// AUXILIARY FUNCTIONS
+const createComponentForTreatment = (
   { ctx, input }: CreateTreatmentParams,
   treatmentId: string,
 ) => {
@@ -41,7 +60,7 @@ export const createComponentForTreatment = (
     .execute();
 };
 
-export const createVisitsForTreatment = (
+const createVisitsForTreatment = (
   { ctx, input }: CreateTreatmentParams,
   treatmentId: string,
 ) => {

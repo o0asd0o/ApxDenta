@@ -4,8 +4,8 @@ import type { WorkingHoursFormType } from '@repo/schemas';
 import {
   getFormattedWorkScheduleByDay,
   getWorkScheduleByDayFromWorkingHours,
-} from '../__helpers';
-import type { UpdateStaffParams } from '../update-staff-info';
+} from '../../__helpers';
+import type { UpdateStaffParams } from '../../update-staff-info';
 
 export const updateStaffWorkSchedules = async (
   db: DatabaseInstance,

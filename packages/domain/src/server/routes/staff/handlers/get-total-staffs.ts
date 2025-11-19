@@ -1,6 +1,6 @@
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { getAllStaffCount } from './db-operations/getAllStaffCount';
+import { getAllStaffCount } from './db-operations/queries/get-staff-count.query';
 
 const inputSchema = z.object({
   staffType: z.enum(['DOCTOR', 'STAFF']).optional(),

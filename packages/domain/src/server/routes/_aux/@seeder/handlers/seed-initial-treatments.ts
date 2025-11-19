@@ -46,7 +46,7 @@ const handler = async ({ input, ctx }: Params) => {
   const createdIds: string[] = [];
 
   // Get existing medical components for treatment components
-  const medicalComponents = await ctx.db
+  let medicalComponents = await ctx.db
     .selectFrom('MedicalComponent')
     .select(['id', 'name', 'price'])
     .where('organizationId', '=', ctx.organizationId)
@@ -55,6 +55,12 @@ const handler = async ({ input, ctx }: Params) => {
 
   if (medicalComponents.length === 0) {
     await seedMedicalComponentsHandler({ input: { count: 20 }, ctx });
+    medicalComponents = await ctx.db
+      .selectFrom('MedicalComponent')
+      .select(['id', 'name', 'price'])
+      .where('organizationId', '=', ctx.organizationId)
+      .limit(20)
+      .execute();
   }
 
   for (let i = 0; i < count; i++) {

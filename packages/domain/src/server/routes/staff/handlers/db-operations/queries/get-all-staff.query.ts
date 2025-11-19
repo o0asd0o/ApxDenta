@@ -1,6 +1,6 @@
 import { executeWithOffsetPagination } from '@/server/utils/pagination';
 import { jsonArrayFrom, jsonObjectFrom } from 'kysely/helpers/postgres';
-import type { GetAllStaffsProps } from '../get-all-staffs';
+import type { GetAllStaffsProps } from '../../get-all-staffs';
 
 export const getAllStaff = async (context: GetAllStaffsProps) => {
   const {

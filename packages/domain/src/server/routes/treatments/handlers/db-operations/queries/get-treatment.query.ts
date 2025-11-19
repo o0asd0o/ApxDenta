@@ -1,6 +1,6 @@
 import type { DatabaseInstance } from '@/db';
 import { jsonArrayFrom, jsonObjectFrom } from 'kysely/helpers/postgres';
-import { getAverageDuration } from './getAllTreatments';
+import { getAverageDuration } from './get-all-treatments.query';
 
 export const getTreatmentById = async (
   db: DatabaseInstance,

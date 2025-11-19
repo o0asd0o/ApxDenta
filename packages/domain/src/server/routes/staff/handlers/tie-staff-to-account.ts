@@ -1,7 +1,7 @@
 import * as errors from '@/server/common/errors';
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { tieStaffToAccount } from './db-operations/tieStaffToAccount';
+import { tieStaffToAccount } from './db-operations/commands/tie-staff-to-account.command';
 
 const inputSchema = z.object({
   staffId: z.string(),

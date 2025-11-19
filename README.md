@@ -110,7 +110,7 @@ ApxDenta is a modern dental management platform built as a monorepo using cuttin
 ### Prerequisites
 - Node.js (v18+ recommended)
 - Bun (optional, for faster installs)
-- MySQL database (local or remote)
+- PostgreSQL database (local or remote)
 - Install dependencies: `bun install` or `npm install`
 
 ### 1. Webapp (Frontend)
@@ -119,7 +119,7 @@ cd apps/webapp
 bun install # or npm install
 bun run dev # or npm run dev
 ```
-- Access at: `http://localhost:5173` (default)
+- Access at: `http://localhost:8085` (default)
 
 ### 2. Server (Backend)
 ```sh
@@ -127,14 +127,7 @@ cd apps/server
 bun install # or npm install
 bun run dev # or npm run dev
 ```
-- API runs at: `http://localhost:3000` (default)
-
-### 3. UI Package (Storybook)
-If you want to view UI components in isolation:
-```sh
-cd packages/ui
-bun run storybook # or npm run storybook
-```
+- API runs at: `http://localhost:3035` (default)
 
 ## Development Workflow
 - Use feature branches for new features
@@ -172,7 +165,7 @@ bun run storybook # or npm run storybook
 ## Deployment
 - **Frontend**: Deploy via Vercel, Netlify, or similar
 - **Backend**: Deploy via Node.js host (Railway, Render, etc.)
-- **Database**: MySQL (managed or self-hosted)
+- **Database**: PostgreSQL (managed or self-hosted)
 - **Environment**: Set production `.env` variables
 
 ## Contributing

@@ -1,7 +1,7 @@
 import { offsetPaginationInput } from '@/server/common/schemas';
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { getAllTreatments } from './db-operations/getAllTreatments';
+import { getAllTreatments } from './db-operations/queries/get-all-treatments.query';
 
 const inputSchema = z
   .object({

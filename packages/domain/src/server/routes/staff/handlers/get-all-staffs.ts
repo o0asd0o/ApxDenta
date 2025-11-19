@@ -6,7 +6,7 @@ import {
 } from '@/server/common/schemas';
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { getAllStaff } from './db-operations/getAllStaff';
+import { getAllStaff } from './db-operations/queries/get-all-staff.query';
 
 const inputSchema = z
   .object({

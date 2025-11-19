@@ -5,8 +5,8 @@ import type { Transaction } from 'kysely';
 import {
   getFormattedWorkScheduleByDay,
   getWorkScheduleByDayFromWorkingHours,
-} from '../__helpers';
-import type { CreateStaffParams } from '../create-staff';
+} from '../../__helpers';
+import type { CreateStaffParams } from '../../create-staff';
 
 export class StaffDbAfterSaveActions {
   transaction: Transaction<DB>;
