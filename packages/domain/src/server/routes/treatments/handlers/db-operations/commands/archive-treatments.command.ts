@@ -1,6 +1,6 @@
 import type { DatabaseInstance } from '@/db';
 
-export const archiveTreatmentsById = async (
+export const archiveTreatmentsByIds = async (
   db: DatabaseInstance,
   treatmentIds: string[],
 ) => {

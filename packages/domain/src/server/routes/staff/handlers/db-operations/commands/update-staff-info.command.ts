@@ -1,6 +1,6 @@
 import type { DatabaseInstance } from '@/db';
 import { GET_DETAULT_UPDATED_AT } from '@/server/utils/helpers';
-import type { UpdateStaffParams } from '../update-staff-info';
+import type { UpdateStaffParams } from '../../update-staff-info';
 
 export const updateStaffInfo = async (
   db: DatabaseInstance,

@@ -1,11 +1,6 @@
 import type { HandlerType } from '@/server/types';
-import type { InsertResult } from 'kysely';
 import { z } from 'zod';
-import {
-  createComponentForTreatment,
-  createTreatment,
-  createVisitsForTreatment,
-} from './db-operations/createTreatment';
+import { createTreatment } from './db-operations/commands/create-treatment.command';
 
 const inputSchema = z.object({
   name: z.string(),
@@ -43,18 +38,6 @@ export type CreateTreatmentParams = HandlerType<z.infer<typeof inputSchema>>;
 
 const handler = async ({ input, ctx }: CreateTreatmentParams) => {
   const created = await createTreatment({ input, ctx });
-
-  const promises: Promise<InsertResult[]>[] = [];
-
-  if ((input.components?.length || 0) > 0) {
-    promises.push(createComponentForTreatment({ ctx, input }, created.id));
-  }
-
-  if ((input.visits?.length || 0) > 0) {
-    promises.push(createVisitsForTreatment({ ctx, input }, created.id));
-  }
-
-  await Promise.all(promises);
 
   return { status: 'SUCCESS' as const, id: created.id };
 };

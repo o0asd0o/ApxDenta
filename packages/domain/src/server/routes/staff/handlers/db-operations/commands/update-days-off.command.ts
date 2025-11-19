@@ -1,6 +1,6 @@
 import type { DatabaseInstance } from '@/db';
-import type { UpdateStaffParams } from '../update-staff-info';
-import { StaffDbAfterSaveActions } from './StaffAfterSaveActions.class';
+import type { UpdateStaffParams } from '../../update-staff-info';
+import { StaffDbAfterSaveActions } from '../_shared/StaffAfterSaveActions.class';
 
 export const updateStaffDayOffs = async (
   db: DatabaseInstance,

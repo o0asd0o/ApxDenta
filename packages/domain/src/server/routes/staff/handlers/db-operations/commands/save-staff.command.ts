@@ -1,7 +1,7 @@
 import type { DB } from '@/db';
 import { GET_DETAULT_DATES } from '@/server/utils/helpers';
 import type { Transaction } from 'kysely';
-import type { CreateStaffParams } from '../create-staff';
+import type { CreateStaffParams } from '../../create-staff';
 
 export const saveStaff = async (
   transaction: Transaction<DB>,

@@ -1,7 +1,7 @@
 import type { DB } from '@/db';
 import { executeWithOffsetPagination } from '@/server/utils/pagination';
 import type { ExpressionBuilder } from 'kysely';
-import type { GetAllTreatmentsParams } from '../get-all-treatments';
+import type { GetAllTreatmentsParams } from '../../get-all-treatments';
 
 export const getAllTreatments = async ({
   ctx,

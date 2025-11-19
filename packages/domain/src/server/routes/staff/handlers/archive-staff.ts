@@ -1,7 +1,7 @@
 import * as errors from '@/server/common/errors';
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { archiveStaffByIds } from './db-operations/archiveStaffByIds';
+import { archiveStaffByIds } from './db-operations/commands/archive-staff.command';
 
 const inputSchema = z.object({
   staffIds: z.array(z.string()),

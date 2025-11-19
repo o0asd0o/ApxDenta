@@ -1,6 +1,6 @@
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { getTreatmentById } from './db-operations/getTreatmentId';
+import { getTreatmentById } from './db-operations/queries/get-treatment.query';
 
 const inputSchema = z.object({
   id: z.string(),

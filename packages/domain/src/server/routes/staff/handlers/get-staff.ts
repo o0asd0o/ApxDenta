@@ -1,6 +1,6 @@
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { getStaffById } from './db-operations/getStaffId';
+import { getStaffById } from './db-operations/queries/get-staff.query';
 
 const inputSchema = z.object({
   id: z.string(),

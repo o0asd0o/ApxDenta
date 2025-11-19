@@ -1,5 +1,5 @@
 import type { DatabaseInstance } from '@/db';
-import type { UpdateStaffParams } from '../update-staff-info';
+import type { UpdateStaffParams } from '../../update-staff-info';
 
 export const updateStaffAssignedServices = async (
   db: DatabaseInstance,

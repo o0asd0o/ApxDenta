@@ -1,6 +1,6 @@
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
-import { getAllTreatmentCount } from './db-operations/getTotalTreatments';
+import { getAllTreatmentCount } from './db-operations/queries/get-total-treatments.query';
 
 const inputSchema = z.object({
   status: z.enum(['ACTIVE', 'INACTIVE']),

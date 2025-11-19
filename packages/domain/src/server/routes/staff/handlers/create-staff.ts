@@ -9,9 +9,9 @@ import {
 } from '@repo/schemas';
 import { z } from 'zod';
 import { sendStaffConfirmationEmail } from './__helpers';
-import { StaffDbAfterSaveActions } from './db-operations/StaffAfterSaveActions.class';
-import { getOrganizationById } from './db-operations/getOrganization';
-import { saveStaff } from './db-operations/saveStaff';
+import { StaffDbAfterSaveActions } from './db-operations/_shared/StaffAfterSaveActions.class';
+import { saveStaff } from './db-operations/commands/save-staff.command';
+import { getOrganizationById } from './db-operations/queries/get-organization.query';
 
 const inputSchema = z.object({
   type: z.enum(['DOCTOR', 'STAFF']),

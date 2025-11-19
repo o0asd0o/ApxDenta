@@ -8,10 +8,10 @@ import {
   workingHoursSchema,
 } from '@repo/schemas';
 import { z } from 'zod';
-import { updateStaffAssignedServices } from './db-operations/updateAssignedServices';
-import { updateStaffDayOffs } from './db-operations/updateDaysOff';
-import { updateStaffInfo } from './db-operations/updateStaffInfo';
-import { updateStaffWorkSchedules } from './db-operations/updateWorkingHours';
+import { updateStaffAssignedServices } from './db-operations/commands/update-assigned-services.command';
+import { updateStaffDayOffs } from './db-operations/commands/update-days-off.command';
+import { updateStaffInfo } from './db-operations/commands/update-staff-info.command';
+import { updateStaffWorkSchedules } from './db-operations/commands/update-working-hours.command';
 
 const inputSchema = z.object({
   staffId: z.string(),
