@@ -57,7 +57,6 @@ export const RenderStaffActions = (actions: {
           <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
           <V2.DropdownMenuSeparator />
           <V2.DropdownMenuGroup>
-            {/** TODO: remove padding for link */}
             <V2.DropdownMenuItem>
               <Link
                 to="/staff-list/$staffId"

@@ -32,7 +32,11 @@ export const LoginForm: React.FC = () => {
 
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '', remember: false },
+    defaultValues: {
+      email: import.meta.env.VITE_DEFAULT_USERNAME || '',
+      password: import.meta.env.VITE_DEFAULT_PASSWORD || '',
+      remember: false,
+    },
   });
 
   const { mutate: loginUser, isPending } = useMutation({

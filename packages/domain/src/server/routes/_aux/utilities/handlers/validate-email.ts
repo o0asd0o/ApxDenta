@@ -15,7 +15,11 @@ const handler = async ({ input, ctx }: Params) => {
     .executeTakeFirst();
 
   if (existing) {
-    return { status: 'FAILED', data: null, message: 'User already exists' };
+    return {
+      status: 'FAILED' as const,
+      data: null,
+      message: 'User already exists',
+    };
   }
 
   return { status: 'SUCCESS' as const, data: null };
