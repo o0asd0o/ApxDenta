@@ -12,7 +12,7 @@ const StaffListLoaderItem: React.FC<Props> = ({ key, type }) => {
   return (
     <TableRow key={key}>
       <TableCell key={`${key}11`} className="h-[61px] first:pl-3 last:pr-3">
-        <Skeleton className="h-6 w-full rounded" />
+        <Skeleton className="size-4.5 w-full rounded" />
       </TableCell>
       <TableCell key={`${key}12`} className="first:pl-3 last:pr-3">
         <div className="flex gap-2.5 items-center animate-pulse">

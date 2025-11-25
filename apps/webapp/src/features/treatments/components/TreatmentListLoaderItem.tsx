@@ -23,15 +23,13 @@ const TreatmentListLoaderItem: React.FC<Props> = ({ key }) => {
       {/* Price */}
       <TableCell key={`${key}-price`} className="first:pl-3 last:pr-3">
         <div className="flex items-center gap-1">
-          <span className="text-gray-500 text-sm">Start from</span>
-          <Skeleton className="h-4 w-16 rounded" />
+          <Skeleton className="h-4 w-32 rounded" />
         </div>
       </TableCell>
       {/* Estimate Duration */}
       <TableCell key={`${key}-duration`} className="first:pl-3 last:pr-3">
         <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-12 rounded" />
-          <span className="text-gray-500 text-xs">/ treatment</span>
+          <Skeleton className="h-4 w-24 rounded" />
         </div>
       </TableCell>
       {/* Type of Visit badge */}
