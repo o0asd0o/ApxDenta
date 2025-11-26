@@ -25,7 +25,7 @@ const StaffCard: React.FC<Props> = ({ staff }) => {
   return (
     <div
       key={staff.id}
-      className="bg-white rounded-lg shadow flex flex-col border relative"
+      className="bg-white rounded-lg flex flex-col border relative"
     >
       <div className="flex items-center gap-3 p-4 border-b">
         <Avatar className="size-12">

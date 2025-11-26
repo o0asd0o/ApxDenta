@@ -3,10 +3,10 @@ import z from 'zod';
 export const treatmentSchema = z
   .object({
     treatmentName: z.string({ required_error: 'Treatment name is required' }),
-    category: z.enum(['COSMETIC', 'MEDICAL'], {
+    category: z.enum(['COSMETIC_SERVICE', 'MEDICAL_SERVICE'], {
       required_error: 'Treatment category is required',
     }),
-    visitType: z.enum(['SINGLE', 'MULTIPLE'], {
+    visitType: z.enum(['SINGLE_VISIT', 'MULTIPLE_VISIT'], {
       required_error: 'Visit type is required',
     }),
     description: z.string({ required_error: 'Description is required' }),

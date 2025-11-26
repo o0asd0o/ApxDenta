@@ -34,10 +34,6 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
     name: 'components',
   });
 
-  console.log('ERRORS!!', {
-    errors: form.formState.errors,
-  });
-
   const category = form.watch('category');
 
   const setCurrentIndex = useCurrentIndexAction('increment');
