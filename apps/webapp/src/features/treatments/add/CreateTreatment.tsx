@@ -55,7 +55,7 @@ const CreateTreatment: React.FC = () => {
     resolver: zodResolver(treatmentSchema),
     defaultValues: {
       components: [{ id: '', quantity: 1, free: false, freeUpTo: 0 }],
-      visitType: 'SINGLE',
+      visitType: 'SINGLE_VISIT',
     },
   });
 
@@ -107,7 +107,7 @@ const CreateTreatment: React.FC = () => {
               return form.handleSubmit(
                 (values) => {
                   createTreatment({
-                    category: `${values.category}_SERVICE`,
+                    category: values.category,
                     name: values.treatmentName,
                     description: values.description,
                     pricePerduration: values.price || 1,

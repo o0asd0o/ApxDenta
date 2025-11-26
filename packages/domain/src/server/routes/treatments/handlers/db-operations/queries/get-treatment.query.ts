@@ -34,6 +34,35 @@ export const getTreatmentById = async (
           .whereRef('TreatmentComponent.treatmentId', '=', 'Treatment.id'),
       ).as('components');
     })
+    .select((eb) => {
+      return jsonArrayFrom(
+        eb
+          .selectFrom('TreatmentVisit')
+          .select([
+            'TreatmentVisit.id',
+            'TreatmentVisit.sequence',
+            'TreatmentVisit.gracePeriod',
+            'TreatmentVisit.gracePeriodUnit',
+            (ieb1) => {
+              return jsonObjectFrom(
+                ieb1
+                  .selectFrom('Treatment')
+                  .whereRef(
+                    'Treatment.id',
+                    '=',
+                    'TreatmentVisit.visitTreatmentId',
+                  )
+                  .select([
+                    'Treatment.name',
+                    'Treatment.id',
+                    'Treatment.description',
+                  ]),
+              ).as('visitTreatment');
+            },
+          ])
+          .whereRef('TreatmentVisit.treatmentId', '=', 'Treatment.id'),
+      ).as('visits');
+    })
     .select((eb) => getAverageDuration(eb).as('averageDuration'))
     .selectAll()
     .where('Treatment.id', '=', treatmentId)
