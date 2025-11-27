@@ -18,6 +18,7 @@ export const getTreatmentById = async (
             'TreatmentComponent.free',
             'TreatmentComponent.freeUpTo',
             'TreatmentComponent.quantity',
+            'TreatmentComponent.medicalComponentId',
             (ieb1) => {
               return jsonObjectFrom(
                 ieb1

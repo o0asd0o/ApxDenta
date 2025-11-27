@@ -1,7 +1,432 @@
-import React from 'react';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@repo/ui/components';
+import {
+  Calendar,
+  Grid3X3,
+  List,
+  Mail,
+  Phone,
+  Search,
+  TrendingUp,
+} from 'lucide-react';
+import React, { useState } from 'react';
+
+type ViewMode = 'table' | 'card';
+
+interface Patient {
+  id: string;
+  name: string;
+  avatar: string;
+  email: string;
+  phone: string;
+  lastVisit: string;
+  nextAppointment: string | null;
+  totalTreatments: number;
+  status: 'active' | 'inactive' | 'new';
+  completedTreatments: number;
+}
+
+// Mock data
+const patients: Patient[] = [
+  {
+    id: '1',
+    name: 'Sarah Johnson',
+    avatar: '',
+    email: 'sarah.j@email.com',
+    phone: '+1 234 567 8900',
+    lastVisit: '2024-02-15',
+    nextAppointment: '2024-03-10',
+    totalTreatments: 12,
+    status: 'active',
+    completedTreatments: 10,
+  },
+  {
+    id: '2',
+    name: 'Michael Chen',
+    avatar: '',
+    email: 'michael.c@email.com',
+    phone: '+1 234 567 8901',
+    lastVisit: '2024-02-10',
+    nextAppointment: '2024-02-16',
+    totalTreatments: 8,
+    status: 'active',
+    completedTreatments: 7,
+  },
+  {
+    id: '3',
+    name: 'Emma Davis',
+    avatar: '',
+    email: 'emma.d@email.com',
+    phone: '+1 234 567 8902',
+    lastVisit: '2024-01-20',
+    nextAppointment: '2024-02-17',
+    totalTreatments: 15,
+    status: 'active',
+    completedTreatments: 13,
+  },
+  {
+    id: '4',
+    name: 'David Wilson',
+    avatar: '',
+    email: 'david.w@email.com',
+    phone: '+1 234 567 8903',
+    lastVisit: '2024-02-14',
+    nextAppointment: null,
+    totalTreatments: 5,
+    status: 'inactive',
+    completedTreatments: 5,
+  },
+  {
+    id: '5',
+    name: 'Lisa Anderson',
+    avatar: '',
+    email: 'lisa.a@email.com',
+    phone: '+1 234 567 8904',
+    lastVisit: '2024-02-18',
+    nextAppointment: '2024-03-05',
+    totalTreatments: 2,
+    status: 'new',
+    completedTreatments: 1,
+  },
+  {
+    id: '6',
+    name: 'James Brown',
+    avatar: '',
+    email: 'james.b@email.com',
+    phone: '+1 234 567 8905',
+    lastVisit: '2023-12-15',
+    nextAppointment: null,
+    totalTreatments: 20,
+    status: 'inactive',
+    completedTreatments: 20,
+  },
+];
+
+const getStatusColor = (status: Patient['status']) => {
+  switch (status) {
+    case 'active':
+      return 'bg-green-100 text-green-700 border-green-200';
+    case 'inactive':
+      return 'bg-gray-100 text-gray-700 border-gray-200';
+    case 'new':
+      return 'bg-blue-100 text-blue-700 border-blue-200';
+  }
+};
 
 const Patients: React.FC = () => {
-  return <div>Patients</div>;
+  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+
+  const filteredPatients = patients.filter((patient) => {
+    const matchesSearch =
+      patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      patient.email.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      statusFilter === 'all' || patient.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase();
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
+
+  return (
+    <div className="px-5 space-y-4">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground font-medium">
+                  Total Patients
+                </p>
+                <p className="text-2xl font-bold mt-1">{patients.length}</p>
+              </div>
+              <div className="p-3 rounded-lg bg-blue-50">
+                <TrendingUp className="size-5 text-blue-500" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground font-medium">
+                  Active Patients
+                </p>
+                <p className="text-2xl font-bold mt-1">
+                  {patients.filter((p) => p.status === 'active').length}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-green-50">
+                <TrendingUp className="size-5 text-green-500" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground font-medium">
+                  New Patients
+                </p>
+                <p className="text-2xl font-bold mt-1">
+                  {patients.filter((p) => p.status === 'new').length}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-purple-50">
+                <TrendingUp className="size-5 text-purple-500" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters and View Toggle */}
+      <div className="flex flex-col sm:flex-row gap-3 justify-between">
+        <div className="flex gap-2 flex-1">
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <Input
+              placeholder="Search patients..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="inactive">Inactive</SelectItem>
+              <SelectItem value="new">New</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant={viewMode === 'table' ? 'primary' : 'outline'}
+            className="h-9 w-9 p-0"
+            onClick={() => setViewMode('table')}
+          >
+            <List className="size-4" />
+          </Button>
+          <Button
+            variant={viewMode === 'card' ? 'primary' : 'outline'}
+            className="h-9 w-9 p-0"
+            onClick={() => setViewMode('card')}
+          >
+            <Grid3X3 className="size-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Table View */}
+      {viewMode === 'table' && (
+        <Card>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Patient</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Last Visit</TableHead>
+                  <TableHead>Next Appointment</TableHead>
+                  <TableHead>Treatments</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredPatients.map((patient) => (
+                  <TableRow key={patient.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="size-9">
+                          <AvatarImage
+                            src={patient.avatar}
+                            alt={patient.name}
+                          />
+                          <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                            {getInitials(patient.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="font-medium">{patient.name}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Mail className="size-3.5" />
+                          <span>{patient.email}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Phone className="size-3.5" />
+                          <span>{patient.phone}</span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {formatDate(patient.lastVisit)}
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {patient.nextAppointment ? (
+                        <div className="flex items-center gap-2">
+                          <Calendar className="size-4 text-muted-foreground" />
+                          {formatDate(patient.nextAppointment)}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        <span className="font-medium">
+                          {patient.completedTreatments}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {' '}
+                          / {patient.totalTreatments}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant="outline"
+                        className={getStatusColor(patient.status)}
+                      >
+                        {patient.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            {filteredPatients.length === 0 && (
+              <div className="text-center py-12 text-muted-foreground">
+                No patients found
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Card View */}
+      {viewMode === 'card' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filteredPatients.map((patient) => (
+            <Card key={patient.id}>
+              <CardContent className="p-5">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="size-12">
+                      <AvatarImage src={patient.avatar} alt={patient.name} />
+                      <AvatarFallback className="bg-primary/10 text-primary">
+                        {getInitials(patient.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-bold">{patient.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {patient.totalTreatments} treatments
+                      </p>
+                    </div>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={getStatusColor(patient.status)}
+                  >
+                    {patient.status}
+                  </Badge>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Mail className="size-4" />
+                      <span>{patient.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Phone className="size-4" />
+                      <span>{patient.phone}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Last Visit:</span>
+                      <span className="font-medium">
+                        {formatDate(patient.lastVisit)}
+                      </span>
+                    </div>
+                    {patient.nextAppointment && (
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">
+                          Next Appointment:
+                        </span>
+                        <span className="font-medium text-blue-600">
+                          {formatDate(patient.nextAppointment)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Progress:</span>
+                      <span className="font-medium">
+                        {patient.completedTreatments} /{' '}
+                        {patient.totalTreatments}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          {filteredPatients.length === 0 && (
+            <div className="col-span-full text-center py-12 text-muted-foreground">
+              No patients found
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Patients;

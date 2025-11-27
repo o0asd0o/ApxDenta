@@ -42,6 +42,10 @@ import RatingsTab from './sub-pages/RatingsTab';
 import ReviewsTab from './sub-pages/ReviewsTab';
 import VisitsTab from './sub-pages/VisitsTab';
 
+/**
+ * TODO:
+ * 1. have animations for sections
+ */
 const ViewTreatment: React.FC = () => {
   const { treatmentId } = Route.useParams();
 
@@ -198,7 +202,7 @@ const ViewTreatment: React.FC = () => {
         <Root
           defaultValue={tab || 'overview'}
           onChangeTab={(value) => {
-            if (value)  setTab(value)
+            if (value) setTab(value);
           }}
         >
           <List className="mb-6">

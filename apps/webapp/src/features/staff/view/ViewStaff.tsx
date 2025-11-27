@@ -23,6 +23,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ArchiveIcon, EditIcon, MoreVertical } from 'lucide-react';
 import { useQueryState } from 'nuqs';
+import Appointments from './sub-pages/Appointments';
+import EmployeeData from './sub-pages/EmployeeData';
+import Overview from './sub-pages/Overview';
+import Patients from './sub-pages/Patients';
 
 const ViewStaff = () => {
   const { staffId } = Route.useParams();
@@ -134,19 +138,19 @@ const ViewStaff = () => {
             <ListItem value="employee-data">Employee Data</ListItem>
           </List>
           <TabContent value="overview" className="py-5 gap-5 flex flex-col">
-            Overview
+            <Overview />
           </TabContent>
           <TabContent value="appointments" className="py-5 gap-5 flex flex-col">
-            Appointments
+            <Appointments />
           </TabContent>
           <TabContent value="patients" className="py-5 gap-5 flex flex-col">
-            Patients
+            <Patients />
           </TabContent>
           <TabContent
             value="employee-data"
             className="py-5 gap-5 flex flex-col"
           >
-            Employee Data
+            <EmployeeData />
           </TabContent>
         </Root>
       </div>

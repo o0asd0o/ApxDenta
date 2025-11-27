@@ -15,6 +15,7 @@ import TotalTreatments from './components/TotalTreatments';
 import TreatmentActions from './components/TreatmentActions';
 import TreatmentCardLayout from './components/TreatmentCardLayout';
 import TreatmentListLayout from './components/TreatmentListLayout';
+import UpdateTreatment from './update/UpdateTreatment';
 
 type Props = {
   status: 'ACTIVE' | 'INACTIVE';
@@ -106,7 +107,7 @@ const Treatments: React.FC<Props> = ({ status }) => {
       </div>
       <div>
         <TreatmentActionsProvider>
-          {/* <UpdateStaff type="DOCTOR" /> */}
+          <UpdateTreatment />
           <ArchiveTreatment />
           <ArchiveMultipleTreatment />
           {layoutTab === 'card' && (
