@@ -4,11 +4,15 @@ import * as createTreatment from './handlers/create-treatment';
 import * as getAllTreatments from './handlers/get-all-treatments';
 import * as getTotalTreatments from './handlers/get-total-treatments';
 import * as getTreatment from './handlers/get-treatment';
+import * as updateTreatment from './handlers/update-treatment';
 
 const treatments = router({
   createTreatment: protectedProcedure
     .input(createTreatment.inputSchema)
     .mutation(createTreatment.handler),
+  updateTreatment: protectedProcedure
+    .input(updateTreatment.inputSchema)
+    .mutation(updateTreatment.handler),
   getAllTreatments: protectedProcedure
     .input(getAllTreatments.inputSchema)
     .query(getAllTreatments.handler),

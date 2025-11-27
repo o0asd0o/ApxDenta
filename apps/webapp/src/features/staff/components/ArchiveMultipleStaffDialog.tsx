@@ -38,7 +38,7 @@ const ArchiveMultipleStaffDialog: React.FC<ArchiveMultipleStaffDialogProps> = ({
           <p className="text-sm text-gray-700">
             Are you sure you want to archive
             {count > 0 ? (
-              <span className="font-semibold text-gray-900">
+              <span className="font-bold text-gray-900">
                 {' '}
                 {count} doctor{count > 1 ? 's' : ''}
               </span>

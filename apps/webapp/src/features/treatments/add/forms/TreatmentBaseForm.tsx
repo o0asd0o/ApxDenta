@@ -68,7 +68,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <RadioCardItem value="MEDICAL">
+                    <RadioCardItem value="MEDICAL_SERVICE">
                       <div className="flex items-center gap-3">
                         <RadioCardIndicator />
                         <span className="inline-block xs:hidden text-[0.8125rem]">
@@ -79,7 +79,7 @@ const TreatmentBaseForm: React.FC<Props> = ({ form }) => {
                         </span>
                       </div>
                     </RadioCardItem>
-                    <RadioCardItem value="COSMETIC">
+                    <RadioCardItem value="COSMETIC_SERVICE">
                       <div className="flex items-center gap-3">
                         <RadioCardIndicator />
                         <span className="inline-block xs:hidden text-[0.8125rem]">

@@ -37,7 +37,7 @@ const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment }) => {
 
       {/* Treatment Name & Status */}
       <div className="pr-8 mb-1">
-        <h3 className="font-semibold text-base leading-tight mb-1">
+        <h3 className="font-bold text-base leading-tight mb-1">
           {treatment.name}
         </h3>
         {treatment.status === 'SAMPLE' && (
@@ -56,7 +56,7 @@ const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment }) => {
       <div className="space-y-1.5 mb-2">
         <div className="flex items-baseline gap-1.5">
           <span className="text-xs text-gray-500">Starts from</span>
-          <span className="font-semibold text-sm">₱{formattedPrice}</span>
+          <span className="font-bold text-sm">₱{formattedPrice}</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-gray-600">
           <Clock className="size-3.5" />

@@ -18,6 +18,7 @@ export const treatmentSchema = z
 
     visits: z
       .object({
+        visitId: z.string().optional(), // key identifier
         treatmentId: z.string().or(z.null()),
         gracePeriod: z
           .number()
@@ -29,6 +30,7 @@ export const treatmentSchema = z
       .optional(),
     components: z
       .object({
+        componentId: z.string().optional(), // key identifier
         id: z.string().min(1, 'Component is required'),
         quantity: z.number().min(1, 'Quantity must be at least 1'),
         free: z.boolean().optional(),
