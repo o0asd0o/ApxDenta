@@ -9,7 +9,7 @@ import { cn, focusInput, focusRing, hasErrorInput } from '@repo/ui/lib/utils';
 const inputStyles = tv({
   base: [
     // base
-    'relative block w-full appearance-none rounded-sm border px-2.5 py-2 shadow-xs outline-none transition text-sm sm:text-md',
+    'relative block w-full appearance-none rounded-sm border px-2.5 py-2 outline-none transition text-sm sm:text-md',
     // border color
     'border-gray-200 dark:border-gray-800',
     // text color

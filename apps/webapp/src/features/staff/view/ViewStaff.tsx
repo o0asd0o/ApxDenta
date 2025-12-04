@@ -51,7 +51,7 @@ const ViewStaff = () => {
   const profile = staff.avatar?.url || '/avatars/placeholder.png';
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <div className="flex px-5 py-3 border-b">
         <Breadcrumb>
           <BreadcrumbList>
@@ -129,7 +129,7 @@ const ViewStaff = () => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="flex-1 flex flex-col">
         <Root defaultValue={tab} onChangeTab={setTab}>
           <List>
             <ListItem value="overview">Overview</ListItem>
@@ -137,18 +137,27 @@ const ViewStaff = () => {
             <ListItem value="patients">Patients</ListItem>
             <ListItem value="employee-data">Employee Data</ListItem>
           </List>
-          <TabContent value="overview" className="py-5 gap-5 flex flex-col">
+          <TabContent
+            value="overview"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
+          >
             <Overview />
           </TabContent>
-          <TabContent value="appointments" className="py-5 gap-5 flex flex-col">
+          <TabContent
+            value="appointments"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
+          >
             <Appointments />
           </TabContent>
-          <TabContent value="patients" className="py-5 gap-5 flex flex-col">
+          <TabContent
+            value="patients"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
+          >
             <Patients />
           </TabContent>
           <TabContent
             value="employee-data"
-            className="py-5 gap-5 flex flex-col"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
           >
             <EmployeeData />
           </TabContent>

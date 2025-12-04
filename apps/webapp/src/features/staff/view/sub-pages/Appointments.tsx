@@ -1,9 +1,10 @@
+import PillTabs from '@/components/PillTabs';
+import { DataTable } from '@/components/data-table/DataTable';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
   Badge,
-  Button,
   Card,
   CardContent,
   Input,
@@ -12,17 +13,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from '@repo/ui/components';
-import { Calendar, Grid3X3, List, Search } from 'lucide-react';
+import type { ColumnDef } from '@tanstack/react-table';
+import { Calendar, LayoutGrid, ListIcon, Search } from 'lucide-react';
 import React, { useState } from 'react';
 
-type ViewMode = 'table' | 'card';
+type ViewMode = 'list' | 'card';
 
 interface Appointment {
   id: string;
@@ -101,8 +97,73 @@ const getStatusColor = (status: Appointment['status']) => {
   }
 };
 
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase();
+};
+
+const appointmentColumns: ColumnDef<Appointment>[] = [
+  {
+    accessorKey: 'patient',
+    header: 'Patient',
+    cell: ({ row }) => {
+      const appointment = row.original;
+      return (
+        <div className="flex items-center gap-3">
+          <Avatar className="size-9">
+            <AvatarImage
+              src={appointment.patient.avatar}
+              alt={appointment.patient.name}
+            />
+            <AvatarFallback className="bg-primary/10 text-primary text-xs">
+              {getInitials(appointment.patient.name)}
+            </AvatarFallback>
+          </Avatar>
+          <span className="font-medium">{appointment.patient.name}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'treatment',
+    header: 'Treatment',
+    cell: ({ row }) => row.original.treatment,
+  },
+  {
+    accessorKey: 'dateTime',
+    header: 'Date & Time',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2 text-sm">
+        <Calendar className="size-4 text-muted-foreground" />
+        {row.original.dateTime}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'duration',
+    header: 'Duration',
+    cell: ({ row }) => (
+      <span className="text-sm text-muted-foreground">
+        {row.original.duration}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant="outline" className={getStatusColor(row.original.status)}>
+        {row.original.status.replace('-', ' ')}
+      </Badge>
+    ),
+  },
+];
+
 const Appointments: React.FC = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -114,14 +175,6 @@ const Appointments: React.FC = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
-  };
-
   return (
     <div className="px-5 space-y-4">
       {/* Filters and View Toggle */}
@@ -130,10 +183,12 @@ const Appointments: React.FC = () => {
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
-              placeholder="Search appointments..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
+              placeholder="Search treatment name"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSearchQuery(e.target.value);
+              }}
+              type="search"
             />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -149,93 +204,37 @@ const Appointments: React.FC = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex gap-2">
-          <Button
-            variant={viewMode === 'table' ? 'primary' : 'outline'}
-            className="h-9 w-9 p-0"
-            onClick={() => setViewMode('table')}
-          >
-            <List className="size-4" />
-          </Button>
-          <Button
-            variant={viewMode === 'card' ? 'primary' : 'outline'}
-            className="h-9 w-9 p-0"
-            onClick={() => setViewMode('card')}
-          >
-            <Grid3X3 className="size-4" />
-          </Button>
+        <div className="flex gap-2 border border-white rounded-md">
+          <PillTabs
+            selectedTab={viewMode}
+            onChangeTab={setViewMode}
+            defaultSelectedTab="list"
+            tabs={[
+              { label: <ListIcon className="size-4" />, value: 'list' },
+              { label: <LayoutGrid className="size-4" />, value: 'card' },
+            ]}
+          />
         </div>
       </div>
 
       {/* Table View */}
-      {viewMode === 'table' && (
-        <Card>
+      {viewMode === 'list' && (
+        <Card className="py-0 rounded-lg">
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Patient</TableHead>
-                  <TableHead>Treatment</TableHead>
-                  <TableHead>Date & Time</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredAppointments.map((appointment) => (
-                  <TableRow key={appointment.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="size-9">
-                          <AvatarImage
-                            src={appointment.patient.avatar}
-                            alt={appointment.patient.name}
-                          />
-                          <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                            {getInitials(appointment.patient.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="font-medium">
-                          {appointment.patient.name}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{appointment.treatment}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Calendar className="size-4 text-muted-foreground" />
-                        {appointment.dateTime}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {appointment.duration}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className={getStatusColor(appointment.status)}
-                      >
-                        {appointment.status.replace('-', ' ')}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            {filteredAppointments.length === 0 && (
-              <div className="text-center py-12 text-muted-foreground">
-                No appointments found
-              </div>
-            )}
+            <DataTable
+              columns={appointmentColumns}
+              data={filteredAppointments}
+              variant="card"
+            />
           </CardContent>
         </Card>
       )}
 
       {/* Card View */}
       {viewMode === 'card' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {filteredAppointments.map((appointment) => (
-            <Card key={appointment.id}>
+            <Card key={appointment.id} className="py-0">
               <CardContent className="p-5">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">

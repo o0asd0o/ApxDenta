@@ -1,9 +1,10 @@
+import PillTabs from '@/components/PillTabs';
+import { DataTable } from '@/components/data-table/DataTable';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
   Badge,
-  Button,
   Card,
   CardContent,
   Input,
@@ -12,17 +13,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from '@repo/ui/components';
+import type { ColumnDef } from '@tanstack/react-table';
 import {
   Calendar,
-  Grid3X3,
-  List,
+  LayoutGrid,
+  ListIcon,
   Mail,
   Phone,
   Search,
@@ -30,7 +26,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-type ViewMode = 'table' | 'card';
+type ViewMode = 'list' | 'card'; // TODO: DRY
 
 interface Patient {
   id: string;
@@ -132,8 +128,111 @@ const getStatusColor = (status: Patient['status']) => {
   }
 };
 
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase();
+};
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+const patientColumns: ColumnDef<Patient>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Patient',
+    cell: ({ row }) => {
+      const patient = row.original;
+      return (
+        <div className="flex items-center gap-3">
+          <Avatar className="size-9">
+            <AvatarImage src={patient.avatar} alt={patient.name} />
+            <AvatarFallback className="bg-primary/10 text-primary text-xs">
+              {getInitials(patient.name)}
+            </AvatarFallback>
+          </Avatar>
+          <span className="font-medium">{patient.name}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'contact',
+    header: 'Contact',
+    cell: ({ row }) => {
+      const patient = row.original;
+      return (
+        <div className="space-y-1 text-sm">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Mail className="size-3.5" />
+            <span>{patient.email}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <Phone className="size-3.5" />
+            <span>{patient.phone}</span>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'lastVisit',
+    header: 'Last Visit',
+    cell: ({ row }) => (
+      <span className="text-sm">{formatDate(row.original.lastVisit)}</span>
+    ),
+  },
+  {
+    accessorKey: 'nextAppointment',
+    header: 'Next Appointment',
+    cell: ({ row }) => {
+      const patient = row.original;
+      return patient.nextAppointment ? (
+        <div className="flex items-center gap-2 text-sm">
+          <Calendar className="size-4 text-muted-foreground" />
+          {formatDate(patient.nextAppointment)}
+        </div>
+      ) : (
+        <span className="text-muted-foreground">-</span>
+      );
+    },
+  },
+  {
+    accessorKey: 'treatments',
+    header: 'Treatments',
+    cell: ({ row }) => {
+      const patient = row.original;
+      return (
+        <div className="text-sm">
+          <span className="font-medium">{patient.completedTreatments}</span>
+          <span className="text-muted-foreground">
+            {' '}
+            / {patient.totalTreatments}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant="outline" className={getStatusColor(row.original.status)}>
+        {row.original.status}
+      </Badge>
+    ),
+  },
+];
+
 const Patients: React.FC = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -146,27 +245,11 @@ const Patients: React.FC = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  };
-
   return (
     <div className="px-5 space-y-4">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className="py-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -181,7 +264,7 @@ const Patients: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="py-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -198,7 +281,7 @@ const Patients: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="py-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -226,7 +309,7 @@ const Patients: React.FC = () => {
               placeholder="Search patients..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
+              type="search"
             />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -241,109 +324,28 @@ const Patients: React.FC = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex gap-2">
-          <Button
-            variant={viewMode === 'table' ? 'primary' : 'outline'}
-            className="h-9 w-9 p-0"
-            onClick={() => setViewMode('table')}
-          >
-            <List className="size-4" />
-          </Button>
-          <Button
-            variant={viewMode === 'card' ? 'primary' : 'outline'}
-            className="h-9 w-9 p-0"
-            onClick={() => setViewMode('card')}
-          >
-            <Grid3X3 className="size-4" />
-          </Button>
+        <div className="flex gap-2 border border-white rounded-md">
+          <PillTabs
+            selectedTab={viewMode}
+            onChangeTab={setViewMode}
+            defaultSelectedTab="list"
+            tabs={[
+              { label: <ListIcon className="size-4" />, value: 'list' },
+              { label: <LayoutGrid className="size-4" />, value: 'card' },
+            ]}
+          />
         </div>
       </div>
 
       {/* Table View */}
-      {viewMode === 'table' && (
-        <Card>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Patient</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Last Visit</TableHead>
-                  <TableHead>Next Appointment</TableHead>
-                  <TableHead>Treatments</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredPatients.map((patient) => (
-                  <TableRow key={patient.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="size-9">
-                          <AvatarImage
-                            src={patient.avatar}
-                            alt={patient.name}
-                          />
-                          <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                            {getInitials(patient.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="font-medium">{patient.name}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-1 text-sm">
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
-                          <Mail className="size-3.5" />
-                          <span>{patient.email}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
-                          <Phone className="size-3.5" />
-                          <span>{patient.phone}</span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {formatDate(patient.lastVisit)}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {patient.nextAppointment ? (
-                        <div className="flex items-center gap-2">
-                          <Calendar className="size-4 text-muted-foreground" />
-                          {formatDate(patient.nextAppointment)}
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground">-</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        <span className="font-medium">
-                          {patient.completedTreatments}
-                        </span>
-                        <span className="text-muted-foreground">
-                          {' '}
-                          / {patient.totalTreatments}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className={getStatusColor(patient.status)}
-                      >
-                        {patient.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            {filteredPatients.length === 0 && (
-              <div className="text-center py-12 text-muted-foreground">
-                No patients found
-              </div>
-            )}
+      {viewMode === 'list' && (
+        <Card className="py-0 rounded-lg">
+          <CardContent className="p-0 overflow-hidden">
+            <DataTable
+              columns={patientColumns}
+              data={filteredPatients}
+              variant="card"
+            />
           </CardContent>
         </Card>
       )}
@@ -352,7 +354,7 @@ const Patients: React.FC = () => {
       {viewMode === 'card' && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filteredPatients.map((patient) => (
-            <Card key={patient.id}>
+            <Card key={patient.id} className="py-0">
               <CardContent className="p-5">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">

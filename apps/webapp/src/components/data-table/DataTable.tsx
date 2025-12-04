@@ -37,6 +37,7 @@ interface DataTableProps<TData extends { id: string }, TValue, LMeta> {
     sorting: SortingState;
     setSorting: OnChangeFn<SortingState>;
   };
+  variant?: 'default' | 'card';
 }
 
 export function DataTable<TData extends { id: string }, TValue, LMeta>({
@@ -48,6 +49,7 @@ export function DataTable<TData extends { id: string }, TValue, LMeta>({
   sort,
   onDeleteItems,
   loaderMeta,
+  variant = 'default',
 }: DataTableProps<TData, TValue, LMeta>) {
   const table = useReactTable({
     data,
@@ -72,7 +74,13 @@ export function DataTable<TData extends { id: string }, TValue, LMeta>({
                   <TableHead
                     key={header.id}
                     style={{ width: header.getSize() }}
-                    className="font-medium first:pl-3 last:pr-3 first:rounded-l-lg last:rounded-r-lg bg-muted/90 text-xs uppercase text-grayish-blue"
+                    className={cn(
+                      'font-medium first:pl-3 last:pr-3 bg-muted/90 text-xs uppercase text-grayish-blue',
+                      variant === 'default' &&
+                        'first:rounded-l-lg last:rounded-r-lg ',
+                      variant === 'card' &&
+                        'first:rounded-tl-xl last:rounded-tr-xl ',
+                    )}
                   >
                     {header.isPlaceholder ? null : (
                       <div

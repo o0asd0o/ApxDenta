@@ -70,7 +70,7 @@ const EmployeeData: React.FC = () => {
     <div className="px-5 space-y-5">
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="py-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -87,7 +87,7 @@ const EmployeeData: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="py-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -104,7 +104,7 @@ const EmployeeData: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="py-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -121,7 +121,7 @@ const EmployeeData: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="py-0">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
