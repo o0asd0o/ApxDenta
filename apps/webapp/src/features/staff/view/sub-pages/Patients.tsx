@@ -21,7 +21,7 @@ import {
   ListIcon,
   Mail,
   Phone,
-  Search,
+  TrendingDown,
   TrendingUp,
 } from 'lucide-react';
 import React, { useState } from 'react';
@@ -246,7 +246,7 @@ const Patients: React.FC = () => {
   });
 
   return (
-    <div className="px-5 space-y-4">
+    <div className="md:px-5 space-y-4">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="py-0">
@@ -258,8 +258,8 @@ const Patients: React.FC = () => {
                 </p>
                 <p className="text-2xl font-bold mt-1">{patients.length}</p>
               </div>
-              <div className="p-3 rounded-lg bg-blue-50">
-                <TrendingUp className="size-5 text-blue-500" />
+              <div className="p-3 rounded-lg">
+                <TrendingUp className="size-10 md:size-12 text-green-200" />
               </div>
             </div>
           </CardContent>
@@ -275,8 +275,8 @@ const Patients: React.FC = () => {
                   {patients.filter((p) => p.status === 'active').length}
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-green-50">
-                <TrendingUp className="size-5 text-green-500" />
+              <div className="p-3 rounded-lg">
+                <TrendingUp className="size-10 md:size-12 text-green-200" />
               </div>
             </div>
           </CardContent>
@@ -292,8 +292,8 @@ const Patients: React.FC = () => {
                   {patients.filter((p) => p.status === 'new').length}
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-purple-50">
-                <TrendingUp className="size-5 text-purple-500" />
+              <div className="p-3 rounded-lg">
+                <TrendingDown className="size-10 md:size-12 text-red-200" />
               </div>
             </div>
           </CardContent>
@@ -302,38 +302,42 @@ const Patients: React.FC = () => {
 
       {/* Filters and View Toggle */}
       <div className="flex flex-col sm:flex-row gap-3 justify-between">
-        <div className="flex gap-2 flex-1">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 flex-1 w-full">
+          <div className="relative flex-1 w-full sm:max-w-sm">
             <Input
-              placeholder="Search patients..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search partient"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSearchQuery(e.target.value);
+              }}
               type="search"
             />
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-              <SelectItem value="new">New</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex gap-2 border border-white rounded-md">
-          <PillTabs
-            selectedTab={viewMode}
-            onChangeTab={setViewMode}
-            defaultSelectedTab="list"
-            tabs={[
-              { label: <ListIcon className="size-4" />, value: 'list' },
-              { label: <LayoutGrid className="size-4" />, value: 'card' },
-            ]}
-          />
+          <div className="flex flex-1 gap-3 items-center">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="flex-1 sm:flex-none sm:w-[180px] text-sm">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent className="text-sm">
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="scheduled">Scheduled</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="in-progress">In Progress</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="ml-auto min-w-[75px]">
+              <PillTabs
+                selectedTab={viewMode}
+                onChangeTab={setViewMode}
+                defaultSelectedTab="list"
+                tabs={[
+                  { label: <ListIcon className="size-4" />, value: 'list' },
+                  { label: <LayoutGrid className="size-4" />, value: 'card' },
+                ]}
+              />
+            </div>
+          </div>
         </div>
       </div>
 

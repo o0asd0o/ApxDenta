@@ -1,3 +1,6 @@
+import { EMPLOYMENT_TYPE_BADGES } from '@/constants/badges';
+import { cn } from '@/lib/utils';
+import type { EmploymentType } from '@repo/domain/db';
 import { Badge, Card, CardContent, CardHeader } from '@repo/ui/components';
 import {
   Banknote,
@@ -30,7 +33,7 @@ const employeeData = {
     position: 'Senior Dentist',
     department: 'General Dentistry',
     hireDate: '2018-03-15',
-    employmentType: 'Full-time',
+    employmentType: 'FULL_TIME',
     status: 'Active',
   },
   workingHours: [
@@ -67,7 +70,7 @@ const employeeData = {
 
 const EmployeeData: React.FC = () => {
   return (
-    <div className="px-5 space-y-5">
+    <div className="md:px-5 space-y-5">
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="py-0">
@@ -81,8 +84,8 @@ const EmployeeData: React.FC = () => {
                   {employeeData.performance.totalAppointments}
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-blue-50">
-                <Calendar className="size-5 text-blue-500" />
+              <div className="p-3 rounded-lg">
+                <Calendar className="size-10 md:size-12 text-gray-200" />
               </div>
             </div>
           </CardContent>
@@ -98,8 +101,8 @@ const EmployeeData: React.FC = () => {
                   {employeeData.performance.averageRating}
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-yellow-50">
-                <Shield className="size-5 text-yellow-500" />
+              <div className="p-3 rounded-lg">
+                <Shield className="size-10 md:size-12 text-gray-200" />
               </div>
             </div>
           </CardContent>
@@ -115,8 +118,8 @@ const EmployeeData: React.FC = () => {
                   {employeeData.performance.patientRetention}%
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-green-50">
-                <User className="size-5 text-green-500" />
+              <div className="p-3 rounded-lg">
+                <User className="size-10 md:size-12 text-gray-200" />
               </div>
             </div>
           </CardContent>
@@ -132,8 +135,8 @@ const EmployeeData: React.FC = () => {
                   {employeeData.performance.completionRate}%
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-purple-50">
-                <Briefcase className="size-5 text-purple-500" />
+              <div className="p-3 rounded-lg">
+                <Briefcase className="size-10 md:size-12 text-gray-200" />
               </div>
             </div>
           </CardContent>
@@ -157,7 +160,7 @@ const EmployeeData: React.FC = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Full Name
                   </p>
-                  <p className="text-sm">
+                  <p className="text-sm font-medium">
                     {employeeData.personalInfo.fullName}
                   </p>
                 </div>
@@ -168,7 +171,9 @@ const EmployeeData: React.FC = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Email
                   </p>
-                  <p className="text-sm">{employeeData.personalInfo.email}</p>
+                  <p className="text-sm font-medium">
+                    {employeeData.personalInfo.email}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -177,7 +182,9 @@ const EmployeeData: React.FC = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Phone
                   </p>
-                  <p className="text-sm">{employeeData.personalInfo.phone}</p>
+                  <p className="text-sm font-medium">
+                    {employeeData.personalInfo.phone}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -186,7 +193,9 @@ const EmployeeData: React.FC = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Address
                   </p>
-                  <p className="text-sm">{employeeData.personalInfo.address}</p>
+                  <p className="text-sm font-medium">
+                    {employeeData.personalInfo.address}
+                  </p>
                 </div>
               </div>
             </div>
@@ -225,26 +234,26 @@ const EmployeeData: React.FC = () => {
               Employment Details
             </h3>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex justify-between items-center py-2 border-b">
+          <CardContent className="">
+            <div className="flex justify-between items-center py-3 border-b">
               <span className="text-sm text-muted-foreground">Employee ID</span>
               <span className="text-sm font-medium">
                 {employeeData.employmentDetails.employeeId}
               </span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b">
+            <div className="flex justify-between items-center py-3 border-b">
               <span className="text-sm text-muted-foreground">Position</span>
               <span className="text-sm font-medium">
                 {employeeData.employmentDetails.position}
               </span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b">
+            <div className="flex justify-between items-center py-3 border-b">
               <span className="text-sm text-muted-foreground">Department</span>
               <span className="text-sm font-medium">
                 {employeeData.employmentDetails.department}
               </span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b">
+            <div className="flex justify-between items-center py-3 border-b">
               <span className="text-sm text-muted-foreground">Hire Date</span>
               <span className="text-sm font-medium">
                 {new Date(
@@ -256,17 +265,20 @@ const EmployeeData: React.FC = () => {
                 })}
               </span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b">
+            <div className="flex justify-between items-center py-3 border-b">
               <span className="text-sm text-muted-foreground">
                 Employment Type
               </span>
-              <Badge variant="secondary">
-                {employeeData.employmentDetails.employmentType}
-              </Badge>
+              {
+                EMPLOYMENT_TYPE_BADGES[
+                  employeeData.employmentDetails
+                    .employmentType as EmploymentType
+                ]
+              }
             </div>
-            <div className="flex justify-between items-center py-2">
+            <div className="flex justify-between items-center py-3">
               <span className="text-sm text-muted-foreground">Status</span>
-              <Badge className="bg-green-100 text-green-700 border-green-200">
+              <Badge className="bg-blue-100 text-blue-700 border-blue-200">
                 {employeeData.employmentDetails.status}
               </Badge>
             </div>
@@ -287,11 +299,10 @@ const EmployeeData: React.FC = () => {
             {employeeData.workingHours.map((schedule) => (
               <div
                 key={schedule.day}
-                className={`p-4 rounded-lg border ${
-                  schedule.active
-                    ? 'bg-primary/5 border-primary/20'
-                    : 'bg-gray-50 border-gray-200'
-                }`}
+                className={cn('p-4 rounded-lg border', {
+                  'bg-primary/10 border-primary/30': schedule.active,
+                  'bg-gray-50 border-gray-200': !schedule.active,
+                })}
               >
                 <p className="font-bold text-sm mb-1">{schedule.day}</p>
                 <p
@@ -308,25 +319,6 @@ const EmployeeData: React.FC = () => {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Assigned Services */}
-        <Card>
-          <CardHeader>
-            <h3 className="text-lg font-bold flex items-center gap-2">
-              <Banknote className="size-5" />
-              Assigned Services
-            </h3>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {employeeData.services.map((service) => (
-                <Badge key={service} variant="outline">
-                  {service}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Upcoming Days Off */}
         <Card>
           <CardHeader>
@@ -352,6 +344,25 @@ const EmployeeData: React.FC = () => {
                     Approved
                   </Badge>
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Assigned Services */}
+        <Card className="h-fit">
+          <CardHeader>
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <Banknote className="size-5" />
+              Assigned Services
+            </h3>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {employeeData.services.map((service) => (
+                <Badge key={service} variant="outline">
+                  {service}
+                </Badge>
               ))}
             </div>
           </CardContent>

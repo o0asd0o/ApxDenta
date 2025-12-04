@@ -64,7 +64,7 @@ export function DataTable<TData extends { id: string }, TValue, LMeta>({
 
   const state = table.getState().rowSelection;
   return (
-    <div className="rounded-md relative">
+    <div className="rounded-md relative overflow-hidden">
       <Table className="">
         <TableHeader className="[&_tr]:border-none!">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -78,8 +78,6 @@ export function DataTable<TData extends { id: string }, TValue, LMeta>({
                       'font-medium first:pl-3 last:pr-3 bg-muted/90 text-xs uppercase text-grayish-blue',
                       variant === 'default' &&
                         'first:rounded-l-lg last:rounded-r-lg ',
-                      variant === 'card' &&
-                        'first:rounded-tl-xl last:rounded-tr-xl ',
                     )}
                   >
                     {header.isPlaceholder ? null : (

@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@repo/ui/components';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Calendar, LayoutGrid, ListIcon, Search } from 'lucide-react';
+import { Calendar, LayoutGrid, ListIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 type ViewMode = 'list' | 'card';
@@ -176,44 +176,45 @@ const Appointments: React.FC = () => {
   });
 
   return (
-    <div className="px-5 space-y-4">
+    <div className="md:px-5 space-y-4">
       {/* Filters and View Toggle */}
       <div className="flex flex-col sm:flex-row gap-3 justify-between">
-        <div className="flex gap-2 flex-1">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 flex-1 w-full">
+          <div className="relative flex-1 w-full sm:max-w-sm">
             <Input
               value={searchQuery}
-              placeholder="Search treatment name"
+              placeholder="Search for an appointment"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setSearchQuery(e.target.value);
               }}
               type="search"
             />
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="scheduled">Scheduled</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="in-progress">In Progress</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex gap-2 border border-white rounded-md">
-          <PillTabs
-            selectedTab={viewMode}
-            onChangeTab={setViewMode}
-            defaultSelectedTab="list"
-            tabs={[
-              { label: <ListIcon className="size-4" />, value: 'list' },
-              { label: <LayoutGrid className="size-4" />, value: 'card' },
-            ]}
-          />
+          <div className="flex flex-1 gap-3 items-center">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="flex-1 sm:flex-none sm:w-[180px] text-sm">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent className="text-sm">
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="scheduled">Scheduled</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="in-progress">In Progress</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="ml-auto min-w-[75px]">
+              <PillTabs
+                selectedTab={viewMode}
+                onChangeTab={setViewMode}
+                defaultSelectedTab="list"
+                tabs={[
+                  { label: <ListIcon className="size-4" />, value: 'list' },
+                  { label: <LayoutGrid className="size-4" />, value: 'card' },
+                ]}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
