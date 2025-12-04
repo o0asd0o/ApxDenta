@@ -14,7 +14,7 @@ const TotalPatients: React.FC<Props> = ({ isActive }) => {
     }),
   );
 
-  return <span className="font-semibold text-lg">{data?.data.count || 0}</span>;
+  return <span className="font-bold text-lg">{data?.data.count || 0}</span>;
 };
 
 export default TotalPatients;

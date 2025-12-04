@@ -1,6 +1,6 @@
+import PillTabs from '@/components/PillTabs';
 import type { PaginationState } from '@/components/__types';
-import { Button } from '@repo/ui/components';
-import { Grid3X3, List } from 'lucide-react';
+import { LayoutGrid, ListIcon } from 'lucide-react';
 import type React from 'react';
 
 type Props = {
@@ -18,26 +18,21 @@ const PatientsActions: React.FC<Props> = ({
 }) => {
   return (
     <div className={className}>
-      <Button
-        onClick={() => {
-          setLayoutTab('list');
-          setPagination((prev) => ({ ...prev, current: 1 }));
+      <PillTabs
+        selectedTab={layoutTab}
+        onChangeTab={(value) => {
+          setPagination({
+            current: 1,
+            pageSize: value === 'card' ? 12 : 10,
+          });
+          setLayoutTab(value);
         }}
-        variant={layoutTab === 'list' ? 'primary' : 'outline'}
-        className="h-9 w-9 p-0"
-      >
-        <List className="size-4" />
-      </Button>
-      <Button
-        onClick={() => {
-          setLayoutTab('card');
-          setPagination((prev) => ({ ...prev, current: 1 }));
-        }}
-        variant={layoutTab === 'card' ? 'primary' : 'outline'}
-        className="h-9 w-9 p-0 ml-1"
-      >
-        <Grid3X3 className="size-4" />
-      </Button>
+        defaultSelectedTab="list"
+        tabs={[
+          { label: <ListIcon className="size-4" />, value: 'list' },
+          { label: <LayoutGrid className="size-4" />, value: 'card' },
+        ]}
+      />
     </div>
   );
 };
