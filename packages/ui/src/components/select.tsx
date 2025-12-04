@@ -32,7 +32,7 @@ function SelectValue({
 const selectTriggerStyles = [
   cn(
     // base
-    'group/trigger flex w-full select-none items-center justify-between gap-2 truncate rounded-sm border px-2.5 py-2 shadow-xs outline-hidden transition sm:text-sm',
+    'group/trigger flex w-full select-none items-center justify-between gap-2 truncate rounded-sm border px-2.5 py-2 outline-hidden transition sm:text-sm',
     // border color
     'border-gray-300 dark:border-gray-800',
     // text color
@@ -152,7 +152,7 @@ function SelectContent({
         ref={ref}
         className={cn(
           // base
-          'relative z-50 overflow-hidden rounded-md border shadow-xl shadow-black/[2.5%]',
+          'relative z-50 overflow-hidden rounded-md border',
           // widths
           'min-w-[calc(var(--radix-select-trigger-width)-2px)] max-w-[95vw]',
           // heights

@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 const inputSchema = z.object({
   count: z.number().min(1).max(50).default(10),
-  organizationId: z.string(),
   generateReviews: z.boolean().default(true),
   reviewsPerPatient: z.number().min(0).max(5).default(2),
 });

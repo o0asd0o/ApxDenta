@@ -8,6 +8,7 @@ import dayOff from './routes/_aux/day-off';
 import files from './routes/_aux/files';
 import specialistRecord from './routes/_aux/specialists-record';
 import assets from './routes/assets';
+import patients from './routes/patient';
 import staffs from './routes/staff';
 import treatments from './routes/treatments';
 import { createTRPCContext as createTRPCContextInternal, router } from './trpc';
@@ -19,6 +20,7 @@ type ApiType = {
 
 const routes = {
   assets,
+  patients,
   staffs,
   treatments,
 
