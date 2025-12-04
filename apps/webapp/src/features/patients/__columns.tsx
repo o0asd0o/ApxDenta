@@ -2,7 +2,6 @@
 import { PersonalInfo } from '@/components/PersonalInfo';
 import { Button, Checkbox } from '@repo/ui/components';
 import type { ColumnDef } from '@tanstack/react-table';
-import { formatDistanceToNow } from 'date-fns';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import type { PatientColumnType } from './__types';
 
@@ -122,10 +121,12 @@ export const getPatientColumns = (): ColumnDef<PatientColumnType>[] => [
         <div className="text-sm">
           {patient.lastReservation ? (
             <>
-              {formatDistanceToNow(
-                new Date(patient.lastReservation.createdAt),
+              {new Date(patient.lastReservation.createdAt).toLocaleDateString(
+                'en-US',
                 {
-                  addSuffix: true,
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
                 },
               )}
             </>
