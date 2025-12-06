@@ -238,7 +238,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
 
     const content = (
       <div
-        className="grid grid-cols-[150px_auto_1fr] gap-4 items-start"
+        className="grid grid-cols-[100px_auto_1fr] md:grid-cols-[150px_auto_1fr] gap-4 items-start"
         {...(status === 'in-progress' ? { 'aria-current': 'step' } : {})}
       >
         {/* Date */}
