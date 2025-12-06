@@ -55,7 +55,7 @@ function NavigationButton({
         'dark:hover:bg-gray-900 dark:active:bg-gray-800',
         // disabled
         'disabled:pointer-events-none',
-        'disabled:border-gray-200 dark:disabled:border-gray-800',
+        'disabled:border-gray-300 dark:disabled:border-gray-800',
         'disabled:text-gray-400 dark:disabled:text-gray-600',
         focusRing,
       )}

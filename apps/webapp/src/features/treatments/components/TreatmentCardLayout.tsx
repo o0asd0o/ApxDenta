@@ -50,7 +50,7 @@ const TreatmentCardLayout: React.FC<LayoutProps> = ({
 
   return (
     <InfiniteScroll
-      dataLength={12}
+      dataLength={flatten.length}
       next={fetchNextPage}
       hasMore={hasNextPage}
       loader={

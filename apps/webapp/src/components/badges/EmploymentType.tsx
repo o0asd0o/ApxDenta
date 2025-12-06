@@ -16,7 +16,7 @@ export const FullTimeBadge: React.FC = () => {
   return (
     <Badge
       variant="default"
-      className="bg-green-100 text-green-600 uppercase rounded-full text-[10px]"
+      className="bg-teal-100 text-teal-600 uppercase rounded-full text-[10px]"
     >
       Full-Time
     </Badge>

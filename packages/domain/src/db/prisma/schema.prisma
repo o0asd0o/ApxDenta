@@ -323,6 +323,7 @@ model Patient {
   gender                    Gender
   lastDentalVisit           LastDetalVisit
   lastName                  String
+  status                    PatientStatus             @default(NEW)
   lat                       Float?
   long                      Float?
   oralHygieneDuration       OralHygienDuration
@@ -753,6 +754,12 @@ enum LastDetalVisit {
   LESS_THAN_6_MONTHS
   A_YEAR_AGO
   DONT_REMEMBER
+}
+
+enum PatientStatus {
+  NEW
+  ACTIVE
+  INACTIVE
 }
 
 enum MedicalCheckupStatus {

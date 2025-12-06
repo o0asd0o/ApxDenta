@@ -252,7 +252,7 @@ export const ForgotPasswordForm = () => {
                             {...field}
                             type="email"
                             placeholder="Enter your email address"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                             autoComplete="email"
                           />
                         </FormControl>

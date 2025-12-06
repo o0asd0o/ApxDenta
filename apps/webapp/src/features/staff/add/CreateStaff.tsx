@@ -52,7 +52,6 @@ const CreateStaff: React.FC = () => {
   const type = useStaffType();
   const form = useForm({
     mode: 'onTouched',
-
     resolver: stepper?.current.schema
       ? // @ts-ignore type mismatch
         zodResolver(stepper.current?.schema)
@@ -64,6 +63,7 @@ const CreateStaff: React.FC = () => {
 
   const queryClient = useQueryClient();
 
+  console.log({ stepper });
   const { mutateAsync: saveStaff, isPending } = useMutation(
     trpc.staffs.createStaff.mutationOptions({
       onSuccess: async () => {

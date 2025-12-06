@@ -19,7 +19,11 @@ type Props<T extends string> = {
   onChecked: (value: T, checked: CheckboxPrimitive.CheckedState) => void;
 };
 
-function CheckboxCard<T extends string>({ items, selectedValues, onChecked }: Props<T>) {
+function CheckboxCard<T extends string>({
+  items,
+  selectedValues,
+  onChecked,
+}: Props<T>) {
   return (
     <div className="w-full flex gap-3 flex-wrap">
       {items.map((option) => (

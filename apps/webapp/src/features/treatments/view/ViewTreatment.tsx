@@ -20,6 +20,7 @@ import {
   BreadcrumbSeparator,
   Button,
   Card,
+  CardContent,
   Separator,
   V2,
 } from '@repo/ui/components';
@@ -28,15 +29,16 @@ import { Link } from '@tanstack/react-router';
 import {
   Clock,
   DollarSign,
+  DoorOpen,
   EditIcon,
   MoreVertical,
-  Star,
-  TrendingUp,
+  Package,
   Wrench,
 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import React from 'react';
 
+import { useIsMobile } from '@/hooks/use-mobile';
 import OverviewTab from './sub-pages/OverviewTab';
 import RatingsTab from './sub-pages/RatingsTab';
 import ReviewsTab from './sub-pages/ReviewsTab';
@@ -58,6 +60,8 @@ const ViewTreatment: React.FC = () => {
     defaultValue: 'overview',
     history: 'replace',
   });
+
+  const isMobile = useIsMobile();
 
   if (!routeData) {
     return <div>No treatment data found.</div>;
@@ -86,117 +90,138 @@ const ViewTreatment: React.FC = () => {
       </div>
 
       {/* Header Section */}
-      <div className="p-5">
-        <div className="flex justify-between items-start mb-6">
-          <div className="flex gap-4 flex-col">
-            <div className="flex gap-2 items-center">
-              <span className="text-2xl font-bold">{treatment.name}</span>
-              {treatment.status === 'SAMPLE' &&
-                TREATMENT_STATUS_BADGES[treatment.status]}
+      <div>
+        <div className="p-5 pb-0">
+          <div className="flex justify-between items-start mb-6">
+            <div className="flex gap-4 flex-col">
+              <div className="flex gap-2 items-center">
+                <span className="text-2xl font-bold">{treatment.name}</span>
+                {treatment.status === 'SAMPLE' &&
+                  TREATMENT_STATUS_BADGES[treatment.status]}
+              </div>
+              <div className="flex gap-2 items-center">
+                {TREATMENT_TYPE_BADGES[treatment.visitType]}
+                <Separator orientation="vertical" className="h-4" />
+                <Badge variant="outline" className="gap-1">
+                  <Wrench className="size-3" />
+                  {treatment.category === 'MEDICAL_SERVICE'
+                    ? 'Medical Service'
+                    : 'Cosmetic Service'}
+                </Badge>
+              </div>
             </div>
-            <div className="flex gap-2 items-center">
-              {TREATMENT_TYPE_BADGES[treatment.visitType]}
-              <Separator orientation="vertical" className="h-4" />
-              <Badge variant="outline" className="gap-1">
-                <Wrench className="size-3" />
-                {treatment.category === 'MEDICAL_SERVICE'
-                  ? 'Medical Service'
-                  : 'Cosmetic Service'}
-              </Badge>
-            </div>
-          </div>
 
-          <div className="flex gap-2 items-start">
-            <Link to="/treatments/$treatmentId" params={{ treatmentId }}>
-              <Button variant="outline" className="gap-2">
-                <EditIcon className="size-4" />
-                Edit Treatment
-              </Button>
-            </Link>
-            <V2.DropdownMenu modal={false}>
-              <V2.DropdownMenuTrigger asChild>
-                <Button variant="outline" className="h-[38px] w-10 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreVertical className="size-5" />
+            <div className="flex gap-2 items-start">
+              {!isMobile && (
+                <Button variant="outline" className="gap-2">
+                  <EditIcon className="size-4" />
+                  Edit Treatment
                 </Button>
-              </V2.DropdownMenuTrigger>
-              <V2.DropdownMenuContent className="min-w-36">
-                <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
-                <V2.DropdownMenuSeparator />
-                <V2.DropdownMenuGroup>
-                  <V2.DropdownMenuItem>Duplicate</V2.DropdownMenuItem>
-                  <V2.DropdownMenuItem className="text-destructive">
-                    Archive
-                  </V2.DropdownMenuItem>
-                </V2.DropdownMenuGroup>
-              </V2.DropdownMenuContent>
-            </V2.DropdownMenu>
+              )}
+              <V2.DropdownMenu modal={false}>
+                <V2.DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="h-[38px] w-10 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreVertical className="size-5" />
+                  </Button>
+                </V2.DropdownMenuTrigger>
+                <V2.DropdownMenuContent className="min-w-36">
+                  <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
+                  <V2.DropdownMenuSeparator />
+                  <V2.DropdownMenuGroup>
+                    {isMobile && (
+                      <V2.DropdownMenuItem>Update</V2.DropdownMenuItem>
+                    )}
+                    <V2.DropdownMenuItem>Duplicate</V2.DropdownMenuItem>
+                    <V2.DropdownMenuItem className="text-destructive">
+                      Archive
+                    </V2.DropdownMenuItem>
+                  </V2.DropdownMenuGroup>
+                </V2.DropdownMenuContent>
+              </V2.DropdownMenu>
+            </div>
           </div>
-        </div>
 
-        {/* Quick Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <Card className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Starting Price</p>
-                <p className="text-2xl font-bold">
-                  ₱
-                  {new Intl.NumberFormat('en-PH', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  }).format(totalPrice)}
-                </p>
-              </div>
-              <div className="p-3 bg-green-100 rounded-full">
-                <DollarSign className="size-6 text-green-600" />
-              </div>
-            </div>
-          </Card>
+          {/* Quick Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <Card className="py-0">
+              <CardContent className="p-5 py-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      Starting Price
+                    </p>
+                    <p className="text-2xl font-bold mt-1">
+                      ₱
+                      {new Intl.NumberFormat('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(totalPrice)}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-lg">
+                    <DollarSign className="size-10 md:size-12 text-gray-200" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-          <Card className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Duration</p>
-                <p className="text-2xl font-bold">
-                  {treatment.averageDuration || treatment.duration} hr
-                </p>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Clock className="size-6 text-blue-600" />
-              </div>
-            </div>
-          </Card>
+            <Card className="py-0">
+              <CardContent className="p-5 py-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      Duration
+                    </p>
+                    <p className="text-2xl font-bold mt-1">
+                      {treatment.averageDuration || treatment.duration} hr
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-lg">
+                    <Clock className="size-10 md:size-12 text-gray-200" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-          <Card className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Visits</p>
-                <p className="text-2xl font-bold">
-                  {treatment.visitType === 'SINGLE_VISIT'
-                    ? '1'
-                    : treatment.visits?.length || 0}
-                </p>
-              </div>
-              <div className="p-3 bg-yellow-100 rounded-full">
-                <Star className="size-6 text-yellow-600" />
-              </div>
-            </div>
-          </Card>
+            <Card className="py-0">
+              <CardContent className="p-5 py-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      Visits
+                    </p>
+                    <p className="text-2xl font-bold mt-1">
+                      {treatment.visitType === 'SINGLE_VISIT'
+                        ? '1'
+                        : treatment.visits?.length || 0}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-lg">
+                    <DoorOpen className="size-10 md:size-12 text-gray-200" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-          <Card className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Components</p>
-                <p className="text-2xl font-bold">
-                  {treatment.components?.length || 0}
-                </p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <TrendingUp className="size-6 text-purple-600" />
-              </div>
-            </div>
-          </Card>
+            <Card className="py-0">
+              <CardContent className="p-5 py-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      Components
+                    </p>
+                    <p className="text-2xl font-bold mt-1">
+                      {treatment.components?.length || 0}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-lg">
+                    <Package className="size-10 md:size-12 text-gray-200" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         <Root
@@ -205,7 +230,7 @@ const ViewTreatment: React.FC = () => {
             if (value) setTab(value);
           }}
         >
-          <List className="mb-6">
+          <List>
             <ListItem value="overview">Overview</ListItem>
             <ListItem value="visits">
               Visits{' '}
@@ -216,19 +241,31 @@ const ViewTreatment: React.FC = () => {
             <ListItem value="reviews">Reviews</ListItem>
           </List>
 
-          <TabContent value="overview">
+          <TabContent
+            value="overview"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
+          >
             <OverviewTab treatment={treatment} />
           </TabContent>
 
-          <TabContent value="visits">
+          <TabContent
+            value="visits"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
+          >
             <VisitsTab treatment={treatment} />
           </TabContent>
 
-          <TabContent value="ratings">
+          <TabContent
+            value="ratings"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
+          >
             <RatingsTab treatmentId={treatmentId} />
           </TabContent>
 
-          <TabContent value="reviews">
+          <TabContent
+            value="reviews"
+            className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
+          >
             <ReviewsTab treatmentId={treatmentId} />
           </TabContent>
         </Root>

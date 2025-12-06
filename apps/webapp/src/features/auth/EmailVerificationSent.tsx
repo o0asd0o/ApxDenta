@@ -48,7 +48,7 @@ const EmailVerificationSent: React.FC = () => {
           >
             Back to login
           </Button>
-          <hr className="w-full my-4 border-t border-gray-200" />
+          <hr className="w-full my-4 border-t border-gray-300" />
           <div className="w-full text-center text-sm text-gray-500">
             If you did not get any mail
             <Button

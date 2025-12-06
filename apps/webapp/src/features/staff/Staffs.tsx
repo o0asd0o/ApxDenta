@@ -1,11 +1,11 @@
 import FilterButton from '@/components/FilterButton';
 import type { PaginationState } from '@/components/__types';
+import useLayoutState from '@/hooks/use-layout-state';
 import type { StaffType } from '@repo/domain/db';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
 import { UsersRound } from 'lucide-react';
-import { parseAsStringEnum, useQueryState } from 'nuqs';
 import React, { useCallback, useState } from 'react';
 import { StaffActionsProvider } from './__common/context/StaffActionsProvider';
 import type { StaffFilterType } from './__types';
@@ -30,10 +30,7 @@ const Staffs: React.FC<Props> = ({ type }) => {
 
   const [filters, setFilters] = useState<StaffFilterType>({});
 
-  const [layoutTab, setLayoutTab] = useQueryState(
-    'layoutTab',
-    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
-  );
+  const [layoutTab, setLayoutTab] = useLayoutState();
 
   const [searchInput, setSearchInput] = useState<string>('');
 

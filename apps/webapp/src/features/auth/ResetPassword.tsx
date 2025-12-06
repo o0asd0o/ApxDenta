@@ -239,7 +239,7 @@ export const ResetPasswordForm = () => {
                             {...field}
                             type="password"
                             placeholder="Enter new password"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                             autoComplete="new-password"
                           />
                         </FormControl>
@@ -264,7 +264,7 @@ export const ResetPasswordForm = () => {
                             {...field}
                             type="password"
                             placeholder="Confirm new password"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                             autoComplete="new-password"
                           />
                         </FormControl>

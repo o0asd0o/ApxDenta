@@ -137,7 +137,6 @@ const UpdateTreatment: React.FC = () => {
   const { mutate: updateTreatment, isPending } = useMutation(
     trpc.treatments.updateTreatment.mutationOptions({
       onSuccess: async () => {
-        toast.success('Treatment updated successfully');
         await Promise.all([
           queryClient.invalidateQueries({
             queryKey: trpc.treatments.getAllTreatments.queryKey(),
@@ -147,8 +146,8 @@ const UpdateTreatment: React.FC = () => {
           }),
           queryClient.invalidateQueries({ queryKey: ['treatmentList'] }),
         ]);
-
         form.reset();
+        toast.success('Treatment updated successfully');
       },
       onError: (error) => {
         toast.error(
