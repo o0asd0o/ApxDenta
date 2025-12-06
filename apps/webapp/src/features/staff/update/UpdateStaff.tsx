@@ -13,6 +13,7 @@ import {
 } from '@repo/ui/components';
 import { cn } from '@repo/ui/lib/utils';
 import React from 'react';
+import { toast } from 'sonner';
 import { useUpdateModalVisibility } from '../__common/context/context';
 import { STAFF_FORMS } from '../add/context/context';
 import UpdateStaffServices from './forms/UpdateAssignServices';
@@ -52,27 +53,45 @@ const UpdateStaff: React.FC<Props> = ({ type }) => {
                 >
                   <UpdateStaffInfo
                     type={type}
-                    onSubmitted={() => setOpen(false)}
+                    onSubmitted={() => {
+                      toast.success('Staff updated successfully');
+                      setOpen(false);
+                    }}
                   />
                 </TabContent>
                 <TabContent
                   value="assignedServices"
                   className="flex flex-col p-0 h-[calc(100%_-_46px)]"
                 >
-                  <UpdateStaffServices onSubmitted={() => setOpen(false)} />
+                  <UpdateStaffServices
+                    onSubmitted={() => {
+                      toast.success('Staff updated successfully');
+                      setOpen(false);
+                    }}
+                  />
                 </TabContent>
                 <TabContent
                   value="workingHours"
                   className="flex flex-col p-0 h-[calc(100%_-_46px)]"
                 >
-                  <UpdateWorkingHours onSubmitted={() => setOpen(false)} />
+                  <UpdateWorkingHours
+                    onSubmitted={() => {
+                      toast.success('Staff updated successfully');
+                      setOpen(false);
+                    }}
+                  />
                 </TabContent>
 
                 <TabContent
                   value="dayOffs"
                   className="flex flex-col p-0 h-[calc(100%_-_46px)]"
                 >
-                  <UpdateDaysOff onSubmitted={() => setOpen(false)} />
+                  <UpdateDaysOff
+                    onSubmitted={() => {
+                      toast.success('Staff updated successfully');
+                      setOpen(false);
+                    }}
+                  />
                 </TabContent>
               </Root>
             </div>

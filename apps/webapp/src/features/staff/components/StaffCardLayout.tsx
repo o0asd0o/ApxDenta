@@ -16,12 +16,14 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
   const {
     data: staffList = { pages: [], pageParams: [] },
     isLoading,
+    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
     refetch,
   } = useInfiniteQuery({
     queryKey: ['staffList', { filters, pagination, sorting, type }],
     queryFn: ({ pageParam = 1 }) => {
+      console.log({ pageParam });
       return trpc.staffs.getAllStaffs.query({
         type,
         excludeTotalCount: true,
@@ -51,7 +53,7 @@ const StaffCardLayout: React.FC<LayoutProps> = ({
 
   return (
     <InfiniteScroll
-      dataLength={12} //This is important field to render the next data
+      dataLength={flatten.length}
       next={fetchNextPage}
       hasMore={hasNextPage}
       loader={

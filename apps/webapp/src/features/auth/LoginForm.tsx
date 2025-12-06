@@ -157,7 +157,7 @@ export const LoginForm: React.FC = () => {
                             {...field}
                             type="email"
                             placeholder="me@gmail.com"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                             autoComplete="email"
                           />
                         </FormControl>
@@ -179,7 +179,7 @@ export const LoginForm: React.FC = () => {
                             {...field}
                             type="password"
                             placeholder="••••••••••"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                             autoComplete="current-password"
                           />
                         </FormControl>
@@ -229,7 +229,7 @@ export const LoginForm: React.FC = () => {
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t border-gray-200" />
+                      <span className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-xs">
                       <span className="px-2 text-gray-500 bg-card">or</span>
@@ -239,7 +239,7 @@ export const LoginForm: React.FC = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    className="w-full h-12 border-gray-200 bg-gray-50 hover:bg-gray-100 gap-2"
+                    className="w-full h-12 border-gray-300 bg-gray-50 hover:bg-gray-100 gap-2"
                     disabled={isPending}
                     isLoading={isPendingSocial}
                     onClick={() => loginSocial()}

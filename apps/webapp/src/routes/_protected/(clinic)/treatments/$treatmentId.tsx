@@ -8,11 +8,11 @@ export const Route = createFileRoute(
   params: z.object({ treatmentId: z.string() }),
   loader: async ({ context, params }) => {
     if (context.trpc) {
-      // await context.queryClient.ensureQueryData(
-      //   context.trpc.treatments.getTreatment.queryOptions({
-      //     id: params.treatmentId,
-      //   }),
-      // );
+      await context.queryClient.ensureQueryData(
+        context.trpc.treatments.getTreatment.queryOptions({
+          id: params.treatmentId,
+        }),
+      );
     }
   },
   component: ViewTreatment,

@@ -24,7 +24,7 @@ const MultipleVisitForm: React.FC<Props> = ({ form }) => {
 
   return (
     <>
-      <div className="z-10 flex gap-4 py-4 px-10 justify-between items-center mb-8 fixed w-full bg-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] -translate-x-6 translate-y-[-17px] border-t border-gray-200">
+      <div className="z-10 flex gap-4 py-4 px-10 justify-between items-center mb-8 fixed w-full bg-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] -translate-x-6 translate-y-[-17px] border-t border-gray-300">
         <h2 className="font-medium">Visitation Settings</h2>
         <Button
           type="button"
@@ -61,8 +61,8 @@ const MultipleVisitForm: React.FC<Props> = ({ form }) => {
                     <ArrowDown className="size-4" />
                   </Button>
                 </div>
-                <div className="rounded-lg flex-1 border border-gray-200 overflow-hidden">
-                  <div className="w-full p-3 bg-accent border-b border-gray-200 relative">
+                <div className="rounded-lg flex-1 border border-gray-300 overflow-hidden">
+                  <div className="w-full p-3 bg-accent border-b border-gray-300 relative">
                     <h2 className="font-medium">Visit #{index + 1}</h2>
                     {index !== 0 && (
                       <Button

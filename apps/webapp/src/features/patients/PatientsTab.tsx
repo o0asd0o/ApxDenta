@@ -1,10 +1,10 @@
 import PatientSeeder from '@/components/@seeders/PatientSeender';
 import type { PaginationState } from '@/components/__types';
+import useLayoutState from '@/hooks/use-layout-state';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
 import { Users } from 'lucide-react';
-import { parseAsStringEnum, useQueryState } from 'nuqs';
 import React, { useCallback, useState } from 'react';
 import type { PatientFilterType } from './__types';
 import PatientsActions from './components/PatientsActions';
@@ -24,10 +24,7 @@ const PatientsTab: React.FC<Props> = ({ isActive }) => {
 
   const [filters, setFilters] = useState<PatientFilterType>({});
 
-  const [layoutTab, setLayoutTab] = useQueryState(
-    'layoutTab',
-    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
-  );
+  const [layoutTab, setLayoutTab] = useLayoutState();
 
   const [searchInput, setSearchInput] = useState<string>('');
 

@@ -163,7 +163,7 @@ export const RegistrationForm: React.FC = () => {
                               disabled={!!staffId}
                               {...field}
                               placeholder="John"
-                              className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                              className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                             />
                           </FormControl>
                           <FormMessage />
@@ -183,7 +183,7 @@ export const RegistrationForm: React.FC = () => {
                               disabled={!!staffId}
                               {...field}
                               placeholder="Doe"
-                              className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                              className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                             />
                           </FormControl>
                           <FormMessage />
@@ -206,7 +206,7 @@ export const RegistrationForm: React.FC = () => {
                             {...field}
                             type="email"
                             placeholder="john.doe@example.com"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                           />
                         </FormControl>
                         <FormMessage />
@@ -228,7 +228,7 @@ export const RegistrationForm: React.FC = () => {
                             type="password"
                             autoComplete="new-password"
                             placeholder="••••••••••"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                           />
                         </FormControl>
                         <FormMessage />
@@ -250,7 +250,7 @@ export const RegistrationForm: React.FC = () => {
                             type="password"
                             autoComplete="new-password"
                             placeholder="••••••••••"
-                            className="h-12 border-gray-200 bg-gray-50 focus:bg-white [&>input]:h-full"
+                            className="h-12 border-gray-300 bg-gray-50 focus:bg-white [&>input]:h-full"
                           />
                         </FormControl>
                         <FormMessage />

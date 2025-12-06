@@ -1,12 +1,8 @@
+import { TimelineLayout } from '@/components/TimelineLayout';
 import type { TreatmentVisitType } from '@repo/domain/db';
-import {
-  Badge,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@repo/ui/components';
-import { ArrowRight, Calendar } from 'lucide-react';
+import { Badge, Card, CardContent } from '@repo/ui/components';
+import type { TimelineElement } from '@repo/ui/components';
+import { Calendar } from 'lucide-react';
 import React from 'react';
 import type { TreatmentVisits } from '../__types';
 
@@ -16,6 +12,10 @@ interface VisitsTabProps {
     visits: TreatmentVisits;
   };
 }
+
+const lorem = `
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis rutrum leo eget mattis. Duis leo libero, tempus sit amet dictum a, pretium non enim. Integer sed arcu 
+`
 
 const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
   const visits = treatment.visits || [];
@@ -52,75 +52,37 @@ const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
     );
   }
 
+  const sortedVisits = [...visits].sort(
+    (a, b) => (a.sequence || 0) - (b.sequence || 0),
+  );
+
+  const timelineItems: TimelineElement[] = sortedVisits.map((visit, index) => ({
+    id: visit.sequence || index + 1,
+    date: visit.gracePeriod
+      ? `Grace Period: ${visit.gracePeriod} ${visit.gracePeriodUnit?.toLowerCase() || 'days'}`
+      : new Date().toDateString(),
+    title: `Visit ${visit.sequence}`,
+    description: visit.visitTreatment?.description || lorem,
+    icon: () => <span className="font-bold text-sm">{visit.sequence}</span>,
+    color: 'primary' as const,
+  }));
+
+  console.log('timelineItems', timelineItems);
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-bold">Treatment Visit Schedule</h3>
-        <Badge variant="secondary">{visits.length} Visits Required</Badge>
+        <Badge variant="outline">{visits.length} Visits Required</Badge>
       </div>
 
-      <div className="relative">
-        {/* Timeline line */}
-        <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
-
-        <div className="space-y-4">
-          {visits
-            .sort((a, b) => (a.sequence || 0) - (b.sequence || 0))
-            .map((visit, index: number) => (
-              <Card key={visit.id} className="relative ml-12">
-                {/* Timeline dot */}
-                <div className="absolute -left-[3.25rem] top-6 size-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
-                  {visit.sequence}
-                </div>
-
-                <CardHeader>
-                  <CardTitle className="text-base flex items-center gap-2">
-                    Visit {visit.sequence}
-                    {visit.visitTreatment && (
-                      <>
-                        <ArrowRight className="size-4 text-muted-foreground" />
-                        <span className="text-muted-foreground font-normal">
-                          {visit.visitTreatment.name}
-                        </span>
-                      </>
-                    )}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {visit.gracePeriod && (
-                      <div className="flex items-center gap-2 text-sm">
-                        <Calendar className="size-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">
-                          Grace Period:{' '}
-                          <span className="font-medium text-foreground">
-                            {visit.gracePeriod}{' '}
-                            {visit.gracePeriodUnit?.toLowerCase() || 'days'}
-                          </span>
-                        </span>
-                      </div>
-                    )}
-
-                    {visit.visitTreatment?.description && (
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {visit.visitTreatment.description}
-                      </p>
-                    )}
-
-                    {index < visits.length - 1 && (
-                      <div className="mt-3 pt-3 border-t">
-                        <p className="text-xs text-muted-foreground italic">
-                          After this visit, patient should return within the
-                          grace period
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-        </div>
-      </div>
+      <TimelineLayout
+        items={timelineItems}
+        size="md"
+        iconColor="primary"
+        connectorColor="primary"
+        animate={true}
+        className='mx-0'
+      />
     </div>
   );
 };

@@ -1,6 +1,9 @@
-import { EMPLOYMENT_TYPE_BADGES } from '@/constants/badges';
+import {
+  EMPLOYMENT_TYPE_BADGES,
+  PATIENT_STATUS_BADGES,
+} from '@/constants/badges';
 import { cn } from '@/lib/utils';
-import type { EmploymentType } from '@repo/domain/db';
+import type { EmploymentType, PatientStatus } from '@repo/domain/db';
 import { Badge, Card, CardContent, CardHeader } from '@repo/ui/components';
 import {
   Banknote,
@@ -34,7 +37,7 @@ const employeeData = {
     department: 'General Dentistry',
     hireDate: '2018-03-15',
     employmentType: 'FULL_TIME',
-    status: 'Active',
+    status: 'ACTIVE' as PatientStatus,
   },
   workingHours: [
     { day: 'Monday', hours: '09:00 AM - 05:00 PM', active: true },
@@ -153,71 +156,77 @@ const EmployeeData: React.FC = () => {
             </h3>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <User className="size-5 text-muted-foreground mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Full Name
-                  </p>
-                  <p className="text-sm font-medium">
-                    {employeeData.personalInfo.fullName}
-                  </p>
+            <div className="space-y-3 grid grid-cols-2">
+              <div>
+                <div className="flex items-start gap-3">
+                  <User className="size-5 text-muted-foreground mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Full Name
+                    </p>
+                    <p className="text-sm font-medium">
+                      {employeeData.personalInfo.fullName}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Mail className="size-5 text-muted-foreground mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Email
+                    </p>
+                    <p className="text-sm font-medium">
+                      {employeeData.personalInfo.email}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <Mail className="size-5 text-muted-foreground mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Email
-                  </p>
-                  <p className="text-sm font-medium">
-                    {employeeData.personalInfo.email}
-                  </p>
+              <div>
+                <div className="flex items-start gap-3">
+                  <Phone className="size-5 text-muted-foreground mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Phone
+                    </p>
+                    <p className="text-sm font-medium">
+                      {employeeData.personalInfo.phone}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Phone className="size-5 text-muted-foreground mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Phone
-                  </p>
-                  <p className="text-sm font-medium">
-                    {employeeData.personalInfo.phone}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="size-5 text-muted-foreground mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Address
-                  </p>
-                  <p className="text-sm font-medium">
-                    {employeeData.personalInfo.address}
-                  </p>
+                <div className="flex items-start gap-3">
+                  <MapPin className="size-5 text-muted-foreground mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-muted-foreground">
+                      Address
+                    </p>
+                    <p className="text-sm font-medium">
+                      {employeeData.personalInfo.address}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="pt-4 border-t">
               <p className="text-sm font-bold mb-3">Emergency Contact</p>
-              <div className="space-y-2 pl-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Name:</span>
-                  <span className="font-medium">
+              <div>
+                <div className="flex justify-between items-center py-3 border-b">
+                  <span className="text-sm text-muted-foreground">Name</span>
+                  <span className="text-sm font-medium">
                     {employeeData.personalInfo.emergencyContact.name}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Relationship:</span>
-                  <span className="font-medium">
+                <div className="flex justify-between items-center py-3 border-b">
+                  <span className="text-sm text-muted-foreground">
+                    Relationship
+                  </span>
+                  <span className="text-sm font-medium">
                     {employeeData.personalInfo.emergencyContact.relationship}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Phone:</span>
-                  <span className="font-medium">
+                <div className="flex justify-between items-center py-3">
+                  <span className="text-sm text-muted-foreground">Phone</span>
+                  <span className="text-sm font-medium">
                     {employeeData.personalInfo.emergencyContact.phone}
                   </span>
                 </div>
@@ -278,9 +287,7 @@ const EmployeeData: React.FC = () => {
             </div>
             <div className="flex justify-between items-center py-3">
               <span className="text-sm text-muted-foreground">Status</span>
-              <Badge className="bg-blue-100 text-blue-700 border-blue-200">
-                {employeeData.employmentDetails.status}
-              </Badge>
+              {PATIENT_STATUS_BADGES[employeeData.employmentDetails.status]}
             </div>
           </CardContent>
         </Card>
@@ -301,7 +308,7 @@ const EmployeeData: React.FC = () => {
                 key={schedule.day}
                 className={cn('p-4 rounded-lg border', {
                   'bg-primary/10 border-primary/30': schedule.active,
-                  'bg-gray-50 border-gray-200': !schedule.active,
+                  'bg-gray-50 border-gray-300': !schedule.active,
                 })}
               >
                 <p className="font-bold text-sm mb-1">{schedule.day}</p>

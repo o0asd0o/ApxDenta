@@ -25,7 +25,7 @@ const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment }) => {
       : treatment.averageDuration || 1;
 
   return (
-    <Card className=" gap-1 relative p-4 hover:shadow-md transition-shadow bg-white border border-gray-200">
+    <Card className=" gap-1 relative p-4 hover:shadow-md transition-shadow bg-white border border-gray-300">
       {/* Action Menu */}
       <div className="absolute top-3 right-3">
         <RenderTreatmentActions

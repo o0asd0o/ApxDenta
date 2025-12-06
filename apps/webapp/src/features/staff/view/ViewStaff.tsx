@@ -4,6 +4,7 @@ import {
   Root,
   TabContent,
 } from '@/components/tabs/NavigationTabs';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { useTRPC } from '@/lib/trpc';
 import { Route } from '@/routes/_protected/(clinic)/staff-list/$staffId';
 import {
@@ -40,6 +41,8 @@ const ViewStaff = () => {
     defaultValue: 'overview',
     history: 'replace',
   });
+
+  const isMobile = useIsMobile();
 
   if (!routeData) {
     return <div>No staff data found.</div>;
@@ -94,7 +97,12 @@ const ViewStaff = () => {
             </div>
           </div>
           <div className="flex gap-2 items-start">
-            <Button>Create appointment</Button>
+            {!isMobile && (
+              <Button variant="outline" className="gap-2">
+                <EditIcon className="size-4" />
+                Update Staff
+              </Button>
+            )}
             <V2.DropdownMenu modal={false}>
               <V2.DropdownMenuTrigger asChild>
                 <Button variant="outline" className="h-[38px] w-10 p-0">
@@ -106,14 +114,16 @@ const ViewStaff = () => {
                 <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
                 <V2.DropdownMenuSeparator />
                 <V2.DropdownMenuGroup>
-                  <V2.DropdownMenuItem
-                    onClick={() => console.log('Update staff')}
-                  >
-                    <span className="flex items-center gap-x-2">
-                      <EditIcon className="size-4 text-inherit" />
-                      <span>Update</span>
-                    </span>
-                  </V2.DropdownMenuItem>
+                  {isMobile && (
+                    <V2.DropdownMenuItem
+                      onClick={() => console.log('Update staff')}
+                    >
+                      <span className="flex items-center gap-x-2">
+                        <EditIcon className="size-4 text-inherit" />
+                        <span>Update</span>
+                      </span>
+                    </V2.DropdownMenuItem>
+                  )}
                   <V2.DropdownMenuItem
                     onClick={() => console.log('Archive staff')}
                   >

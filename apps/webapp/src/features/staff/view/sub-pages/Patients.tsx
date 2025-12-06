@@ -1,5 +1,9 @@
+import DateDisplay from '@/components/DateDisplay';
 import PillTabs from '@/components/PillTabs';
 import { DataTable } from '@/components/data-table/DataTable';
+import { PATIENT_STATUS_BADGES } from '@/constants/badges';
+import useLayoutState from '@/hooks/use-layout-state';
+import type { PatientStatus } from '@repo/domain/db';
 import {
   Avatar,
   AvatarFallback,
@@ -16,7 +20,6 @@ import {
 } from '@repo/ui/components';
 import type { ColumnDef } from '@tanstack/react-table';
 import {
-  Calendar,
   LayoutGrid,
   ListIcon,
   Mail,
@@ -37,7 +40,7 @@ interface Patient {
   lastVisit: string;
   nextAppointment: string | null;
   totalTreatments: number;
-  status: 'active' | 'inactive' | 'new';
+  status: PatientStatus;
   completedTreatments: number;
 }
 
@@ -52,7 +55,7 @@ const patients: Patient[] = [
     lastVisit: '2024-02-15',
     nextAppointment: '2024-03-10',
     totalTreatments: 12,
-    status: 'active',
+    status: 'ACTIVE',
     completedTreatments: 10,
   },
   {
@@ -64,7 +67,7 @@ const patients: Patient[] = [
     lastVisit: '2024-02-10',
     nextAppointment: '2024-02-16',
     totalTreatments: 8,
-    status: 'active',
+    status: 'ACTIVE',
     completedTreatments: 7,
   },
   {
@@ -76,7 +79,7 @@ const patients: Patient[] = [
     lastVisit: '2024-01-20',
     nextAppointment: '2024-02-17',
     totalTreatments: 15,
-    status: 'active',
+    status: 'ACTIVE',
     completedTreatments: 13,
   },
   {
@@ -88,7 +91,7 @@ const patients: Patient[] = [
     lastVisit: '2024-02-14',
     nextAppointment: null,
     totalTreatments: 5,
-    status: 'inactive',
+    status: 'INACTIVE',
     completedTreatments: 5,
   },
   {
@@ -100,7 +103,7 @@ const patients: Patient[] = [
     lastVisit: '2024-02-18',
     nextAppointment: '2024-03-05',
     totalTreatments: 2,
-    status: 'new',
+    status: 'NEW',
     completedTreatments: 1,
   },
   {
@@ -112,18 +115,18 @@ const patients: Patient[] = [
     lastVisit: '2023-12-15',
     nextAppointment: null,
     totalTreatments: 20,
-    status: 'inactive',
+    status: 'INACTIVE',
     completedTreatments: 20,
   },
 ];
 
 const getStatusColor = (status: Patient['status']) => {
   switch (status) {
-    case 'active':
+    case 'ACTIVE':
       return 'bg-green-100 text-green-700 border-green-200';
-    case 'inactive':
-      return 'bg-gray-100 text-gray-700 border-gray-200';
-    case 'new':
+    case 'INACTIVE':
+      return 'bg-gray-100 text-gray-700 border-gray-300';
+    case 'NEW':
       return 'bg-blue-100 text-blue-700 border-blue-200';
   }
 };
@@ -195,10 +198,7 @@ const patientColumns: ColumnDef<Patient>[] = [
     cell: ({ row }) => {
       const patient = row.original;
       return patient.nextAppointment ? (
-        <div className="flex items-center gap-2 text-sm">
-          <Calendar className="size-4 text-muted-foreground" />
-          {formatDate(patient.nextAppointment)}
-        </div>
+        <DateDisplay date={new Date(patient.nextAppointment)} type="medium" />
       ) : (
         <span className="text-muted-foreground">-</span>
       );
@@ -223,18 +223,15 @@ const patientColumns: ColumnDef<Patient>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => (
-      <Badge variant="outline" className={getStatusColor(row.original.status)}>
-        {row.original.status}
-      </Badge>
-    ),
+    cell: ({ row }) => PATIENT_STATUS_BADGES[row.original.status],
   },
 ];
 
 const Patients: React.FC = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+
+  const [viewMode, setViewMode] = useLayoutState();
 
   const filteredPatients = patients.filter((patient) => {
     const matchesSearch =
@@ -272,7 +269,7 @@ const Patients: React.FC = () => {
                   Active Patients
                 </p>
                 <p className="text-2xl font-bold mt-1">
-                  {patients.filter((p) => p.status === 'active').length}
+                  {patients.filter((p) => p.status === 'ACTIVE').length}
                 </p>
               </div>
               <div className="p-3 rounded-lg">
@@ -289,7 +286,7 @@ const Patients: React.FC = () => {
                   New Patients
                 </p>
                 <p className="text-2xl font-bold mt-1">
-                  {patients.filter((p) => p.status === 'new').length}
+                  {patients.filter((p) => p.status === 'NEW').length}
                 </p>
               </div>
               <div className="p-3 rounded-lg">

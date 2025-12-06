@@ -241,7 +241,7 @@ function CalendarPopover({
           // widths
           'max-w-[95vw] min-w-[calc(var(--radix-select-trigger-width)-2px)]',
           // border color
-          'border-gray-200 dark:border-gray-800',
+          'border-gray-300 dark:border-gray-800',
           // background color
           'bg-white dark:bg-gray-950',
           // transition
@@ -378,7 +378,7 @@ const PresetContainer = <TPreset extends Preset, TValue>({
                 // text color
                 'text-gray-700 dark:text-gray-300',
                 // border color
-                'border-gray-200 dark:border-gray-800',
+                'border-gray-300 dark:border-gray-800',
                 // focus
                 focusRing,
                 // background color
@@ -630,7 +630,7 @@ const SingleDatePicker = ({
               <div
                 className={cn(
                   'relative flex h-14 w-full items-center sm:h-full sm:w-40',
-                  'border-b border-gray-200 sm:border-r sm:border-b-0 dark:border-gray-800',
+                  'border-b border-gray-300 sm:border-r sm:border-b-0 dark:border-gray-800',
                   'overflow-auto',
                 )}
               >
@@ -658,7 +658,7 @@ const SingleDatePicker = ({
                 {...props}
               />
               {showTimePicker && (
-                <div className="border-t border-gray-200 p-3 dark:border-gray-800">
+                <div className="border-t border-gray-300 p-3 dark:border-gray-800">
                   <TimeInput
                     aria-label="Time"
                     onChange={onTimeChange}
@@ -668,7 +668,7 @@ const SingleDatePicker = ({
                   />
                 </div>
               )}
-              <div className="flex items-center gap-x-2 border-t border-gray-200 p-3 dark:border-gray-800">
+              <div className="flex items-center gap-x-2 border-t border-gray-300 p-3 dark:border-gray-800">
                 <Button
                   variant="secondary"
                   className="h-8 w-full"
@@ -934,7 +934,7 @@ const RangeDatePicker = ({
               <div
                 className={cn(
                   'relative flex h-16 w-full items-center sm:h-full sm:w-40',
-                  'border-b border-gray-200 sm:border-r sm:border-b-0 dark:border-gray-800',
+                  'border-b border-gray-300 sm:border-r sm:border-b-0 dark:border-gray-800',
                   'overflow-auto',
                 )}
               >
@@ -967,7 +967,7 @@ const RangeDatePicker = ({
                 {...props}
               />
               {showTimePicker && (
-                <div className="flex items-center justify-evenly gap-x-3 border-t border-gray-200 p-3 dark:border-gray-800">
+                <div className="flex items-center justify-evenly gap-x-3 border-t border-gray-300 p-3 dark:border-gray-800">
                   <div className="flex flex-1 items-center gap-x-2">
                     <span className="dark:text-gray-30 text-gray-700">
                       {translations?.start ?? 'Start'}:
@@ -995,7 +995,7 @@ const RangeDatePicker = ({
                   </div>
                 </div>
               )}
-              <div className="border-t border-gray-200 p-3 sm:flex sm:items-center sm:justify-between dark:border-gray-800">
+              <div className="border-t border-gray-300 p-3 sm:flex sm:items-center sm:justify-between dark:border-gray-800">
                 <p className="text-gray-900 tabular-nums dark:text-gray-50">
                   <span className="text-gray-700 dark:text-gray-300">
                     {translations?.range ?? 'Range'}:

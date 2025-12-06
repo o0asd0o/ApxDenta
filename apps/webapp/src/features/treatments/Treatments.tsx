@@ -1,11 +1,11 @@
 import FilterButton from '@/components/FilterButton';
 import type { PaginationState } from '@/components/__types';
+import useLayoutState from '@/hooks/use-layout-state';
 import type { TreatmentVisitType } from '@repo/domain/db';
 import { Input, Separator } from '@repo/ui/components';
 import type { SortingState } from '@tanstack/react-table';
 import { debounce } from 'lodash';
 import { Stethoscope } from 'lucide-react';
-import { parseAsStringEnum, useQueryState } from 'nuqs';
 import React, { useCallback, useState } from 'react';
 import { TreatmentActionsProvider } from './__common/context/TreatmentActionsProvider';
 import ArchiveMultipleTreatment from './archive/ArchiveMultipleTreatment';
@@ -43,10 +43,7 @@ const Treatments: React.FC<Props> = ({ status }) => {
     }, 300),
     [],
   );
-  const [layoutTab, setLayoutTab] = useQueryState(
-    'layoutTab',
-    parseAsStringEnum<'card' | 'list'>(['card', 'list']).withDefault('list'),
-  );
+  const [layoutTab, setLayoutTab] = useLayoutState();
 
   return (
     <div className="gap-5 flex flex-col">

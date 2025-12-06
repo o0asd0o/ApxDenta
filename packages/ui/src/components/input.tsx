@@ -11,7 +11,7 @@ const inputStyles = tv({
     // base
     'relative block w-full appearance-none rounded-sm border px-2.5 py-2 outline-none transition text-sm sm:text-md',
     // border color
-    'border-gray-200 dark:border-gray-800',
+    'border-gray-300 dark:border-gray-800',
     // text color
     'text-gray-900 dark:text-gray-50',
     // placeholder color

@@ -1,5 +1,9 @@
+import DateDisplay from '@/components/DateDisplay';
 import PillTabs from '@/components/PillTabs';
 import { DataTable } from '@/components/data-table/DataTable';
+import { APPOINTMENT_STATUS_BADGES } from '@/constants/badges';
+import useLayoutState from '@/hooks/use-layout-state';
+import type { ReservationStatus } from '@repo/domain/db';
 import {
   Avatar,
   AvatarFallback,
@@ -28,7 +32,7 @@ interface Appointment {
   };
   treatment: string;
   dateTime: string;
-  status: 'scheduled' | 'completed' | 'cancelled' | 'in-progress';
+  status: ReservationStatus;
   duration: string;
 }
 
@@ -39,7 +43,7 @@ const appointments: Appointment[] = [
     patient: { name: 'Sarah Johnson', avatar: '' },
     treatment: 'Teeth Cleaning',
     dateTime: '2024-02-15 10:00 AM',
-    status: 'completed',
+    status: 'DONE',
     duration: '45 min',
   },
   {
@@ -47,7 +51,7 @@ const appointments: Appointment[] = [
     patient: { name: 'Michael Chen', avatar: '' },
     treatment: 'Root Canal',
     dateTime: '2024-02-16 02:00 PM',
-    status: 'scheduled',
+    status: 'PENDING',
     duration: '90 min',
   },
   {
@@ -55,7 +59,7 @@ const appointments: Appointment[] = [
     patient: { name: 'Emma Davis', avatar: '' },
     treatment: 'Dental Implant',
     dateTime: '2024-02-17 09:30 AM',
-    status: 'scheduled',
+    status: 'PENDING',
     duration: '120 min',
   },
   {
@@ -63,7 +67,7 @@ const appointments: Appointment[] = [
     patient: { name: 'David Wilson', avatar: '' },
     treatment: 'Teeth Whitening',
     dateTime: '2024-02-14 11:00 AM',
-    status: 'completed',
+    status: 'DONE',
     duration: '60 min',
   },
   {
@@ -71,7 +75,7 @@ const appointments: Appointment[] = [
     patient: { name: 'Lisa Anderson', avatar: '' },
     treatment: 'Orthodontic Consultation',
     dateTime: '2024-02-13 03:00 PM',
-    status: 'cancelled',
+    status: 'CANCELLED',
     duration: '30 min',
   },
   {
@@ -79,20 +83,20 @@ const appointments: Appointment[] = [
     patient: { name: 'James Brown', avatar: '' },
     treatment: 'Emergency Care',
     dateTime: '2024-02-18 04:00 PM',
-    status: 'in-progress',
+    status: 'ENCOUNTER',
     duration: '45 min',
   },
 ];
 
 const getStatusColor = (status: Appointment['status']) => {
   switch (status) {
-    case 'completed':
+    case 'DONE':
       return 'bg-green-100 text-green-700 border-green-200';
-    case 'scheduled':
+    case 'PENDING':
       return 'bg-blue-100 text-blue-700 border-blue-200';
-    case 'cancelled':
+    case 'CANCELLED':
       return 'bg-red-100 text-red-700 border-red-200';
-    case 'in-progress':
+    case 'ENCOUNTER':
       return 'bg-yellow-100 text-yellow-700 border-yellow-200';
   }
 };
@@ -137,8 +141,11 @@ const appointmentColumns: ColumnDef<Appointment>[] = [
     header: 'Date & Time',
     cell: ({ row }) => (
       <div className="flex items-center gap-2 text-sm">
-        <Calendar className="size-4 text-muted-foreground" />
-        {row.original.dateTime}
+        <DateDisplay
+          date={new Date(row.original.dateTime)}
+          type="medium"
+          includeTime
+        />
       </div>
     ),
   },
@@ -154,18 +161,15 @@ const appointmentColumns: ColumnDef<Appointment>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => (
-      <Badge variant="outline" className={getStatusColor(row.original.status)}>
-        {row.original.status.replace('-', ' ')}
-      </Badge>
-    ),
+    cell: ({ row }) => APPOINTMENT_STATUS_BADGES[row.original.status],
   },
 ];
 
 const Appointments: React.FC = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+
+  const [viewMode, setViewMode] = useLayoutState();
 
   const filteredAppointments = appointments.filter((apt) => {
     const matchesSearch =
@@ -199,7 +203,7 @@ const Appointments: React.FC = () => {
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="scheduled">Scheduled</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="in-progress">In Progress</SelectItem>
+                <SelectItem value="ENCOUNTER">In Progress</SelectItem>
                 <SelectItem value="cancelled">Cancelled</SelectItem>
               </SelectContent>
             </Select>
