@@ -52,9 +52,9 @@ const CreateStaff: React.FC = () => {
   const type = useStaffType();
   const form = useForm({
     mode: 'onTouched',
-    resolver: stepper?.current.schema
+    resolver: stepper.current.schema
       ? // @ts-ignore type mismatch
-        zodResolver(stepper.current?.schema)
+        zodResolver(stepper.current.schema)
       : undefined,
   });
 

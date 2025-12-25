@@ -186,6 +186,7 @@ function DropdownMenuItem({
   shortcut,
   hint,
   children,
+  asLink,
   ref,
   ...props
 }: Omit<
@@ -194,6 +195,7 @@ function DropdownMenuItem({
 > & {
   shortcut?: string;
   hint?: string;
+  asLink?: boolean;
   ref?: React.Ref<React.ElementRef<typeof DropdownMenuPrimitives.Item>>;
 }) {
   return (
@@ -201,7 +203,9 @@ function DropdownMenuItem({
       ref={ref}
       className={cn(
         // base
-        'group/DropdownMenuItem relative flex cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-1 outline-hidden transition-colors data-[state=checked]:font-bold sm:text-sm',
+        'group/DropdownMenuItem relative flex cursor-pointer select-none items-center rounded-sm outline-hidden transition-colors data-[state=checked]:font-bold sm:text-sm',
+        // padding - removed when asLink is true so link can handle full clickable area
+        !asLink && 'py-1.5 pl-2 pr-1',
         // text color
         'text-gray-900 dark:text-gray-50',
         // disabled

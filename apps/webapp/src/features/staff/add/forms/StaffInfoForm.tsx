@@ -1,5 +1,6 @@
 import SpecialistInput from '@/components/SpecialistInput';
 import { UploadAvatar } from '@/components/UploadAvatar';
+import AddressInput from '@/components/maps/AddressInput';
 import type { StaffType } from '@repo/domain/db';
 import type { StaffInfoFormType } from '@repo/schemas';
 import {
@@ -12,7 +13,6 @@ import {
   RadioCardGroup,
   RadioCardIndicator,
   RadioCardItem,
-  Textarea,
 } from '@repo/ui/components';
 import { Mail, Phone } from 'lucide-react';
 import React from 'react';
@@ -135,6 +135,7 @@ export const StaffInfoForm: React.FC<Props> = ({
             <FormLabel>Phone Number</FormLabel>
             <FormControl>
               <Input
+                masked
                 type="tel"
                 {...field}
                 icon={<Phone className="size-4" />}
@@ -154,6 +155,7 @@ export const StaffInfoForm: React.FC<Props> = ({
             <FormControl>
               <Input
                 {...field}
+                placeholder="youremail@example.com"
                 type="email"
                 icon={<Mail className="size-4" />}
               />
@@ -169,7 +171,11 @@ export const StaffInfoForm: React.FC<Props> = ({
           <FormItem className="flex flex-col">
             <FormLabel>Address</FormLabel>
             <FormControl>
-              <Textarea {...field} />
+              <AddressInput
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Enter address..."
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

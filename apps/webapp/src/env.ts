@@ -8,4 +8,6 @@ export const envSchema = v.object({
     v.string(),
     v.union([v.literal('1'), v.literal('0')]),
   ),
+  // Google Maps API Key
+  VITE_GOOGLE_MAPS_API_KEY: v.string(),
 });

@@ -104,10 +104,16 @@ export const useCurrentTab = () => {
 };
 
 export const useFormStepper = () => {
-  return useContextSelector(
+  const stepper = useContextSelector(
     CreateStaffContext,
-    (state) => state?.stepper as ReturnType<CreateStaffFormType['useStepper']>,
+    (state) => state?.stepper,
   );
+
+  if (!stepper) {
+    throw new Error('useFormStepper must be used within a CreateStaffProvider');
+  }
+
+  return stepper;
 };
 
 export const useStaffType = () => {
