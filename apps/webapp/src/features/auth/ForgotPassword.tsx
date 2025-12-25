@@ -57,7 +57,7 @@ export const ForgotPasswordForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="flex h-dvh bg-gray-50">
+      <div className="flex min-h-dvh bg-gray-50">
         {/* Left Panel - Gradient Background */}
         <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient.svg')] bg-cover relative overflow-hidden">
           <div className="absolute top-8 left-8">
@@ -82,7 +82,7 @@ export const ForgotPasswordForm = () => {
         </div>
 
         {/* Right Panel - Form */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16 py-8 overflow-y-auto">
           <div className="max-w-md w-full mx-auto">
             {/* Logo for mobile */}
             <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
@@ -117,7 +117,7 @@ export const ForgotPasswordForm = () => {
               </p>
             </div>
 
-            <Card className="border-0 shadow-none p-0">
+            <Card className="border-0 shadow-none p-0 bg-[--card]">
               <CardContent className="p-0">
                 <div className="space-y-6">
                   <div className="text-center space-y-4">
@@ -179,7 +179,7 @@ export const ForgotPasswordForm = () => {
   }
 
   return (
-    <div className="flex h-dvh bg-gray-50">
+    <div className="flex min-h-dvh bg-gray-50">
       {/* Left Panel - Gradient Background */}
       <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient-1.svg')] bg-cover relative overflow-hidden">
         <div className="flex flex-col justify-center px-16 text-white">
@@ -197,7 +197,7 @@ export const ForgotPasswordForm = () => {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16 py-8 overflow-y-auto">
         <div className="max-w-md w-full mx-auto">
           {/* Logo for mobile */}
           <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
@@ -232,7 +232,7 @@ export const ForgotPasswordForm = () => {
             </p>
           </div>
 
-          <Card className="border-0 shadow-none p-0">
+          <Card className="border-0 shadow-none p-0 bg-[--card]">
             <CardContent className="p-0">
               <Form {...form}>
                 <form

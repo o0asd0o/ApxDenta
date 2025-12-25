@@ -13,7 +13,7 @@ const EmailVerificationSent: React.FC = () => {
   const { email } = Route.useSearch();
   const navigate = Route.useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
+    <div className="flex flex-col items-center justify-center min-h-dvh py-8 overflow-y-auto bg-white xs:bg-card">
       <div className="flex items-center justify-center mb-6 gap-2">
         <img
           className="w-[40px] xs:w-[50px] xs:mt-[-5px]"

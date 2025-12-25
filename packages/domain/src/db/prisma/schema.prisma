@@ -148,6 +148,10 @@ model Staff {
   assignedTreatments   Treatment[]        @relation("StaffAssignedTreatment")
   daysOff              DayOff[]           @relation("StaffDayOff")
 
+  emergencyContactNumber   String?
+  emergencyContactName     String?
+  emergencyContactRelation String?
+
   @@index([email, firstName, lastName], map: "idx_staff_email_first_last")
 }
 

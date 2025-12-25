@@ -22,7 +22,7 @@ export const VerifyEmailPage: React.FC = () => {
 
   if (isVerified) {
     return (
-      <div className="flex h-dvh bg-gray-50">
+      <div className="flex min-h-dvh bg-gray-50">
         {/* Left Panel - Gradient Background */}
         <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient-4.svg')] bg-cover relative overflow-hidden">
           <div className="absolute top-8 left-8">
@@ -47,7 +47,7 @@ export const VerifyEmailPage: React.FC = () => {
         </div>
 
         {/* Right Panel - Success Message */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16 py-8 overflow-y-auto">
           <div className="max-w-md w-full mx-auto">
             {/* Logo for mobile */}
             <div className="flex items-center justify-center mb-8 lg:hidden gap-2">
@@ -82,7 +82,7 @@ export const VerifyEmailPage: React.FC = () => {
               </p>
             </div>
 
-            <Card className="border-0 shadow-none p-0">
+            <Card className="border-0 shadow-none p-0 bg-[--card]">
               <CardContent className="p-0">
                 <div className="space-y-6">
                   <div className="text-center space-y-4">
@@ -131,7 +131,7 @@ export const VerifyEmailPage: React.FC = () => {
 
 export const VeifyEmailPending: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
+    <div className="flex flex-col items-center justify-center min-h-dvh py-8 overflow-y-auto bg-white xs:bg-card">
       <div className="flex items-center justify-center mb-6 gap-2">
         <img
           className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"
@@ -187,7 +187,7 @@ export const VeifyEmailPending: React.FC = () => {
 
 export const VerifyEmailError: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-dvh bg-white xs:bg-card">
+    <div className="flex flex-col items-center justify-center min-h-dvh py-8 overflow-y-auto bg-white xs:bg-card">
       <div className="flex items-center justify-center mb-6 gap-2">
         <img
           className="w-[40px]  xs:w-[50px] xs:mt-[-5px]"

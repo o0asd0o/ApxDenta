@@ -22,7 +22,7 @@ import {
 } from '@repo/ui/components';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-import { ArchiveIcon, EditIcon, MoreVertical } from 'lucide-react';
+import { ArchiveIcon, EditIcon, MoreVertical, PlusIcon } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import Appointments from './sub-pages/Appointments';
 import EmployeeData from './sub-pages/EmployeeData';
@@ -98,9 +98,9 @@ const ViewStaff = () => {
           </div>
           <div className="flex gap-2 items-start">
             {!isMobile && (
-              <Button variant="outline" className="gap-2">
-                <EditIcon className="size-4" />
-                Update Staff
+              <Button variant="primary" className="gap-2">
+                <PlusIcon className="size-5" />
+                Create appointment
               </Button>
             )}
             <V2.DropdownMenu modal={false}>
@@ -119,17 +119,25 @@ const ViewStaff = () => {
                       onClick={() => console.log('Update staff')}
                     >
                       <span className="flex items-center gap-x-2">
-                        <EditIcon className="size-4 text-inherit" />
-                        <span>Update</span>
+                        <PlusIcon className="size-5 text-inherit" />
+                        <span>Create appointment</span>
                       </span>
                     </V2.DropdownMenuItem>
                   )}
+                  <V2.DropdownMenuItem
+                      onClick={() => console.log('Update staff')}
+                    >
+                      <span className="flex items-center gap-x-2">
+                        <EditIcon className="size-4 text-inherit" />
+                        <span>Update staff</span>
+                      </span>
+                    </V2.DropdownMenuItem>
                   <V2.DropdownMenuItem
                     onClick={() => console.log('Archive staff')}
                   >
                     <span className="flex items-center gap-x-2 text-red-500">
                       <ArchiveIcon className="size-4 text-inherit" />
-                      <span>Archive</span>
+                      <span>Archive staff</span>
                     </span>
                   </V2.DropdownMenuItem>
                 </V2.DropdownMenuGroup>
