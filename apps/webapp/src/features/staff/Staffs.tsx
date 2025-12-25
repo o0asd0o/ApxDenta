@@ -52,7 +52,7 @@ const Staffs: React.FC<Props> = ({ type }) => {
               <UsersRound className="size-4" />
             </span>
             <TotalStaff staffType={type} />
-            <span className="text-xs text-gray-400">Doctor(s)</span>
+            <span className="text-xs text-gray-400">{type === 'DOCTOR' ? "Doctor" : "Staff"}(s)</span>
           </div>
           <StaffActions
             staffType={type}

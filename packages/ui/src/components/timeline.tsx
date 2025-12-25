@@ -4,7 +4,6 @@ import { type VariantProps, cva } from 'class-variance-authority';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import * as React from 'react';
-// import type { TimelineColor } from '@/types';
 import { cn } from '../lib';
 
 const timelineVariants = cva('flex flex-col relative', {
@@ -238,7 +237,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
 
     const content = (
       <div
-        className="grid grid-cols-[150px_auto_1fr] gap-4 items-start"
+        className="grid grid-cols-[100px_auto_1fr] md:grid-cols-[150px_auto_1fr] gap-4 items-start"
         {...(status === 'in-progress' ? { 'aria-current': 'step' } : {})}
       >
         {/* Date */}

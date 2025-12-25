@@ -44,6 +44,7 @@ export const RenderStaffActions = (actions: {
   const onShowUpdateModal = useUpdateStaffIdAction();
   const onShowArchiveModal = useArchiveStaffIdAction();
 
+  const label = actions.original.type === 'DOCTOR' ? 'Doctor' : 'Staff';
   return (
     <div className="flex justify-end">
       <V2.DropdownMenu modal={false}>
@@ -57,15 +58,14 @@ export const RenderStaffActions = (actions: {
           <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
           <V2.DropdownMenuSeparator />
           <V2.DropdownMenuGroup>
-            <V2.DropdownMenuItem>
+            <V2.DropdownMenuItem asLink>
               <Link
                 to="/staff-list/$staffId"
                 params={{ staffId: actions.staffId }}
+                className="flex w-full items-center gap-x-2 py-1.5 pl-2 pr-1"
               >
-                <span className="flex items-center gap-x-2">
-                  <EyeIcon className="size-4 text-inherit" />
-                  <span>View Doctor</span>
-                </span>
+                <EyeIcon className="size-4 text-inherit" />
+                <span>View {label}</span>
               </Link>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem
@@ -78,7 +78,7 @@ export const RenderStaffActions = (actions: {
             >
               <span className="flex items-center gap-x-2">
                 <EditIcon className="size-4 text-inherit" />
-                <span>Update Doctor</span>
+                <span>Update {label}</span>
               </span>
             </V2.DropdownMenuItem>
             <V2.DropdownMenuItem

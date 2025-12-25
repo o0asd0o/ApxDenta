@@ -1,5 +1,6 @@
 // Tremor Input [v1.0.5]
 
+import { useMask } from '@react-input/mask';
 import { RiEyeFill, RiEyeOffFill, RiSearchLine } from '@remixicon/react';
 import React from 'react';
 import { type VariantProps, tv } from 'tailwind-variants';
@@ -53,6 +54,7 @@ interface InputProps
   inputClassName?: string;
   icon?: React.JSX.Element;
   suffix?: React.JSX.Element;
+  masked?: boolean;
 }
 
 function Input({
@@ -63,6 +65,7 @@ function Input({
   type,
   icon,
   suffix,
+  masked = false,
   ref,
   ...props
 }: InputProps & { ref?: React.Ref<HTMLInputElement> }) {
@@ -70,6 +73,21 @@ function Input({
 
   const isPassword = type === 'password';
   const isSearch = type === 'search';
+  const isTel = type === 'tel';
+
+  // Philippine phone number mask: +63 XXX XXX XXXX
+  const phoneMaskRef = useMask({
+    mask: '+63 ___ ___ ____',
+    replacement: { _: /\d/ },
+  });
+
+  // Combine refs for masked input
+  const inputRef = React.useMemo(() => {
+    if (masked && isTel) {
+      return phoneMaskRef;
+    }
+    return ref;
+  }, [masked, isTel, phoneMaskRef, ref]);
 
   return (
     <div className={cn('relative w-full', className)} tremor-id="tremor-raw">
@@ -87,7 +105,7 @@ function Input({
         </div>
       )}
       <input
-        ref={ref}
+        ref={inputRef}
         type={isPassword ? typeState : type}
         className={cn(
           inputStyles({ hasError, enableStepper }),
@@ -98,6 +116,7 @@ function Input({
           !!icon && 'pl-9',
           inputClassName,
         )}
+        placeholder={masked && isTel ? '+63 XXX XXX XXXX' : props.placeholder}
         {...props}
       />
       {suffix && (

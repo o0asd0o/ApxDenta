@@ -156,7 +156,7 @@ const EmployeeData: React.FC = () => {
             </h3>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-3 grid grid-cols-2">
+            <div className="space-y-3 grid grid-cols-1 lg:grid-cols-2">
               <div>
                 <div className="flex items-start gap-3">
                   <User className="size-5 text-muted-foreground mt-0.5" />
