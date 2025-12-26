@@ -17,6 +17,7 @@
     "@biomejs/biome": "1.8.3",
     "@repo/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.1.8",
+    "@types/google.maps": "^3.58.1",
     "@types/node": "20.14.15",
     "@types/react": "18.3.18",
     "tailwindcss": "^4.1.8",
