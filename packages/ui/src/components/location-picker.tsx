@@ -1,4 +1,12 @@
+/// <reference types="@types/google.maps" />
 'use client';
+
+// Augment Window interface to include google maps
+declare global {
+  interface Window {
+    google?: typeof google;
+  }
+}
 
 import {
   APIProvider,
@@ -75,15 +83,8 @@ interface LocationMapModalProps {
 const DEFAULT_CENTER = { lat: 14.5995, lng: 120.9842 };
 const DEFAULT_ZOOM = 13;
 
-// Type definitions for Google Places API
-type PlacePrediction = {
-  place_id: string;
-  description: string;
-  structured_formatting: {
-    main_text: string;
-    secondary_text: string;
-  };
-};
+// Type alias for Google Places API
+type PlacePrediction = google.maps.places.AutocompletePrediction;
 
 // Custom hook for Places Autocomplete
 function usePlacesAutocomplete(inputValue: string) {
@@ -91,13 +92,12 @@ function usePlacesAutocomplete(inputValue: string) {
   const placesLib = useMapsLibrary('places');
   const [predictions, setPredictions] = React.useState<PlacePrediction[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
-  const autocompleteServiceRef = React.useRef<unknown>(null);
+  const autocompleteServiceRef =
+    React.useRef<google.maps.places.AutocompleteService | null>(null);
 
   React.useEffect(() => {
     if (!placesLib) return;
-    autocompleteServiceRef.current =
-      new // biome-ignore lint/suspicious/noExplicitAny: Google Maps API types
-      (placesLib as any).AutocompleteService();
+    autocompleteServiceRef.current = new placesLib.AutocompleteService();
   }, [placesLib]);
 
   React.useEffect(() => {
@@ -107,18 +107,19 @@ function usePlacesAutocomplete(inputValue: string) {
     }
 
     setIsLoading(true);
-    const request = {
+    const request: google.maps.places.AutocompletionRequest = {
       input: inputValue,
       componentRestrictions: { country: 'ph' }, // Restrict to Philippines
     };
 
-    // biome-ignore lint/suspicious/noExplicitAny: Google Maps API callback
-    (autocompleteServiceRef.current as any).getPlacePredictions(
+    autocompleteServiceRef.current.getPlacePredictions(
       request,
-      // biome-ignore lint/suspicious/noExplicitAny: Google Maps API callback
-      (results: any, status: string) => {
+      (
+        results: google.maps.places.AutocompletePrediction[] | null,
+        status: google.maps.places.PlacesServiceStatus,
+      ) => {
         setIsLoading(false);
-        if (status === 'OK' && results) {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
           setPredictions(results);
         } else {
           setPredictions([]);
@@ -131,8 +132,7 @@ function usePlacesAutocomplete(inputValue: string) {
     async (placeId: string): Promise<LocationValue | null> => {
       if (!placesLib || !map) return null;
 
-      // biome-ignore lint/suspicious/noExplicitAny: Google Maps API types
-      const service = new (placesLib as any).PlacesService(map);
+      const service = new placesLib.PlacesService(map);
 
       return new Promise((resolve) => {
         service.getDetails(
@@ -140,9 +140,14 @@ function usePlacesAutocomplete(inputValue: string) {
             placeId,
             fields: ['formatted_address', 'geometry', 'place_id'],
           },
-          // biome-ignore lint/suspicious/noExplicitAny: Google Maps API callback
-          (result: any, status: string) => {
-            if (status === 'OK' && result?.geometry?.location) {
+          (
+            result: google.maps.places.PlaceResult | null,
+            status: google.maps.places.PlacesServiceStatus,
+          ) => {
+            if (
+              status === google.maps.places.PlacesServiceStatus.OK &&
+              result?.geometry?.location
+            ) {
               resolve({
                 address: result.formatted_address || '',
                 placeId: result.place_id,
@@ -206,10 +211,8 @@ function CurrentLocationButton({
   isGeolocating: boolean;
   setIsGeolocating: (value: boolean) => void;
   currentValue?: LocationValue | null;
-  // biome-ignore lint/suspicious/noExplicitAny: Google Maps API types
-  geocoderRef: React.RefObject<any>;
-  // biome-ignore lint/suspicious/noExplicitAny: Google Maps API types
-  map: any;
+  geocoderRef: React.RefObject<google.maps.Geocoder | null>;
+  map: google.maps.Map | null;
 }) {
   const [userLocation, setUserLocation] = React.useState<{
     lat: number;
@@ -247,13 +250,14 @@ function CurrentLocationButton({
 
         // Reverse geocode to get address
         if (geocoderRef.current) {
-          // biome-ignore lint/suspicious/noExplicitAny: Google Maps API callback
-          (geocoderRef.current as any).geocode(
+          geocoderRef.current.geocode(
             { location: pos },
-            // biome-ignore lint/suspicious/noExplicitAny: Google Maps API callback
-            (results: any, status: string) => {
+            (
+              results: google.maps.GeocoderResult[] | null,
+              status: google.maps.GeocoderStatus,
+            ) => {
               setIsGeolocating(false);
-              if (status === 'OK' && results?.[0]) {
+              if (status === google.maps.GeocoderStatus.OK && results?.[0]) {
                 onLocate({
                   address: results[0].formatted_address,
                   placeId: results[0].place_id,
@@ -457,7 +461,7 @@ function MapContent({
   defaultZoom?: number;
 }) {
   const map = useMap();
-  const geocoderRef = React.useRef<unknown>(null);
+  const geocoderRef = React.useRef<google.maps.Geocoder | null>(null);
   const [markerPosition, setMarkerPosition] = React.useState<{
     lat: number;
     lng: number;
@@ -505,12 +509,13 @@ function MapContent({
 
       // Reverse geocode
       if (geocoderRef.current) {
-        // biome-ignore lint/suspicious/noExplicitAny: Google Maps API callback
-        (geocoderRef.current as any).geocode(
+        geocoderRef.current.geocode(
           { location: pos },
-          // biome-ignore lint/suspicious/noExplicitAny: Google Maps API callback
-          (results: any, status: string) => {
-            if (status === 'OK' && results?.[0]) {
+          (
+            results: google.maps.GeocoderResult[] | null,
+            status: google.maps.GeocoderStatus,
+          ) => {
+            if (status === google.maps.GeocoderStatus.OK && results?.[0]) {
               onChange?.({
                 address: results[0].formatted_address,
                 placeId: results[0].place_id,

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": ".",
+    "types": ["@types/google.maps"],
     "paths": {
       "@repo/ui/*": ["./src/*"]
     }

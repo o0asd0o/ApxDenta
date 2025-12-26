@@ -10,7 +10,8 @@
     "formatter": {
       "quoteStyle": "single"
     },
-    "jsxRuntime": "reactClassic"
+    "jsxRuntime": "reactClassic",
+    "globals": ["google"]
   },
   "organizeImports": {
     "enabled": true
