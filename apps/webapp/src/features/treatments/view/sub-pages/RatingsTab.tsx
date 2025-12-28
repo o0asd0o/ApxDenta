@@ -1,3 +1,4 @@
+import StarRating from '@/components/StarRating';
 import { Badge, Card, CardContent, CardHeader } from '@repo/ui/components';
 import { Star } from 'lucide-react';
 import React from 'react';
@@ -40,39 +41,6 @@ const RatingsTab: React.FC<RatingsTabProps> = ({
     },
   ];
 
-  const renderStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    const emptyStars = 5 - Math.ceil(rating);
-
-    return (
-      <div className="flex items-center gap-1">
-        {[...Array(fullStars)].map((_, i) => (
-          <Star
-            // biome-ignore lint: index used only for key generation
-            key={`full-star-${rating}-${i}`}
-            className="size-4 fill-yellow-500 text-yellow-500"
-          />
-        ))}
-        {hasHalfStar && (
-          <Star
-            key="half-star"
-            className="size-4 fill-yellow-500 text-yellow-500"
-            style={{ clipPath: 'inset(0 50% 0 0)' }}
-          />
-        )}
-        {[...Array(emptyStars)].map((_, i) => (
-          <Star
-            // biome-ignore lint: index used only for key generation
-            key={`empty-star-${rating}-${i}`}
-            className="size-4 text-gray-300"
-          />
-        ))}
-        <span className="ml-1 text-sm font-bold">{rating.toFixed(1)}</span>
-      </div>
-    );
-  };
-
   if (!ratings || ratings.length === 0) {
     return (
       <Card>
@@ -98,7 +66,7 @@ const RatingsTab: React.FC<RatingsTabProps> = ({
     <div className="space-y-6">
       {/* Rating Summary */}
       <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
-        <CardContent className="pt-6">
+        <CardContent>
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">
@@ -109,7 +77,7 @@ const RatingsTab: React.FC<RatingsTabProps> = ({
                   {averageRating.toFixed(1)}
                 </span>
                 <div className="flex flex-col gap-1">
-                  {renderStars(averageRating)}
+                  <StarRating rating={averageRating} />
                   <span className="text-xs text-muted-foreground">
                     Based on {ratings.length} rating
                     {ratings.length !== 1 ? 's' : ''}
@@ -131,7 +99,7 @@ const RatingsTab: React.FC<RatingsTabProps> = ({
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div>
-                    {renderStars(rating.rate)}
+                    <StarRating rating={rating.rate} />
                     <p className="text-sm text-muted-foreground mt-1">
                       {rating.patient?.name || 'Anonymous'}
                     </p>
