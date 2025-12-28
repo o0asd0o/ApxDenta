@@ -44,32 +44,39 @@ export const getAllPatients = async (context: GetAllPatientsProps) => {
       ).as('lastTreatment'),
     );
 
-  // Filter by active/inactive status
   if (input.isActive !== undefined) {
-    if (input.isActive) {
-      // Active: has reservation in last 6 months
-      query = query.where(({ exists, selectFrom }) =>
-        exists(
-          selectFrom('Reservation')
-            .select('id')
-            .whereRef('Reservation.patientId', '=', 'Patient.id')
-            .where('Reservation.createdAt', '>=', sixMonthsAgo),
-        ),
-      );
-    } else {
-      // Inactive: no reservation in last 6 months
-      query = query.where(({ not, exists, selectFrom }) =>
-        not(
-          exists(
-            selectFrom('Reservation')
-              .select('id')
-              .whereRef('Reservation.patientId', '=', 'Patient.id')
-              .where('Reservation.createdAt', '>=', sixMonthsAgo),
-          ),
-        ),
-      );
-    }
+    query = query.where(
+      'Patient.status',
+      'in',
+      input.isActive ? ['ACTIVE', 'NEW'] : ['INACTIVE'],
+    );
   }
+  // Filter by active/inactive status
+  // if (input.isActive !== undefined) {
+  //   if (input.isActive) {
+  //     // Active: has reservation in last 6 months
+  //     query = query.where(({ exists, selectFrom }) =>
+  //       exists(
+  //         selectFrom('Reservation')
+  //           .select('id')
+  //           .whereRef('Reservation.patientId', '=', 'Patient.id')
+  //           .where('Reservation.createdAt', '>=', sixMonthsAgo),
+  //       ),
+  //     );
+  //   } else {
+  //     // Inactive: no reservation in last 6 months
+  //     query = query.where(({ not, exists, selectFrom }) =>
+  //       not(
+  //         exists(
+  //           selectFrom('Reservation')
+  //             .select('id')
+  //             .whereRef('Reservation.patientId', '=', 'Patient.id')
+  //             .where('Reservation.createdAt', '>=', sixMonthsAgo),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 
   // Search filter
   if (input.search) {

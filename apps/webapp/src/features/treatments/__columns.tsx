@@ -103,7 +103,7 @@ export const columns: ColumnDef<TreatmentColumnType>[] = [
       if (rating) {
         return (
           <span className="inline-flex items-center gap-1 text-sm font-medium ">
-            <Star className="fill-yellow-500 text-yellow-500 size-4" />
+            <Star className="fill-yellow-500 text-yellow-500 size-3.5" />
             {rating.toFixed(1)}
           </span>
         );

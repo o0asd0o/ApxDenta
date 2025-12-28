@@ -1,5 +1,6 @@
 import type { HandlerType } from '@/server/types';
 import { z } from 'zod';
+import { getTotalPatients } from './db-operations/queries/get-total-patients.query';
 
 const inputSchema = z.object({
   isActive: z.boolean().optional(),
@@ -7,48 +8,12 @@ const inputSchema = z.object({
 
 export type GetTotalPatientsProps = HandlerType<z.infer<typeof inputSchema>>;
 
-const handler = async ({ input, ctx }: GetTotalPatientsProps) => {
-  let query = ctx.db
-    .selectFrom('Patient')
-    .select(ctx.db.fn.countAll().as('count'))
-    .where('Patient.organizationId', '=', ctx.organizationId);
-
-  // Active patients: have reservations in last 6 months
-  // Inactive patients: no reservations in last 6 months or never had one
-  if (input.isActive !== undefined) {
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
-    if (input.isActive) {
-      query = query.where(({ exists, selectFrom }) =>
-        exists(
-          selectFrom('Reservation')
-            .select('id')
-            .whereRef('Reservation.patientId', '=', 'Patient.id')
-            .where('Reservation.createdAt', '>=', sixMonthsAgo),
-        ),
-      );
-    } else {
-      query = query.where(({ not, exists, selectFrom }) =>
-        not(
-          exists(
-            selectFrom('Reservation')
-              .select('id')
-              .whereRef('Reservation.patientId', '=', 'Patient.id')
-              .where('Reservation.createdAt', '>=', sixMonthsAgo),
-          ),
-        ),
-      );
-    }
-  }
-
-  const result = await query.executeTakeFirst();
+const handler = async (props: GetTotalPatientsProps) => {
+  const data = await getTotalPatients(props);
 
   return {
     status: 'SUCCESS' as const,
-    data: {
-      count: Number(result?.count || 0),
-    },
+    data,
   };
 };
 

@@ -41,8 +41,8 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
 
   return (
     <Card className="relative overflow-hidden bg-white border border-gray-200 hover:shadow-lg hover:border-gray-300 transition-all duration-200 py-0 gap-2">
-      {/* Decorative gradient header */}
-      <div className="h-1.5 bg-primary-500" />
+      {/* Decorative line header */}
+      <div className="h-1.5 bg-gray-200" />
 
       {/* Header with Avatar and Name */}
       <div className="flex items-center gap-3 p-4 pb-3">
@@ -124,7 +124,7 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
         <div className="grid grid-cols-2 gap-3">
           {/* Last Visit */}
           <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-2.5 border border-gray-100">
-            <div className="flex items-center gap-1.5 text-[10px] text-gray-500 uppercase font-bold mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-bold mb-1">
               <CalendarCheck className="size-3" />
               Last Visit
             </div>
@@ -138,7 +138,7 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
           </div>
 
           {/* Last Treatment */}
-          <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-lg p-2.5 border border-primary-100">
+          <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-2.5 border border-gray-100">
             <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-bold mb-1">
               <Stethoscope className="size-3" />
               Treatment
