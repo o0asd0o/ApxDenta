@@ -17,7 +17,7 @@ export const PersonalInfo: React.FC<Props> = ({ name, role, profile }) => {
           src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${profile}`}
           alt={name.substring(0, 2)}
         />
-        <AvatarFallback className="bg-amber-500 text-white font-bold">
+        <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-600 text-white font-bold">
           {[splitted[0][0], splitted[1][0]].join('').toUpperCase()}
         </AvatarFallback>
       </Avatar>
