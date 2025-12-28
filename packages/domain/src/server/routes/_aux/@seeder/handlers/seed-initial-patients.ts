@@ -45,6 +45,7 @@ const handler = async ({ input, ctx }: Params) => {
         address: faker.location.streetAddress(true),
         age: faker.number.int({ min: 18, max: 75 }),
         gender: gender === 'male' ? 'MALE' : 'FEMALE',
+        status: faker.helpers.arrayElement(['ACTIVE', 'NEW'] as const),
 
         // Dental care habits
         dentalCareStart: faker.helpers.arrayElement([

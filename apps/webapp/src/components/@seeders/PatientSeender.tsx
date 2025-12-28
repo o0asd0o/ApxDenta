@@ -41,7 +41,13 @@ const PatientSeeder: React.FC = () => {
     <button
       className="bg-none border-none underline text-primary-400 text-sm ml-2 font-normal"
       type="button"
-      onClick={() => seedPatients({})}
+      onClick={() =>
+        seedPatients({
+          count: 50,
+          generateReviews: true,
+          reviewsPerPatient: 2,
+        })
+      }
     >
       <>
         {!loading && 'seed'}

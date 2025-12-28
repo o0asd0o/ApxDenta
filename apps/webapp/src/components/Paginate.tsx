@@ -3,6 +3,7 @@ import {
   Label,
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -29,6 +30,45 @@ type Props = {
     >;
   };
 };
+
+const getVisiblePages = (currentPage: number, totalPages: number) => {
+  // If 5 or fewer pages, show all
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  const pages: (number | 'ellipsis')[] = [];
+
+  // Always show first page
+  pages.push(1);
+
+  if (currentPage <= 3) {
+    // Near the start: 1, 2, 3, 4, ..., last
+    pages.push(2, 3, 4, 'ellipsis', totalPages);
+  } else if (currentPage >= totalPages - 2) {
+    // Near the end: 1, ..., last-3, last-2, last-1, last
+    pages.push(
+      'ellipsis',
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    );
+  } else {
+    // In the middle: 1, ..., current-1, current, current+1, ..., last
+    pages.push(
+      'ellipsis',
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+      'ellipsis',
+      totalPages,
+    );
+  }
+
+  return pages;
+};
+
 const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
   const { state, setState } = pagination;
 
@@ -87,22 +127,31 @@ const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
               disabled={state.current === 1}
             />
           </PaginationItem>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (pageNum) => (
-              <PaginationItem key={pageNum}>
+          {getVisiblePages(state.current, totalPages).map((item, index) =>
+            item === 'ellipsis' ? (
+              <PaginationItem
+                key={`ellipsis-${
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  index
+                }`}
+              >
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={item}>
                 <PaginationLink
                   href="#"
-                  isActive={state.current === pageNum}
+                  isActive={state.current === item}
                   onClick={() => {
-                    if (state.current !== pageNum) {
+                    if (state.current !== item) {
                       setState((prev) => ({
                         ...prev,
-                        current: pageNum,
+                        current: item,
                       }));
                     }
                   }}
                 >
-                  {pageNum}
+                  {item}
                 </PaginationLink>
               </PaginationItem>
             ),
