@@ -347,6 +347,10 @@ model Patient {
 model Reservation {
   id                 String            @id @default(dbgenerated("gen_random_uuid()"))
   createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @default(now()) @updatedAt
+  startTime          DateTime
+  endTime            DateTime
+  duration           Int // Duration in minutes
   note               String?
   status             ReservationStatus
   isArchived         Boolean           @default(false)
@@ -362,6 +366,9 @@ model Reservation {
   organization       organization?     @relation(fields: [organizationId], references: [id])
   patient            Patient           @relation(fields: [patientId], references: [id])
   doctor             Staff             @relation(fields: [staffId], references: [id])
+
+  @@index([startTime, endTime], map: "idx_reservation_time")
+  @@index([staffId, startTime], map: "idx_reservation_staff_time")
 }
 
 model MedicalCheckup {

@@ -32,7 +32,7 @@ const ExpensesChart: React.FC = () => {
   const totalExpense = 80832;
 
   return (
-    <Card className="gap-4 p-4">
+    <Card className="col-span-2 lg:col-span-1 gap-4 p-4">
       <CardHeader className="flex flex-row items-center justify-between pb-2 pl-1 pr-0">
         <p className="text-sm font-bold text-gray-900">Expenses</p>
         <Select value={period} onValueChange={setPeriod}>
@@ -46,10 +46,10 @@ const ExpensesChart: React.FC = () => {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="space-y-4 px-0">
-        <div className="flex items-center gap-4">
+      <CardContent className="space-y-4 px-0 @container">
+        <div className="flex flex-col @[300px]:flex-row items-center gap-4">
           {/* Donut Chart */}
-          <div className="relative w-[140px] h-[140px]">
+          <div className="relative w-[140px] h-[140px] shrink-0">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -82,7 +82,7 @@ const ExpensesChart: React.FC = () => {
           </div>
 
           {/* Legend */}
-          <div className="flex-1 space-y-1.5">
+          <div className="w-full @[300px]:flex-1 space-y-1.5">
             {expenseData.map((item) => (
               <div
                 key={item.name}
@@ -90,12 +90,10 @@ const ExpensesChart: React.FC = () => {
               >
                 <div className="flex items-center gap-2">
                   <span
-                    className="w-2 h-2 rounded-full"
+                    className="w-2 h-2 rounded-full shrink-0"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-gray-600 truncate max-w-[100px]">
-                    {item.name}
-                  </span>
+                  <span className="text-gray-600 truncate">{item.name}</span>
                 </div>
                 <span className="text-gray-900 font-medium">{item.value}%</span>
               </div>

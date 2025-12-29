@@ -129,6 +129,8 @@ const CreateStaff: React.FC = () => {
         setSubmitting(false);
       } else {
         stepper.next();
+        // Clear form errors when moving to next step to prevent stale error state
+        form.clearErrors();
       }
     },
     [
@@ -139,6 +141,7 @@ const CreateStaff: React.FC = () => {
       formValues,
       additionDayOff,
       stepper,
+      form,
     ],
   );
 
@@ -196,7 +199,10 @@ const CreateStaff: React.FC = () => {
               <Button
                 variant="ghost"
                 className="w-[120px]"
-                onClick={() => stepper?.prev()}
+                onClick={() => {
+                  stepper?.prev();
+                  form.clearErrors();
+                }}
                 type="button"
               >
                 Back

@@ -22,8 +22,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Calendar, LayoutGrid, ListIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
-type ViewMode = 'list' | 'card';
-
 interface Appointment {
   id: string;
   patient: {
@@ -42,7 +40,7 @@ const appointments: Appointment[] = [
     id: '1',
     patient: { name: 'Sarah Johnson', avatar: '' },
     treatment: 'Teeth Cleaning',
-    dateTime: '2024-02-15 10:00 AM',
+    dateTime: '2024-02-15T10:00:00',
     status: 'DONE',
     duration: '45 min',
   },
@@ -50,7 +48,7 @@ const appointments: Appointment[] = [
     id: '2',
     patient: { name: 'Michael Chen', avatar: '' },
     treatment: 'Root Canal',
-    dateTime: '2024-02-16 02:00 PM',
+    dateTime: '2024-02-16T14:00:00',
     status: 'PENDING',
     duration: '90 min',
   },
@@ -58,7 +56,7 @@ const appointments: Appointment[] = [
     id: '3',
     patient: { name: 'Emma Davis', avatar: '' },
     treatment: 'Dental Implant',
-    dateTime: '2024-02-17 09:30 AM',
+    dateTime: '2024-02-17T09:30:00',
     status: 'PENDING',
     duration: '120 min',
   },
@@ -66,7 +64,7 @@ const appointments: Appointment[] = [
     id: '4',
     patient: { name: 'David Wilson', avatar: '' },
     treatment: 'Teeth Whitening',
-    dateTime: '2024-02-14 11:00 AM',
+    dateTime: '2024-02-14T11:00:00',
     status: 'DONE',
     duration: '60 min',
   },
@@ -74,7 +72,7 @@ const appointments: Appointment[] = [
     id: '5',
     patient: { name: 'Lisa Anderson', avatar: '' },
     treatment: 'Orthodontic Consultation',
-    dateTime: '2024-02-13 03:00 PM',
+    dateTime: '2024-02-13T15:00:00',
     status: 'CANCELLED',
     duration: '30 min',
   },
@@ -82,7 +80,7 @@ const appointments: Appointment[] = [
     id: '6',
     patient: { name: 'James Brown', avatar: '' },
     treatment: 'Emergency Care',
-    dateTime: '2024-02-18 04:00 PM',
+    dateTime: '2024-02-18T16:00:00',
     status: 'ENCOUNTER',
     duration: '45 min',
   },

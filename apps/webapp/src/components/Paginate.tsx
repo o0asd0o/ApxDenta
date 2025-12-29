@@ -1,3 +1,4 @@
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import {
   Label,
@@ -31,39 +32,51 @@ type Props = {
   };
 };
 
-const getVisiblePages = (currentPage: number, totalPages: number) => {
-  // If 5 or fewer pages, show all
-  if (totalPages <= 5) {
+const getVisiblePages = (
+  currentPage: number,
+  totalPages: number,
+  maxVisible: number,
+) => {
+  // If maxVisible or fewer pages, show all
+  if (totalPages <= maxVisible) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
   const pages: (number | 'ellipsis')[] = [];
 
-  // Always show first page
-  pages.push(1);
-
-  if (currentPage <= 3) {
-    // Near the start: 1, 2, 3, 4, ..., last
-    pages.push(2, 3, 4, 'ellipsis', totalPages);
-  } else if (currentPage >= totalPages - 2) {
-    // Near the end: 1, ..., last-3, last-2, last-1, last
-    pages.push(
-      'ellipsis',
-      totalPages - 3,
-      totalPages - 2,
-      totalPages - 1,
-      totalPages,
-    );
+  if (maxVisible === 3) {
+    // Mobile: show 3 items
+    if (currentPage === 1) {
+      pages.push(1, 2, 'ellipsis', totalPages);
+    } else if (currentPage === totalPages) {
+      pages.push(1, 'ellipsis', totalPages - 1, totalPages);
+    } else if (currentPage === 2) {
+      pages.push(1, 2, 'ellipsis', totalPages);
+    } else if (currentPage === totalPages - 1) {
+      pages.push(1, 'ellipsis', totalPages - 1, totalPages);
+    } else {
+      pages.push(1, 'ellipsis', currentPage, 'ellipsis', totalPages);
+    }
   } else {
-    // In the middle: 1, ..., current-1, current, current+1, ..., last
-    pages.push(
-      'ellipsis',
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-      'ellipsis',
-      totalPages,
-    );
+    // Desktop: show 4 items
+    pages.push(1);
+
+    if (currentPage <= 3) {
+      // Near the start: 1, 2, 3, ..., last
+      pages.push(2, 3, 'ellipsis', totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      // Near the end: 1, ..., last-2, last-1, last
+      pages.push('ellipsis', totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      // In the middle: 1, ..., current, current+1, ..., last
+      pages.push(
+        'ellipsis',
+        currentPage,
+        currentPage + 1,
+        'ellipsis',
+        totalPages,
+      );
+    }
   }
 
   return pages;
@@ -71,8 +84,10 @@ const getVisiblePages = (currentPage: number, totalPages: number) => {
 
 const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
   const { state, setState } = pagination;
+  const isMobile = useIsMobile();
 
   const totalPages = Math.ceil(listCount / state.pageSize);
+  const maxVisible = isMobile ? 3 : 4;
 
   return (
     <div
@@ -127,34 +142,35 @@ const Paginate: React.FC<Props> = ({ pagination, listCount, className }) => {
               disabled={state.current === 1}
             />
           </PaginationItem>
-          {getVisiblePages(state.current, totalPages).map((item, index) =>
-            item === 'ellipsis' ? (
-              <PaginationItem
-                key={`ellipsis-${
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                  index
-                }`}
-              >
-                <PaginationEllipsis />
-              </PaginationItem>
-            ) : (
-              <PaginationItem key={item}>
-                <PaginationLink
-                  href="#"
-                  isActive={state.current === item}
-                  onClick={() => {
-                    if (state.current !== item) {
-                      setState((prev) => ({
-                        ...prev,
-                        current: item,
-                      }));
-                    }
-                  }}
+          {getVisiblePages(state.current, totalPages, maxVisible).map(
+            (item, index) =>
+              item === 'ellipsis' ? (
+                <PaginationItem
+                  key={`ellipsis-${
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                    index
+                  }`}
                 >
-                  {item}
-                </PaginationLink>
-              </PaginationItem>
-            ),
+                  <PaginationEllipsis />
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={item}>
+                  <PaginationLink
+                    href="#"
+                    isActive={state.current === item}
+                    onClick={() => {
+                      if (state.current !== item) {
+                        setState((prev) => ({
+                          ...prev,
+                          current: item,
+                        }));
+                      }
+                    }}
+                  >
+                    {item}
+                  </PaginationLink>
+                </PaginationItem>
+              ),
           )}
           <PaginationItem>
             <PaginationNext

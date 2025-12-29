@@ -49,7 +49,10 @@ export const getStaffInfoSchema = z.object({
 });
 
 const interval = z
-  .object({ startTime: z.number(), endTime: z.number() })
+  .object({
+    startTime: z.number(),
+    endTime: z.number(),
+  })
   .optional();
 
 export const workingHoursSchema = z.object({
