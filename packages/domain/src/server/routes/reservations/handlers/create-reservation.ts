@@ -5,6 +5,9 @@ const inputSchema = z.object({
   note: z.string().nullable(),
   status: z.enum(['DONE', 'CANCELLED', 'PENDING', 'ENCOUNTER', 'NO_SHOW']),
   staffId: z.string(),
+  startTime: z.date(),
+  duration: z.number(),
+  endTime: z.date(),
   initialTreatmentId: z.string(),
   patientId: z.string(),
 });
