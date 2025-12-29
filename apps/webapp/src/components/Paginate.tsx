@@ -58,26 +58,19 @@ const getVisiblePages = (
       pages.push(1, 'ellipsis', currentPage, 'ellipsis', totalPages);
     }
   } else {
-    // Desktop: show 5 items
+    // Desktop: show 4 items
     pages.push(1);
 
     if (currentPage <= 3) {
-      // Near the start: 1, 2, 3, 4, ..., last
-      pages.push(2, 3, 4, 'ellipsis', totalPages);
+      // Near the start: 1, 2, 3, ..., last
+      pages.push(2, 3, 'ellipsis', totalPages);
     } else if (currentPage >= totalPages - 2) {
-      // Near the end: 1, ..., last-3, last-2, last-1, last
-      pages.push(
-        'ellipsis',
-        totalPages - 3,
-        totalPages - 2,
-        totalPages - 1,
-        totalPages,
-      );
+      // Near the end: 1, ..., last-2, last-1, last
+      pages.push('ellipsis', totalPages - 2, totalPages - 1, totalPages);
     } else {
-      // In the middle: 1, ..., current-1, current, current+1, ..., last
+      // In the middle: 1, ..., current, current+1, ..., last
       pages.push(
         'ellipsis',
-        currentPage - 1,
         currentPage,
         currentPage + 1,
         'ellipsis',

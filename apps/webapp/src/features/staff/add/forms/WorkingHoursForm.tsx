@@ -48,14 +48,21 @@ export const WorkingHoursForm: React.FC<Props> = ({ form }) => {
                         to: field.value?.endTime,
                       }}
                       onToggle={(checked) => {
-                        field.onChange(
-                          checked
-                            ? {
-                                startTime: defaultValue?.startTime,
-                                endTime: defaultValue?.endTime,
-                              }
-                            : undefined,
-                        );
+                        if (checked) {
+                          // Only set value if we have valid defaults, otherwise leave as undefined
+                          // The value will be set when user picks actual times
+                          if (
+                            defaultValue?.startTime &&
+                            defaultValue?.endTime
+                          ) {
+                            field.onChange({
+                              startTime: defaultValue.startTime,
+                              endTime: defaultValue.endTime,
+                            });
+                          }
+                        } else {
+                          field.onChange(undefined);
+                        }
                       }}
                       onChange={(selected, what) => {
                         if (what === 'from') {
