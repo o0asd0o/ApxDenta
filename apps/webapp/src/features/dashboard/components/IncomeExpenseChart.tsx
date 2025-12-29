@@ -47,9 +47,9 @@ const IncomeExpenseChart: React.FC = () => {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="space-y-4 px-0">
+      <CardContent className="space-y-4 px-0 @container">
         {/* Summary */}
-        <div className="flex items-center gap-6 w-full justify-between px-2">
+        <div className="flex flex-col @[270px]:items-center @[270px]:flex-row items-baseline w-full justify-between gap-4 @[270px]:gap-0 px-2">
           <div className="flex items-start gap-2 flex-col">
             <div className="relative flex pl-5">
               <span className="w-3 h-1 rounded-full bg-emerald-500 absolute left-0 top-1.5" />
