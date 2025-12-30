@@ -7,7 +7,7 @@ import { invalidateTreatmentList } from '../__common/queries';
 import ArchiveTreatmentDialog from '../components/ArchiveTreatmentDialog';
 
 const ArchiveTreatment: React.FC = () => {
-  const [open, setOpen, treatment] = useArchiveModalVisibility();
+  const [open, setOpen, treatment, callback] = useArchiveModalVisibility();
 
   const trpc = useTRPC();
 
@@ -15,6 +15,7 @@ const ArchiveTreatment: React.FC = () => {
     trpc.treatments.archiveTreatment.mutationOptions({
       onSuccess: async () => {
         await invalidateTreatmentList(queryClient, trpc);
+        callback?.();
       },
       onSettled: () => setOpen(false),
     }),

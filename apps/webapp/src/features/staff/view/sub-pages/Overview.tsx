@@ -1,100 +1,71 @@
+import { useTRPC } from '@/lib/trpc';
 import { cn } from '@/lib/utils';
-import { Badge, Card, CardContent, CardHeader } from '@repo/ui/components';
 import {
-  Briefcase,
+  Badge,
+  Card,
+  CardContent,
+  CardHeader,
+  Skeleton,
+} from '@repo/ui/components';
+import { useQuery } from '@tanstack/react-query';
+import { format, formatDistanceToNow } from 'date-fns';
+import {
+  Award,
   CalendarDays,
   CheckCircle2,
   Clock,
+  ExternalLink,
+  GraduationCap,
   Star,
   TrendingUp,
   Users,
+  XCircle,
 } from 'lucide-react';
 import React from 'react';
 
-// Mock data for demonstration
-const statsData = [
-  {
-    title: 'Total Appointments',
-    value: '234',
-    change: '+12%',
-    icon: CalendarDays,
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-50',
-  },
-  {
-    title: 'Active Patients',
-    value: '89',
-    change: '+8%',
-    icon: Users,
-    color: 'text-green-500',
-    bgColor: 'bg-green-50',
-  },
-  {
-    title: 'Working Hours',
-    value: '42h',
-    change: 'This week',
-    icon: Clock,
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-50',
-  },
-  {
-    title: 'Average Rating',
-    value: '4.8',
-    change: '98% positive',
-    icon: Star,
-    color: 'text-yellow-500',
-    bgColor: 'bg-yellow-50',
-  },
-];
+interface OverviewProps {
+  staffId: string;
+  services: { id: string; name: string }[];
+}
 
-const recentActivities = [
-  {
-    id: 1,
-    type: 'appointment',
-    description: 'Completed appointment with Sarah Johnson',
-    time: '2 hours ago',
-    status: 'completed' as const,
-  },
-  {
-    id: 2,
-    type: 'appointment',
-    description: 'Scheduled appointment with Michael Chen',
-    time: '5 hours ago',
-    status: 'scheduled' as const,
-  },
-  {
-    id: 3,
-    type: 'review',
-    description: 'Received 5-star review from Emma Davis',
-    time: '1 day ago',
-    status: 'review' as const,
-  },
-  {
-    id: 4,
-    type: 'appointment',
-    description: 'Completed appointment with David Wilson',
-    time: '2 days ago',
-    status: 'completed' as const,
-  },
-];
+const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
+  const trpc = useTRPC();
 
-const skills = [
-  'Teeth Cleaning',
-  'Root Canal',
-  'Dental Implants',
-  'Orthodontics',
-  'Cosmetic Dentistry',
-  'Emergency Care',
-];
+  const { data: overviewData, isLoading } = useQuery(
+    trpc.staffs.getStaffOverview.queryOptions({ staffId }),
+  );
 
-const certifications = [
-  { name: 'Doctor of Dental Surgery (DDS)', year: '2015' },
-  { name: 'Advanced Endodontics Certification', year: '2018' },
-  { name: 'Invisalign Certified Provider', year: '2020' },
-  { name: 'Laser Dentistry Certification', year: '2021' },
-];
+  const stats = overviewData?.data.stats;
+  const recentActivities = overviewData?.data.recentActivities || [];
+  const certifications = overviewData?.data.certifications || [];
+  const educations = overviewData?.data.educations || [];
 
-const Overview: React.FC = () => {
+  const statsData = [
+    {
+      title: 'Total Appointments',
+      value: stats?.totalAppointments?.toString() || '0',
+      change: `${stats?.completionRate || 0}% completed`,
+      icon: CalendarDays,
+    },
+    {
+      title: 'Active Patients',
+      value: stats?.activePatients?.toString() || '0',
+      change: 'Unique patients',
+      icon: Users,
+    },
+    {
+      title: 'Weekly Hours',
+      value: `${stats?.weeklyWorkingHours || 0}h`,
+      change: 'Per week',
+      icon: Clock,
+    },
+    {
+      title: 'Average Rating',
+      value: stats?.averageRating?.toFixed(1) || '0.0',
+      change: 'Based on reviews',
+      icon: Star,
+    },
+  ];
   return (
     <div className="md:px-5 space-y-5">
       {/* Quick Stats */}
@@ -131,44 +102,67 @@ const Overview: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentActivities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-start gap-3 pb-4 border-b last:border-b-0 last:pb-0"
-                  >
+                {isLoading ? (
+                  <>
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3 pb-4 border-b last:border-b-0 last:pb-0"
+                      >
+                        <Skeleton className="size-9 rounded-full" />
+                        <div className="flex-1 space-y-2">
+                          <Skeleton className="h-4 w-3/4" />
+                          <Skeleton className="h-3 w-1/4" />
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : recentActivities.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No recent activity
+                  </p>
+                ) : (
+                  recentActivities.map((activity) => (
                     <div
-                      className={cn('p-2 rounded-full', {
-                        'bg-green-50': activity.status === 'completed',
-                        'bg-blue-50': activity.status === 'scheduled',
-                        'bg-yellow-50': activity.status === 'review',
-                      })}
+                      key={activity.id}
+                      className="flex items-start gap-3 pb-4 border-b last:border-b-0 last:pb-0"
                     >
-                      {activity.status === 'completed' && (
-                        <CheckCircle2 className="size-5 text-green-400" />
-                      )}
-                      {activity.status === 'scheduled' && (
-                        <Clock className="size-5 text-blue-400" />
-                      )}
-                      {activity.status === 'review' && (
-                        <Star className="size-5 text-yellow-400" />
-                      )}
+                      <div
+                        className={cn('p-2 rounded-full', {
+                          'bg-green-50': activity.status === 'completed',
+                          'bg-blue-50': activity.status === 'scheduled',
+                          'bg-red-50': activity.status === 'cancelled',
+                        })}
+                      >
+                        {activity.status === 'completed' && (
+                          <CheckCircle2 className="size-5 text-green-400" />
+                        )}
+                        {activity.status === 'scheduled' && (
+                          <Clock className="size-5 text-blue-400" />
+                        )}
+                        {activity.status === 'cancelled' && (
+                          <XCircle className="size-5 text-red-400" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">
+                          {activity.description}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {formatDistanceToNow(new Date(activity.time), {
+                            addSuffix: true,
+                          })}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">
-                        {activity.description}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {activity.time}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Skills & Expertise */}
+        {/* Skills & Expertise (Services) */}
         <div>
           <Card>
             <CardHeader>
@@ -176,46 +170,143 @@ const Overview: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {skills.map((skill) => (
-                  <Badge key={skill} variant="outline">
-                    {skill}
-                  </Badge>
-                ))}
+                {services.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    No services assigned
+                  </p>
+                ) : (
+                  services.map((service) => (
+                    <Badge key={service.id} variant="outline">
+                      {service.name}
+                    </Badge>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Certifications */}
-      <Card>
-        <CardHeader>
-          <h3 className="text-lg font-bold flex items-center gap-2">
-            <Briefcase className="size-5" />
-            Certifications & Education
-          </h3>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {certifications.map((cert) => (
-              <div
-                key={cert.name}
-                className="flex items-start gap-3 p-3 rounded-lg border bg-card"
-              >
-                <div className="p-2 rounded-full bg-primary/10">
-                  <Briefcase className="size-4 text-primary" />
-                </div>
-                <div>
-                  <p className="font-medium text-sm">{cert.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Obtained in {cert.year}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Certifications & Education */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* Certifications */}
+        <Card>
+          <CardHeader>
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <Award className="size-5" />
+              Certifications
+            </h3>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {isLoading ? (
+                <>
+                  {[1, 2].map((i) => (
+                    <div key={i} className="space-y-2">
+                      <Skeleton className="h-5 w-2/3" />
+                      <Skeleton className="h-4 w-1/2" />
+                    </div>
+                  ))}
+                </>
+              ) : certifications.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No certifications added
+                </p>
+              ) : (
+                certifications.map((cert) => (
+                  <div
+                    key={cert.id}
+                    className="pb-4 border-b last:border-b-0 last:pb-0"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="font-medium">{cert.name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {cert.issuer}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Issued: {format(new Date(cert.issueDate), 'MMM yyyy')}
+                          {cert.expiryDate && (
+                            <>
+                              {' • Expires: '}
+                              {format(new Date(cert.expiryDate), 'MMM yyyy')}
+                            </>
+                          )}
+                        </p>
+                      </div>
+                      {cert.credentialUrl && (
+                        <a
+                          href={cert.credentialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:text-primary/80"
+                        >
+                          <ExternalLink className="size-4" />
+                        </a>
+                      )}
+                    </div>
+                    {cert.credentialId && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Credential ID: {cert.credentialId}
+                      </p>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Education */}
+        <Card>
+          <CardHeader>
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <GraduationCap className="size-5" />
+              Education
+            </h3>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {isLoading ? (
+                <>
+                  {[1, 2].map((i) => (
+                    <div key={i} className="space-y-2">
+                      <Skeleton className="h-5 w-2/3" />
+                      <Skeleton className="h-4 w-1/2" />
+                    </div>
+                  ))}
+                </>
+              ) : educations.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No education added
+                </p>
+              ) : (
+                educations.map((edu) => (
+                  <div
+                    key={edu.id}
+                    className="pb-4 border-b last:border-b-0 last:pb-0"
+                  >
+                    <p className="font-medium">{edu.degree}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {edu.institution}
+                      {edu.field && ` • ${edu.field}`}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {edu.startDate && format(new Date(edu.startDate), 'yyyy')}
+                      {edu.startDate && ' - '}
+                      {edu.isCurrent
+                        ? 'Present'
+                        : edu.endDate
+                          ? format(new Date(edu.endDate), 'yyyy')
+                          : ''}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

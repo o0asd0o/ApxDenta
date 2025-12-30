@@ -17,7 +17,10 @@ export const UpdateTreatmentContext = createContext<{
     treatmentId: string;
     name: string;
   }) => void;
-  onShowArchiveModal: (params: TreatmentColumnType) => void;
+  onShowArchiveModal: (
+    params: TreatmentColumnType,
+    callback?: () => void,
+  ) => void;
   onShowArchiveMultipleModal: (
     params: TreatmentColumnType[],
     callback: () => void,
@@ -46,6 +49,7 @@ export const useArchiveModalVisibility = () => {
           name: state?.name as string | undefined,
           treatmentId: state?.treatmentId as string | undefined,
         },
+        state?.callback as (() => void) | undefined,
       ] as const,
   );
 };
@@ -85,7 +89,10 @@ export const useArchiveTreatmentIdAction = () => {
   return useContextSelector(
     UpdateTreatmentContext,
     (state) =>
-      state?.onShowArchiveModal as (params: TreatmentColumnType) => void,
+      state?.onShowArchiveModal as (
+        params: TreatmentColumnType,
+        callback?: () => void,
+      ) => void,
   );
 };
 

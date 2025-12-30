@@ -17,7 +17,7 @@ export const UpdateStaffContext = createContext<{
     staffId: string;
     name: string;
   }) => void;
-  onShowArchiveModal: (params: StaffColumnType) => void;
+  onShowArchiveModal: (params: StaffColumnType, callback?: () => void) => void;
   onShowArchiveMultipleModal: (
     params: StaffColumnType[],
     callback: () => void,
@@ -46,6 +46,7 @@ export const useArchiveModalVisibility = () => {
           name: state?.name as string | undefined,
           staffId: state?.staffId as string | undefined,
         },
+        state?.callback as (() => void) | undefined,
       ] as const,
   );
 };
@@ -84,7 +85,11 @@ export const useUpdateStaffIdAction = () => {
 export const useArchiveStaffIdAction = () => {
   return useContextSelector(
     UpdateStaffContext,
-    (state) => state?.onShowArchiveModal as (params: StaffColumnType) => void,
+    (state) =>
+      state?.onShowArchiveModal as (
+        params: StaffColumnType,
+        callback?: () => void,
+      ) => void,
   );
 };
 

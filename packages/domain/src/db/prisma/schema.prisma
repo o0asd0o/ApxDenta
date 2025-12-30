@@ -116,12 +116,12 @@ model organization {
 }
 
 model Staff {
-  id                   String             @id @default(dbgenerated("gen_random_uuid()"))
+  id                   String               @id @default(dbgenerated("gen_random_uuid()"))
   type                 StaffType
   accountId            String?
   address              String?
   contactNumber        String
-  createdAt            DateTime           @default(now())
+  createdAt            DateTime             @default(now())
   employmentType       EmploymentType
   firstName            String
   lastName             String
@@ -129,30 +129,60 @@ model Staff {
   long                 Float?
   position             String
   specialistsRecordId  String?
-  updatedAt            DateTime           @default(now())
-  status               StaffStatus?       @default(ACTIVE)
+  updatedAt            DateTime             @default(now())
+  status               StaffStatus?         @default(ACTIVE)
   email                String?
   organizationId       String?
   avatarId             String?
-  isArchived           Boolean?           @default(false)
+  isArchived           Boolean?             @default(false)
   createdAssets        Asset[]
   createdAssetTransfer AssetTransfer[]
   processedBillHistory BillHistory[]
   createdPeripherals   Peripheral[]
   reservations         Reservation[]
-  account              account?           @relation(fields: [accountId], references: [id])
-  avatar               File?              @relation(fields: [avatarId], references: [id])
-  organization         organization?      @relation(fields: [organizationId], references: [id])
-  specialist           SpecialistsRecord? @relation(fields: [specialistsRecordId], references: [id])
+  account              account?             @relation(fields: [accountId], references: [id])
+  avatar               File?                @relation(fields: [avatarId], references: [id])
+  organization         organization?        @relation(fields: [organizationId], references: [id])
+  specialist           SpecialistsRecord?   @relation(fields: [specialistsRecordId], references: [id])
   workingSchedules     WorkSchedule[]
-  assignedTreatments   Treatment[]        @relation("StaffAssignedTreatment")
-  daysOff              DayOff[]           @relation("StaffDayOff")
+  assignedTreatments   Treatment[]          @relation("StaffAssignedTreatment")
+  daysOff              DayOff[]             @relation("StaffDayOff")
+  certifications       StaffCertification[]
+  educations           StaffEducation[]
 
   emergencyContactNumber   String?
   emergencyContactName     String?
   emergencyContactRelation String?
 
   @@index([email, firstName, lastName], map: "idx_staff_email_first_last")
+}
+
+model StaffCertification {
+  id            String    @id @default(dbgenerated("gen_random_uuid()"))
+  name          String
+  issuer        String
+  issueDate     DateTime
+  expiryDate    DateTime?
+  credentialId  String?
+  credentialUrl String?
+  staffId       String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  staff         Staff     @relation(fields: [staffId], references: [id], onDelete: Cascade)
+}
+
+model StaffEducation {
+  id          String    @id @default(dbgenerated("gen_random_uuid()"))
+  institution String
+  degree      String
+  field       String?
+  startDate   DateTime?
+  endDate     DateTime?
+  isCurrent   Boolean?  @default(false)
+  staffId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  staff       Staff     @relation(fields: [staffId], references: [id], onDelete: Cascade)
 }
 
 model DayOff {

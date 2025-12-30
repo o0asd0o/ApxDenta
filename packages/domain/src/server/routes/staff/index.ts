@@ -4,7 +4,10 @@ import * as createStaff from './handlers/create-staff';
 import * as getAllStaffs from './handlers/get-all-staffs';
 import * as getInvitedStaff from './handlers/get-invited-staff';
 import * as getStaff from './handlers/get-staff';
+import * as getStaffAppointments from './handlers/get-staff-appointments';
 import * as getStaffDaysOff from './handlers/get-staff-days-off';
+import * as getStaffOverview from './handlers/get-staff-overview';
+import * as getStaffPatients from './handlers/get-staff-patients';
 import * as getStaffServices from './handlers/get-staff-services';
 import * as getStaffWorkingHours from './handlers/get-staff-working-hours';
 import * as getTotalStaffs from './handlers/get-total-staffs';
@@ -33,6 +36,15 @@ const staffs = router({
   getStaffDaysOff: protectedProcedure
     .input(getStaffDaysOff.inputSchema)
     .query(getStaffDaysOff.handler),
+  getStaffOverview: protectedProcedure
+    .input(getStaffOverview.inputSchema)
+    .query(getStaffOverview.handler),
+  getStaffAppointments: protectedProcedure
+    .input(getStaffAppointments.inputSchema)
+    .query(getStaffAppointments.handler),
+  getStaffPatients: protectedProcedure
+    .input(getStaffPatients.inputSchema)
+    .query(getStaffPatients.handler),
   updateStaffInfo: protectedProcedure
     .input(updateStaffInfo.inputSchema)
     .mutation(updateStaffInfo.handler),

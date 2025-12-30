@@ -52,43 +52,18 @@ const UpdateTreatment: React.FC = () => {
 
   const treatmentId = useUpdateTreatmentId();
 
-  const form = useForm({
+  const form = useForm<TreatmentFormType>({
     mode: 'onChange',
     resolver: zodResolver(treatmentSchema),
-    defaultValues: async () => {
-      const treatment = await directTrpc.treatments.getTreatment.query({
-        id: treatmentId as string,
-      });
-
-      console.log({ treatment });
-
-      return Promise.resolve({
-        visitType: treatment.data.visitType,
-        category: treatment.data.category,
-        treatmentName: treatment.data.name,
-        description: treatment.data.description,
-        duration: treatment.data.duration,
-        price: treatment.data.pricePerDuration,
-        visits:
-          treatment.data.visitType === 'MULTIPLE_VISIT'
-            ? treatment.data.visits?.map((visit) => ({
-                visitId: visit.id,
-                treatmentId: `${visit.visitTreatment?.id}--${visit.visitTreatment?.name}`,
-                gracePeriod: visit.gracePeriod || undefined,
-                gracePeriodUnit: visit.gracePeriodUnit || undefined,
-              }))
-            : [],
-        components:
-          treatment.data.visitType === 'SINGLE_VISIT'
-            ? treatment.data.components?.map((component) => ({
-                componentId: component.id,
-                id: component.medicalComponentId,
-                quantity: component.quantity,
-                free: component.free || false,
-                freeUpTo: component.freeUpTo || 0,
-              }))
-            : [],
-      });
+    defaultValues: {
+      visitType: 'SINGLE_VISIT',
+      category: 'MEDICAL_SERVICE',
+      treatmentName: '',
+      description: '',
+      duration: 1,
+      price: 0,
+      visits: [],
+      components: [],
     },
   });
 
@@ -96,7 +71,7 @@ const UpdateTreatment: React.FC = () => {
     if (drawerOpen && treatmentId) {
       (async () => {
         const treatment = await directTrpc.treatments.getTreatment.query({
-          id: treatmentId as string,
+          id: treatmentId,
         });
 
         form.reset({

@@ -1,90 +1,45 @@
+import { useTRPC } from '@/lib/trpc';
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   Badge,
   Card,
   CardContent,
   CardHeader,
+  Skeleton,
 } from '@repo/ui/components';
+import { useQuery } from '@tanstack/react-query';
 import { Image as ImageIcon, MessageSquare } from 'lucide-react';
 import React from 'react';
+import { formatDate } from './__helpers';
 
 interface ReviewsTabProps {
   treatmentId: string;
 }
 
-const ReviewsTab: React.FC<ReviewsTabProps> = ({
-  treatmentId: _treatmentId,
-}) => {
-  // You'll need to create this query in your tRPC router
-  // const trpc = useTRPC();
-  // const { data } = useQuery(
-  //   trpc.treatments.getReviews.queryOptions({ treatmentId }),
-  // );
+const ReviewsTab: React.FC<ReviewsTabProps> = ({ treatmentId }) => {
+  const trpc = useTRPC();
+  const { data: reviewsData, isLoading } = useQuery(
+    trpc.treatments.getTreatmentReviews.queryOptions({
+      treatmentId,
+      page: 1,
+      perPage: 20,
+    }),
+  );
 
-  // Mock data for demonstration
-  const reviews = [
-    {
-      id: '1',
-      description:
-        'Amazing experience! The staff was very professional and the treatment exceeded my expectations. Would definitely recommend to anyone looking for quality dental care.',
-      createdAt: new Date('2024-01-15'),
-      patient: {
-        name: 'John Doe',
-        image: null,
-      },
-      images: [
-        {
-          id: '1',
-          fileKey: 'image1.jpg',
-          url: 'https://via.placeholder.com/400x300',
-        },
-        {
-          id: '2',
-          fileKey: 'image2.jpg',
-          url: 'https://via.placeholder.com/400x300',
-        },
-      ],
-    },
-    {
-      id: '2',
-      description:
-        'Very satisfied with the results. The procedure was explained clearly and I felt comfortable throughout.',
-      createdAt: new Date('2024-01-10'),
-      patient: {
-        name: 'Jane Smith',
-        image: null,
-      },
-      images: [],
-    },
-    {
-      id: '3',
-      description:
-        'Excellent service from start to finish. The treatment was painless and the results are fantastic!',
-      createdAt: new Date('2024-01-05'),
-      patient: {
-        name: 'Bob Johnson',
-        image: null,
-      },
-      images: [
-        {
-          id: '3',
-          fileKey: 'image3.jpg',
-          url: 'https://via.placeholder.com/400x300',
-        },
-      ],
-    },
-  ];
+  const reviews = reviewsData?.data?.items || [];
+  const totalCount = reviewsData?.data?.count || 0;
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-48" />
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-40 w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!reviews || reviews.length === 0) {
     return (
@@ -102,46 +57,24 @@ const ReviewsTab: React.FC<ReviewsTabProps> = ({
     );
   }
 
-  // Sort reviews by date (most recent first)
-  const recentReviews = [...reviews].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  );
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-bold">Recent Reviews</h3>
         <Badge variant="secondary">
-          {reviews.length} Review{reviews.length !== 1 ? 's' : ''}
+          {totalCount} Review{totalCount !== 1 ? 's' : ''}
         </Badge>
       </div>
 
       <div className="space-y-4">
-        {recentReviews.map((review) => (
+        {reviews.map((review) => (
           <Card key={review.id}>
             <CardHeader>
               <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <Avatar className="size-10">
-                    <AvatarImage src={review.patient?.image || undefined} />
-                    <AvatarFallback className="text-sm">
-                      {getInitials(review.patient?.name || 'Anonymous')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-bold text-sm">
-                      {review.patient?.name || 'Anonymous'}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {new Date(review.createdAt).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </p>
-                  </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    {formatDate(review.createdAt)}
+                  </p>
                 </div>
               </div>
             </CardHeader>
@@ -167,8 +100,8 @@ const ReviewsTab: React.FC<ReviewsTabProps> = ({
                         className="aspect-video rounded-lg overflow-hidden border bg-muted hover:opacity-80 transition-opacity cursor-pointer"
                       >
                         <img
-                          src={image.url}
-                          alt={`Review ${image.fileKey}`}
+                          src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${image.thumb || image.url}`}
+                          alt={image.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
