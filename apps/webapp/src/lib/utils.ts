@@ -1,5 +1,10 @@
 import { type ClassValue, clsx } from 'clsx';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { twMerge } from 'tailwind-merge';
+
+// Initialize dayjs plugins
+dayjs.extend(relativeTime);
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,4 +60,27 @@ export const extractFileIdFromUrl = (imageUrl: string) => {
   );
 
   return olderAvatarUrl;
+};
+
+/**
+ * Format a date to "MMM yyyy" format (e.g., "Jan 2024")
+ */
+export const formatMonthYear = (date: Date | string | null): string | null => {
+  if (!date) return null;
+  return dayjs(date).format('MMM YYYY');
+};
+
+/**
+ * Format a date to just year (e.g., "2024")
+ */
+export const formatYear = (date: Date | string | null): string | null => {
+  if (!date) return null;
+  return dayjs(date).format('YYYY');
+};
+
+/**
+ * Get relative time from now (e.g., "2 hours ago", "3 days ago")
+ */
+export const formatRelativeTime = (date: Date | string): string => {
+  return dayjs(date).fromNow();
 };
