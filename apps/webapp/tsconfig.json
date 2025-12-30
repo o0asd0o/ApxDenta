@@ -11,7 +11,8 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "../../packages/ui/src/**/*.ts",
+    "../../packages/ui/src/**/*.ts", 
+    "../../packages/ui/src/lib/mapbox/utils.tsx",
   ],
   "exclude": ["src/routeTree.gen.ts", "node_modules"],
 }

@@ -1,7 +1,9 @@
+import * as V2 from '@repo/ui/components';
 import {
   Avatar,
   AvatarFallback,
-  Badge,
+  AvatarImage,
+  Button,
   Card,
   Separator,
   Tooltip,
@@ -9,14 +11,20 @@ import {
   TooltipTrigger,
 } from '@repo/ui/components';
 import {
-  Calendar,
   CalendarCheck,
+  EditIcon,
   Mail,
   MapPin,
+  MoreVertical,
   Phone,
   Stethoscope,
+  Trash2Icon,
 } from 'lucide-react';
 import React from 'react';
+import {
+  useDeletePatientAction,
+  useUpdatePatientAction,
+} from '../__common/context/context';
 import type { PatientColumnType } from '../__types';
 
 type Props = {
@@ -24,6 +32,9 @@ type Props = {
 };
 
 const PatientCard: React.FC<Props> = ({ patient }) => {
+  const onShowUpdateModal = useUpdatePatientAction();
+  const onShowDeleteModal = useDeletePatientAction();
+
   const initials = [patient.firstName?.[0], patient.lastName?.[0]]
     .filter(Boolean)
     .join('')
@@ -44,9 +55,58 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
       {/* Decorative line header */}
       <div className="h-1.5 bg-gray-200" />
 
+      {/* Actions Menu */}
+      <div className="absolute top-3 right-3 z-10">
+        <V2.DropdownMenu modal={false}>
+          <V2.DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-7 w-7 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </V2.DropdownMenuTrigger>
+          <V2.DropdownMenuContent align="end" className="min-w-40">
+            <V2.DropdownMenuLabel>Actions</V2.DropdownMenuLabel>
+            <V2.DropdownMenuSeparator />
+            <V2.DropdownMenuGroup>
+              <V2.DropdownMenuItem
+                onClick={() =>
+                  onShowUpdateModal({
+                    patientId: patient.id,
+                    name: fullName,
+                  })
+                }
+              >
+                <span className="flex items-center gap-x-2">
+                  <EditIcon className="size-4 text-inherit" />
+                  <span>Edit Patient</span>
+                </span>
+              </V2.DropdownMenuItem>
+              <V2.DropdownMenuItem
+                onClick={() =>
+                  onShowDeleteModal({
+                    id: patient.id,
+                    name: fullName,
+                    avatar: patient.avatar?.url || null,
+                  })
+                }
+              >
+                <span className="flex items-center gap-x-2 text-red-500">
+                  <Trash2Icon className="size-4 text-inherit" />
+                  <span>Delete</span>
+                </span>
+              </V2.DropdownMenuItem>
+            </V2.DropdownMenuGroup>
+          </V2.DropdownMenuContent>
+        </V2.DropdownMenu>
+      </div>
+
       {/* Header with Avatar and Name */}
       <div className="flex items-center gap-3 p-4 pb-3">
         <Avatar className="size-14 ring-2 ring-offset-2 ring-primary-100">
+          <AvatarImage
+            src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar?.url}`}
+            alt={initials}
+          />
           <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-600 text-white font-bold text-lg">
             {initials}
           </AvatarFallback>
@@ -83,15 +143,6 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
             </Tooltip>
           </div>
         </div>
-
-        {/* Registration date badge */}
-        <Badge
-          variant="secondary"
-          className="absolute top-4 right-3 text-[10px] bg-gray-100 text-gray-600 font-normal"
-        >
-          <Calendar className="size-3 mr-1" />
-          {formatDate(patient.createdAt)}
-        </Badge>
       </div>
 
       <Separator />

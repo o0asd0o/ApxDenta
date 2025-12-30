@@ -4,6 +4,7 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { getPatientColumns } from '../__columns';
+import { useDeleteMultiplePatientAction } from '../__common/context/context';
 import type { LayoutProps } from '../__types';
 import PatientsListLoaderItem from './PatientsListLoaderItem';
 
@@ -16,6 +17,7 @@ const PatientsListLayout: React.FC<LayoutProps> = ({
   setPagination,
 }) => {
   const trpc = useTRPC();
+  const onShowDeleteMultipleModal = useDeleteMultiplePatientAction();
   const { data: patientsList, isLoading } = useQuery(
     trpc.patients.getAllPatients.queryOptions({
       isActive,
@@ -40,6 +42,16 @@ const PatientsListLayout: React.FC<LayoutProps> = ({
         columns={getPatientColumns()}
         LoaderRow={PatientsListLoaderItem}
         loaderCount={pagination.pageSize}
+        onDeleteItems={async (items, callback) =>
+          onShowDeleteMultipleModal(
+            items.map((item) => ({
+              id: item.id,
+              name: `${item.firstName} ${item.lastName}`,
+              avatar: item.avatar?.url || null,
+            })),
+            callback,
+          )
+        }
       />
       {patientsList?.count !== 0 && !isLoading && (
         <Paginate
