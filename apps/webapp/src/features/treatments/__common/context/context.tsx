@@ -17,7 +17,10 @@ export const UpdateTreatmentContext = createContext<{
     treatmentId: string;
     name: string;
   }) => void;
-  onShowArchiveModal: (params: TreatmentColumnType, callback?: () => void) => void;
+  onShowArchiveModal: (
+    params: TreatmentColumnType,
+    callback?: () => void,
+  ) => void;
   onShowArchiveMultipleModal: (
     params: TreatmentColumnType[],
     callback: () => void,

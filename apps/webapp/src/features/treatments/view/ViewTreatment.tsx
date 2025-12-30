@@ -43,15 +43,15 @@ import React from 'react';
 import { toast } from 'sonner';
 
 import { useIsMobile } from '@/hooks/use-mobile';
+import { TreatmentActionsProvider } from '../__common/context/TreatmentActionsProvider';
 import {
   useArchiveTreatmentIdAction,
   useUpdateTreatmentIdAction,
 } from '../__common/context/context';
-import { TreatmentActionsProvider } from '../__common/context/TreatmentActionsProvider';
 import { invalidateTreatmentList } from '../__common/queries';
+import type { TreatmentColumnType } from '../__types';
 import ArchiveTreatment from '../archive/ArchiveTreatment';
 import UpdateTreatment from '../update/UpdateTreatment';
-import type { TreatmentColumnType } from '../__types';
 import OverviewTab from './sub-pages/OverviewTab';
 import RatingsTab from './sub-pages/RatingsTab';
 import ReviewsTab from './sub-pages/ReviewsTab';
@@ -86,7 +86,10 @@ const ViewTreatmentContent: React.FC = () => {
         onSuccess: async (data) => {
           await invalidateTreatmentList(queryClient, trpc);
           toast.success('Treatment duplicated successfully');
-          navigate({ to: '/treatments/$treatmentId', params: { treatmentId: data.id } });
+          navigate({
+            to: '/treatments/$treatmentId',
+            params: { treatmentId: data.id },
+          });
         },
         onError: () => {
           toast.error('Failed to duplicate treatment');
@@ -194,7 +197,9 @@ const ViewTreatmentContent: React.FC = () => {
                     >
                       <span className="flex items-center gap-x-2">
                         <CopyIcon className="size-4 text-inherit" />
-                        <span>{isDuplicating ? 'Duplicating...' : 'Duplicate'}</span>
+                        <span>
+                          {isDuplicating ? 'Duplicating...' : 'Duplicate'}
+                        </span>
                       </span>
                     </V2.DropdownMenuItem>
                     <V2.DropdownMenuItem
