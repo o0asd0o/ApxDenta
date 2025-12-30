@@ -1,13 +1,17 @@
 import PillTabs from '@/components/PillTabs';
 import type { PaginationState } from '@/components/__types';
+import { cn } from '@/lib/utils';
 import { LayoutGrid, ListIcon } from 'lucide-react';
 import type React from 'react';
+import CreatePatient from '../add/CreatePatient';
+import { CreatePatientProvider } from '../add/context/CreatePatientProvider';
 
 type Props = {
   className?: string;
   layoutTab: 'card' | 'list';
   setLayoutTab: (value: 'card' | 'list') => void;
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+  isActive?: boolean;
 };
 
 const PatientsActions: React.FC<Props> = ({
@@ -15,9 +19,10 @@ const PatientsActions: React.FC<Props> = ({
   layoutTab,
   setLayoutTab,
   setPagination,
+  isActive = true,
 }) => {
   return (
-    <div className={className}>
+    <div className={cn('items-center gap-2', className)}>
       <PillTabs
         selectedTab={layoutTab}
         onChangeTab={(value) => {
@@ -33,6 +38,11 @@ const PatientsActions: React.FC<Props> = ({
           { label: <LayoutGrid className="size-4" />, value: 'card' },
         ]}
       />
+      {isActive && (
+        <CreatePatientProvider>
+          <CreatePatient />
+        </CreatePatientProvider>
+      )}
     </div>
   );
 };

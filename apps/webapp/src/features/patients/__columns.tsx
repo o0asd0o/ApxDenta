@@ -3,6 +3,7 @@ import { PersonalInfo } from '@/components/PersonalInfo';
 import { Button, Checkbox } from '@repo/ui/components';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Mail, MapPin, Phone } from 'lucide-react';
+import { RenderPatientActions } from './__renderers';
 import type { PatientColumnType } from './__types';
 
 export const getPatientColumns = (): ColumnDef<PatientColumnType>[] => [
@@ -51,7 +52,7 @@ export const getPatientColumns = (): ColumnDef<PatientColumnType>[] => [
       return (
         <PersonalInfo
           id={patient.id}
-          profile={''}
+          profile={patient.avatar?.url || ''}
           name={`${patient.firstName} ${patient.lastName}`}
         />
       );
@@ -152,5 +153,16 @@ export const getPatientColumns = (): ColumnDef<PatientColumnType>[] => [
         </div>
       );
     },
+  },
+  {
+    id: 'actions',
+    size: 50,
+    cell: ({ row }) => (
+      <RenderPatientActions
+        name={`${row.original.firstName} ${row.original.lastName}`}
+        patientId={row.original.id}
+        original={row.original}
+      />
+    ),
   },
 ];

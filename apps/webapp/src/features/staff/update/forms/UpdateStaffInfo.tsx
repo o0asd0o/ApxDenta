@@ -1,3 +1,4 @@
+import UpdateWrapper from '@/components/UpdateWrapper';
 import { useUploadFile } from '@/hooks/upload/useUploadFile';
 import objectStorage from '@/lib/object-storage';
 import { useTRPC, useTRPCClient } from '@/lib/trpc';
@@ -11,7 +12,6 @@ import { type UseFormReturn, useForm } from 'react-hook-form';
 import { useUpdateStaffId } from '../../__common/context/context';
 import { invalidateStaffList } from '../../__common/queries';
 import { StaffInfoForm } from '../../add/forms/StaffInfoForm';
-import Wrapper from './Wrapper';
 
 type Props = {
   onSubmitted: () => void;
@@ -68,7 +68,7 @@ const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted, type }) => {
   );
 
   return (
-    <Wrapper
+    <UpdateWrapper
       isLoading={isPending || processingFile}
       form={form}
       onSubmit={async (values) => {
@@ -117,7 +117,7 @@ const UpdateStaffInfo: React.FC<Props> = ({ onSubmitted, type }) => {
         type={type}
         form={form as UseFormReturn<StaffInfoFormType>}
       />
-    </Wrapper>
+    </UpdateWrapper>
   );
 };
 

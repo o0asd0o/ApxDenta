@@ -1,3 +1,4 @@
+import UpdateWrapper from '@/components/UpdateWrapper';
 import objectStorage from '@/lib/object-storage';
 import { useTRPC, useTRPCClient } from '@/lib/trpc';
 import { queryClient } from '@/providers/Root';
@@ -10,7 +11,6 @@ import { type UseFormReturn, useForm } from 'react-hook-form';
 import { useUpdateStaffId } from '../../__common/context/context';
 import { invalidateStaffList } from '../../__common/queries';
 import { WorkingHoursForm } from '../../add/forms/WorkingHoursForm';
-import Wrapper from './Wrapper';
 
 type Props = {
   onSubmitted: () => void;
@@ -69,7 +69,7 @@ const UpdateWorkingHours: React.FC<Props> = ({ onSubmitted }) => {
   );
 
   return (
-    <Wrapper
+    <UpdateWrapper
       form={form}
       isLoading={isPending}
       onSubmit={async (values) => {
@@ -80,7 +80,7 @@ const UpdateWorkingHours: React.FC<Props> = ({ onSubmitted }) => {
       }}
     >
       <WorkingHoursForm form={form as UseFormReturn<WorkingHoursFormType>} />
-    </Wrapper>
+    </UpdateWrapper>
   );
 };
 

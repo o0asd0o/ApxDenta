@@ -302,6 +302,7 @@ model File {
   peripherals   Peripheral[]
   staffs        Staff[]
   stocks        Stock[]
+  patients      Patient[]
 }
 
 model Rating {
@@ -333,13 +334,16 @@ model Patient {
   oralHygieneDuration       OralHygienDuration
   phoneNumber               String
   updatedAt                 DateTime                  @default(now())
-  usingDentalFloss          Boolean
+  usingDentalFloss          Boolean                   @default(true)
+  usingMouthWash            Boolean                   @default(true)
   washTeethFrequency        WashTeethFrequency
   changeToothBrushFrequency ChangeToothBrushFrequency
   organizationId            String?
+  avatarId                  String?
   billHistory               BillHistory[]
   medicalCheckups           MedicalCheckup[]
   account                   account?                  @relation(fields: [accountId], references: [id])
+  avatar                    File?                     @relation(fields: [avatarId], references: [id])
   organization              organization?             @relation(fields: [organizationId], references: [id])
   reservations              Reservation[]
 }

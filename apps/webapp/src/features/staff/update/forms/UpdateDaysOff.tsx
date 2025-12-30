@@ -1,3 +1,4 @@
+import UpdateWrapper from '@/components/UpdateWrapper';
 import objectStorage from '@/lib/object-storage';
 import { useTRPC, useTRPCClient } from '@/lib/trpc';
 import { queryClient } from '@/providers/Root';
@@ -11,7 +12,6 @@ import { invalidateStaffList } from '../../__common/queries';
 import { getExcludedAdditionalDayOffs } from '../../__helpers';
 import { useAdditionalDayOff } from '../../add/context/context';
 import { DaysOffForm } from '../../add/forms/DaysOffForm';
-import Wrapper from './Wrapper';
 
 type Props = {
   onSubmitted: () => void;
@@ -70,7 +70,7 @@ export const UpdateDaysOff: React.FC<Props> = ({ onSubmitted }) => {
   );
 
   return (
-    <Wrapper
+    <UpdateWrapper
       form={form}
       isLoading={isPending}
       onSubmit={async (values) => {
@@ -87,6 +87,6 @@ export const UpdateDaysOff: React.FC<Props> = ({ onSubmitted }) => {
       }}
     >
       <DaysOffForm form={form as UseFormReturn<DayOffsFormType>} />
-    </Wrapper>
+    </UpdateWrapper>
   );
 };

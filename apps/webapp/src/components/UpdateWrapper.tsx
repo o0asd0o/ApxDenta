@@ -17,7 +17,7 @@ type Props<T extends {}> = {
   children: React.ReactNode;
 };
 
-function Wrapper<T extends {}>({
+function UpdateWrapper<T extends {}>({
   isLoading,
   form,
   onSubmit,
@@ -68,4 +68,4 @@ function Wrapper<T extends {}>({
   );
 }
 
-export default Wrapper;
+export default UpdateWrapper;

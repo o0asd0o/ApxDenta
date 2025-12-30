@@ -15,12 +15,21 @@ export type LayoutProps = {
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 };
 
+export type PatientForDelete = {
+  id: string;
+  name: string;
+  avatar: string | null;
+};
+
 export type PatientColumnType = {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
+  avatar?: {
+    url: string;
+  } | null;
   address: string;
   createdAt: Date;
   lastReservation: {

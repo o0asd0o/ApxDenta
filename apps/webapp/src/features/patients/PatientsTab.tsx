@@ -57,6 +57,7 @@ const PatientsTab: React.FC<Props> = ({ isActive }) => {
             layoutTab={layoutTab}
             setLayoutTab={setLayoutTab}
             setPagination={setPagination}
+            isActive={isActive}
           />
         </div>
 
@@ -81,6 +82,7 @@ const PatientsTab: React.FC<Props> = ({ isActive }) => {
             layoutTab={layoutTab}
             setLayoutTab={setLayoutTab}
             setPagination={setPagination}
+            isActive={isActive}
           />
         </div>
       </div>

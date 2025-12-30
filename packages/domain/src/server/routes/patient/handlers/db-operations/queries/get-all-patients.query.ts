@@ -31,6 +31,14 @@ export const getAllPatients = async (context: GetAllPatientsProps) => {
           .limit(1),
       ).as('lastReservation'),
     )
+    .select((eb) =>
+      jsonObjectFrom(
+        eb
+          .selectFrom('File')
+          .select(['File.url'])
+          .whereRef('File.id', '=', 'Patient.avatarId'),
+      ).as('avatar'),
+    )
     // Get last treatment info through last reservation
     .select((eb) =>
       jsonObjectFrom(
