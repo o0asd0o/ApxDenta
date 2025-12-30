@@ -21,9 +21,14 @@ import {
   V2,
 } from '@repo/ui/components';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { ArchiveIcon, EditIcon, MoreVertical, PlusIcon } from 'lucide-react';
 import { useQueryState } from 'nuqs';
+import {
+  useArchiveStaffIdAction,
+  useUpdateStaffIdAction,
+} from '../__common/context/context';
+import type { StaffColumnType } from '../__types';
 import Appointments from './sub-pages/Appointments';
 import EmployeeData from './sub-pages/EmployeeData';
 import Overview from './sub-pages/Overview';
@@ -31,10 +36,15 @@ import Patients from './sub-pages/Patients';
 
 const ViewStaff = () => {
   const { staffId } = Route.useParams();
+  const navigate = useNavigate();
 
   const trpc = useTRPC();
   const { data: routeData } = useQuery(
     trpc.staffs.getStaff.queryOptions({ id: staffId }),
+  );
+
+  const { data: servicesData } = useQuery(
+    trpc.staffs.getStaffServices.queryOptions({ id: staffId }),
   );
 
   const [tab, setTab] = useQueryState('tab', {
@@ -44,11 +54,24 @@ const ViewStaff = () => {
 
   const isMobile = useIsMobile();
 
+  const onShowUpdateModal = useUpdateStaffIdAction();
+  const onShowArchiveModal = useArchiveStaffIdAction();
+
+  const handleArchiveSuccess = () => {
+    navigate({ to: '/staff-list' });
+  };
+
   if (!routeData) {
     return <div>No staff data found.</div>;
   }
 
   const staff = routeData.data;
+
+  // Redirect if staff is archived
+  if (staff.isArchived) {
+    navigate({ to: '/staff-list' });
+    return null;
+  }
 
   const name = `${staff.firstName} ${staff.lastName}`;
   const profile = staff.avatar?.url || '/avatars/placeholder.png';
@@ -116,7 +139,7 @@ const ViewStaff = () => {
                 <V2.DropdownMenuGroup>
                   {isMobile && (
                     <V2.DropdownMenuItem
-                      onClick={() => console.log('Update staff')}
+                      onClick={() => console.log('Create appointment')}
                     >
                       <span className="flex items-center gap-x-2">
                         <PlusIcon className="size-5 text-inherit" />
@@ -125,15 +148,35 @@ const ViewStaff = () => {
                     </V2.DropdownMenuItem>
                   )}
                   <V2.DropdownMenuItem
-                      onClick={() => console.log('Update staff')}
-                    >
-                      <span className="flex items-center gap-x-2">
-                        <EditIcon className="size-4 text-inherit" />
-                        <span>Update staff</span>
-                      </span>
-                    </V2.DropdownMenuItem>
+                    onClick={() => onShowUpdateModal?.({ staffId, name })}
+                  >
+                    <span className="flex items-center gap-x-2">
+                      <EditIcon className="size-4 text-inherit" />
+                      <span>Update staff</span>
+                    </span>
+                  </V2.DropdownMenuItem>
                   <V2.DropdownMenuItem
-                    onClick={() => console.log('Archive staff')}
+                    onClick={() =>
+                      onShowArchiveModal?.(
+                        {
+                          id: staffId,
+                          firstName: staff.firstName,
+                          lastName: staff.lastName,
+                          email: staff.email,
+                          contactNumber: staff.contactNumber,
+                          avatar: staff.avatar,
+                          status: staff.status,
+                          specialist: staff.specialist || null,
+                          specialistRecord: staff.specialist || null,
+                          createdAt: staff.createdAt,
+                          updatedAt: staff.updatedAt,
+                          workSchedules: [],
+                          assignedServices: [],
+                          isArchived: staff.isArchived || false,
+                        } as unknown as StaffColumnType,
+                        handleArchiveSuccess,
+                      )
+                    }
                   >
                     <span className="flex items-center gap-x-2 text-red-500">
                       <ArchiveIcon className="size-4 text-inherit" />
@@ -159,25 +202,30 @@ const ViewStaff = () => {
             value="overview"
             className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
           >
-            <Overview />
+            <Overview
+              staffId={staffId}
+              services={(servicesData?.data?.assignedServices || []).map(
+                (s) => ({ id: s.id, name: s.name }),
+              )}
+            />
           </TabContent>
           <TabContent
             value="appointments"
             className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
           >
-            <Appointments />
+            <Appointments staffId={staffId} />
           </TabContent>
           <TabContent
             value="patients"
             className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
           >
-            <Patients />
+            <Patients staffId={staffId} />
           </TabContent>
           <TabContent
             value="employee-data"
             className="py-5 gap-5 flex flex-col bg-sidebar flex-1"
           >
-            <EmployeeData />
+            <EmployeeData staffId={staffId} />
           </TabContent>
         </Root>
       </div>

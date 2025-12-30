@@ -48,12 +48,16 @@ export const StaffActionsProvider: React.FC<Props> = ({ children }) => {
     setStaffsForArchive(params);
   };
 
-  const onShowArchiveModal = (params: StaffColumnType) => {
+  const onShowArchiveModal = (
+    params: StaffColumnType,
+    callback?: () => void,
+  ) => {
     setState({
       staffId: params.id,
       name: `${params.firstName} ${params.lastName}`,
       open: true,
       mode: 'archive',
+      callback,
     });
   };
 

@@ -15,6 +15,14 @@ import {
   NewBadge,
 } from '@/components/badges/PatientStatus';
 import {
+  StaffActiveBadge,
+  StaffExpiredBadge,
+  StaffInactiveBadge,
+  StaffResignedBadge,
+  StaffSuspendedBadge,
+  StaffTerminatedBadge,
+} from '@/components/badges/StaffStatus';
+import {
   MultipleVisitBadge,
   SingleVisitBadge,
   TreatmentFinalizedBadge,
@@ -25,6 +33,7 @@ import type {
   EmploymentType,
   PatientStatus,
   ReservationStatus,
+  StaffStatus,
   TreatmentStatus,
   TreatmentVisitType,
 } from '@repo/domain/db';
@@ -66,3 +75,12 @@ export const TREATMENT_STATUS_BADGES: Record<TreatmentStatus, React.ReactNode> =
     INACTIVE: <TreatmentInactiveBadge />,
     SAMPLE: <TreatmentSampleBadge />,
   };
+
+export const STAFF_STATUS_BADGES: Record<StaffStatus, React.ReactNode> = {
+  ACTIVE: <StaffActiveBadge />,
+  INACTIVE: <StaffInactiveBadge />,
+  EXPIRED: <StaffExpiredBadge />,
+  TERMINATED: <StaffTerminatedBadge />,
+  RESIGNED: <StaffResignedBadge />,
+  SUSPENDED: <StaffSuspendedBadge />,
+};

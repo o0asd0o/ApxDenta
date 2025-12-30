@@ -22,9 +22,9 @@ import UpdateStaffInfo from './forms/UpdateStaffInfo';
 import UpdateWorkingHours from './forms/UpdateWorkingHours';
 
 type Props = {
-  type: StaffType;
+  type?: StaffType;
 };
-const UpdateStaff: React.FC<Props> = ({ type }) => {
+const UpdateStaff: React.FC<Props> = ({ type = 'DOCTOR' }) => {
   const [open, setOpen] = useUpdateModalVisibility();
 
   return (

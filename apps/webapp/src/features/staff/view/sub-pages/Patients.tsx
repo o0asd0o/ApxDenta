@@ -2,7 +2,9 @@ import DateDisplay from '@/components/DateDisplay';
 import PillTabs from '@/components/PillTabs';
 import { DataTable } from '@/components/data-table/DataTable';
 import { PATIENT_STATUS_BADGES } from '@/constants/badges';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import useLayoutState from '@/hooks/use-layout-state';
+import { useTRPC } from '@/lib/trpc';
 import type { PatientStatus } from '@repo/domain/db';
 import {
   Avatar,
@@ -17,7 +19,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Skeleton,
 } from '@repo/ui/components';
+import { useQuery } from '@tanstack/react-query';
 import type { ColumnDef } from '@tanstack/react-table';
 import {
   LayoutGrid,
@@ -26,101 +30,29 @@ import {
   Phone,
   TrendingDown,
   TrendingUp,
+  Users,
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-type ViewMode = 'list' | 'card'; // TODO: DRY
+interface PatientsProps {
+  staffId: string;
+}
 
 interface Patient {
   id: string;
-  name: string;
-  avatar: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone: string;
-  lastVisit: string;
-  nextAppointment: string | null;
-  totalTreatments: number;
+  phoneNumber: string;
+  avatar: string | null;
   status: PatientStatus;
+  lastVisit: Date | null;
+  nextAppointment: Date | null;
+  totalTreatments: number;
   completedTreatments: number;
 }
 
-// Mock data
-const patients: Patient[] = [
-  {
-    id: '1',
-    name: 'Sarah Johnson',
-    avatar: '',
-    email: 'sarah.j@email.com',
-    phone: '+1 234 567 8900',
-    lastVisit: '2024-02-15',
-    nextAppointment: '2024-03-10',
-    totalTreatments: 12,
-    status: 'ACTIVE',
-    completedTreatments: 10,
-  },
-  {
-    id: '2',
-    name: 'Michael Chen',
-    avatar: '',
-    email: 'michael.c@email.com',
-    phone: '+1 234 567 8901',
-    lastVisit: '2024-02-10',
-    nextAppointment: '2024-02-16',
-    totalTreatments: 8,
-    status: 'ACTIVE',
-    completedTreatments: 7,
-  },
-  {
-    id: '3',
-    name: 'Emma Davis',
-    avatar: '',
-    email: 'emma.d@email.com',
-    phone: '+1 234 567 8902',
-    lastVisit: '2024-01-20',
-    nextAppointment: '2024-02-17',
-    totalTreatments: 15,
-    status: 'ACTIVE',
-    completedTreatments: 13,
-  },
-  {
-    id: '4',
-    name: 'David Wilson',
-    avatar: '',
-    email: 'david.w@email.com',
-    phone: '+1 234 567 8903',
-    lastVisit: '2024-02-14',
-    nextAppointment: null,
-    totalTreatments: 5,
-    status: 'INACTIVE',
-    completedTreatments: 5,
-  },
-  {
-    id: '5',
-    name: 'Lisa Anderson',
-    avatar: '',
-    email: 'lisa.a@email.com',
-    phone: '+1 234 567 8904',
-    lastVisit: '2024-02-18',
-    nextAppointment: '2024-03-05',
-    totalTreatments: 2,
-    status: 'NEW',
-    completedTreatments: 1,
-  },
-  {
-    id: '6',
-    name: 'James Brown',
-    avatar: '',
-    email: 'james.b@email.com',
-    phone: '+1 234 567 8905',
-    lastVisit: '2023-12-15',
-    nextAppointment: null,
-    totalTreatments: 20,
-    status: 'INACTIVE',
-    completedTreatments: 20,
-  },
-];
-
-const getStatusColor = (status: Patient['status']) => {
+const getStatusColor = (status: PatientStatus) => {
   switch (status) {
     case 'ACTIVE':
       return 'bg-green-100 text-green-700 border-green-200';
@@ -128,19 +60,18 @@ const getStatusColor = (status: Patient['status']) => {
       return 'bg-gray-100 text-gray-700 border-gray-300';
     case 'NEW':
       return 'bg-blue-100 text-blue-700 border-blue-200';
+    default:
+      return 'bg-gray-100 text-gray-700 border-gray-200';
   }
 };
 
-const getInitials = (name: string) => {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase();
+const getInitials = (firstName: string, lastName: string) => {
+  return `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
 };
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
+const formatDate = (date: Date | null) => {
+  if (!date) return null;
+  return new Date(date).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -153,15 +84,23 @@ const patientColumns: ColumnDef<Patient>[] = [
     header: 'Patient',
     cell: ({ row }) => {
       const patient = row.original;
+      const patientName = `${patient.firstName} ${patient.lastName}`;
       return (
         <div className="flex items-center gap-3">
           <Avatar className="size-9">
-            <AvatarImage src={patient.avatar} alt={patient.name} />
+            <AvatarImage
+              src={
+                patient.avatar
+                  ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar}`
+                  : undefined
+              }
+              alt={patientName}
+            />
             <AvatarFallback className="bg-primary/10 text-primary text-xs">
-              {getInitials(patient.name)}
+              {getInitials(patient.firstName, patient.lastName)}
             </AvatarFallback>
           </Avatar>
-          <span className="font-medium">{patient.name}</span>
+          <span className="font-medium">{patientName}</span>
         </div>
       );
     },
@@ -179,7 +118,7 @@ const patientColumns: ColumnDef<Patient>[] = [
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Phone className="size-3.5" />
-            <span>{patient.phone}</span>
+            <span>{patient.phoneNumber}</span>
           </div>
         </div>
       );
@@ -188,9 +127,14 @@ const patientColumns: ColumnDef<Patient>[] = [
   {
     accessorKey: 'lastVisit',
     header: 'Last Visit',
-    cell: ({ row }) => (
-      <span className="text-sm">{formatDate(row.original.lastVisit)}</span>
-    ),
+    cell: ({ row }) => {
+      const lastVisit = row.original.lastVisit;
+      return lastVisit ? (
+        <span className="text-sm">{formatDate(lastVisit)}</span>
+      ) : (
+        <span className="text-muted-foreground">-</span>
+      );
+    },
   },
   {
     accessorKey: 'nextAppointment',
@@ -227,20 +171,35 @@ const patientColumns: ColumnDef<Patient>[] = [
   },
 ];
 
-const Patients: React.FC = () => {
+const Patients: React.FC<PatientsProps> = ({ staffId }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [page] = useState(1);
+  const perPage = 20;
 
   const [viewMode, setViewMode] = useLayoutState();
+  const debouncedSearch = useDebouncedValue(searchQuery, 300);
 
-  const filteredPatients = patients.filter((patient) => {
-    const matchesSearch =
-      patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      patient.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      statusFilter === 'all' || patient.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const trpc = useTRPC();
+  const { data: patientsData, isLoading } = useQuery(
+    trpc.staffs.getStaffPatients.queryOptions({
+      staffId,
+      page,
+      perPage,
+      status:
+        statusFilter !== 'all' ? (statusFilter as PatientStatus) : undefined,
+      search: debouncedSearch || undefined,
+    }),
+  );
+
+  const patients = patientsData?.data || [];
+  const totalPatients = patientsData?.count || 0;
+  const activePatients = patients.filter(
+    (p: Patient) => p.status === 'ACTIVE',
+  ).length;
+  const newPatients = patients.filter(
+    (p: Patient) => p.status === 'NEW',
+  ).length;
 
   return (
     <div className="md:px-5 space-y-4">
@@ -253,7 +212,13 @@ const Patients: React.FC = () => {
                 <p className="text-sm text-muted-foreground font-medium">
                   Total Patients
                 </p>
-                <p className="text-2xl font-bold mt-1">{patients.length}</p>
+                <p className="text-2xl font-bold mt-1">
+                  {isLoading ? (
+                    <Skeleton className="h-8 w-12" />
+                  ) : (
+                    totalPatients
+                  )}
+                </p>
               </div>
               <div className="p-3 rounded-lg">
                 <TrendingUp className="size-10 md:size-12 text-green-200" />
@@ -269,7 +234,11 @@ const Patients: React.FC = () => {
                   Active Patients
                 </p>
                 <p className="text-2xl font-bold mt-1">
-                  {patients.filter((p) => p.status === 'ACTIVE').length}
+                  {isLoading ? (
+                    <Skeleton className="h-8 w-12" />
+                  ) : (
+                    activePatients
+                  )}
                 </p>
               </div>
               <div className="p-3 rounded-lg">
@@ -286,7 +255,7 @@ const Patients: React.FC = () => {
                   New Patients
                 </p>
                 <p className="text-2xl font-bold mt-1">
-                  {patients.filter((p) => p.status === 'NEW').length}
+                  {isLoading ? <Skeleton className="h-8 w-12" /> : newPatients}
                 </p>
               </div>
               <div className="p-3 rounded-lg">
@@ -303,7 +272,7 @@ const Patients: React.FC = () => {
           <div className="relative flex-1 w-full sm:max-w-sm">
             <Input
               value={searchQuery}
-              placeholder="Search partient"
+              placeholder="Search patient"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setSearchQuery(e.target.value);
               }}
@@ -317,10 +286,9 @@ const Patients: React.FC = () => {
               </SelectTrigger>
               <SelectContent className="text-sm">
                 <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="in-progress">In Progress</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="ACTIVE">Active</SelectItem>
+                <SelectItem value="INACTIVE">Inactive</SelectItem>
+                <SelectItem value="NEW">New</SelectItem>
               </SelectContent>
             </Select>
             <div className="ml-auto min-w-[75px]">
@@ -338,90 +306,131 @@ const Patients: React.FC = () => {
         </div>
       </div>
 
+      {/* Loading State */}
+      {isLoading && (
+        <Card className="py-0 rounded-lg">
+          <CardContent className="p-4 space-y-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="size-9 rounded-full" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-3 w-1/4" />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Table View */}
-      {viewMode === 'list' && (
+      {!isLoading && viewMode === 'list' && (
         <Card className="py-0 rounded-lg">
           <CardContent className="p-0 overflow-hidden">
-            <DataTable
-              columns={patientColumns}
-              data={filteredPatients}
-              variant="card"
-            />
+            {patients.length > 0 ? (
+              <DataTable
+                columns={patientColumns}
+                data={patients}
+                variant="card"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <Users className="size-12 text-muted-foreground/30 mb-3" />
+                <p className="text-muted-foreground font-medium">
+                  No patients found
+                </p>
+                <p className="text-sm text-muted-foreground/70">
+                  This staff member has no patients matching your criteria.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
 
       {/* Card View */}
-      {viewMode === 'card' && (
+      {!isLoading && viewMode === 'card' && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filteredPatients.map((patient) => (
-            <Card key={patient.id} className="py-0">
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="size-12">
-                      <AvatarImage src={patient.avatar} alt={patient.name} />
-                      <AvatarFallback className="bg-primary/10 text-primary">
-                        {getInitials(patient.name)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-bold">{patient.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {patient.totalTreatments} treatments
-                      </p>
+          {patients.map((patient) => {
+            const patientName = `${patient.firstName} ${patient.lastName}`;
+            return (
+              <Card key={patient.id} className="py-0">
+                <CardContent className="p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="size-12">
+                        <AvatarImage
+                          src={
+                            patient.avatar
+                              ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar}`
+                              : undefined
+                          }
+                          alt={patientName}
+                        />
+                        <AvatarFallback className="bg-primary/10 text-primary">
+                          {getInitials(patient.firstName, patient.lastName)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-bold">{patientName}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {patient.totalTreatments} treatments
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className={getStatusColor(patient.status)}
-                  >
-                    {patient.status}
-                  </Badge>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Mail className="size-4" />
-                      <span>{patient.email}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Phone className="size-4" />
-                      <span>{patient.phone}</span>
-                    </div>
+                    <Badge
+                      variant="outline"
+                      className={getStatusColor(patient.status)}
+                    >
+                      {patient.status}
+                    </Badge>
                   </div>
 
-                  <div className="pt-3 border-t space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Last Visit:</span>
-                      <span className="font-medium">
-                        {formatDate(patient.lastVisit)}
-                      </span>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Mail className="size-4" />
+                        <span>{patient.email}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Phone className="size-4" />
+                        <span>{patient.phoneNumber}</span>
+                      </div>
                     </div>
-                    {patient.nextAppointment && (
+
+                    <div className="pt-3 border-t space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">
-                          Next Appointment:
+                          Last Visit:
                         </span>
-                        <span className="font-medium text-blue-600">
-                          {formatDate(patient.nextAppointment)}
+                        <span className="font-medium">
+                          {formatDate(patient.lastVisit) || '-'}
                         </span>
                       </div>
-                    )}
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Progress:</span>
-                      <span className="font-medium">
-                        {patient.completedTreatments} /{' '}
-                        {patient.totalTreatments}
-                      </span>
+                      {patient.nextAppointment && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">
+                            Next Appointment:
+                          </span>
+                          <span className="font-medium text-blue-600">
+                            {formatDate(patient.nextAppointment)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Progress:</span>
+                        <span className="font-medium">
+                          {patient.completedTreatments} /{' '}
+                          {patient.totalTreatments}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-          {filteredPatients.length === 0 && (
+                </CardContent>
+              </Card>
+            );
+          })}
+          {patients.length === 0 && (
             <div className="col-span-full text-center py-12 text-muted-foreground">
               No patients found
             </div>
