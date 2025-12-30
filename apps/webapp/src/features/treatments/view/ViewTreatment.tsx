@@ -9,6 +9,7 @@ import {
   TREATMENT_TYPE_BADGES,
 } from '@/constants/badges';
 import { useTRPC } from '@/lib/trpc';
+import { queryClient } from '@/providers/Root';
 import { Route } from '@/routes/_protected/(clinic)/treatments/$treatmentId';
 import {
   Badge,
@@ -24,10 +25,12 @@ import {
   Separator,
   V2,
 } from '@repo/ui/components';
-import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Link, useNavigate } from '@tanstack/react-router';
 import {
+  ArchiveIcon,
   Clock,
+  CopyIcon,
   DollarSign,
   DoorOpen,
   EditIcon,
@@ -37,8 +40,18 @@ import {
 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import React from 'react';
+import { toast } from 'sonner';
 
 import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  useArchiveTreatmentIdAction,
+  useUpdateTreatmentIdAction,
+} from '../__common/context/context';
+import { TreatmentActionsProvider } from '../__common/context/TreatmentActionsProvider';
+import { invalidateTreatmentList } from '../__common/queries';
+import ArchiveTreatment from '../archive/ArchiveTreatment';
+import UpdateTreatment from '../update/UpdateTreatment';
+import type { TreatmentColumnType } from '../__types';
 import OverviewTab from './sub-pages/OverviewTab';
 import RatingsTab from './sub-pages/RatingsTab';
 import ReviewsTab from './sub-pages/ReviewsTab';
@@ -48,8 +61,9 @@ import VisitsTab from './sub-pages/VisitsTab';
  * TODO:
  * 1. have animations for sections
  */
-const ViewTreatment: React.FC = () => {
+const ViewTreatmentContent: React.FC = () => {
   const { treatmentId } = Route.useParams();
+  const navigate = useNavigate();
 
   const trpc = useTRPC();
   const { data: routeData } = useQuery(
@@ -62,6 +76,27 @@ const ViewTreatment: React.FC = () => {
   });
 
   const isMobile = useIsMobile();
+
+  const onShowUpdateModal = useUpdateTreatmentIdAction();
+  const onShowArchiveModal = useArchiveTreatmentIdAction();
+
+  const { mutateAsync: duplicateTreatment, isPending: isDuplicating } =
+    useMutation(
+      trpc.treatments.duplicateTreatment.mutationOptions({
+        onSuccess: async (data) => {
+          await invalidateTreatmentList(queryClient, trpc);
+          toast.success('Treatment duplicated successfully');
+          navigate({ to: '/treatments/$treatmentId', params: { treatmentId: data.id } });
+        },
+        onError: () => {
+          toast.error('Failed to duplicate treatment');
+        },
+      }),
+    );
+
+  const handleArchiveSuccess = () => {
+    navigate({ to: '/treatments' });
+  };
 
   if (!routeData) {
     return <div>No treatment data found.</div>;
@@ -113,7 +148,16 @@ const ViewTreatment: React.FC = () => {
 
             <div className="flex gap-2 items-start">
               {!isMobile && (
-                <Button variant="outline" className="gap-2">
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() =>
+                    onShowUpdateModal?.({
+                      treatmentId,
+                      name: treatment.name,
+                    })
+                  }
+                >
                   <EditIcon className="size-4" />
                   Edit Treatment
                 </Button>
@@ -130,11 +174,59 @@ const ViewTreatment: React.FC = () => {
                   <V2.DropdownMenuSeparator />
                   <V2.DropdownMenuGroup>
                     {isMobile && (
-                      <V2.DropdownMenuItem>Update</V2.DropdownMenuItem>
+                      <V2.DropdownMenuItem
+                        onClick={() =>
+                          onShowUpdateModal?.({
+                            treatmentId,
+                            name: treatment.name,
+                          })
+                        }
+                      >
+                        <span className="flex items-center gap-x-2">
+                          <EditIcon className="size-4 text-inherit" />
+                          <span>Edit</span>
+                        </span>
+                      </V2.DropdownMenuItem>
                     )}
-                    <V2.DropdownMenuItem>Duplicate</V2.DropdownMenuItem>
-                    <V2.DropdownMenuItem className="text-destructive">
-                      Archive
+                    <V2.DropdownMenuItem
+                      disabled={isDuplicating}
+                      onClick={() => duplicateTreatment({ treatmentId })}
+                    >
+                      <span className="flex items-center gap-x-2">
+                        <CopyIcon className="size-4 text-inherit" />
+                        <span>{isDuplicating ? 'Duplicating...' : 'Duplicate'}</span>
+                      </span>
+                    </V2.DropdownMenuItem>
+                    <V2.DropdownMenuItem
+                      onClick={() =>
+                        onShowArchiveModal?.(
+                          {
+                            id: treatmentId,
+                            name: treatment.name,
+                            category: treatment.category,
+                            visitType: treatment.visitType,
+                            duration: treatment.duration,
+                            pricePerDuration: treatment.pricePerDuration,
+                            organizationId: treatment.organizationId,
+                            unit: treatment.unit,
+                            averageDuration: treatment.averageDuration,
+                            startingPrice: null,
+                            totalReviews: null,
+                            averageRating: null,
+                            createdAt: treatment.createdAt,
+                            updatedAt: treatment.updatedAt,
+                            status: treatment.status,
+                            description: treatment.description || '',
+                            isArchived: treatment.isArchived || false,
+                          } as TreatmentColumnType,
+                          handleArchiveSuccess,
+                        )
+                      }
+                    >
+                      <span className="flex items-center gap-x-2 text-red-500">
+                        <ArchiveIcon className="size-4 text-inherit" />
+                        <span>Archive</span>
+                      </span>
                     </V2.DropdownMenuItem>
                   </V2.DropdownMenuGroup>
                 </V2.DropdownMenuContent>
@@ -270,7 +362,17 @@ const ViewTreatment: React.FC = () => {
           </TabContent>
         </Root>
       </div>
+      <UpdateTreatment />
+      <ArchiveTreatment />
     </div>
+  );
+};
+
+const ViewTreatment: React.FC = () => {
+  return (
+    <TreatmentActionsProvider>
+      <ViewTreatmentContent />
+    </TreatmentActionsProvider>
   );
 };
 

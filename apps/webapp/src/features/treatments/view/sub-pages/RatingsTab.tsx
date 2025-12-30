@@ -1,45 +1,46 @@
 import StarRating from '@/components/StarRating';
-import { Badge, Card, CardContent, CardHeader } from '@repo/ui/components';
+import { useTRPC } from '@/lib/trpc';
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardHeader,
+  Skeleton,
+} from '@repo/ui/components';
+import { useQuery } from '@tanstack/react-query';
 import { Star } from 'lucide-react';
 import React from 'react';
+import { formatDate } from './__helpers';
 
 interface RatingsTabProps {
   treatmentId: string;
 }
 
-const RatingsTab: React.FC<RatingsTabProps> = ({
-  treatmentId: _treatmentId,
-}) => {
-  // You'll need to create this query in your tRPC router
-  // const trpc = useTRPC();
-  // const { data } = useQuery(
-  //   trpc.treatments.getRatings.queryOptions({ treatmentId }),
-  // );
+const RatingsTab: React.FC<RatingsTabProps> = ({ treatmentId }) => {
+  const trpc = useTRPC();
+  const { data: ratingsData, isLoading } = useQuery(
+    trpc.treatments.getTreatmentRatings.queryOptions({
+      treatmentId,
+      page: 1,
+      perPage: 20,
+    }),
+  );
 
-  // Mock data for demonstration
-  const ratings = [
-    {
-      id: '1',
-      rate: 5,
-      remark: 'Excellent treatment! Very satisfied with the results.',
-      createdAt: new Date('2024-01-15'),
-      patient: { name: 'John Doe' },
-    },
-    {
-      id: '2',
-      rate: 4.5,
-      remark: 'Great service and professional staff.',
-      createdAt: new Date('2024-01-10'),
-      patient: { name: 'Jane Smith' },
-    },
-    {
-      id: '3',
-      rate: 5,
-      remark: 'Highly recommend! The procedure was painless and effective.',
-      createdAt: new Date('2024-01-05'),
-      patient: { name: 'Bob Johnson' },
-    },
-  ];
+  const ratings = ratingsData?.data?.items || [];
+  const summary = ratingsData?.data?.summary;
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-32 w-full" />
+        <div className="grid gap-4 md:grid-cols-2">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-28 w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!ratings || ratings.length === 0) {
     return (
@@ -59,8 +60,8 @@ const RatingsTab: React.FC<RatingsTabProps> = ({
 
   // Sort ratings by rate (highest first)
   const topRatings = [...ratings].sort((a, b) => b.rate - a.rate);
-  const averageRating =
-    ratings.reduce((sum, r) => sum + r.rate, 0) / ratings.length;
+  const averageRating = summary?.averageRating || 0;
+  const totalCount = summary?.totalCount || ratings.length;
 
   return (
     <div className="space-y-6">
@@ -79,8 +80,8 @@ const RatingsTab: React.FC<RatingsTabProps> = ({
                 <div className="flex flex-col gap-1">
                   <StarRating rating={averageRating} />
                   <span className="text-xs text-muted-foreground">
-                    Based on {ratings.length} rating
-                    {ratings.length !== 1 ? 's' : ''}
+                    Based on {totalCount} rating
+                    {totalCount !== 1 ? 's' : ''}
                   </span>
                 </div>
               </div>
@@ -100,16 +101,9 @@ const RatingsTab: React.FC<RatingsTabProps> = ({
                 <div className="flex items-start justify-between">
                   <div>
                     <StarRating rating={rating.rate} />
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {rating.patient?.name || 'Anonymous'}
-                    </p>
                   </div>
                   <Badge variant="secondary" className="text-xs">
-                    {new Date(rating.createdAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}
+                    {formatDate(rating.createdAt)}
                   </Badge>
                 </div>
               </CardHeader>

@@ -1,5 +1,8 @@
 import type { PatientStatus, ReservationStatus } from '@repo/domain/db';
 
+// Re-export common helpers from lib
+export { formatDate, getInitials } from '@/lib/utils';
+
 export const PATIENT_STATUS_COLORS: Record<PatientStatus, string> = {
   ACTIVE: 'bg-green-100 text-green-700 border-green-200',
   INACTIVE: 'bg-gray-100 text-gray-700 border-gray-300',
@@ -12,17 +15,4 @@ export const APPOINTMENT_STATUS_COLORS: Record<ReservationStatus, string> = {
   CANCELLED: 'bg-red-100 text-red-700 border-red-200',
   ENCOUNTER: 'bg-yellow-100 text-yellow-700 border-yellow-200',
   NO_SHOW: 'bg-orange-100 text-orange-700 border-orange-200',
-};
-
-export const getInitials = (firstName: string, lastName: string) => {
-  return `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
-};
-
-export const formatDate = (date: Date | null) => {
-  if (!date) return null;
-  return new Date(date).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
 };

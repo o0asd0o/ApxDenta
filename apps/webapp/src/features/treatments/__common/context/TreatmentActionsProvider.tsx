@@ -41,12 +41,16 @@ export const TreatmentActionsProvider: React.FC<Props> = ({ children }) => {
     setTreatmentsForArchive(params);
   };
 
-  const onShowArchiveModal = (params: TreatmentColumnType) => {
+  const onShowArchiveModal = (
+    params: TreatmentColumnType,
+    callback?: () => void,
+  ) => {
     setState({
       treatmentId: params.id,
       name: params.name,
       open: true,
       mode: 'archive',
+      callback,
     });
   };
 

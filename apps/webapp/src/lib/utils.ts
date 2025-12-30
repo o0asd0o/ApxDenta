@@ -5,6 +5,30 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const formatDate = (date: Date | null | string) => {
+  if (!date) return null;
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+export const getInitials = (
+  firstNameOrFullName: string,
+  lastName?: string,
+): string => {
+  if (lastName) {
+    return `${firstNameOrFullName[0] || ''}${lastName[0] || ''}`.toUpperCase();
+  }
+  return firstNameOrFullName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
+
 export const slugify = (_string: string): string => {
   let str = _string;
   str = str.replace(/^\s+|\s+$/g, ''); // trim leading/trailing white space

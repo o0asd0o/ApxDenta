@@ -58,7 +58,13 @@ features/<feature-name>/view/sub-pages/
 
 ### \_\_helpers.ts
 
-- Contains helper constants and utility functions
+- **Check common helpers first** before creating new utility functions
+- Re-export common helpers from `@/lib/utils`:
+  ```typescript
+  // Re-export common helpers from lib
+  export { formatDate, getInitials } from "@/lib/utils";
+  ```
+- Contains feature-specific helper constants and utility functions
 - Use object lookups instead of switch statements for status colors:
   ```typescript
   export const PATIENT_STATUS_COLORS: Record<PatientStatus, string> = {
@@ -67,8 +73,14 @@ features/<feature-name>/view/sub-pages/
     NEW: "bg-blue-100 text-blue-700 border-blue-200",
   };
   ```
-- Helper functions like `getInitials`, `formatDate`
 - Pure functions with no React dependencies when possible
+
+**Common Helpers Location:** `apps/webapp/src/lib/utils.ts`
+
+- `formatDate` - Formats dates to "Month Day, Year" format
+- `getInitials` - Extracts initials from name(s)
+- `cn` - Tailwind class name merger
+- `slugify` - Convert string to URL-friendly slug
 
 ### \_\_columns.tsx
 
