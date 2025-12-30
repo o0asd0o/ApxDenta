@@ -1,21 +1,8 @@
 import type { DatabaseInstance } from '@/db';
 import type { PatientStatus } from '@/db/prisma/out/enums';
+import { executeWithOffsetPagination } from '@/server/utils/pagination';
 import { sql } from 'kysely';
 import { jsonObjectFrom } from 'kysely/helpers/postgres';
-
-export type StaffPatientResult = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  avatar: string | null;
-  status: PatientStatus;
-  lastVisit: Date | null;
-  nextAppointment: Date | null;
-  totalTreatments: number;
-  completedTreatments: number;
-};
 
 type GetStaffPatientsParams = {
   staffId: string;
@@ -28,51 +15,11 @@ type GetStaffPatientsParams = {
 export const getStaffPatients = async (
   db: DatabaseInstance,
   params: GetStaffPatientsParams,
-): Promise<{
-  data: StaffPatientResult[];
-  count: number;
-  hasNextPage: boolean;
-}> => {
+) => {
   const { staffId, page, perPage, status, search } = params;
-  const offset = (page - 1) * perPage;
-
-  // Get unique patients who have appointments with this staff
-  const baseQuery = db
-    .selectFrom('Patient')
-    .innerJoin('Reservation', 'Reservation.patientId', 'Patient.id')
-    .where('Reservation.staffId', '=', staffId)
-    .where('Reservation.isArchived', '=', false)
-    .groupBy('Patient.id');
-
-  // Apply filters
-  let countQuery = baseQuery;
-  if (status) {
-    countQuery = countQuery.where(
-      'Patient.status',
-      '=',
-      status,
-    ) as typeof countQuery;
-  }
-  if (search) {
-    countQuery = countQuery.where((eb) =>
-      eb.or([
-        eb('Patient.firstName', 'ilike', `%${search}%`),
-        eb('Patient.lastName', 'ilike', `%${search}%`),
-        eb('Patient.email', 'ilike', `%${search}%`),
-      ]),
-    ) as typeof countQuery;
-  }
-
-  // Get count of unique patients
-  const countResult = await db
-    .selectFrom(countQuery.select('Patient.id').as('subquery'))
-    .select((eb) => eb.fn.countAll<number>().as('count'))
-    .executeTakeFirst();
-
-  const count = Number(countResult?.count || 0);
 
   // Get patients with aggregated data
-  let dataQuery = db
+  let query = db
     .selectFrom('Patient')
     .select([
       'Patient.id',
@@ -150,10 +97,10 @@ export const getStaffPatients = async (
     );
 
   if (status) {
-    dataQuery = dataQuery.where('Patient.status', '=', status);
+    query = query.where('Patient.status', '=', status);
   }
   if (search) {
-    dataQuery = dataQuery.where((eb) =>
+    query = query.where((eb) =>
       eb.or([
         eb('Patient.firstName', 'ilike', `%${search}%`),
         eb('Patient.lastName', 'ilike', `%${search}%`),
@@ -162,29 +109,22 @@ export const getStaffPatients = async (
     );
   }
 
-  const results = await dataQuery
-    .orderBy('Patient.firstName', 'asc')
-    .limit(perPage)
-    .offset(offset)
-    .execute();
+  query = query.orderBy('Patient.firstName', 'asc');
 
-  const data: StaffPatientResult[] = results.map((r) => ({
-    id: r.id,
-    firstName: r.firstName,
-    lastName: r.lastName,
-    email: r.email,
-    phoneNumber: r.phoneNumber,
-    avatar: (r.avatar as { url: string } | null)?.url || null,
-    status: r.status,
-    lastVisit: r.lastVisit as Date | null,
-    nextAppointment: r.nextAppointment as Date | null,
-    totalTreatments: Number(r.totalTreatments || 0),
-    completedTreatments: Number(r.completedTreatments || 0),
-  }));
+  if (perPage) {
+    return executeWithOffsetPagination(query, {
+      page: page || 1,
+      perPage,
+    });
+  }
+
+  const items = await query.execute();
 
   return {
-    data,
-    count,
-    hasNextPage: offset + data.length < count,
+    items,
+    hasNextPage: false,
+    hasPrevPage: false,
+    endCursor: null,
+    count: items.length,
   };
 };

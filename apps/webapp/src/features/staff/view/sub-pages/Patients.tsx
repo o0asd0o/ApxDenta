@@ -1,7 +1,5 @@
-import DateDisplay from '@/components/DateDisplay';
 import PillTabs from '@/components/PillTabs';
 import { DataTable } from '@/components/data-table/DataTable';
-import { PATIENT_STATUS_BADGES } from '@/constants/badges';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import useLayoutState from '@/hooks/use-layout-state';
 import { useTRPC } from '@/lib/trpc';
@@ -22,7 +20,6 @@ import {
   Skeleton,
 } from '@repo/ui/components';
 import { useQuery } from '@tanstack/react-query';
-import type { ColumnDef } from '@tanstack/react-table';
 import {
   LayoutGrid,
   ListIcon,
@@ -33,143 +30,17 @@ import {
   Users,
 } from 'lucide-react';
 import React, { useState } from 'react';
+import {
+  PATIENT_STATUS_COLORS,
+  type Patient,
+  formatDate,
+  getInitials,
+  patientColumns,
+} from './__columns';
 
 interface PatientsProps {
   staffId: string;
 }
-
-interface Patient {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  avatar: string | null;
-  status: PatientStatus;
-  lastVisit: Date | null;
-  nextAppointment: Date | null;
-  totalTreatments: number;
-  completedTreatments: number;
-}
-
-const getStatusColor = (status: PatientStatus) => {
-  switch (status) {
-    case 'ACTIVE':
-      return 'bg-green-100 text-green-700 border-green-200';
-    case 'INACTIVE':
-      return 'bg-gray-100 text-gray-700 border-gray-300';
-    case 'NEW':
-      return 'bg-blue-100 text-blue-700 border-blue-200';
-    default:
-      return 'bg-gray-100 text-gray-700 border-gray-200';
-  }
-};
-
-const getInitials = (firstName: string, lastName: string) => {
-  return `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
-};
-
-const formatDate = (date: Date | null) => {
-  if (!date) return null;
-  return new Date(date).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-};
-
-const patientColumns: ColumnDef<Patient>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Patient',
-    cell: ({ row }) => {
-      const patient = row.original;
-      const patientName = `${patient.firstName} ${patient.lastName}`;
-      return (
-        <div className="flex items-center gap-3">
-          <Avatar className="size-9">
-            <AvatarImage
-              src={
-                patient.avatar
-                  ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar}`
-                  : undefined
-              }
-              alt={patientName}
-            />
-            <AvatarFallback className="bg-primary/10 text-primary text-xs">
-              {getInitials(patient.firstName, patient.lastName)}
-            </AvatarFallback>
-          </Avatar>
-          <span className="font-medium">{patientName}</span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'contact',
-    header: 'Contact',
-    cell: ({ row }) => {
-      const patient = row.original;
-      return (
-        <div className="space-y-1 text-sm">
-          <div className="flex items-center gap-1.5 text-muted-foreground">
-            <Mail className="size-3.5" />
-            <span>{patient.email}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-muted-foreground">
-            <Phone className="size-3.5" />
-            <span>{patient.phoneNumber}</span>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'lastVisit',
-    header: 'Last Visit',
-    cell: ({ row }) => {
-      const lastVisit = row.original.lastVisit;
-      return lastVisit ? (
-        <span className="text-sm">{formatDate(lastVisit)}</span>
-      ) : (
-        <span className="text-muted-foreground">-</span>
-      );
-    },
-  },
-  {
-    accessorKey: 'nextAppointment',
-    header: 'Next Appointment',
-    cell: ({ row }) => {
-      const patient = row.original;
-      return patient.nextAppointment ? (
-        <DateDisplay date={new Date(patient.nextAppointment)} type="medium" />
-      ) : (
-        <span className="text-muted-foreground">-</span>
-      );
-    },
-  },
-  {
-    accessorKey: 'treatments',
-    header: 'Treatments',
-    cell: ({ row }) => {
-      const patient = row.original;
-      return (
-        <div className="text-sm">
-          <span className="font-medium">{patient.completedTreatments}</span>
-          <span className="text-muted-foreground">
-            {' '}
-            / {patient.totalTreatments}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => PATIENT_STATUS_BADGES[row.original.status],
-  },
-];
 
 const Patients: React.FC<PatientsProps> = ({ staffId }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -192,7 +63,7 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
     }),
   );
 
-  const patients = patientsData?.data || [];
+  const patients = patientsData?.items || [];
   const totalPatients = patientsData?.count || 0;
   const activePatients = patients.filter(
     (p: Patient) => p.status === 'ACTIVE',
@@ -361,8 +232,8 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
                       <Avatar className="size-12">
                         <AvatarImage
                           src={
-                            patient.avatar
-                              ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar}`
+                            patient.avatar?.url
+                              ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar.url}`
                               : undefined
                           }
                           alt={patientName}
@@ -380,7 +251,7 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
                     </div>
                     <Badge
                       variant="outline"
-                      className={getStatusColor(patient.status)}
+                      className={PATIENT_STATUS_COLORS[patient.status]}
                     >
                       {patient.status}
                     </Badge>

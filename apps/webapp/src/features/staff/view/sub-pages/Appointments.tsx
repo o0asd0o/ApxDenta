@@ -1,7 +1,6 @@
 import DateDisplay from '@/components/DateDisplay';
 import PillTabs from '@/components/PillTabs';
 import { DataTable } from '@/components/data-table/DataTable';
-import { APPOINTMENT_STATUS_BADGES } from '@/constants/badges';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import useLayoutState from '@/hooks/use-layout-state';
 import { useTRPC } from '@/lib/trpc';
@@ -22,51 +21,17 @@ import {
   Skeleton,
 } from '@repo/ui/components';
 import { useQuery } from '@tanstack/react-query';
-import type { ColumnDef } from '@tanstack/react-table';
 import { Calendar, LayoutGrid, ListIcon } from 'lucide-react';
 import React, { useState } from 'react';
+import {
+  APPOINTMENT_STATUS_COLORS,
+  appointmentColumns,
+  getInitials,
+} from './__columns';
 
 interface AppointmentsProps {
   staffId: string;
 }
-
-interface Appointment {
-  id: string;
-  patient: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    avatar: string | null;
-  };
-  treatment: {
-    id: string;
-    name: string;
-  };
-  startTime: Date;
-  endTime: Date;
-  duration: number;
-  status: ReservationStatus;
-  note: string | null;
-}
-
-const getStatusColor = (status: ReservationStatus) => {
-  switch (status) {
-    case 'DONE':
-      return 'bg-green-100 text-green-700 border-green-200';
-    case 'PENDING':
-      return 'bg-blue-100 text-blue-700 border-blue-200';
-    case 'CANCELLED':
-      return 'bg-red-100 text-red-700 border-red-200';
-    case 'ENCOUNTER':
-      return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-    default:
-      return 'bg-gray-100 text-gray-700 border-gray-200';
-  }
-};
-
-const getInitials = (firstName: string, lastName: string) => {
-  return `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
-};
 
 const formatDuration = (minutes: number) => {
   if (minutes >= 60) {
@@ -76,70 +41,6 @@ const formatDuration = (minutes: number) => {
   }
   return `${minutes} min`;
 };
-
-const appointmentColumns: ColumnDef<Appointment>[] = [
-  {
-    accessorKey: 'patient',
-    header: 'Patient',
-    cell: ({ row }) => {
-      const appointment = row.original;
-      const patientName = `${appointment.patient.firstName} ${appointment.patient.lastName}`;
-      return (
-        <div className="flex items-center gap-3">
-          <Avatar className="size-9">
-            <AvatarImage
-              src={
-                appointment.patient.avatar
-                  ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${appointment.patient.avatar}`
-                  : undefined
-              }
-              alt={patientName}
-            />
-            <AvatarFallback className="bg-primary/10 text-primary text-xs">
-              {getInitials(
-                appointment.patient.firstName,
-                appointment.patient.lastName,
-              )}
-            </AvatarFallback>
-          </Avatar>
-          <span className="font-medium">{patientName}</span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'treatment',
-    header: 'Treatment',
-    cell: ({ row }) => row.original.treatment.name,
-  },
-  {
-    accessorKey: 'startTime',
-    header: 'Date & Time',
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2 text-sm">
-        <DateDisplay
-          date={new Date(row.original.startTime)}
-          type="medium"
-          includeTime
-        />
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'duration',
-    header: 'Duration',
-    cell: ({ row }) => (
-      <span className="text-sm text-muted-foreground">
-        {formatDuration(row.original.duration)}
-      </span>
-    ),
-  },
-  {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => APPOINTMENT_STATUS_BADGES[row.original.status],
-  },
-];
 
 const Appointments: React.FC<AppointmentsProps> = ({ staffId }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -164,7 +65,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ staffId }) => {
     }),
   );
 
-  const appointments = appointmentsData?.data || [];
+  const appointments = appointmentsData?.items || [];
 
   return (
     <div className="md:px-5 space-y-4">
@@ -255,7 +156,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ staffId }) => {
       {!isLoading && viewMode === 'card' && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {appointments.map((appointment) => {
-            const patientName = `${appointment.patient.firstName} ${appointment.patient.lastName}`;
+            const patientName = `${appointment.patientFirstName} ${appointment.patientLastName}`;
             return (
               <Card key={appointment.id} className="py-0">
                 <CardContent className="p-5">
@@ -264,29 +165,29 @@ const Appointments: React.FC<AppointmentsProps> = ({ staffId }) => {
                       <Avatar className="size-12">
                         <AvatarImage
                           src={
-                            appointment.patient.avatar
-                              ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${appointment.patient.avatar}`
+                            appointment.patientAvatar?.url
+                              ? `${import.meta.env.VITE_PUBLIC_CDN_URL}${appointment.patientAvatar.url}`
                               : undefined
                           }
                           alt={patientName}
                         />
                         <AvatarFallback className="bg-primary/10 text-primary">
                           {getInitials(
-                            appointment.patient.firstName,
-                            appointment.patient.lastName,
+                            appointment.patientFirstName,
+                            appointment.patientLastName,
                           )}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <p className="font-bold">{patientName}</p>
                         <p className="text-sm text-muted-foreground">
-                          {appointment.treatment.name}
+                          {appointment.treatmentName}
                         </p>
                       </div>
                     </div>
                     <Badge
                       variant="outline"
-                      className={getStatusColor(appointment.status)}
+                      className={APPOINTMENT_STATUS_COLORS[appointment.status]}
                     >
                       {appointment.status}
                     </Badge>
