@@ -1,5 +1,10 @@
 import { useTRPC } from '@/lib/trpc';
-import { cn } from '@/lib/utils';
+import {
+  cn,
+  formatMonthYear,
+  formatRelativeTime,
+  formatYear,
+} from '@/lib/utils';
 import {
   Badge,
   Card,
@@ -8,7 +13,6 @@ import {
   Skeleton,
 } from '@repo/ui/components';
 import { useQuery } from '@tanstack/react-query';
-import { format, formatDistanceToNow } from 'date-fns';
 import {
   Award,
   CalendarDays,
@@ -149,9 +153,7 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
                           {activity.description}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          {formatDistanceToNow(new Date(activity.time), {
-                            addSuffix: true,
-                          })}
+                          {formatRelativeTime(activity.time)}
                         </p>
                       </div>
                     </div>
@@ -225,11 +227,11 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
                           {cert.issuer}
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          Issued: {format(new Date(cert.issueDate), 'MMM yyyy')}
+                          Issued: {formatMonthYear(cert.issueDate)}
                           {cert.expiryDate && (
                             <>
                               {' • Expires: '}
-                              {format(new Date(cert.expiryDate), 'MMM yyyy')}
+                              {formatMonthYear(cert.expiryDate)}
                             </>
                           )}
                         </p>
@@ -292,12 +294,12 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
                       {edu.field && ` • ${edu.field}`}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {edu.startDate && format(new Date(edu.startDate), 'yyyy')}
+                      {edu.startDate && formatYear(edu.startDate)}
                       {edu.startDate && ' - '}
                       {edu.isCurrent
                         ? 'Present'
                         : edu.endDate
-                          ? format(new Date(edu.endDate), 'yyyy')
+                          ? formatYear(edu.endDate)
                           : ''}
                     </p>
                   </div>
