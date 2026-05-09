@@ -78,9 +78,52 @@ features/<feature-name>/view/sub-pages/
 **Common Helpers Location:** `apps/webapp/src/lib/utils.ts`
 
 - `formatDate` - Formats dates to "Month Day, Year" format
+- `formatMonthYear` - Formats dates to "Jan 2024" format
+- `formatYear` - Formats dates to just year "2024"
+- `formatRelativeTime` - Formats to relative time like "2 hours ago"
 - `getInitials` - Extracts initials from name(s)
 - `cn` - Tailwind class name merger
 - `slugify` - Convert string to URL-friendly slug
+
+---
+
+## Date Handling
+
+Use `dayjs` for complex date formatting and manipulation. The library is already installed and configured with the `relativeTime` plugin.
+
+**When to use dayjs:**
+
+- Relative time formatting (e.g., "2 hours ago")
+- Complex date formatting beyond simple locale strings
+- Date arithmetic (add/subtract days, months, etc.)
+- Date comparisons and validations
+
+**Common helpers available in `@/lib/utils`:**
+
+```typescript
+import {
+  formatDate,
+  formatMonthYear,
+  formatYear,
+  formatRelativeTime,
+} from "@/lib/utils";
+
+formatDate(date); // "Jan 15, 2024"
+formatMonthYear(date); // "Jan 2024"
+formatYear(date); // "2024"
+formatRelativeTime(date); // "2 hours ago"
+```
+
+**For custom formatting, import dayjs directly:**
+
+```typescript
+import dayjs from "dayjs";
+
+dayjs(date).format("YYYY-MM-DD"); // "2024-01-15"
+dayjs(date).format("dddd, MMMM D"); // "Monday, January 15"
+```
+
+**Do NOT use:** `date-fns` - Use `dayjs` instead for consistency.
 
 ### \_\_columns.tsx
 
