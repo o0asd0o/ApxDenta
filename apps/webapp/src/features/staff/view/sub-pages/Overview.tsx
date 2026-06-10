@@ -71,7 +71,7 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
     },
   ];
   return (
-    <div className="md:px-5 space-y-5">
+    <div className="space-y-5">
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {statsData.map((stat) => (

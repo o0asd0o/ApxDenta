@@ -172,7 +172,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
 
   if (isLoading) {
     return (
-      <div className="md:px-5 space-y-5">
+      <div className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <Card key={i} className="py-0">
@@ -203,7 +203,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
   }
 
   return (
-    <div className="md:px-5 space-y-5">
+    <div className="space-y-5">
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="py-0">

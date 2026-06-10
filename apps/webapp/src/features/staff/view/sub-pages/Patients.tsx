@@ -73,7 +73,7 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
   ).length;
 
   return (
-    <div className="md:px-5 space-y-4">
+    <div className="space-y-4">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="py-0">

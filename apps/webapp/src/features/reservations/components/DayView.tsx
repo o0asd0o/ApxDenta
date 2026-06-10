@@ -4,7 +4,12 @@ import { Coffee, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import DoctorColumn from './DoctorColumn';
 import ReservationCard from './ReservationCard';
-import { BREAK_TIME, mockDoctors, mockReservations } from './mockData';
+import {
+  BREAK_TIME,
+  mockDoctors,
+  mockReservationVisualStates,
+  mockReservations,
+} from './mockData';
 import {
   type Doctor,
   HOUR_HEIGHT,
@@ -70,7 +75,7 @@ const DayView: React.FC<Props> = ({
         {/* Header with doctor columns */}
         <div className="sticky top-0 z-20 flex border-b bg-white">
           {/* Time column header */}
-          <div className="w-14 shrink-0 border-r bg-gray-50 p-2 sticky left-0 z-10">
+          <div className="sticky left-0 z-10 flex h-[72px] w-20 shrink-0 flex-col justify-center border-r bg-gray-50 px-4">
             <span className="text-[10px] text-gray-500 font-medium">GMT</span>
             <br />
             <span className="text-[10px] text-gray-400">+07:00</span>
@@ -81,7 +86,7 @@ const DayView: React.FC<Props> = ({
             <div
               key={doctor.id}
               className={cn(
-                'w-[220px] shrink-0 border-r last:border-r-0',
+                'w-[340px] shrink-0 border-r last:border-r-0',
                 !doctor.isAvailable && 'bg-gray-50/50',
               )}
             >
@@ -93,7 +98,7 @@ const DayView: React.FC<Props> = ({
         {/* Time grid */}
         <div className="relative flex">
           {/* Time labels column */}
-          <div className="w-14 shrink-0 border-r bg-gray-50 sticky left-0 z-10">
+          <div className="sticky left-0 z-10 w-20 shrink-0 border-r bg-gray-50">
             {TIME_SLOTS.map((slot) => (
               <div
                 key={slot.hour}
@@ -101,7 +106,7 @@ const DayView: React.FC<Props> = ({
                 style={{ height: `${HOUR_HEIGHT}px` }}
               >
                 {/* Time label positioned at the top of each hour slot */}
-                <span className="absolute top-0 left-1 right-1 text-[11px] text-gray-500 text-center -translate-y-1/2 bg-gray-50">
+                <span className="absolute left-4 top-2 z-10 bg-gray-50 pr-2 text-xs font-medium leading-none text-gray-500">
                   {slot.label}
                 </span>
                 {/* Horizontal line at the top of each slot */}
@@ -115,7 +120,7 @@ const DayView: React.FC<Props> = ({
             <div
               key={doctor.id}
               className={cn(
-                'w-[220px] shrink-0 border-r last:border-r-0 relative',
+                'w-[340px] shrink-0 border-r last:border-r-0 relative',
                 !doctor.isAvailable && 'bg-gray-100/50',
               )}
             >
@@ -160,6 +165,7 @@ const DayView: React.FC<Props> = ({
                     key={reservation.id}
                     reservation={reservation}
                     startHour={startHour}
+                    visualStates={mockReservationVisualStates}
                   />
                 ))}
 
@@ -189,7 +195,7 @@ const DayView: React.FC<Props> = ({
               style={{ top: `${getCurrentTimePosition()}px` }}
             >
               <div className="relative flex items-center">
-                <div className="w-14 flex justify-center sticky left-0">
+                <div className="sticky left-0 flex w-20 justify-center">
                   <span className="text-[10px] text-red-500 font-medium bg-red-50 px-1 rounded">
                     {formatCurrentTime()}
                   </span>

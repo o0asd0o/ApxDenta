@@ -6,7 +6,18 @@ import {
   Badge,
 } from '@repo/ui/components';
 import React from 'react';
-import { mockDoctors, mockReservations } from './mockData';
+import {
+  mockDoctors,
+  mockReservationVisualStates,
+  mockReservations,
+} from './mockData';
+import {
+  ReservationStatusPill,
+  ReservationVisualIcon,
+  type ReservationVisualStateMap,
+  getReservationDisplayVisualState,
+  getReservationVisualMeta,
+} from './reservationVisuals';
 import type { Doctor, Reservation } from './types';
 
 interface Props {
@@ -14,21 +25,6 @@ interface Props {
   doctors: Doctor[];
   reservations: Reservation[];
 }
-
-const getStatusColor = (status: Reservation['status']) => {
-  switch (status) {
-    case 'DONE':
-      return 'bg-emerald-100 border-emerald-200 text-emerald-700';
-    case 'PENDING':
-      return 'bg-blue-100 border-blue-200 text-blue-700';
-    case 'ENCOUNTER':
-      return 'bg-amber-100 border-amber-200 text-amber-700';
-    case 'CANCELLED':
-      return 'bg-red-100 border-red-200 text-red-700';
-    case 'NO_SHOW':
-      return 'bg-gray-100 border-gray-200 text-gray-700';
-  }
-};
 
 const getInitials = (name: string) => {
   return name
@@ -45,6 +41,55 @@ const formatTime = (date: Date) => {
     minute: '2-digit',
     hour12: true,
   });
+};
+
+const WeekReservationCard: React.FC<{
+  reservation: Reservation;
+  visualStates?: ReservationVisualStateMap;
+}> = ({ reservation, visualStates }) => {
+  const visualState = getReservationDisplayVisualState(
+    reservation,
+    visualStates,
+  );
+  const visual = getReservationVisualMeta(visualState);
+
+  return (
+    <div
+      className={cn(
+        'rounded-lg border p-2 text-xs cursor-pointer hover:shadow-sm transition-shadow',
+        visual.cardClassName,
+      )}
+    >
+      <div className="mb-1.5 flex items-start justify-between gap-2">
+        <div className="flex min-w-0 items-start gap-1.5">
+          <ReservationVisualIcon
+            reservation={reservation}
+            visualState={visualState}
+            className="size-[18px]"
+          />
+          <div className="min-w-0">
+            <p className="truncate text-[11px] font-semibold leading-4 text-gray-900">
+              {reservation.patient.name}
+            </p>
+            <p className="text-[10px] leading-[14px] text-gray-500">
+              {formatTime(reservation.startTime)} -{' '}
+              {formatTime(reservation.endTime)}
+            </p>
+          </div>
+        </div>
+        <ReservationStatusPill
+          status={reservation.status}
+          className="max-w-[94px] px-1.5 text-[9px]"
+        />
+      </div>
+      <Badge
+        variant="outline"
+        className="ml-5 rounded-full bg-white px-1.5 py-0 text-[9px] font-medium text-gray-700"
+      >
+        {reservation.treatment.name}
+      </Badge>
+    </div>
+  );
 };
 
 const WeekView: React.FC<Props> = ({
@@ -100,7 +145,7 @@ const WeekView: React.FC<Props> = ({
           <div
             key={doctor.id}
             className={cn(
-              'flex-1 min-w-[200px] border-r last:border-r-0 p-3',
+              'w-[340px] shrink-0 border-r last:border-r-0 p-3',
               !doctor.isAvailable && 'bg-gray-50/50',
             )}
           >
@@ -172,7 +217,7 @@ const WeekView: React.FC<Props> = ({
                   <div
                     key={doctor.id}
                     className={cn(
-                      'flex-1 min-w-[200px] border-r last:border-r-0 p-2 min-h-[100px]',
+                      'w-[340px] shrink-0 border-r last:border-r-0 p-2 min-h-[100px]',
                       !doctor.isAvailable && 'bg-gray-100/50',
                     )}
                   >
@@ -191,28 +236,11 @@ const WeekView: React.FC<Props> = ({
                     ) : (
                       <div className="space-y-2">
                         {dayReservations.slice(0, 3).map((reservation) => (
-                          <div
+                          <WeekReservationCard
                             key={reservation.id}
-                            className={cn(
-                              'p-2 rounded-md border text-xs cursor-pointer hover:shadow-sm transition-shadow',
-                              getStatusColor(reservation.status),
-                            )}
-                          >
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <Avatar className="size-4">
-                                <AvatarFallback className="text-[8px] bg-white/50">
-                                  {getInitials(reservation.patient.name)}
-                                </AvatarFallback>
-                              </Avatar>
-                              <span className="font-medium truncate">
-                                {reservation.patient.name}
-                              </span>
-                            </div>
-                            <p className="text-[10px] opacity-75">
-                              {formatTime(reservation.startTime)} -{' '}
-                              {formatTime(reservation.endTime)}
-                            </p>
-                          </div>
+                            reservation={reservation}
+                            visualStates={mockReservationVisualStates}
+                          />
                         ))}
                         {dayReservations.length > 3 && (
                           <Badge variant="secondary" className="text-[10px]">

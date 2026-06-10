@@ -116,43 +116,42 @@ model organization {
 }
 
 model Staff {
-  id                   String               @id @default(dbgenerated("gen_random_uuid()"))
-  type                 StaffType
-  accountId            String?
-  address              String?
-  contactNumber        String
-  createdAt            DateTime             @default(now())
-  employmentType       EmploymentType
-  firstName            String
-  lastName             String
-  lat                  Float?
-  long                 Float?
-  position             String
-  specialistsRecordId  String?
-  updatedAt            DateTime             @default(now())
-  status               StaffStatus?         @default(ACTIVE)
-  email                String?
-  organizationId       String?
-  avatarId             String?
-  isArchived           Boolean?             @default(false)
-  createdAssets        Asset[]
-  createdAssetTransfer AssetTransfer[]
-  processedBillHistory BillHistory[]
-  createdPeripherals   Peripheral[]
-  reservations         Reservation[]
-  account              account?             @relation(fields: [accountId], references: [id])
-  avatar               File?                @relation(fields: [avatarId], references: [id])
-  organization         organization?        @relation(fields: [organizationId], references: [id])
-  specialist           SpecialistsRecord?   @relation(fields: [specialistsRecordId], references: [id])
-  workingSchedules     WorkSchedule[]
-  assignedTreatments   Treatment[]          @relation("StaffAssignedTreatment")
-  daysOff              DayOff[]             @relation("StaffDayOff")
-  certifications       StaffCertification[]
-  educations           StaffEducation[]
-
-  emergencyContactNumber   String?
+  id                       String               @id @default(dbgenerated("gen_random_uuid()"))
+  type                     StaffType
+  accountId                String?
+  address                  String?
+  contactNumber            String
+  createdAt                DateTime             @default(now())
+  employmentType           EmploymentType
+  firstName                String
+  lastName                 String
+  lat                      Float?
+  long                     Float?
+  position                 String
+  specialistsRecordId      String?
+  updatedAt                DateTime             @default(now())
+  status                   StaffStatus?         @default(ACTIVE)
+  email                    String?
+  organizationId           String?
+  avatarId                 String?
+  isArchived               Boolean?             @default(false)
   emergencyContactName     String?
+  emergencyContactNumber   String?
   emergencyContactRelation String?
+  createdAssets            Asset[]
+  createdAssetTransfer     AssetTransfer[]
+  processedBillHistory     BillHistory[]
+  createdPeripherals       Peripheral[]
+  reservations             Reservation[]
+  account                  account?             @relation(fields: [accountId], references: [id])
+  avatar                   File?                @relation(fields: [avatarId], references: [id])
+  organization             organization?        @relation(fields: [organizationId], references: [id])
+  specialist               SpecialistsRecord?   @relation(fields: [specialistsRecordId], references: [id])
+  certifications           StaffCertification[]
+  educations               StaffEducation[]
+  workingSchedules         WorkSchedule[]
+  assignedTreatments       Treatment[]          @relation("StaffAssignedTreatment")
+  daysOff                  DayOff[]             @relation("StaffDayOff")
 
   @@index([email, firstName, lastName], map: "idx_staff_email_first_last")
 }
@@ -231,14 +230,14 @@ model Treatment {
   updatedAt        DateTime             @default(now())
   name             String
   category         TreatmentCategory
-  isArchived       Boolean              @default(false)
-  description      String               @default("")
   visitType        TreatmentVisitType
   duration         Float
   pricePerDuration Float
   status           TreatmentStatus      @default(FINALIZED)
   unit             String?
   organizationId   String?
+  description      String               @default("")
+  isArchived       Boolean              @default(false)
   cosmeticServices CosmeticService[]
   medicalServices  MedicalService[]
   ratings          Rating[]
@@ -247,9 +246,8 @@ model Treatment {
   organization     organization?        @relation(fields: [organizationId], references: [id])
   components       TreatmentComponent[]
   visits           TreatmentVisit[]
-
-  visitTreatment TreatmentVisit[] @relation("VisitTreatment")
-  staffsAssigned Staff[]          @relation("StaffAssignedTreatment")
+  visitTreatment   TreatmentVisit[]     @relation("VisitTreatment")
+  staffsAssigned   Staff[]              @relation("StaffAssignedTreatment")
 
   @@index([name, category, visitType], map: "idx_treatment_name_category_visitType")
 }
@@ -278,17 +276,14 @@ model MedicalComponent {
 }
 
 model TreatmentVisit {
-  id String @id @default(dbgenerated("gen_random_uuid()"))
-
-  sequence        Int
-  gracePeriod     Int?
-  gracePeriodUnit GracePeriodUnit?
-
-  visitTreatment   Treatment? @relation(fields: [visitTreatmentId], references: [id], name: "VisitTreatment")
+  id               String           @id @default(dbgenerated("gen_random_uuid()"))
+  treatmentId      String?
+  sequence         Int
+  gracePeriod      Int?
+  gracePeriodUnit  GracePeriodUnit?
   visitTreatmentId String?
-
-  treatment   Treatment? @relation(fields: [treatmentId], references: [id])
-  treatmentId String?
+  treatment        Treatment?       @relation(fields: [treatmentId], references: [id])
+  visitTreatment   Treatment?       @relation("VisitTreatment", fields: [visitTreatmentId], references: [id])
 
   @@index([treatmentId], map: "idx_treatment_visit_treatment_id")
 }
@@ -329,10 +324,10 @@ model File {
   reservation   Reservation? @relation(fields: [reservationId], references: [id])
   review        Review?      @relation(fields: [reviewId], references: [id])
   notes         Note[]
+  patients      Patient[]
   peripherals   Peripheral[]
   staffs        Staff[]
   stocks        Stock[]
-  patients      Patient[]
 }
 
 model Rating {
@@ -358,17 +353,17 @@ model Patient {
   gender                    Gender
   lastDentalVisit           LastDetalVisit
   lastName                  String
-  status                    PatientStatus             @default(NEW)
   lat                       Float?
   long                      Float?
   oralHygieneDuration       OralHygienDuration
   phoneNumber               String
   updatedAt                 DateTime                  @default(now())
   usingDentalFloss          Boolean                   @default(true)
-  usingMouthWash            Boolean                   @default(true)
   washTeethFrequency        WashTeethFrequency
   changeToothBrushFrequency ChangeToothBrushFrequency
   organizationId            String?
+  status                    PatientStatus             @default(NEW)
+  usingMouthWash            Boolean                   @default(true)
   avatarId                  String?
   billHistory               BillHistory[]
   medicalCheckups           MedicalCheckup[]
@@ -381,17 +376,17 @@ model Patient {
 model Reservation {
   id                 String            @id @default(dbgenerated("gen_random_uuid()"))
   createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @default(now()) @updatedAt
-  startTime          DateTime
-  endTime            DateTime
-  duration           Int // Duration in minutes
   note               String?
   status             ReservationStatus
-  isArchived         Boolean           @default(false)
   staffId            String
   patientId          String
   initialTreatmentId String
   organizationId     String?
+  isArchived         Boolean           @default(false)
+  duration           Int
+  endTime            DateTime
+  startTime          DateTime
+  updatedAt          DateTime          @default(now()) @updatedAt
   bills              Bill[]
   billsHistory       BillHistory[]
   attachments        File[]
