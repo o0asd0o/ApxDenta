@@ -7,7 +7,7 @@ import * as motion from 'motion/react-client';
 import React from 'react';
 import { type Resolver, type UseFormReturn, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import type { ZodTypeAny } from 'zod';
+import type { ZodType } from 'zod';
 import {
   createLocalReservationId,
   formatTimeValue,
@@ -92,7 +92,7 @@ export const CreateWaitlistReservation: React.FC<Props> = ({
   const form = useForm<FormFieldValues>({
     mode: 'onTouched',
     resolver: zodResolver(
-      stepper.current.schema as ZodTypeAny,
+      stepper.current.schema as ZodType<FormFieldValues>,
     ) as Resolver<FormFieldValues>,
     defaultValues: getDefaultFormValues(slot),
   });
@@ -297,7 +297,6 @@ export const CreateWaitlistReservation: React.FC<Props> = ({
                       form as unknown as UseFormReturn<BasicInformationFormValues>
                     }
                     patients={patients}
-                    slot={slot}
                   />
                 ),
                 oralHygieneHabits: () => (

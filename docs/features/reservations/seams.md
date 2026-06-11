@@ -24,6 +24,14 @@ ignore its own current range during collision checks, but it must still reject
 unavailable doctors, break time, invalid ranges, and other reservations. The
 calendar must request confirmation before mutating the local reservation time.
 
+### Add Form Schema Boundary
+
+Reservation add-flow Zod schemas and inferred form-value types live in
+`packages/schemas/src/reservation.schema.ts` and are exported through
+`@repo/schemas`. Keep `apps/webapp/src/features/reservations/add/context` focused
+on stepper wiring and UI state; do not define durable reservation form schemas
+there. UI-only reservation composition types can remain feature-local.
+
 Initial candidates to validate before documenting deeply:
 
 - Day and week calendar views in the webapp reservation feature.

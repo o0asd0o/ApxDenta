@@ -1,3 +1,9 @@
+import type {
+  AttachedReservationFileType,
+  ReservationBasicInformationFormType,
+  ReservationOralHygieneHabitsFormType,
+  ReservationTreatmentAndDentistFormType,
+} from '@repo/schemas';
 import type { Doctor, Patient, Reservation, Treatment } from './types';
 
 export type ReservationAddSlotSource = 'day' | 'week';
@@ -15,49 +21,11 @@ export type TreatmentOption = Treatment & {
   pricePerDuration: number;
 };
 
-export type AttachedReservationFileStatus =
-  | 'uploading'
-  | 'completed'
-  | 'cancelled';
-
-export type AttachedReservationFile = {
-  id: string;
-  file: File;
-  name: string;
-  size: number;
-  type: string;
-  progress: number;
-  status: AttachedReservationFileStatus;
-};
-
-export type TreatmentAndDentistFormValues = {
-  treatmentId: string;
-  doctorId: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  note?: string;
-  attachedFiles?: AttachedReservationFile[];
-};
-
-export type BasicInformationFormValues = {
-  patientId?: string;
-  patientName: string;
-  email?: string;
-  phoneNumber?: string;
-  age?: number;
-  gender?: 'MALE' | 'FEMALE';
-};
-
-export type OralHygieneHabitsFormValues = {
-  lastDentalVisit: string;
-  dentalCareStart: string;
-  washTeethFrequency: string;
-  oralHygieneDuration: string;
-  changeToothBrushFrequency: string;
-  usingMouthWash: boolean;
-  usingDentalFloss: boolean;
-};
+export type AttachedReservationFile = AttachedReservationFileType;
+export type TreatmentAndDentistFormValues =
+  ReservationTreatmentAndDentistFormType;
+export type BasicInformationFormValues = ReservationBasicInformationFormType;
+export type OralHygieneHabitsFormValues = ReservationOralHygieneHabitsFormType;
 
 export type WaitlistFormValues = {
   treatmentAndDentist?: TreatmentAndDentistFormValues;

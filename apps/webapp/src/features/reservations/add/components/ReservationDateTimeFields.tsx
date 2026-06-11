@@ -13,12 +13,20 @@ const RESERVATION_START_TIME = 600;
 const RESERVATION_END_TIME = 1800;
 
 const formatDisplayDate = (date: Date) => {
-  return date.toLocaleDateString('en-US', {
+  const dateParts = new Intl.DateTimeFormat('en-US', {
     weekday: 'long',
-    day: 'numeric',
-    month: 'long',
+    month: 'short',
+    day: '2-digit',
     year: 'numeric',
-  });
+  }).formatToParts(date);
+  const getDatePart = (type: Intl.DateTimeFormatPartTypes) =>
+    dateParts.find((part) => part.type === type)?.value ?? '';
+  const weekday = getDatePart('weekday').slice(0, 3);
+  const month = getDatePart('month');
+  const day = String(Number(getDatePart('day')));
+  const year = getDatePart('year').slice(-2);
+
+  return `${weekday} ${month} ${day}, '${year}`;
 };
 
 const timeStringToSelectorValue = (value?: string) => {

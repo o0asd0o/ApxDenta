@@ -24,7 +24,7 @@ const ReservationDoctorCard: React.FC<Props> = ({ doctor }) => {
           </AvatarFallback>
         </Avatar>
         <div className="min-w-0">
-          <p className="truncate text-base font-bold text-gray-900">
+          <p className="truncate text-base font-semibold text-gray-900">
             {fullName}
           </p>
           <p className="text-sm text-gray-400">

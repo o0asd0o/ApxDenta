@@ -9,26 +9,20 @@ import {
   RadioCardIndicator,
   RadioCardItem,
 } from '@repo/ui/components';
+import { Mail, Phone } from 'lucide-react';
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import type {
-  BasicInformationFormValues,
-  ReservationAddSlot,
-} from '../../components/__types';
+import type { BasicInformationFormValues } from '../../components/__types';
 import type { Patient } from '../../components/types';
+import PatientNameInput from '../components/PatientNameInput';
 
 type Props = {
   form: UseFormReturn<BasicInformationFormValues>;
   patients: Patient[];
-  slot: ReservationAddSlot;
 };
 
-export const BasicInformationForm: React.FC<Props> = ({
-  form,
-  patients,
-  slot,
-}) => {
-  const listId = `reservation-patient-options-${slot.doctor.id}`;
+export const BasicInformationForm: React.FC<Props> = ({ form, patients }) => {
+  const selectedPatientId = form.watch('patientId');
 
   return (
     <div className="flex flex-col gap-4">
@@ -39,27 +33,39 @@ export const BasicInformationForm: React.FC<Props> = ({
           <FormItem className="flex flex-col">
             <FormLabel>Patient name</FormLabel>
             <FormControl>
-              <>
-                <Input
-                  list={listId}
-                  placeholder="Search or enter patient name"
-                  {...field}
-                  onChange={(event) => {
-                    const patient = patients.find(
-                      (item) => item.name === event.target.value,
-                    );
-                    form.setValue('patientId', patient?.id, {
-                      shouldDirty: true,
-                    });
-                    field.onChange(event);
-                  }}
-                />
-                <datalist id={listId}>
-                  {patients.map((patient) => (
-                    <option key={patient.id} value={patient.name} />
-                  ))}
-                </datalist>
-              </>
+              <PatientNameInput
+                patients={patients}
+                value={field.value}
+                selectedPatientId={selectedPatientId}
+                onNameChange={(name) => {
+                  form.setValue('patientId', '', {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+                  field.onChange(name);
+                }}
+                onPatientSelect={(patient) => {
+                  form.setValue('patientId', patient.id, {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+                  form.setValue('patientName', patient.name, {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+                }}
+                onPatientClear={() => {
+                  form.setValue('patientId', '', {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+                  form.setValue('patientName', '', {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+                }}
+                placeholder="Search or enter patient name"
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -138,9 +144,10 @@ export const BasicInformationForm: React.FC<Props> = ({
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
-                type="email"
-                placeholder="Enter email address"
                 {...field}
+                placeholder="youremail@example.com"
+                type="email"
+                icon={<Mail className="size-4" />}
               />
             </FormControl>
             <FormMessage />
@@ -155,7 +162,12 @@ export const BasicInformationForm: React.FC<Props> = ({
           <FormItem className="flex flex-col">
             <FormLabel>Phone Number</FormLabel>
             <FormControl>
-              <Input type="tel" placeholder="Enter phone number" {...field} />
+              <Input
+                masked
+                type="tel"
+                {...field}
+                icon={<Phone className="size-4" />}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

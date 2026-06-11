@@ -16,11 +16,11 @@ import type {
   TreatmentOption,
 } from '../../components/__types';
 import type { Doctor } from '../../components/types';
-import AttachedFilesInput from './AttachedFilesInput';
-import PopularTreatmentList from './PopularTreatmentList';
-import ReservationDateTimeFields from './ReservationDateTimeFields';
-import ReservationDoctorCard from './ReservationDoctorCard';
-import TreatmentInput from './TreatmentInput';
+import AttachedFilesInput from '../components/AttachedFilesInput';
+import PopularTreatmentList from '../components/PopularTreatmentList';
+import ReservationDateTimeFields from '../components/ReservationDateTimeFields';
+import ReservationDoctorCard from '../components/ReservationDoctorCard';
+import TreatmentInput from '../components/TreatmentInput';
 
 type Props = {
   form: UseFormReturn<TreatmentAndDentistFormValues>;

@@ -57,7 +57,7 @@ const TimeSelector: React.FC<TimeProps> = ({
           <Clock8 className="xs:block hidden opacity-50 size-4 text-[11px] xs:text-xs" />
         }
         className={cn(
-          'w-[94px] xs:w-[130px] px-1.5 xs:p-2 flex h-[32px] [&>span]:text-[12px] xs:[&>span]:text-[13px]',
+          'mb-0 w-[94px] xs:w-[130px] px-1.5 xs:p-2 flex h-[32px] [&>span]:text-[12px] xs:[&>span]:text-[13px]',
           error && 'border-rose-500 focus:border-rose-500',
         )}
       >
