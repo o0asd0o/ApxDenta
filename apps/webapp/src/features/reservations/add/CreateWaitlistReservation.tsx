@@ -10,7 +10,6 @@ import { toast } from 'sonner';
 import type { ZodTypeAny } from 'zod';
 import {
   createLocalReservationId,
-  createTimeOptions,
   formatTimeValue,
   getDateAtTime,
   getDateKey,
@@ -28,7 +27,6 @@ import type {
   WaitlistReservationInput,
 } from '../components/__types';
 import type { Doctor, Patient, Reservation } from '../components/types';
-import { TIME_SLOTS } from '../components/types';
 import {
   useFormStepper,
   useFormValues,
@@ -62,6 +60,7 @@ const getDefaultFormValues = (slot: ReservationAddSlot): FormFieldValues => ({
   startTime: formatTimeValue(slot.startTime),
   endTime: formatTimeValue(slot.endTime),
   note: '',
+  attachedFiles: [],
   patientId: '',
   patientName: '',
   email: '',
@@ -102,7 +101,6 @@ export const CreateWaitlistReservation: React.FC<Props> = ({
     form.reset(getDefaultFormValues(slot));
   }, [form, slot]);
 
-  const timeOptions = React.useMemo(() => createTimeOptions(TIME_SLOTS), []);
   const startTimeValue = form.watch('startTime');
   const endTimeValue = form.watch('endTime');
 
@@ -290,7 +288,6 @@ export const CreateWaitlistReservation: React.FC<Props> = ({
                     slot={slot}
                     doctors={doctors}
                     treatments={treatments}
-                    timeOptions={timeOptions}
                     rangeError={rangeError}
                   />
                 ),

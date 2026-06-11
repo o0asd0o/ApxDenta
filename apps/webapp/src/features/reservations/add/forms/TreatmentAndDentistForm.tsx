@@ -5,33 +5,28 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Textarea,
 } from '@repo/ui/components';
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import {
-  addMinutes,
-  formatDisplayTime,
-  formatTimeValue,
-} from '../../components/__helpers';
+import { addMinutes, formatTimeValue } from '../../components/__helpers';
 import type {
   ReservationAddSlot,
   TreatmentAndDentistFormValues,
   TreatmentOption,
 } from '../../components/__types';
 import type { Doctor } from '../../components/types';
+import AttachedFilesInput from './AttachedFilesInput';
+import PopularTreatmentList from './PopularTreatmentList';
+import ReservationDateTimeFields from './ReservationDateTimeFields';
+import ReservationDoctorCard from './ReservationDoctorCard';
+import TreatmentInput from './TreatmentInput';
 
 type Props = {
   form: UseFormReturn<TreatmentAndDentistFormValues>;
   slot: ReservationAddSlot;
   doctors: Doctor[];
   treatments: TreatmentOption[];
-  timeOptions: string[];
   rangeError?: string;
 };
 
@@ -40,11 +35,11 @@ export const TreatmentAndDentistForm: React.FC<Props> = ({
   slot,
   doctors,
   treatments,
-  timeOptions,
   rangeError,
 }) => {
   const selectedTreatmentId = form.watch('treatmentId');
   const selectedStartTime = form.watch('startTime');
+  const note = form.watch('note') ?? '';
 
   React.useEffect(() => {
     const treatment = treatments.find(
@@ -66,44 +61,41 @@ export const TreatmentAndDentistForm: React.FC<Props> = ({
   }, [form, selectedStartTime, selectedTreatmentId, slot.date, treatments]);
 
   const selectedDoctor = doctors.find((doctor) => doctor.id === slot.doctor.id);
+  const displayDoctor = selectedDoctor ?? slot.doctor;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <FormField
         control={form.control}
         name="treatmentId"
         render={({ field }) => (
           <FormItem className="flex flex-col">
             <FormLabel>Treatment</FormLabel>
-            <Select value={field.value} onValueChange={field.onChange}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Treatment" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {treatments.map((treatment) => (
-                  <SelectItem key={treatment.id} value={treatment.id}>
-                    {treatment.name} - {treatment.duration} min
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <TreatmentInput
+                value={field.value}
+                onChange={field.onChange}
+                treatments={treatments}
+              />
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <div className="rounded-lg border bg-gray-50 p-3">
-        <p className="text-xs font-medium uppercase text-gray-400">Dentist</p>
-        <p className="mt-1 text-sm font-semibold text-gray-900">
-          Drg {selectedDoctor?.firstName ?? slot.doctor.firstName}{' '}
-          {selectedDoctor?.lastName ?? slot.doctor.lastName}
-        </p>
-        <p className="text-xs text-gray-500">
-          {selectedDoctor?.position ?? slot.doctor.position}
-        </p>
-      </div>
+      {!selectedTreatmentId && (
+        <PopularTreatmentList
+          treatments={treatments}
+          onSelect={(treatmentId) => {
+            form.setValue('treatmentId', treatmentId, {
+              shouldDirty: true,
+              shouldValidate: true,
+            });
+          }}
+        />
+      )}
+
+      <ReservationDoctorCard doctor={displayDoctor} />
 
       <FormField
         control={form.control}
@@ -115,67 +107,11 @@ export const TreatmentAndDentistForm: React.FC<Props> = ({
         control={form.control}
         name="date"
         render={({ field }) => (
-          <FormItem className="flex flex-col">
-            <FormLabel>Date</FormLabel>
-            <FormControl>
-              <Input readOnly {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
+          <Input className="hidden" type="hidden" {...field} />
         )}
       />
 
-      <div className="grid grid-cols-2 gap-3">
-        <FormField
-          control={form.control}
-          name="startTime"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Start time</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Start" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {timeOptions.map((time) => (
-                    <SelectItem key={time} value={time}>
-                      {formatDisplayTime(time)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="endTime"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>End time</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="End" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {timeOptions.map((time) => (
-                    <SelectItem key={time} value={time}>
-                      {formatDisplayTime(time)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+      <ReservationDateTimeFields form={form} date={slot.date} />
 
       {rangeError && (
         <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600">
@@ -188,7 +124,12 @@ export const TreatmentAndDentistForm: React.FC<Props> = ({
         name="note"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel>Quick Note (Optional)</FormLabel>
+            <div className="flex items-center justify-between gap-3">
+              <FormLabel>
+                Quick Note <span className="text-gray-400">(Optional)</span>
+              </FormLabel>
+              <span className="text-xs text-gray-400">{note.length} / 200</span>
+            </div>
             <FormControl>
               <Textarea
                 placeholder="Type a message..."
@@ -201,6 +142,8 @@ export const TreatmentAndDentistForm: React.FC<Props> = ({
           </FormItem>
         )}
       />
+
+      <AttachedFilesInput form={form} />
     </div>
   );
 };

@@ -16,8 +16,7 @@ ApxDenta is a Bun/Turborepo monorepo for a dental management platform.
 ## Repository Invariants
 
 - Prefer shared packages for cross-app contracts instead of duplicating types or UI primitives in app folders.
-- Check `.github/copilot-instructions.md` for established pagination and feature file organization conventions.
-- For current feature/page coding patterns, load `docs/global/coding-standards.md`; the staff feature is the reference shape for list/card/detail/create/update/archive pages.
+- Check `docs/global/coding-standards.md` for established pagination, feature file organization, and current feature/page coding patterns; the staff feature is the reference shape for list/card/detail/create/update/archive pages.
 - Do not add dependencies for routine UI or data-flow work without a clear need; use existing packages first.
 - Keep feature-specific knowledge under `docs/features/<feature>/` and reserve this file for cross-repo truths.
 

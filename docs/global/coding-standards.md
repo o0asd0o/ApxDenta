@@ -1,6 +1,6 @@
 # Global Coding Standards
 
-These standards describe how feature pages should be organized and coded in ApxDenta. The current reference implementation is `apps/webapp/src/features/staff/**`; copy the shape, not every incidental line.
+These standards describe how feature pages should be organized and coded in ApxDenta. The current reference implementation is `apps/webapp/src/features/staff/**`; copy the shape, not every incidental line. Keep `.github/copilot-instructions.md` as a pointer to this file instead of duplicating coding rules there.
 
 ## Staff-Style Feature Pattern
 
@@ -94,7 +94,7 @@ Create meta files only when there is qualified code to put in them. Do not creat
 - `__types.ts`: feature-local DTOs, props shared by multiple files, filter types, layout prop types, and inferred form type aliases.
 - `__columns.tsx`: TanStack `ColumnDef<T>[]` or column factory functions. This file may render cells, but it should import reusable JSX render helpers from `__renderers.tsx`.
 - `__renderers.tsx`: shared JSX render helpers, menus, badges, compact row/card render snippets, and other React-dependent display functions used by more than one component.
-- `__helpers.ts`: pure helpers, mapping functions, option lists, status color maps, and transformations with no JSX.
+- `__helpers.ts`: pure helpers, mapping functions, option lists, status color maps, and transformations with no JSX. Check `apps/webapp/src/lib/utils.ts` before adding new helpers; shared helpers include `cn`, `formatDate`, `getInitials`, `slugify`, `formatMonthYear`, `formatYear`, and `formatRelativeTime`. If several local files need the same shared helper, importing or re-exporting it through `__helpers.ts` is acceptable; do not route those convenience exports through `__columns.tsx`.
 - `__constants.ts`: static constants that are feature-owned and not already available from shared app constants.
 - `__common/queries.ts`: query invalidation helpers or query-key helpers shared by feature mutations/layouts.
 
@@ -114,6 +114,7 @@ import type { Appointment } from './__types';
 - Prefer named exports for reusable leaf forms and helpers. Default exports are acceptable for route/page-level and single-owner components when that matches nearby code.
 - Use `import type` for type-only imports.
 - Use existing shared UI, app components, hooks, schemas, and domain types before adding new abstractions.
+- Prefer object lookups for static status-to-class, status-to-label, and option maps instead of switch statements.
 - Do not leave `console.log`, broad `@ts-ignore`, or commented-out imports in the adopted pattern.
 
 ## Forms
@@ -138,8 +139,9 @@ import type { Appointment } from './__types';
 - Keep input validation schemas in `packages/schemas` when shared by webapp and domain.
 - Keep tRPC router entries thin: import handler modules, attach `inputSchema`, and bind query/mutation handlers.
 - Keep handler files focused on input shape plus orchestration. Put database reads under `db-operations/queries` and writes under `db-operations/commands`.
-- Use `executeWithOffsetPagination` for paginated database queries.
-- Return list payloads with `data`, pagination booleans/cursor, and `count` when total count is requested.
+- Use `executeWithOffsetPagination` from `@/server/utils/pagination` for paginated database queries instead of hand-rolled offset pagination. Build the filtered and ordered Kysely query first, then pass `page: input.page || 1`, `perPage`, and `excludeTotalCount` when the route supports it. When `perPage` is omitted, use the route's established non-paginated fallback shape.
+- Preserve each route's response contract. Common route helpers expose paginated rows as `data`; direct `executeWithOffsetPagination` usage returns `items`, pagination booleans/cursor, and `count`.
+- Reference: `packages/domain/src/server/routes/staff/handlers/db-operations/queries/get-all-staff.query.ts`.
 
 ## Staff Reference Map
 

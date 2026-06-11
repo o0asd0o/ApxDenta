@@ -10,7 +10,7 @@ Reusable webapp components, shared UI package primitives, hooks, styles, and com
 - `apps/webapp/src/lib/**`
 - `apps/webapp/src/hooks/**`
 - `packages/ui/**`
-- `.github/copilot-instructions.md` defines feature file organization for data-table-heavy feature work.
+- `docs/global/coding-standards.md` defines feature file organization for data-table-heavy feature work.
 - Check `apps/webapp/src/lib/utils.ts` before creating duplicate formatting, initials, class-name, or slug helpers.
 
 ## Load When

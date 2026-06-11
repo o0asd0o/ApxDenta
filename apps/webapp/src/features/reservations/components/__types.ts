@@ -15,6 +15,21 @@ export type TreatmentOption = Treatment & {
   pricePerDuration: number;
 };
 
+export type AttachedReservationFileStatus =
+  | 'uploading'
+  | 'completed'
+  | 'cancelled';
+
+export type AttachedReservationFile = {
+  id: string;
+  file: File;
+  name: string;
+  size: number;
+  type: string;
+  progress: number;
+  status: AttachedReservationFileStatus;
+};
+
 export type TreatmentAndDentistFormValues = {
   treatmentId: string;
   doctorId: string;
@@ -22,6 +37,7 @@ export type TreatmentAndDentistFormValues = {
   startTime: string;
   endTime: string;
   note?: string;
+  attachedFiles?: AttachedReservationFile[];
 };
 
 export type BasicInformationFormValues = {

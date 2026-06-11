@@ -9,7 +9,7 @@ Hono server entrypoint/middleware, domain server routes, server utilities, and A
 - `apps/server/src/**`
 - `packages/domain/src/server/**`
 - `packages/domain/src/api-client.ts`
-- `.github/copilot-instructions.md` says paginated queries should use `executeWithOffsetPagination` rather than ad hoc pagination.
+- `docs/global/coding-standards.md` says paginated queries should use `executeWithOffsetPagination` rather than ad hoc pagination.
 
 ## Load When
 

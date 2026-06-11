@@ -16,6 +16,7 @@ export const treatmentAndDentistSchema = z
       .string()
       .max(200, 'Quick note must be 200 characters or less')
       .optional(),
+    attachedFiles: z.array(z.unknown()).optional(),
   })
   .refine((values) => values.endTime > values.startTime, {
     message: 'End time must be after start time',
