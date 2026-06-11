@@ -68,7 +68,7 @@ const CalendarHeader: React.FC<Props> = ({
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
         <div className="flex h-9 items-center gap-2 text-gray-600">
           <Calendar className="size-5 shrink-0" />
-          <span className="text-xl font-bold text-gray-900">
+          <span className="text-xl font-semibold text-gray-900">
             {totalAppointments}
           </span>
           <span className="text-sm text-gray-500">total appointments</span>

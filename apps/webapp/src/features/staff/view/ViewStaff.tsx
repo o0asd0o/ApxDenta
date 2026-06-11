@@ -101,14 +101,14 @@ const ViewStaff = () => {
                 src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${profile}`}
                 alt={name.substring(0, 2)}
               />
-              <AvatarFallback className="bg-amber-500 text-white font-bold">
+              <AvatarFallback className="bg-amber-500 text-white font-semibold">
                 {[name.split(' ')[0][0], name.split(' ')[1][0]]
                   .join('')
                   .toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div className="flex gap-1 flex-col">
-              <span className="text-xl font-bold">{name}</span>
+              <span className="text-xl font-semibold">{name}</span>
               <span className="text-gray-600 text-base capitalize">
                 {staff.specialist?.title || 'General Staff'}{' '}
                 {staff.specialist?.title && (

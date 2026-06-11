@@ -52,53 +52,55 @@ const ReservationDateTimeFields: React.FC<Props> = ({ form, date }) => {
   return (
     <div className="flex flex-col gap-2">
       <p className="text-xs leading-none text-gray-900">Date & Time</p>
-      <div className="grid items-center gap-3 sm:grid-cols-[1fr_auto_auto_auto]">
-        <div className="flex min-h-10 items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex min-h-10 shrink-0 items-center gap-3">
           <span className="h-8 w-1 rounded-full bg-primary" />
           <span className="text-sm font-semibold text-gray-900">
             {formatDisplayDate(date)}
           </span>
         </div>
 
-        <FormField
-          control={form.control}
-          name="startTime"
-          render={({ field }) => (
-            <FormItem>
-              <TimeSelector
-                value={timeStringToSelectorValue(field.value)}
-                onSelect={(value) =>
-                  field.onChange(selectorValueToTimeString(value))
-                }
-                disabledGt={endValue}
-                minValue={RESERVATION_START_TIME}
-                maxValue={RESERVATION_END_TIME}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex shrink-0 items-center gap-2">
+          <FormField
+            control={form.control}
+            name="startTime"
+            render={({ field }) => (
+              <FormItem>
+                <TimeSelector
+                  value={timeStringToSelectorValue(field.value)}
+                  onSelect={(value) =>
+                    field.onChange(selectorValueToTimeString(value))
+                  }
+                  disabledGt={endValue}
+                  minValue={RESERVATION_START_TIME}
+                  maxValue={RESERVATION_END_TIME}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <span className="hidden text-sm text-gray-400 sm:inline">to</span>
+          <span className="text-sm text-gray-400">to</span>
 
-        <FormField
-          control={form.control}
-          name="endTime"
-          render={({ field }) => (
-            <FormItem>
-              <TimeSelector
-                value={timeStringToSelectorValue(field.value)}
-                onSelect={(value) =>
-                  field.onChange(selectorValueToTimeString(value))
-                }
-                disabledLt={startValue}
-                minValue={RESERVATION_START_TIME}
-                maxValue={RESERVATION_END_TIME}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="endTime"
+            render={({ field }) => (
+              <FormItem>
+                <TimeSelector
+                  value={timeStringToSelectorValue(field.value)}
+                  onSelect={(value) =>
+                    field.onChange(selectorValueToTimeString(value))
+                  }
+                  disabledLt={startValue}
+                  minValue={RESERVATION_START_TIME}
+                  maxValue={RESERVATION_END_TIME}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
       </div>
     </div>
   );

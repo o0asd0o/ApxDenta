@@ -82,7 +82,7 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
                   <p className="text-sm text-muted-foreground font-medium">
                     {stat.title}
                   </p>
-                  <p className="text-2xl font-bold mt-2">{stat.value}</p>
+                  <p className="text-2xl font-semibold mt-2">{stat.value}</p>
                   <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                     <TrendingUp className="size-4" />
                     {stat.change}
@@ -102,7 +102,7 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <h3 className="text-lg font-bold">Recent Activity</h3>
+              <h3 className="text-lg font-semibold">Recent Activity</h3>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -168,7 +168,7 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
         <div>
           <Card>
             <CardHeader>
-              <h3 className="text-lg font-bold">Skills & Expertise</h3>
+              <h3 className="text-lg font-semibold">Skills & Expertise</h3>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
@@ -194,7 +194,7 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
         {/* Certifications */}
         <Card>
           <CardHeader>
-            <h3 className="text-lg font-bold flex items-center gap-2">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <Award className="size-5" />
               Certifications
             </h3>
@@ -262,7 +262,7 @@ const Overview: React.FC<OverviewProps> = ({ staffId, services }) => {
         {/* Education */}
         <Card>
           <CardHeader>
-            <h3 className="text-lg font-bold flex items-center gap-2">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <GraduationCap className="size-5" />
               Education
             </h3>

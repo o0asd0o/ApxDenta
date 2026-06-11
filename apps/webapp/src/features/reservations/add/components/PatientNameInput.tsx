@@ -117,7 +117,7 @@ const HighlightedPatientName: React.FC<{
           key={`${segment.start}-${segment.text}`}
           className={
             segment.highlighted
-              ? 'rounded-sm bg-primary/10 font-semibold text-primary'
+              ? 'rounded-sm font-semibold text-primary'
               : undefined
           }
         >

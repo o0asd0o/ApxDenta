@@ -133,7 +133,7 @@ const ViewTreatmentContent: React.FC = () => {
           <div className="flex justify-between items-start mb-6">
             <div className="flex gap-4 flex-col">
               <div className="flex gap-2 items-center">
-                <span className="text-2xl font-bold">{treatment.name}</span>
+                <span className="text-2xl font-semibold">{treatment.name}</span>
                 {treatment.status === 'SAMPLE' &&
                   TREATMENT_STATUS_BADGES[treatment.status]}
               </div>
@@ -248,7 +248,7 @@ const ViewTreatmentContent: React.FC = () => {
                     <p className="text-sm text-muted-foreground font-medium">
                       Starting Price
                     </p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="text-2xl font-semibold mt-1">
                       ₱
                       {new Intl.NumberFormat('en-PH', {
                         minimumFractionDigits: 2,
@@ -270,7 +270,7 @@ const ViewTreatmentContent: React.FC = () => {
                     <p className="text-sm text-muted-foreground font-medium">
                       Duration
                     </p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="text-2xl font-semibold mt-1">
                       {treatment.averageDuration || treatment.duration} hr
                     </p>
                   </div>
@@ -288,7 +288,7 @@ const ViewTreatmentContent: React.FC = () => {
                     <p className="text-sm text-muted-foreground font-medium">
                       Visits
                     </p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="text-2xl font-semibold mt-1">
                       {treatment.visitType === 'SINGLE_VISIT'
                         ? '1'
                         : treatment.visits?.length || 0}
@@ -308,7 +308,7 @@ const ViewTreatmentContent: React.FC = () => {
                     <p className="text-sm text-muted-foreground font-medium">
                       Components
                     </p>
-                    <p className="text-2xl font-bold mt-1">
+                    <p className="text-2xl font-semibold mt-1">
                       {treatment.components?.length || 0}
                     </p>
                   </div>

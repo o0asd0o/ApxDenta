@@ -48,7 +48,7 @@ const RatingsTab: React.FC<RatingsTabProps> = ({ treatmentId }) => {
         <CardContent className="pt-6">
           <div className="text-center py-8">
             <Star className="size-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-bold mb-2">No Ratings Yet</h3>
+            <h3 className="text-lg font-semibold mb-2">No Ratings Yet</h3>
             <p className="text-sm text-muted-foreground">
               This treatment hasn't received any ratings yet.
             </p>
@@ -74,7 +74,7 @@ const RatingsTab: React.FC<RatingsTabProps> = ({ treatmentId }) => {
                 Average Rating
               </p>
               <div className="flex items-center gap-3">
-                <span className="text-4xl font-bold">
+                <span className="text-4xl font-semibold">
                   {averageRating.toFixed(1)}
                 </span>
                 <div className="flex flex-col gap-1">
@@ -93,7 +93,7 @@ const RatingsTab: React.FC<RatingsTabProps> = ({ treatmentId }) => {
 
       {/* Top Ratings */}
       <div>
-        <h3 className="text-lg font-bold mb-4">Top Ratings</h3>
+        <h3 className="text-lg font-semibold mb-4">Top Ratings</h3>
         <div className="grid gap-4 md:grid-cols-2">
           {topRatings.slice(0, 6).map((rating) => (
             <Card key={rating.id}>

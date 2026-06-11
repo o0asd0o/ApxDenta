@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-semibold text-gray-900">
           {getGreeting()}, John!
         </h1>
         <p className="text-sm text-gray-500 mt-1">{formatDate(currentDate)}</p>

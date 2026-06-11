@@ -77,7 +77,7 @@ export const ResetPasswordForm = () => {
           </div>
           <div className="flex flex-col justify-center px-16 text-white">
             <h2 className="text-sm font-normal mb-4 opacity-90">All set!</h2>
-            <h1 className="text-4xl font-bold leading-tight">
+            <h1 className="text-4xl font-semibold leading-tight">
               Your password has
               <br />
               been successfully
@@ -114,7 +114,7 @@ export const ResetPasswordForm = () => {
             </div>
 
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-green-600 mb-2">
+              <h1 className="text-2xl font-semibold text-green-600 mb-2">
                 Password Reset Complete
               </h1>
               <p className="text-gray-600 text-sm">
@@ -173,7 +173,7 @@ export const ResetPasswordForm = () => {
       <div className="hidden lg:flex lg:w-1/2 bg-[url('/images/svg/blurry-gradient.svg')] bg-cover relative overflow-hidden">
         <div className="flex flex-col justify-center px-16 text-white">
           <h2 className="text-sm font-normal mb-4 opacity-90">Almost there</h2>
-          <h1 className="text-4xl font-bold leading-tight">
+          <h1 className="text-4xl font-semibold leading-tight">
             Set your new
             <br />
             password and regain
@@ -210,7 +210,7 @@ export const ResetPasswordForm = () => {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">
               Reset Password
             </h1>
             <p className="text-gray-600 text-sm">

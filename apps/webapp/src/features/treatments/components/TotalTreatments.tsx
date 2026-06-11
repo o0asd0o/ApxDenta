@@ -14,7 +14,7 @@ const TotalTreatments: React.FC<Props> = ({ treatmentStatus }) => {
   );
 
   return (
-    <span className="text-lg font-bold">{totalTreatments?.data || ''}</span>
+    <span className="text-lg font-semibold">{totalTreatments?.data || ''}</span>
   );
 };
 

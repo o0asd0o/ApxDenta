@@ -46,7 +46,7 @@ const FilterTreatmentDialog: React.FC<Props> = ({
           <div>
             <label
               htmlFor="workSchedule"
-              className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+              className="flex text-[13px] items-center font-semibold text-gray-600 uppercase mb-3 gap-1.5"
             >
               <CalendarSearch className="size-4" />
               <span>Type of Visit</span>
@@ -89,9 +89,9 @@ const FilterTreatmentDialog: React.FC<Props> = ({
           <div>
             <label
               htmlFor="priceRange"
-              className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+              className="flex text-[13px] items-center font-semibold text-gray-600 uppercase mb-3 gap-1.5"
             >
-              <span className="font-bold text-xl">₱</span>
+              <span className="font-semibold text-xl">₱</span>
               <span>Price Range</span>
             </label>
             <div className="w-full space-y-3">
@@ -117,7 +117,7 @@ const FilterTreatmentDialog: React.FC<Props> = ({
           <div>
             <label
               htmlFor="rating"
-              className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+              className="flex text-[13px] items-center font-semibold text-gray-600 uppercase mb-3 gap-1.5"
             >
               <Star className="size-5 fill-yellow-400 text-yellow-400" />
               <span>Rating</span>

@@ -114,7 +114,7 @@ export const getStaffColumns = (
                   <Tooltip>
                     <TooltipTrigger
                       asChild
-                      className="bg-transparent text-primary text-xs font-bold"
+                      className="bg-transparent text-primary text-xs font-semibold"
                     >
                       <span className="ml-1 cursor-default">
                         +{assignedTreatments.length - 1}

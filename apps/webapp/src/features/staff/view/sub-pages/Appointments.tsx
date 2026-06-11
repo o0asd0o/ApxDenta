@@ -179,7 +179,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ staffId }) => {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-bold">{patientName}</p>
+                        <p className="font-semibold">{patientName}</p>
                         <p className="text-sm text-muted-foreground">
                           {appointment.treatmentName}
                         </p>

@@ -33,7 +33,10 @@ const ArchiveStaffDialog: React.FC<ArchiveStaffDialogProps> = ({
           <p className="text-sm text-gray-700">
             Are you sure you want to archive
             {doctorName ? (
-              <span className="font-bold text-gray-900"> Dr. {doctorName}</span>
+              <span className="font-semibold text-gray-900">
+                {' '}
+                Dr. {doctorName}
+              </span>
             ) : (
               ' this doctor'
             )}

@@ -228,7 +228,7 @@ const DayView: React.FC<Props> = ({
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
           <div className="relative flex">
             {/* Time labels column */}
-            <div className="sticky left-0 z-10 w-20 shrink-0 border-r bg-gray-50">
+            <div className="sticky left-0 z-15 w-20 shrink-0 border-r bg-gray-50">
               {TIME_SLOTS.map((slot) => (
                 <div
                   key={slot.hour}

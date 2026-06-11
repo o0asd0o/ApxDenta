@@ -77,7 +77,7 @@ const FilterSection = ({
   children: React.ReactNode;
 }) => (
   <div>
-    <div className="mb-3 flex items-center gap-1.5 text-[13px] font-bold uppercase text-gray-600">
+    <div className="mb-3 flex items-center gap-1.5 text-[13px] font-semibold uppercase text-gray-600">
       {icon}
       <span>{title}</span>
     </div>

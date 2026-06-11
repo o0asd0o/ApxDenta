@@ -233,7 +233,7 @@ const WeekView: React.FC<Props> = ({
                 </span>
                 <span
                   className={cn(
-                    'text-lg font-bold',
+                    'text-lg font-semibold',
                     today ? 'text-primary' : 'text-gray-900',
                   )}
                 >

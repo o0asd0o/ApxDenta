@@ -36,7 +36,7 @@ export default function Header() {
   const location = useLocation();
   return (
     <header className="grid grid-cols-2 md:grid-cols-3 h-15 md:h-18 shrink-0 justify-center items-center gap-2 border-b px-6 py-2">
-      <h1 className="text-2xl font-bold whitespace-nowrap">
+      <h1 className="text-2xl font-semibold whitespace-nowrap">
         {Object.entries(ROUTE_LABEL_MAPPING).find(([_key]) => {
           const key = _key.replace(/^\//g, '');
           if (!key) return false;

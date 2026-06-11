@@ -126,7 +126,7 @@ const Calendar = ({
           'hover:bg-gray-200 dark:hover:bg-gray-700',
           focusRing,
         ),
-        day_today: 'font-bold',
+        day_today: 'font-semibold',
         day_selected: cn(
           'rounded-sm',
           'aria-selected:bg-blue-500 aria-selected:text-white',

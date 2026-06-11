@@ -83,7 +83,7 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
                 <p className="text-sm text-muted-foreground font-medium">
                   Total Patients
                 </p>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-2xl font-semibold mt-1">
                   {isLoading ? (
                     <Skeleton className="h-8 w-12" />
                   ) : (
@@ -104,7 +104,7 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
                 <p className="text-sm text-muted-foreground font-medium">
                   Active Patients
                 </p>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-2xl font-semibold mt-1">
                   {isLoading ? (
                     <Skeleton className="h-8 w-12" />
                   ) : (
@@ -125,7 +125,7 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
                 <p className="text-sm text-muted-foreground font-medium">
                   New Patients
                 </p>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-2xl font-semibold mt-1">
                   {isLoading ? <Skeleton className="h-8 w-12" /> : newPatients}
                 </p>
               </div>
@@ -243,7 +243,7 @@ const Patients: React.FC<PatientsProps> = ({ staffId }) => {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-bold">{patientName}</p>
+                        <p className="font-semibold">{patientName}</p>
                         <p className="text-xs text-muted-foreground">
                           {patient.totalTreatments} treatments
                         </p>

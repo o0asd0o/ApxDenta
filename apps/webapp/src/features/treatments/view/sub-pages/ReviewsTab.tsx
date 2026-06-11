@@ -47,7 +47,7 @@ const ReviewsTab: React.FC<ReviewsTabProps> = ({ treatmentId }) => {
         <CardContent className="pt-6">
           <div className="text-center py-8">
             <MessageSquare className="size-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-bold mb-2">No Reviews Yet</h3>
+            <h3 className="text-lg font-semibold mb-2">No Reviews Yet</h3>
             <p className="text-sm text-muted-foreground">
               This treatment hasn't received any reviews yet.
             </p>
@@ -60,7 +60,7 @@ const ReviewsTab: React.FC<ReviewsTabProps> = ({ treatmentId }) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold">Recent Reviews</h3>
+        <h3 className="text-lg font-semibold">Recent Reviews</h3>
         <Badge variant="secondary">
           {totalCount} Review{totalCount !== 1 ? 's' : ''}
         </Badge>

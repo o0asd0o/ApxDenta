@@ -41,13 +41,13 @@ const StaffCard: React.FC<Props> = ({ staff }) => {
             src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${staff.avatar?.url}`}
             alt={initials}
           />
-          <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-600 text-white font-bold text-lg">
+          <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-600 text-white font-semibold text-lg">
             {initials}
           </AvatarFallback>
         </Avatar>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-base leading-tight truncate pr-2">
+          <h3 className="font-semibold text-base leading-tight truncate pr-2">
             {staff.firstName} {staff.lastName}
           </h3>
           <div className="text-xs text-gray-500 mt-0.5">
@@ -99,7 +99,7 @@ const StaffCard: React.FC<Props> = ({ staff }) => {
       <div className="p-4 pt-3 space-y-3">
         {/* Employment Type */}
         <div className="flex gap-2 items-center">
-          <span className="text-xs text-gray-600 uppercase font-bold inline-flex items-center gap-1">
+          <span className="text-xs text-gray-600 uppercase font-semibold inline-flex items-center gap-1">
             <IdCard className="size-3.5 text-gray-400" />
           </span>
           {EMPLOYMENT_TYPE_BADGES[staff.employmentType]}
@@ -108,7 +108,7 @@ const StaffCard: React.FC<Props> = ({ staff }) => {
         {/* Assigned Services */}
         {staff.assignedServices && staff.assignedServices.length > 0 && (
           <div className="flex gap-2 items-baseline">
-            <div className="text-xs text-gray-600 uppercase font-bold inline-flex items-center gap-1 relative top-0.5">
+            <div className="text-xs text-gray-600 uppercase font-semibold inline-flex items-center gap-1 relative top-0.5">
               <BriefcaseMedical className="size-3.5 text-gray-400" />
             </div>
             <ul className="text-gray-950 list-disc w-[calc(100%-20px)]">
@@ -119,7 +119,7 @@ const StaffCard: React.FC<Props> = ({ staff }) => {
                     <Tooltip>
                       <TooltipTrigger
                         asChild
-                        className="bg-transparent text-primary text-xs font-bold"
+                        className="bg-transparent text-primary text-xs font-semibold"
                       >
                         <span className="ml-1 cursor-default">
                           +{staff.assignedServices.length - 3}
@@ -153,7 +153,7 @@ const StaffCard: React.FC<Props> = ({ staff }) => {
         {/* Work Schedule */}
         <div className="grid grid-cols-1 gap-3">
           <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-2.5 border border-gray-100">
-            <div className="flex items-center gap-1.5 text-[10px] text-gray-500 uppercase font-bold mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] text-gray-500 uppercase font-semibold mb-1">
               <Calendar className="size-3" />
               Work Schedule
             </div>

@@ -57,7 +57,7 @@ export const CompanySection: React.FC<Props> = () => {
             <Tooltip>
               <TooltipTrigger
                 asChild
-                className="bg-transparent text-primary text-xs font-bold"
+                className="bg-transparent text-primary text-xs font-semibold"
               >
                 <InfoIcon className="size-4.5 text-red-500" />
               </TooltipTrigger>

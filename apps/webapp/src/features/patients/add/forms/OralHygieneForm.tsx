@@ -25,7 +25,7 @@ const OralHygieneForm: React.FC<Props> = ({ form }) => {
         name="lastDentalVisit"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel className="text-sm font-bold">
+            <FormLabel className="text-sm font-semibold">
               1. When was your last dental visit?
             </FormLabel>
             <FormControl>
@@ -70,7 +70,7 @@ const OralHygieneForm: React.FC<Props> = ({ form }) => {
         name="dentalCareStart"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel className="text-sm font-bold">
+            <FormLabel className="text-sm font-semibold">
               2. When did you start dental care?
             </FormLabel>
             <FormControl>
@@ -115,7 +115,7 @@ const OralHygieneForm: React.FC<Props> = ({ form }) => {
         name="washTeethFrequency"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel className="text-sm font-bold">
+            <FormLabel className="text-sm font-semibold">
               3. How often do you brush your teeth daily?
             </FormLabel>
             <FormControl>
@@ -160,7 +160,7 @@ const OralHygieneForm: React.FC<Props> = ({ form }) => {
         name="oralHygieneDuration"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel className="text-sm font-bold">
+            <FormLabel className="text-sm font-semibold">
               4. How long do you brush your teeth?
             </FormLabel>
             <FormControl>
@@ -205,7 +205,7 @@ const OralHygieneForm: React.FC<Props> = ({ form }) => {
         name="changeToothBrushFrequency"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel className="text-sm font-bold">
+            <FormLabel className="text-sm font-semibold">
               5. How often do you change your toothbrush?
             </FormLabel>
             <FormControl>
@@ -250,7 +250,7 @@ const OralHygieneForm: React.FC<Props> = ({ form }) => {
         name="usingMouthWash"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel className="text-sm font-bold">
+            <FormLabel className="text-sm font-semibold">
               6. Do you use mouthwash?
             </FormLabel>
             <FormControl>
@@ -283,7 +283,7 @@ const OralHygieneForm: React.FC<Props> = ({ form }) => {
         name="usingDentalFloss"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel className="text-sm font-bold">
+            <FormLabel className="text-sm font-semibold">
               7. Do you use dental floss?
             </FormLabel>
             <FormControl>

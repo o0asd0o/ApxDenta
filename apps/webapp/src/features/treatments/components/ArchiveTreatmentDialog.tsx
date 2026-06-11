@@ -33,7 +33,9 @@ const ArchiveTreatmentDialog: React.FC<ArchiveStaffDialogProps> = ({
           <p className="text-sm text-gray-700">
             Are you sure you want to archive{' '}
             {treatmentName ? (
-              <span className="font-bold text-gray-900">{treatmentName}</span>
+              <span className="font-semibold text-gray-900">
+                {treatmentName}
+              </span>
             ) : (
               ' this treatment'
             )}

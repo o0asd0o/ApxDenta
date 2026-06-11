@@ -45,17 +45,20 @@ const RescheduleReservationDialog: React.FC<Props> = ({
           <p className="text-sm text-gray-700">
             Move
             {patientName ? (
-              <span className="font-bold text-gray-900"> {patientName}</span>
+              <span className="font-semibold text-gray-900">
+                {' '}
+                {patientName}
+              </span>
             ) : (
               ' this appointment'
             )}{' '}
-            to <span className="font-bold text-gray-900">{doctorName}</span>{' '}
+            to <span className="font-semibold text-gray-900">{doctorName}</span>{' '}
             from{' '}
-            <span className="font-bold text-gray-900">
+            <span className="font-semibold text-gray-900">
               {request ? formatTime(request.startTime) : ''}
             </span>{' '}
             to{' '}
-            <span className="font-bold text-gray-900">
+            <span className="font-semibold text-gray-900">
               {request ? formatTime(request.endTime) : ''}
             </span>
             ? This will update the appointment time in the current calendar.

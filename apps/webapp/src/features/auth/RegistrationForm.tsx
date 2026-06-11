@@ -93,7 +93,7 @@ export const RegistrationForm: React.FC = () => {
           <h2 className="text-sm font-normal mb-4 opacity-90">
             Join thousands of clinics
           </h2>
-          <h1 className="text-4xl font-bold leading-tight">
+          <h1 className="text-4xl font-semibold leading-tight">
             Transform your dental
             <br />
             clinic with modern
@@ -130,7 +130,7 @@ export const RegistrationForm: React.FC = () => {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">
               Create your account
             </h1>
             <p className="text-gray-600 text-sm">

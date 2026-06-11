@@ -46,7 +46,7 @@ const PopularTreatmentList: React.FC<Props> = ({ treatments, onSelect }) => {
             <span className="h-5 w-px bg-gray-200" />
             <span className="whitespace-nowrap text-sm text-gray-400">
               Start from{' '}
-              <span className="font-bold text-gray-900">
+              <span className="font-semibold text-gray-900">
                 {formatCurrency(treatment.pricePerDuration)}
               </span>
             </span>

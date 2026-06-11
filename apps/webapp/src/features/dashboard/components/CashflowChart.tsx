@@ -41,7 +41,7 @@ const CashflowChart: React.FC = () => {
   return (
     <Card className="col-span-2 gap-4 p-4">
       <CardHeader className="flex flex-row items-center justify-between pb-2 pl-1 pr-0">
-        <p className="text-sm font-bold text-gray-900">Cashflow</p>
+        <p className="text-sm font-semibold text-gray-900">Cashflow</p>
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-[140px] h-7 text-xs">
             <SelectValue placeholder="Select period" />
@@ -57,11 +57,13 @@ const CashflowChart: React.FC = () => {
         {/* Stats Row */}
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-gray-500 uppercase font-bold">
+            <p className="text-xs text-gray-500 uppercase font-semibold">
               Total Cash
             </p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-3xl font-bold text-gray-900">$13,232</span>
+              <span className="text-3xl font-semibold text-gray-900">
+                $13,232
+              </span>
               <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
                 <TrendingUp className="size-3" />
                 4.51%
