@@ -9,6 +9,7 @@ Always load:
 - `docs/memory-policy.md` when changing `AGENTS.md`, `docs/**`, `.github/copilot-instructions.md`, or repository memory/routing behavior.
 - `docs/global/architecture.md` when changing app/package boundaries, cross-package contracts, build tooling, dependency strategy, authentication shape, database strategy, or deployment assumptions.
 - `docs/global/coding-standards.md` when changing `apps/webapp/src/features/**`, feature route entrypoints under `apps/webapp/src/routes/**`, `.github/copilot-instructions.md`, or feature file organization/import patterns. Keep `.github/copilot-instructions.md` as a pointer to this canonical standard instead of duplicating coding rules.
+- `docs/global/server-coding-standards.md` when changing `apps/server/**`, `packages/domain/src/server/**`, `packages/domain/src/api-client.ts`, server route handlers, database query/command structure, pagination, server validation, or server error handling.
 
 ## Path Routing
 
@@ -22,7 +23,7 @@ Always load:
 | `apps/webapp/src/features/stocks/**`, `apps/webapp/src/features/peripherals/**`, `packages/domain/src/server/routes/stocks/**`, `packages/domain/src/server/routes/peripherals/**` | `docs/features/physical-assets/context.md`, `docs/features/physical-assets/seams.md`, `docs/features/physical-assets/debugging.md` |
 | `apps/webapp/src/features/auth/**`, `apps/webapp/src/routes/(auth)/**`, `packages/domain/src/auth/**`, `packages/email/src/templates/users/**` | `docs/features/auth/context.md`, `docs/features/auth/seams.md`, `docs/features/auth/debugging.md` |
 | `apps/webapp/src/components/**`, `packages/ui/**`, `apps/webapp/src/lib/**`, `apps/webapp/src/hooks/**` | `docs/features/shared-ui/context.md`, `docs/features/shared-ui/seams.md`, `docs/features/shared-ui/debugging.md` |
-| `apps/server/**`, `packages/domain/src/server/**`, `packages/domain/src/api-client.ts` | `docs/features/server-api/context.md`, `docs/features/server-api/seams.md`, `docs/features/server-api/debugging.md` |
+| `apps/server/**`, `packages/domain/src/server/**`, `packages/domain/src/api-client.ts` | `docs/global/server-coding-standards.md`, `docs/features/server-api/context.md`, `docs/features/server-api/seams.md`, `docs/features/server-api/debugging.md` |
 | `packages/domain/src/db/**`, `packages/domain/src/db/prisma/**` | `docs/features/database/context.md`, `docs/features/database/seams.md`, `docs/features/database/debugging.md` |
 | `packages/email/**` | `docs/features/email/context.md`, `docs/features/email/seams.md`, `docs/features/email/debugging.md` |
 | `packages/schemas/**` | `docs/features/schemas/context.md`, `docs/features/schemas/seams.md`, `docs/features/schemas/debugging.md` |

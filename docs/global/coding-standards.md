@@ -2,6 +2,8 @@
 
 These standards describe how feature pages should be organized and coded in ApxDenta. The current reference implementation is `apps/webapp/src/features/staff/**`; copy the shape, not every incidental line. Keep `.github/copilot-instructions.md` as a pointer to this file instead of duplicating coding rules there.
 
+Server-side standards live in `docs/global/server-coding-standards.md`. Load that document for `apps/server/**`, `packages/domain/src/server/**`, and other server-facing route, handler, query, command, validation, pagination, or error-handling work.
+
 ## Staff-Style Feature Pattern
 
 Use this pattern for record-management features with list, card, detail, create, update, filter, archive, and related sub-page flows.
@@ -137,11 +139,8 @@ import type { Appointment } from './__types';
 ## Domain And API Boundary
 
 - Keep input validation schemas in `packages/schemas` when shared by webapp and domain.
-- Keep tRPC router entries thin: import handler modules, attach `inputSchema`, and bind query/mutation handlers.
-- Keep handler files focused on input shape plus orchestration. Put database reads under `db-operations/queries` and writes under `db-operations/commands`.
-- Use `executeWithOffsetPagination` from `@/server/utils/pagination` for paginated database queries instead of hand-rolled offset pagination. Build the filtered and ordered Kysely query first, then pass `page: input.page || 1`, `perPage`, and `excludeTotalCount` when the route supports it. When `perPage` is omitted, use the route's established non-paginated fallback shape.
-- Preserve each route's response contract. Common route helpers expose paginated rows as `data`; direct `executeWithOffsetPagination` usage returns `items`, pagination booleans/cursor, and `count`.
-- Reference: `packages/domain/src/server/routes/staff/handlers/db-operations/queries/get-all-staff.query.ts`.
+- Keep frontend route files and feature code out of server business logic; server transport, handler, query, command, pagination, tenant filtering, and response-envelope rules are governed by `docs/global/server-coding-standards.md`.
+- When a frontend change crosses into `apps/server/**` or `packages/domain/src/server/**`, load the server standards before editing the backend side of the contract.
 
 ## Staff Reference Map
 

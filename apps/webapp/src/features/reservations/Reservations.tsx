@@ -4,6 +4,7 @@ import {
   Root,
   TabContent,
 } from '@/components/tabs/NavigationTabs';
+import { useDeferredDisclosure } from '@/hooks/use-deferred-disclosure';
 import { useQueryState } from 'nuqs';
 import React, { useMemo, useState } from 'react';
 import { CreateWaitlistReservation } from './add/CreateWaitlistReservation';
@@ -42,8 +43,7 @@ const Reservations: React.FC = () => {
   const [filters, setFilters] = useState<ReservationFilterType>({});
   const [reservations, setReservations] =
     useState<Reservation[]>(mockReservations);
-  const [selectedAddSlot, setSelectedAddSlot] =
-    useState<ReservationAddSlot | null>(null);
+  const waitlist = useDeferredDisclosure<ReservationAddSlot>();
   const [rescheduleRequest, setRescheduleRequest] =
     useState<ReservationRescheduleRequest | null>(null);
 
@@ -117,10 +117,6 @@ const Reservations: React.FC = () => {
     ]);
   };
 
-  const handleWaitlistOpenChange = (open: boolean) => {
-    if (!open) setSelectedAddSlot(null);
-  };
-
   const handleConfirmReschedule = () => {
     if (!rescheduleRequest) return;
 
@@ -180,7 +176,7 @@ const Reservations: React.FC = () => {
                 doctors={filteredDoctors}
                 reservations={filteredReservations}
                 validationReservations={reservations}
-                onAddSlot={setSelectedAddSlot}
+                onAddSlot={waitlist.show}
                 onRequestReschedule={setRescheduleRequest}
               />
             ) : (
@@ -189,7 +185,7 @@ const Reservations: React.FC = () => {
                 doctors={filteredDoctors}
                 reservations={filteredReservations}
                 validationReservations={reservations}
-                onAddSlot={setSelectedAddSlot}
+                onAddSlot={waitlist.show}
               />
             )}
           </div>
@@ -202,14 +198,14 @@ const Reservations: React.FC = () => {
             applyFilters={setFilters}
           />
 
-          {selectedAddSlot && (
+          {waitlist.value && (
             <CreateWaitlistProvider
-              key={`${selectedAddSlot.doctor.id}-${selectedAddSlot.startTime.toISOString()}`}
+              key={`${waitlist.value.doctor.id}-${waitlist.value.startTime.toISOString()}`}
             >
               <CreateWaitlistReservation
-                open={!!selectedAddSlot}
-                setOpen={handleWaitlistOpenChange}
-                slot={selectedAddSlot}
+                open={waitlist.open}
+                setOpen={waitlist.setOpen}
+                slot={waitlist.value}
                 doctors={mockDoctors}
                 patients={patientOptions}
                 treatments={treatmentOptions}
