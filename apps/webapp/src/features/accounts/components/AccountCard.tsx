@@ -43,7 +43,7 @@ const AccountCard: React.FC<Props> = ({ account }) => {
             <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
               {account.name}
             </p>
-            <p className="text-xl font-bold text-gray-900">
+            <p className="text-xl font-semibold text-gray-900">
               {formattedBalance}
             </p>
           </div>

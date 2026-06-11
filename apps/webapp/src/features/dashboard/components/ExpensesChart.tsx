@@ -34,7 +34,7 @@ const ExpensesChart: React.FC = () => {
   return (
     <Card className="col-span-2 lg:col-span-1 gap-4 p-4">
       <CardHeader className="flex flex-row items-center justify-between pb-2 pl-1 pr-0">
-        <p className="text-sm font-bold text-gray-900">Expenses</p>
+        <p className="text-sm font-semibold text-gray-900">Expenses</p>
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-[140px] h-7 text-xs">
             <SelectValue placeholder="Select period" />
@@ -75,7 +75,7 @@ const ExpensesChart: React.FC = () => {
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <p className="text-[10px] text-gray-500">Total Expense</p>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-lg font-semibold text-gray-900">
                 ${totalExpense.toLocaleString()}
               </p>
             </div>
@@ -103,7 +103,7 @@ const ExpensesChart: React.FC = () => {
 
         {/* Top Expenses */}
         <div className="pt-2 border-t">
-          <p className="text-xs text-gray-500 uppercase font-bold mb-3">
+          <p className="text-xs text-gray-500 uppercase font-semibold mb-3">
             Top Expense
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -115,7 +115,7 @@ const ExpensesChart: React.FC = () => {
                 />
                 <div>
                   <p className="text-xs text-gray-500">{expense.name}</p>
-                  <p className="text-sm font-bold text-gray-900">
+                  <p className="text-sm font-semibold text-gray-900">
                     ${expense.amount.toLocaleString()}
                   </p>
                 </div>

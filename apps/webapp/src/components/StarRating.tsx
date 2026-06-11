@@ -38,7 +38,7 @@ const StarRating: React.FC<Props> = ({ rating }) => {
           className="size-4 fill-gray-300 text-gray-300"
         />
       ))}
-      <span className="ml-1 text-sm font-bold">{rating.toFixed(1)}</span>
+      <span className="ml-1 text-sm font-semibold">{rating.toFixed(1)}</span>
     </div>
   );
 };

@@ -1,21 +1,10 @@
 import type { WorkingHoursDays } from '@/features/staff/add/forms/WorkingHoursForm';
-import { getTimeIntervalItems } from '@/lib/dates';
-import { cn } from '@/lib/utils';
 import type { workingHoursSchema } from '@repo/schemas';
-import {
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Switch,
-  useFormField,
-} from '@repo/ui/components';
-import { Clock8 } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import { Label, Switch, useFormField } from '@repo/ui/components';
+import React, { useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { z } from 'zod';
+import TimeSelector from './TimeSelector';
 
 type Props = {
   form: UseFormReturn<z.infer<typeof workingHoursSchema>>;
@@ -91,54 +80,5 @@ export const DaySchedule: React.FC<Props> = ({
         </div>
       )}
     </div>
-  );
-};
-
-const data = getTimeIntervalItems();
-
-type TimeProps = {
-  onSelect: (value: number) => void;
-  error?: string;
-  value?: number;
-  disabledGt?: number;
-  disabledLt?: number;
-};
-const TimeSelector: React.FC<TimeProps> = ({
-  onSelect,
-  value,
-  disabledGt,
-  disabledLt,
-  error,
-}) => {
-  const list = useMemo(() => {
-    return data
-      .filter((item) => (disabledGt ? item.value < disabledGt : true))
-      .filter((item) => (disabledLt ? item.value > disabledLt : true));
-  }, [disabledGt, disabledLt]);
-
-  return (
-    <Select
-      value={value ? String(value) : undefined}
-      onValueChange={(v) => onSelect(Number.parseInt(v))}
-    >
-      <SelectTrigger
-        icon={
-          <Clock8 className="xs:block hidden opacity-50 size-4 text-[11px] xs:text-xs" />
-        }
-        className={cn(
-          'w-[94px] xs:w-[130px] px-1.5 xs:p-2 flex h-[32px] [&>span]:text-[12px] xs:[&>span]:text-[13px]',
-          error && 'border-rose-500 focus:border-rose-500',
-        )}
-      >
-        <SelectValue placeholder="Pick time" />
-      </SelectTrigger>
-      <SelectContent>
-        {list.map((item) => (
-          <SelectItem key={item.value} value={String(item.value)}>
-            {item.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
   );
 };

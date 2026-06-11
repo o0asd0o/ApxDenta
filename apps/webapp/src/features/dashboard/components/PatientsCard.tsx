@@ -41,7 +41,7 @@ const PatientsCard: React.FC = () => {
   return (
     <Card className="gap-2 p-4">
       <CardHeader className="flex flex-row items-center justify-between pb-2 pl-1 pr-0">
-        <p className="text-sm font-bold text-gray-900">Patients</p>
+        <p className="text-sm font-semibold text-gray-900">Patients</p>
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-[140px] h-7 text-xs">
             <SelectValue placeholder="Select period" />
@@ -58,7 +58,7 @@ const PatientsCard: React.FC = () => {
         <div className="flex">
           {/* New Patients */}
           <div className="flex-1 pr-4 border-r border-gray-200">
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-semibold text-gray-900">
               {patientsData.newPatients}
             </p>
             <div className="mt-2 space-y-1">
@@ -76,7 +76,7 @@ const PatientsCard: React.FC = () => {
 
           {/* Returning Patients */}
           <div className="flex-1 pl-4">
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-semibold text-gray-900">
               {patientsData.returningPatients}
             </p>
             <div className="mt-2 space-y-1">

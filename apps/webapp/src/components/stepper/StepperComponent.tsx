@@ -25,7 +25,7 @@ function StepperComponent<T>({
   form,
 }: Props<T>) {
   return (
-    <nav aria-label="Checkout Steps" className="group">
+    <nav aria-label="Checkout Steps" className="group px-7.5">
       <ol
         className="flex items-center justify-between gap-2 relative"
         aria-orientation="horizontal"

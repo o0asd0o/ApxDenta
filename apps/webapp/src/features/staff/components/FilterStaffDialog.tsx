@@ -86,7 +86,7 @@ const FilterStaffDialog: React.FC<Props> = ({
           <div>
             <label
               htmlFor="workSchedule"
-              className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+              className="flex text-[13px] items-center font-semibold text-gray-600 uppercase mb-3 gap-1.5"
             >
               <CalendarSearch className="size-4" />
               <span>Work Schedule</span>
@@ -108,7 +108,7 @@ const FilterStaffDialog: React.FC<Props> = ({
           <div>
             <label
               htmlFor="status"
-              className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+              className="flex text-[13px] items-center font-semibold text-gray-600 uppercase mb-3 gap-1.5"
             >
               <UserSearch className="size-4" />
               <span>Employment Status</span>
@@ -139,7 +139,7 @@ const FilterStaffDialog: React.FC<Props> = ({
               <div>
                 <label
                   htmlFor="assignedServices"
-                  className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+                  className="flex text-[13px] items-center font-semibold text-gray-600 uppercase mb-3 gap-1.5"
                 >
                   <ShieldPlus className="size-4" />
                   <span>Assigned Treatment</span>
@@ -172,7 +172,7 @@ const FilterStaffDialog: React.FC<Props> = ({
               <div>
                 <label
                   htmlFor="specialistRecord"
-                  className="flex text-[13px] items-center font-bold text-gray-600 uppercase mb-3 gap-1.5"
+                  className="flex text-[13px] items-center font-semibold text-gray-600 uppercase mb-3 gap-1.5"
                 >
                   <Stethoscope className="size-4" />
                   <span>Specialist Record</span>

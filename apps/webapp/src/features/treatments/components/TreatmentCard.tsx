@@ -42,7 +42,7 @@ const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment }) => {
       <div className="p-4 pb-3">
         {/* Treatment Name & Status */}
         <div className="pr-8 mb-1 flex gap-3">
-          <h3 className="font-bold text-base leading-tight mb-1">
+          <h3 className="font-semibold text-base leading-tight mb-1">
             {treatment.name}
           </h3>
         </div>
@@ -65,7 +65,7 @@ const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment }) => {
         <div className="space-y-1.5">
           <div className="flex items-baseline gap-1.5">
             <span className="text-xs text-gray-500">Starts from</span>
-            <span className="font-bold text-sm">₱{formattedPrice}</span>
+            <span className="font-semibold text-sm">₱{formattedPrice}</span>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-gray-600">
             <Clock className="size-3.5 text-gray-400" />
@@ -83,7 +83,7 @@ const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment }) => {
         {/* Rating & Reviews */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-2.5 border border-gray-100">
-            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-bold mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-semibold mb-1">
               <Star className="size-3" />
               Rating
             </div>
@@ -101,7 +101,7 @@ const TreatmentCard: React.FC<TreatmentCardProps> = ({ treatment }) => {
           </div>
 
           <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-2.5 border border-gray-100">
-            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-bold mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-semibold mb-1">
               Reviews
             </div>
             <div className="text-xs font-medium text-gray-900">

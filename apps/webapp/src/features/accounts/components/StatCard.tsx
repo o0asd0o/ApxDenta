@@ -30,7 +30,9 @@ const StatCard: React.FC<Props> = ({ title, value, icon, trend }) => {
           {title}
         </p>
         <div className="flex items-center gap-2">
-          <p className="text-xl font-bold text-gray-900">{formattedValue}</p>
+          <p className="text-xl font-semibold text-gray-900">
+            {formattedValue}
+          </p>
           {trend && (
             <span
               className={cn(

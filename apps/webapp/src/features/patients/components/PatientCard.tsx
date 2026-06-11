@@ -107,13 +107,13 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
             src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar?.url}`}
             alt={initials}
           />
-          <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-600 text-white font-bold text-lg">
+          <AvatarFallback className="bg-gradient-to-br from-primary-500 to-primary-600 text-white font-semibold text-lg">
             {initials}
           </AvatarFallback>
         </Avatar>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-base leading-tight truncate pr-2">
+          <h3 className="font-semibold text-base leading-tight truncate pr-2">
             {fullName}
           </h3>
           <div className="flex items-center gap-0 mt-1">
@@ -175,7 +175,7 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
         <div className="grid grid-cols-2 gap-3">
           {/* Last Visit */}
           <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-2.5 border border-gray-100">
-            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-bold mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-semibold mb-1">
               <CalendarCheck className="size-3" />
               Last Visit
             </div>
@@ -190,7 +190,7 @@ const PatientCard: React.FC<Props> = ({ patient }) => {
 
           {/* Last Treatment */}
           <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg p-2.5 border border-gray-100">
-            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-bold mb-1">
+            <div className="flex items-center gap-1.5 text-[10px] text-primary-600 uppercase font-semibold mb-1">
               <Stethoscope className="size-3" />
               Treatment
             </div>

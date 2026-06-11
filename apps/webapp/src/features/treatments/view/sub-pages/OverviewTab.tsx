@@ -110,8 +110,8 @@ const OverviewTab: React.FC<Props> = ({ treatment }) => {
               </span>
             </div>
             <div className="flex justify-between items-center pt-2">
-              <span className="font-bold">Total Starting Price</span>
-              <span className="text-xl font-bold text-primary">
+              <span className="font-semibold">Total Starting Price</span>
+              <span className="text-xl font-semibold text-primary">
                 ₱
                 {new Intl.NumberFormat('en-PH', {
                   minimumFractionDigits: 2,

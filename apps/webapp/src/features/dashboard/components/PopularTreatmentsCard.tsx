@@ -12,7 +12,7 @@ const PopularTreatmentsCard: React.FC = () => {
   return (
     <Card className="gap-2 p-4">
       <CardHeader className="pb-2 pl-1 pr-0">
-        <p className="text-sm font-bold text-gray-900">Popular Treatment</p>
+        <p className="text-sm font-semibold text-gray-900">Popular Treatment</p>
       </CardHeader>
       <CardContent className="px-0">
         <div className="space-y-3">

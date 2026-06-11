@@ -5,30 +5,32 @@ import {
   AvatarImage,
   Badge,
 } from '@repo/ui/components';
+import { Plus } from 'lucide-react';
 import React from 'react';
-import { mockDoctors, mockReservations } from './mockData';
+import { createOneHourSlot, isReservationRangeAvailable } from './__helpers';
+import type { ReservationAddSlot } from './__types';
+import {
+  mockDoctors,
+  mockReservationVisualStates,
+  mockReservations,
+} from './mockData';
+import {
+  ReservationStatusPill,
+  ReservationVisualIcon,
+  type ReservationVisualStateMap,
+  getReservationDisplayVisualState,
+  getReservationVisualMeta,
+} from './reservationVisuals';
 import type { Doctor, Reservation } from './types';
+import { TIME_SLOTS } from './types';
 
 interface Props {
   startDate: Date;
   doctors: Doctor[];
   reservations: Reservation[];
+  validationReservations?: Reservation[];
+  onAddSlot?: (slot: ReservationAddSlot) => void;
 }
-
-const getStatusColor = (status: Reservation['status']) => {
-  switch (status) {
-    case 'DONE':
-      return 'bg-emerald-100 border-emerald-200 text-emerald-700';
-    case 'PENDING':
-      return 'bg-blue-100 border-blue-200 text-blue-700';
-    case 'ENCOUNTER':
-      return 'bg-amber-100 border-amber-200 text-amber-700';
-    case 'CANCELLED':
-      return 'bg-red-100 border-red-200 text-red-700';
-    case 'NO_SHOW':
-      return 'bg-gray-100 border-gray-200 text-gray-700';
-  }
-};
 
 const getInitials = (name: string) => {
   return name
@@ -47,10 +49,61 @@ const formatTime = (date: Date) => {
   });
 };
 
+const WeekReservationCard: React.FC<{
+  reservation: Reservation;
+  visualStates?: ReservationVisualStateMap;
+}> = ({ reservation, visualStates }) => {
+  const visualState = getReservationDisplayVisualState(
+    reservation,
+    visualStates,
+  );
+  const visual = getReservationVisualMeta(visualState);
+
+  return (
+    <div
+      className={cn(
+        'rounded-lg border p-2 text-xs cursor-pointer hover:shadow-sm transition-shadow',
+        visual.cardClassName,
+      )}
+    >
+      <div className="mb-1.5 flex items-start justify-between gap-2">
+        <div className="flex min-w-0 items-start gap-1.5">
+          <ReservationVisualIcon
+            reservation={reservation}
+            visualState={visualState}
+            className="size-[18px]"
+          />
+          <div className="min-w-0">
+            <p className="truncate text-[11px] font-semibold leading-4 text-gray-900">
+              {reservation.patient.name}
+            </p>
+            <p className="text-[10px] leading-[14px] text-gray-500">
+              {formatTime(reservation.startTime)} -{' '}
+              {formatTime(reservation.endTime)}
+            </p>
+          </div>
+        </div>
+        <ReservationStatusPill
+          status={reservation.status}
+          className="max-w-[94px] px-1.5 text-[9px]"
+        />
+      </div>
+      <Badge
+        variant="outline"
+        className="ml-5 rounded-full bg-white px-1.5 py-0 text-[9px] font-medium text-gray-700"
+      >
+        {reservation.treatment.name}
+      </Badge>
+    </div>
+  );
+};
+
 const WeekView: React.FC<Props> = ({
   startDate,
   doctors = mockDoctors,
   reservations = mockReservations,
+  validationReservations = reservations,
+  onAddSlot,
 }) => {
   // Generate 7 days starting from startDate
   const weekDays = Array.from({ length: 7 }, (_, i) => {
@@ -86,6 +139,33 @@ const WeekView: React.FC<Props> = ({
     });
   };
 
+  const getFirstAvailableAddSlot = (doctor: Doctor, date: Date) => {
+    if (!doctor.isAvailable) return null;
+
+    for (const timeSlot of TIME_SLOTS) {
+      const { startTime, endTime } = createOneHourSlot(date, timeSlot.hour);
+
+      if (
+        isReservationRangeAvailable({
+          doctorId: doctor.id,
+          startTime,
+          endTime,
+          reservations: validationReservations,
+        })
+      ) {
+        return {
+          source: 'week' as const,
+          doctor,
+          date,
+          startTime,
+          endTime,
+        };
+      }
+    }
+
+    return null;
+  };
+
   return (
     <div className="flex-1 overflow-auto bg-white rounded-lg border">
       {/* Header with doctors */}
@@ -100,7 +180,7 @@ const WeekView: React.FC<Props> = ({
           <div
             key={doctor.id}
             className={cn(
-              'flex-1 min-w-[200px] border-r last:border-r-0 p-3',
+              'w-[340px] shrink-0 border-r last:border-r-0 p-3',
               !doctor.isAvailable && 'bg-gray-50/50',
             )}
           >
@@ -153,7 +233,7 @@ const WeekView: React.FC<Props> = ({
                 </span>
                 <span
                   className={cn(
-                    'text-lg font-bold',
+                    'text-lg font-semibold',
                     today ? 'text-primary' : 'text-gray-900',
                   )}
                 >
@@ -167,12 +247,16 @@ const WeekView: React.FC<Props> = ({
                   doctor.id,
                   day,
                 );
+                const addSlot =
+                  dayReservations.length === 0
+                    ? getFirstAvailableAddSlot(doctor, day)
+                    : null;
 
                 return (
                   <div
                     key={doctor.id}
                     className={cn(
-                      'flex-1 min-w-[200px] border-r last:border-r-0 p-2 min-h-[100px]',
+                      'w-[340px] shrink-0 border-r last:border-r-0 p-2 min-h-[100px]',
                       !doctor.isAvailable && 'bg-gray-100/50',
                     )}
                   >
@@ -183,36 +267,30 @@ const WeekView: React.FC<Props> = ({
                         </span>
                       </div>
                     ) : dayReservations.length === 0 ? (
-                      <div className="h-full flex items-center justify-center">
-                        <span className="text-xs text-gray-400">
+                      <button
+                        type="button"
+                        disabled={!addSlot}
+                        className="group flex h-full min-h-[84px] w-full items-center justify-center rounded-lg border border-dashed border-transparent text-xs text-gray-400 transition-colors enabled:hover:border-primary/40 enabled:hover:bg-primary/5 enabled:hover:text-primary disabled:cursor-not-allowed"
+                        onClick={() => {
+                          if (addSlot) onAddSlot?.(addSlot);
+                        }}
+                      >
+                        <span className="group-hover:hidden">
                           No appointments
                         </span>
-                      </div>
+                        <span className="hidden items-center gap-2 font-medium group-hover:flex">
+                          <Plus className="size-4" />
+                          Add appointment
+                        </span>
+                      </button>
                     ) : (
                       <div className="space-y-2">
                         {dayReservations.slice(0, 3).map((reservation) => (
-                          <div
+                          <WeekReservationCard
                             key={reservation.id}
-                            className={cn(
-                              'p-2 rounded-md border text-xs cursor-pointer hover:shadow-sm transition-shadow',
-                              getStatusColor(reservation.status),
-                            )}
-                          >
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <Avatar className="size-4">
-                                <AvatarFallback className="text-[8px] bg-white/50">
-                                  {getInitials(reservation.patient.name)}
-                                </AvatarFallback>
-                              </Avatar>
-                              <span className="font-medium truncate">
-                                {reservation.patient.name}
-                              </span>
-                            </div>
-                            <p className="text-[10px] opacity-75">
-                              {formatTime(reservation.startTime)} -{' '}
-                              {formatTime(reservation.endTime)}
-                            </p>
-                          </div>
+                            reservation={reservation}
+                            visualStates={mockReservationVisualStates}
+                          />
                         ))}
                         {dayReservations.length > 3 && (
                           <Badge variant="secondary" className="text-[10px]">

@@ -34,7 +34,7 @@ const DeleteMultiplePatientsDialog: React.FC<
           <p className="text-sm text-gray-700">
             Are you sure you want to delete
             {count > 0 ? (
-              <span className="font-bold text-gray-900">
+              <span className="font-semibold text-gray-900">
                 {' '}
                 {count} patient{count > 1 ? 's' : ''}
               </span>
@@ -60,7 +60,7 @@ const DeleteMultiplePatientsDialog: React.FC<
                         src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${patient.avatar || ''}`}
                         alt={name}
                       />
-                      <AvatarFallback className="bg-primary-500 text-white font-bold">
+                      <AvatarFallback className="bg-primary-500 text-white font-semibold">
                         {initials}
                       </AvatarFallback>
                     </Avatar>

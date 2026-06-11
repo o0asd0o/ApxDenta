@@ -12,7 +12,9 @@ const TotalStaff: React.FC<Props> = ({ staffType }) => {
     trpc.staffs.getTotalStaffs.queryOptions({ staffType }),
   );
 
-  return <span className="text-lg font-bold">{totalStaff?.total || ''}</span>;
+  return (
+    <span className="text-lg font-semibold">{totalStaff?.total || ''}</span>
+  );
 };
 
 export default TotalStaff;

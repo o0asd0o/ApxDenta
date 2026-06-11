@@ -230,7 +230,7 @@ function SelectItem({
       ref={ref}
       className={cn(
         // base
-        'grid cursor-pointer grid-cols-[1fr_20px] gap-x-2 rounded-sm px-3 py-2 outline-hidden transition-colors data-[state=checked]:font-bold sm:text-sm',
+        'grid cursor-pointer grid-cols-[1fr_20px] gap-x-2 rounded-sm px-3 py-2 outline-hidden transition-colors data-[state=checked]:font-semibold sm:text-sm',
         // text color
         'text-gray-900 dark:text-gray-50',
         // disabled

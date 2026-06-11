@@ -18,24 +18,26 @@ const StockAvailabilityCard: React.FC = () => {
   return (
     <Card className="gap-4 h-full p-4">
       <CardHeader className="pb-2 pl-1 pr-0">
-        <p className="text-sm font-bold text-gray-900">Stock Availability</p>
+        <p className="text-sm font-semibold text-gray-900">
+          Stock Availability
+        </p>
       </CardHeader>
       <CardContent className="space-y-4 px-0">
         {/* Stats */}
         <div className="flex gap-6">
           <div className="flex-1">
-            <p className="text-xs text-gray-500 uppercase font-bold">
+            <p className="text-xs text-gray-500 uppercase font-semibold">
               Total Asset
             </p>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-semibold text-gray-900">
               ${stockData.totalAsset.toLocaleString()}
             </p>
           </div>
           <div className="flex-1">
-            <p className="text-xs text-gray-500 uppercase font-bold">
+            <p className="text-xs text-gray-500 uppercase font-semibold">
               Total Product
             </p>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-semibold text-gray-900">
               {stockData.totalProduct}
             </p>
           </div>
@@ -76,7 +78,7 @@ const StockAvailabilityCard: React.FC = () => {
         {/* Low Stock Items */}
         <div className="pt-2 border-t">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-gray-500 uppercase font-bold">
+            <p className="text-xs text-gray-500 uppercase font-semibold">
               Low Stock
             </p>
             <Button

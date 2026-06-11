@@ -73,7 +73,7 @@ function DropdownMenuSubMenuTrigger({
       ref={ref}
       className={cn(
         // base
-        'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-1 outline-hidden transition-colors data-[state=checked]:font-bold sm:text-sm',
+        'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-1 outline-hidden transition-colors data-[state=checked]:font-semibold sm:text-sm',
         // text color
         'text-gray-900 dark:text-gray-50',
         // disabled
@@ -203,7 +203,7 @@ function DropdownMenuItem({
       ref={ref}
       className={cn(
         // base
-        'group/DropdownMenuItem relative flex cursor-pointer select-none items-center rounded-sm outline-hidden transition-colors data-[state=checked]:font-bold sm:text-sm',
+        'group/DropdownMenuItem relative flex cursor-pointer select-none items-center rounded-sm outline-hidden transition-colors data-[state=checked]:font-semibold sm:text-sm',
         // padding - removed when asLink is true so link can handle full clickable area
         !asLink && 'py-1.5 pl-2 pr-1',
         // text color
@@ -264,7 +264,7 @@ function DropdownMenuCheckboxItem({
       ref={ref}
       className={cn(
         // base
-        'relative flex cursor-pointer select-none items-center gap-x-2 rounded-sm py-1.5 pl-8 pr-1 outline-hidden transition-colors data-[state=checked]:font-bold sm:text-sm',
+        'relative flex cursor-pointer select-none items-center gap-x-2 rounded-sm py-1.5 pl-8 pr-1 outline-hidden transition-colors data-[state=checked]:font-semibold sm:text-sm',
         // text color
         'text-gray-900 dark:text-gray-50',
         // disabled
@@ -330,7 +330,7 @@ function DropdownMenuRadioItem({
       ref={ref}
       className={cn(
         // base
-        'group/DropdownMenuRadioItem relative flex cursor-pointer select-none items-center gap-x-2 rounded-sm py-1.5 pl-8 pr-1 outline-hidden transition-colors data-[state=checked]:font-bold sm:text-sm',
+        'group/DropdownMenuRadioItem relative flex cursor-pointer select-none items-center gap-x-2 rounded-sm py-1.5 pl-8 pr-1 outline-hidden transition-colors data-[state=checked]:font-semibold sm:text-sm',
         // text color
         'text-gray-900 dark:text-gray-50',
         // disabled

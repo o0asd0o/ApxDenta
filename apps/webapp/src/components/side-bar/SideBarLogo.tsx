@@ -14,7 +14,7 @@ export const SideBarLogo: React.FC = () => {
       <img className="size-6" src="/images/apxdenta-logo.png" alt="logo" />
       {(state === 'expanded' || isMobile) && (
         <h2 className="text-md font-medium text-black">
-          <span className="text-primary-600 font-bold">Apx</span>Denta
+          <span className="text-primary-600 font-semibold">Apx</span>Denta
         </h2>
       )}
     </div>

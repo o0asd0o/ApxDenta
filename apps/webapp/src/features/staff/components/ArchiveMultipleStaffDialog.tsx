@@ -38,7 +38,7 @@ const ArchiveMultipleStaffDialog: React.FC<ArchiveMultipleStaffDialogProps> = ({
           <p className="text-sm text-gray-700">
             Are you sure you want to archive
             {count > 0 ? (
-              <span className="font-bold text-gray-900">
+              <span className="font-semibold text-gray-900">
                 {' '}
                 {count} doctor{count > 1 ? 's' : ''}
               </span>
@@ -59,7 +59,7 @@ const ArchiveMultipleStaffDialog: React.FC<ArchiveMultipleStaffDialogProps> = ({
                         src={`${import.meta.env.VITE_PUBLIC_CDN_URL}${staff.avatar?.url as string}`}
                         alt={name}
                       />
-                      <AvatarFallback className="bg-amber-500 text-white font-bold">
+                      <AvatarFallback className="bg-amber-500 text-white font-semibold">
                         {[name.split(' ')[0][0], name.split(' ')[1][0]]
                           .join('')
                           .toUpperCase()}

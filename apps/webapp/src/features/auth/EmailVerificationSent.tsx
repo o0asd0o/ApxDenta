@@ -33,7 +33,7 @@ const EmailVerificationSent: React.FC = () => {
             alt="Email Confirmation"
             className="w-22 h-22 mb-4"
           />
-          <CardTitle className="text-xl font-bold mb-2 text-center">
+          <CardTitle className="text-xl font-semibold mb-2 text-center">
             Email Confirmation
           </CardTitle>
           <CardDescription className="text-sm text-center text-gray-700 mb-6">

@@ -70,7 +70,9 @@ const AddOffDay: React.FC<Props> = ({ onAdd }) => {
             }}
           >
             <div className="border-b border-gray-300 p-4 relative">
-              <h4 className="leading-none font-bold text-sm">Add day off</h4>
+              <h4 className="leading-none font-semibold text-sm">
+                Add day off
+              </h4>
               <Button
                 type="button"
                 variant="ghost"

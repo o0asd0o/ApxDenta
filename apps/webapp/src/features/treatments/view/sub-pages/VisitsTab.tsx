@@ -15,7 +15,7 @@ interface VisitsTabProps {
 
 const lorem = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis rutrum leo eget mattis. Duis leo libero, tempus sit amet dictum a, pretium non enim. Integer sed arcu 
-`
+`;
 
 const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
   const visits = treatment.visits || [];
@@ -26,7 +26,9 @@ const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
         <CardContent className="pt-6">
           <div className="text-center py-8">
             <Calendar className="size-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-bold mb-2">Single Visit Treatment</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              Single Visit Treatment
+            </h3>
             <p className="text-sm text-muted-foreground">
               This treatment is completed in a single visit.
             </p>
@@ -42,7 +44,7 @@ const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
         <CardContent className="pt-6">
           <div className="text-center py-8">
             <Calendar className="size-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-bold mb-2">No Visits Configured</h3>
+            <h3 className="text-lg font-semibold mb-2">No Visits Configured</h3>
             <p className="text-sm text-muted-foreground">
               No visit schedule has been set up for this treatment yet.
             </p>
@@ -63,7 +65,7 @@ const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
       : new Date().toDateString(),
     title: `Visit ${visit.sequence}`,
     description: visit.visitTreatment?.description || lorem,
-    icon: () => <span className="font-bold text-sm">{visit.sequence}</span>,
+    icon: () => <span className="font-semibold text-sm">{visit.sequence}</span>,
     color: 'primary' as const,
   }));
 
@@ -71,7 +73,7 @@ const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold">Treatment Visit Schedule</h3>
+        <h3 className="text-lg font-semibold">Treatment Visit Schedule</h3>
         <Badge variant="outline">{visits.length} Visits Required</Badge>
       </div>
 
@@ -81,7 +83,7 @@ const VisitsTab: React.FC<VisitsTabProps> = ({ treatment }) => {
         iconColor="primary"
         connectorColor="primary"
         animate={true}
-        className='mx-0'
+        className="mx-0"
       />
     </div>
   );

@@ -21,6 +21,8 @@ type Props<T extends string> = {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
+  searchPlaceholder?: string;
+  emptyText?: string;
 };
 
 export function Combobox<T extends string>(props: Props<T>) {
@@ -29,6 +31,10 @@ export function Combobox<T extends string>(props: Props<T>) {
 
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
+  React.useEffect(() => {
+    setValue(props.value);
+  }, [props.value]);
+
   return (
     <Popover open={open} modal={true} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -36,7 +42,7 @@ export function Combobox<T extends string>(props: Props<T>) {
           variant="outline"
           aria-expanded={open}
           className={cn(
-            'w-full justify-between rounded-sm text-gray-900 border-gray-300 dark:border-gray-800',
+            'w-full justify-between rounded-sm text-gray-900 border-gray-300 active:scale-100 dark:border-gray-800',
             !value && 'text-gray-400',
             focusInput,
           )}
@@ -62,17 +68,22 @@ export function Combobox<T extends string>(props: Props<T>) {
         }}
       >
         <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
+          <CommandInput
+            placeholder={props.searchPlaceholder || 'Search framework...'}
+            className="h-9"
+          />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>
+              {props.emptyText || 'No framework found.'}
+            </CommandEmpty>
             <CommandGroup>
               {props.items.map((framework) => (
                 <CommandItem
                   key={framework.value}
-                  value={framework.value}
-                  onSelect={(currentValue) => {
-                    props.onChange?.(currentValue);
-                    setValue(currentValue === value ? '' : currentValue);
+                  value={framework.labelRaw ?? framework.value}
+                  onSelect={() => {
+                    props.onChange?.(framework.value);
+                    setValue(framework.value === value ? '' : framework.value);
                     setOpen(false);
                   }}
                 >

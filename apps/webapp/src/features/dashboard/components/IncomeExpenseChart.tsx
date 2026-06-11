@@ -35,7 +35,7 @@ const IncomeExpenseChart: React.FC = () => {
   return (
     <Card className="gap-4 h- p-4 h-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2 pl-1 pr-0">
-        <p className="text-sm font-bold text-gray-900">Income & Expense</p>
+        <p className="text-sm font-semibold text-gray-900">Income & Expense</p>
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-[140px] h-7 text-xs">
             <SelectValue placeholder="Select period" />
@@ -53,12 +53,14 @@ const IncomeExpenseChart: React.FC = () => {
           <div className="flex items-start gap-2 flex-col">
             <div className="relative flex pl-5">
               <span className="w-3 h-1 rounded-full bg-emerald-500 absolute left-0 top-1.5" />
-              <span className="text-xs text-gray-500 font-bold uppercase">
+              <span className="text-xs text-gray-500 font-semibold uppercase">
                 Total Income
               </span>
             </div>
             <div className="flex gap-1 pl-5">
-              <span className="text-sm font-bold text-gray-900">$1,412</span>
+              <span className="text-sm font-semibold text-gray-900">
+                $1,412
+              </span>
               <span className="inline-flex items-center gap-0.5 text-xs font-medium text-emerald-600">
                 <TrendingUp className="size-3" />
                 4.51%
@@ -68,13 +70,15 @@ const IncomeExpenseChart: React.FC = () => {
           <div className="flex items-start gap-2 flex-col">
             <div className="relative flex pl-5">
               <span className="w-3 h-1 rounded-full bg-amber-500 absolute left-0 top-1.5" />
-              <span className="text-xs text-gray-500 font-bold uppercase">
+              <span className="text-xs text-gray-500 font-semibold uppercase">
                 Total Expenses
               </span>
             </div>
 
             <div className="flex gap-1 pl-5">
-              <span className="text-sm font-bold text-gray-900">$612.34</span>
+              <span className="text-sm font-semibold text-gray-900">
+                $612.34
+              </span>
               <span className="inline-flex items-center gap-0.5 text-xs font-medium text-red-500">
                 <TrendingDown className="size-3" />
                 2.41%

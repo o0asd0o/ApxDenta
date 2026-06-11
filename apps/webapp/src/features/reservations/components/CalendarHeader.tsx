@@ -1,3 +1,4 @@
+import FilterButton from '@/components/FilterButton';
 import {
   Button,
   Select,
@@ -9,7 +10,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@repo/ui/components';
-import { Calendar, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, Stethoscope } from 'lucide-react';
 import React from 'react';
 import type { Doctor, ViewMode } from './types';
 
@@ -22,6 +23,8 @@ interface Props {
   onDateChange: (date: Date) => void;
   onViewModeChange: (mode: ViewMode) => void;
   onDoctorChange: (doctorId: string) => void;
+  onFilterClick: () => void;
+  hasFilters?: boolean;
 }
 
 const CalendarHeader: React.FC<Props> = ({
@@ -33,6 +36,8 @@ const CalendarHeader: React.FC<Props> = ({
   onDateChange,
   onViewModeChange,
   onDoctorChange,
+  onFilterClick,
+  hasFilters,
 }) => {
   const formatDate = () => {
     return date.toLocaleDateString('en-US', {
@@ -58,63 +63,66 @@ const CalendarHeader: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4">
+    <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
       {/* Left section - Total appointments and navigation */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-gray-600">
-          <Calendar className="size-5" />
-          <span className="text-xl font-bold text-gray-900">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+        <div className="flex h-9 items-center gap-2 text-gray-600">
+          <Calendar className="size-5 shrink-0" />
+          <span className="text-xl font-semibold text-gray-900">
             {totalAppointments}
           </span>
           <span className="text-sm text-gray-500">total appointments</span>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex h-9 items-center gap-1">
           <Button
             variant="outline"
             onClick={goToToday}
-            className="text-xs font-medium h-8 px-3"
+            className="h-9 px-4 text-sm font-medium"
           >
             Today
           </Button>
           <Button
             variant="ghost"
-            className="h-8 w-8 p-0"
+            className="h-9 w-9 p-0"
             onClick={() => navigateDate('prev')}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
-            className="h-8 w-8 p-0"
+            className="h-9 w-9 p-0"
             onClick={() => navigateDate('next')}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <span className="text-sm font-medium text-gray-900 ml-2">
+          <span className="ml-2 whitespace-nowrap text-sm font-semibold text-gray-900">
             {formatDate()}
           </span>
         </div>
       </div>
 
       {/* Right section - View mode and filters */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <Tabs
           value={viewMode}
           onValueChange={(v) => onViewModeChange(v as ViewMode)}
         >
-          <TabsList className="grid grid-cols-2 h-8">
-            <TabsTrigger value="Day" className="text-xs px-4">
+          <TabsList className="grid h-9 grid-cols-2">
+            <TabsTrigger value="Day" className="px-5 text-sm">
               Day
             </TabsTrigger>
-            <TabsTrigger value="Week" className="text-xs px-4">
+            <TabsTrigger value="Week" className="px-5 text-sm">
               Week
             </TabsTrigger>
           </TabsList>
         </Tabs>
 
         <Select value={selectedDoctorId} onValueChange={onDoctorChange}>
-          <SelectTrigger className="w-[150px] h-8 text-xs">
+          <SelectTrigger
+            className="h-9 w-[180px] text-sm"
+            icon={<Stethoscope className="size-4 shrink-0 text-gray-500" />}
+          >
             <SelectValue placeholder="All Dentists" />
           </SelectTrigger>
           <SelectContent>
@@ -127,10 +135,7 @@ const CalendarHeader: React.FC<Props> = ({
           </SelectContent>
         </Select>
 
-        <Button variant="outline" className="h-8 gap-2 text-xs px-3">
-          <Filter className="h-3.5 w-3.5" />
-          Filters
-        </Button>
+        <FilterButton onClick={onFilterClick} hasFilters={hasFilters} />
       </div>
     </div>
   );

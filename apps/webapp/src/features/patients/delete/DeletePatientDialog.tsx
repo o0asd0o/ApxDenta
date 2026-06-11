@@ -33,7 +33,10 @@ const DeletePatientDialog: React.FC<DeletePatientDialogProps> = ({
           <p className="text-sm text-gray-700">
             Are you sure you want to delete
             {patientName ? (
-              <span className="font-bold text-gray-900"> {patientName}</span>
+              <span className="font-semibold text-gray-900">
+                {' '}
+                {patientName}
+              </span>
             ) : (
               ' this patient'
             )}

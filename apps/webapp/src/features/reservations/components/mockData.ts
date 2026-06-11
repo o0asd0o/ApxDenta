@@ -414,3 +414,14 @@ export const BREAK_TIME = {
   end: 14,
   label: 'BREAK TIME',
 };
+
+// UI-only design fixture for payment/visual state. Keep this sidecar out of
+// Reservation so reservation data remains workflow/domain-shaped.
+export const mockReservationVisualStates = {
+  '1': 'unpaid',
+  '2': 'paid',
+  '3': 'inTreatment',
+  '4': 'registered',
+  '5': 'paid',
+  '6': 'unpaid',
+} as const;

@@ -68,7 +68,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ staffId }) => {
   const appointments = appointmentsData?.items || [];
 
   return (
-    <div className="md:px-5 space-y-4">
+    <div className="space-y-4">
       {/* Filters and View Toggle */}
       <div className="flex flex-col sm:flex-row gap-3 justify-between">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 flex-1 w-full">
@@ -179,7 +179,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ staffId }) => {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-bold">{patientName}</p>
+                        <p className="font-semibold">{patientName}</p>
                         <p className="text-sm text-muted-foreground">
                           {appointment.treatmentName}
                         </p>

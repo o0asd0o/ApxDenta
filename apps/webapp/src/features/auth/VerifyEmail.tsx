@@ -36,7 +36,7 @@ export const VerifyEmailPage: React.FC = () => {
             <h2 className="text-sm font-normal mb-4 opacity-90">
               Welcome aboard!
             </h2>
-            <h1 className="text-4xl font-bold leading-tight">
+            <h1 className="text-4xl font-semibold leading-tight">
               Your email is
               <br />
               verified and ready
@@ -73,7 +73,7 @@ export const VerifyEmailPage: React.FC = () => {
             </div>
 
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-green-600 mb-2">
+              <h1 className="text-2xl font-semibold text-green-600 mb-2">
                 Email Verified
               </h1>
               <p className="text-gray-600 text-sm">

@@ -172,7 +172,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
 
   if (isLoading) {
     return (
-      <div className="md:px-5 space-y-5">
+      <div className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <Card key={i} className="py-0">
@@ -203,7 +203,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
   }
 
   return (
-    <div className="md:px-5 space-y-5">
+    <div className="space-y-5">
       {/* Performance Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="py-0">
@@ -213,7 +213,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
                 <p className="text-sm text-muted-foreground font-medium">
                   Total Appointments
                 </p>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-2xl font-semibold mt-1">
                   {stats?.totalAppointments || 0}
                 </p>
               </div>
@@ -230,7 +230,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
                 <p className="text-sm text-muted-foreground font-medium">
                   Average Rating
                 </p>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-2xl font-semibold mt-1">
                   {stats?.averageRating?.toFixed(1) || '0.0'}
                 </p>
               </div>
@@ -247,7 +247,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
                 <p className="text-sm text-muted-foreground font-medium">
                   Active Patients
                 </p>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-2xl font-semibold mt-1">
                   {stats?.activePatients || 0}
                 </p>
               </div>
@@ -264,7 +264,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
                 <p className="text-sm text-muted-foreground font-medium">
                   Completion Rate
                 </p>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-2xl font-semibold mt-1">
                   {stats?.completionRate || 0}%
                 </p>
               </div>
@@ -280,7 +280,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
         {/* Personal Information */}
         <Card>
           <CardHeader>
-            <h3 className="text-lg font-bold flex items-center gap-2">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <User className="size-5" />
               Personal Information
             </h3>
@@ -335,7 +335,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
 
             {(staff.emergencyContactName || staff.emergencyContactPhone) && (
               <div className="pt-4 border-t">
-                <p className="text-sm font-bold mb-3">Emergency Contact</p>
+                <p className="text-sm font-semibold mb-3">Emergency Contact</p>
                 <div>
                   <div className="flex justify-between items-center py-3 border-b">
                     <span className="text-sm text-muted-foreground">Name</span>
@@ -366,7 +366,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
         {/* Employment Details */}
         <Card>
           <CardHeader>
-            <h3 className="text-lg font-bold flex items-center gap-2">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <Briefcase className="size-5" />
               Employment Details
             </h3>
@@ -417,7 +417,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
       {/* Working Schedule */}
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-bold flex items-center gap-2">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
             <Clock className="size-5" />
             Working Schedule
           </h3>
@@ -432,7 +432,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
                   'bg-gray-50 border-gray-300': !schedule.active,
                 })}
               >
-                <p className="font-bold text-sm mb-1">{schedule.day}</p>
+                <p className="font-semibold text-sm mb-1">{schedule.day}</p>
                 <p
                   className={`text-xs ${
                     schedule.active ? 'text-muted-foreground' : 'text-gray-500'
@@ -452,7 +452,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
         {/* Upcoming Days Off */}
         <Card>
           <CardHeader>
-            <h3 className="text-lg font-bold flex items-center gap-2">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <Calendar className="size-5" />
               Upcoming Days Off
             </h3>
@@ -490,7 +490,7 @@ const EmployeeData: React.FC<EmployeeDataProps> = ({ staffId }) => {
         {/* Assigned Services */}
         <Card className="h-fit">
           <CardHeader>
-            <h3 className="text-lg font-bold flex items-center gap-2">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <Banknote className="size-5" />
               Assigned Services
             </h3>

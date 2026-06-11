@@ -12,7 +12,7 @@ const NotFound: React.FC = () => {
               <img src="/images/svg/broken-link-chain.svg" alt="Broken link" />
             </div>
 
-            <h1 className="text-4xl font-bold text-gray-900">404</h1>
+            <h1 className="text-4xl font-semibold text-gray-900">404</h1>
             <h2 className="text-base text-gray-700">Page not found</h2>
 
             <p className="text-sm text-gray-500 text-center">

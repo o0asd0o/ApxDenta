@@ -71,7 +71,7 @@ export const ForgotPasswordForm = () => {
             <h2 className="text-sm font-normal mb-4 opacity-90">
               Secure and reliable
             </h2>
-            <h1 className="text-4xl font-bold leading-tight">
+            <h1 className="text-4xl font-semibold leading-tight">
               Password recovery
               <br />
               made simple for your
@@ -108,7 +108,7 @@ export const ForgotPasswordForm = () => {
             </div>
 
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              <h1 className="text-2xl font-semibold text-gray-900 mb-2">
                 Check Your Email
               </h1>
               <p className="text-gray-600 text-sm">
@@ -186,7 +186,7 @@ export const ForgotPasswordForm = () => {
           <h2 className="text-sm font-normal mb-4 opacity-90">
             Secure and reliable
           </h2>
-          <h1 className="text-4xl font-bold leading-tight">
+          <h1 className="text-4xl font-semibold leading-tight">
             Password recovery
             <br />
             made simple for your
@@ -223,7 +223,7 @@ export const ForgotPasswordForm = () => {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl font-semibold text-gray-900 mb-2">
               Forgot Password
             </h1>
             <p className="text-gray-600 text-sm">
