@@ -13,6 +13,15 @@ Clinic reservation calendar UI, reservation route entrypoint, reservation visual
 - `apps/webapp/src/features/reservations/**`
 - `apps/webapp/src/routes/_protected/(clinic)/reservations.tsx`
 - `packages/domain/src/server/routes/reservations/**`
+- The calendar add flow is slot-driven in the webapp: Day view exposes only valid
+  one-hour hover ghost tiles; Week view opens the same waitlist sheet from empty
+  doctor-day cells and lets the user choose the exact time in the sheet.
+- Day view reservation cards can be dragged to a different valid 30-minute
+  slot; the actual time/doctor mutation happens only after the reschedule
+  confirmation dialog is accepted.
+- The current waitlist create flow is local/mock-only. It appends a pending
+  reservation in UI state and keeps the shape compatible with Prisma
+  `Reservation`, `Patient`, `Staff`, and `Treatment` relationships.
 
 ## Load When
 

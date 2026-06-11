@@ -5,3 +5,5 @@ export { default as ReservationCard } from './ReservationCard';
 export { default as WeekView } from './WeekView';
 export * from './mockData';
 export * from './types';
+export { default as ReservationFilterDialog } from './ReservationFilterDialog';
+export * from './reservationFilters';

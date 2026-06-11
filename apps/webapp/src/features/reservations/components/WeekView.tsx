@@ -5,7 +5,10 @@ import {
   AvatarImage,
   Badge,
 } from '@repo/ui/components';
+import { Plus } from 'lucide-react';
 import React from 'react';
+import { createOneHourSlot, isReservationRangeAvailable } from './__helpers';
+import type { ReservationAddSlot } from './__types';
 import {
   mockDoctors,
   mockReservationVisualStates,
@@ -19,11 +22,14 @@ import {
   getReservationVisualMeta,
 } from './reservationVisuals';
 import type { Doctor, Reservation } from './types';
+import { TIME_SLOTS } from './types';
 
 interface Props {
   startDate: Date;
   doctors: Doctor[];
   reservations: Reservation[];
+  validationReservations?: Reservation[];
+  onAddSlot?: (slot: ReservationAddSlot) => void;
 }
 
 const getInitials = (name: string) => {
@@ -96,6 +102,8 @@ const WeekView: React.FC<Props> = ({
   startDate,
   doctors = mockDoctors,
   reservations = mockReservations,
+  validationReservations = reservations,
+  onAddSlot,
 }) => {
   // Generate 7 days starting from startDate
   const weekDays = Array.from({ length: 7 }, (_, i) => {
@@ -129,6 +137,33 @@ const WeekView: React.FC<Props> = ({
         reservationDate.getFullYear() === date.getFullYear()
       );
     });
+  };
+
+  const getFirstAvailableAddSlot = (doctor: Doctor, date: Date) => {
+    if (!doctor.isAvailable) return null;
+
+    for (const timeSlot of TIME_SLOTS) {
+      const { startTime, endTime } = createOneHourSlot(date, timeSlot.hour);
+
+      if (
+        isReservationRangeAvailable({
+          doctorId: doctor.id,
+          startTime,
+          endTime,
+          reservations: validationReservations,
+        })
+      ) {
+        return {
+          source: 'week' as const,
+          doctor,
+          date,
+          startTime,
+          endTime,
+        };
+      }
+    }
+
+    return null;
   };
 
   return (
@@ -212,6 +247,10 @@ const WeekView: React.FC<Props> = ({
                   doctor.id,
                   day,
                 );
+                const addSlot =
+                  dayReservations.length === 0
+                    ? getFirstAvailableAddSlot(doctor, day)
+                    : null;
 
                 return (
                   <div
@@ -228,11 +267,22 @@ const WeekView: React.FC<Props> = ({
                         </span>
                       </div>
                     ) : dayReservations.length === 0 ? (
-                      <div className="h-full flex items-center justify-center">
-                        <span className="text-xs text-gray-400">
+                      <button
+                        type="button"
+                        disabled={!addSlot}
+                        className="group flex h-full min-h-[84px] w-full items-center justify-center rounded-lg border border-dashed border-transparent text-xs text-gray-400 transition-colors enabled:hover:border-primary/40 enabled:hover:bg-primary/5 enabled:hover:text-primary disabled:cursor-not-allowed"
+                        onClick={() => {
+                          if (addSlot) onAddSlot?.(addSlot);
+                        }}
+                      >
+                        <span className="group-hover:hidden">
                           No appointments
                         </span>
-                      </div>
+                        <span className="hidden items-center gap-2 font-medium group-hover:flex">
+                          <Plus className="size-4" />
+                          Add appointment
+                        </span>
+                      </button>
                     ) : (
                       <div className="space-y-2">
                         {dayReservations.slice(0, 3).map((reservation) => (

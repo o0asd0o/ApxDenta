@@ -145,7 +145,7 @@ export const ReservationStatusPill: React.FC<{
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-gray-700 shadow-sm ring-1 ring-black/5',
+        'inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-gray-700 ring-1 ring-black/5',
         className,
       )}
     >

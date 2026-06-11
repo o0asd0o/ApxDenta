@@ -8,6 +8,7 @@ Always load:
 
 - `docs/memory-policy.md` when changing `AGENTS.md`, `docs/**`, `.github/copilot-instructions.md`, or repository memory/routing behavior.
 - `docs/global/architecture.md` when changing app/package boundaries, cross-package contracts, build tooling, dependency strategy, authentication shape, database strategy, or deployment assumptions.
+- `docs/global/coding-standards.md` when changing `apps/webapp/src/features/**`, feature route entrypoints under `apps/webapp/src/routes/**`, or feature file organization/import patterns. This global standard supersedes older convenience re-export examples in `.github/copilot-instructions.md`.
 
 ## Path Routing
 
